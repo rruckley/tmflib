@@ -1,0 +1,12 @@
+[package]
+name = "tmflib"
+version = "0.1.0"
+edition = "2021"
+authors = ["Ryan Ruckley <rruckley@gmail.com>"]
+description = "Interface library for processing TMF payloads"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = "1.0.188"
+serde_json = "1.0.107"
