@@ -1,4 +1,4 @@
 //! Common Modules
 //! 
 
-mod atttachment;
+pub mod attachment;
