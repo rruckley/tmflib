@@ -1,31 +1,16 @@
 //! TMF620 Product Catalogue Management
-
+use crate::tmf620::category::CategoryRef;
+use crate::tmf620::product_specification::{
+    ProductSpecificationCharacteristicValueUse,
+    ProductSpecificationRef,
+};
 /// Agreement Reference
 pub struct AgreementRef {}
 
-/// Attachment Reference or Value
-pub struct AttachmentRefOrValue {}
+
 
 /// Bundled Product Offering
 pub struct BundledProductOffering {}
-
-
-
-/// Category Resource
-pub struct Category {
-    /// Subcategory
-    pub sub_category : Vec<CategoryRef>,
-    /// Product Offering
-    pub product_offering : Vec<ProductOfferingRef>,
-}
-
-/// Category Reference
-pub struct CategoryRef {
-    id  : String,
-    href    : String,
-    name    : String,
-    version : String,   
-}
 
 /// Channel Reference
 pub struct ChannelRef {}
@@ -42,12 +27,6 @@ pub struct ProductOfferingRef {}
 pub struct ProductOfferingPriceRef {}
 
 pub struct ProductOfferingTerm {}
-
-/// Product Specification Reference
-pub struct ProductSpecificationRef {}
-
-/// Product Specification Characteristic Value Use
-pub struct ProductSpecificationCharacteristicValueUse {}
 
 /// Product Offering
 pub struct ProductOffering {
@@ -80,8 +59,6 @@ pub struct ProductOffering {
     pub service_candidate       : Vec<ServiceCandidateRef>,
     pub service_level_agreement : Vec<SLARef>,
 }
-
-
 
 /// Resource Candidate Reference 
 pub struct ResourceCandidateRef {}
