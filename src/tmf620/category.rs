@@ -1,6 +1,6 @@
 //! Category Module
 
-use crate::tmf620::tmf620::ProductOfferingRef;
+use crate::tmf620::product_offering::ProductOfferingRef;
 
 /// Category Resource
 pub struct Category {
