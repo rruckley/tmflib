@@ -4,3 +4,5 @@
 mod tmf620;
 mod catalog;
 mod party;
+mod category;
+mod product_specification;
