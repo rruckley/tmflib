@@ -3,6 +3,7 @@
 //! 
 use crate::tmf620::party::RelatedParty;
 use crate::tmf620::category::CategoryRef;
+
 /// Catalogue
 pub struct Catalog {
     id              : String,

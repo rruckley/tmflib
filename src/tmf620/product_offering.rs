@@ -46,6 +46,7 @@ pub struct ProductOffering {
     /// Name of this offering
     pub name        : String,
     pub status_reason : String,
+    
     pub version     : String,
     /// Validity Period
     pub valid_for   : String,
