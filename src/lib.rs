@@ -2,4 +2,4 @@
 
 #[warn(missing_docs)]
 
-mod tmf620;
+pub mod tmf620;
