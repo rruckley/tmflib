@@ -24,12 +24,15 @@ use serde::{Deserialize,Serialize};
 pub struct ProductOfferingRef {}
 
 /// Product Offering Price Reference
+#[derive(Deserialize,Serialize)]
 pub struct ProductOfferingPriceRef {}
 
 /// Product Offering Term
+#[derive(Deserialize,Serialize)]
 pub struct ProductOfferingTerm {}
 
 /// Product Offering
+#[derive(Deserialize,Serialize)]
 pub struct ProductOffering {
     /// Unique identifier
     pub id          : String,
