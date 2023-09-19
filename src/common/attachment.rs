@@ -3,14 +3,14 @@
 //! 
 use serde::{Deserialize,Serialize};
 
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub enum AttachmentType {
     InLine,
     External,
 }
 
 /// Attachment Reference or Value
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct AttachmentRefOrValue {
     pub id  : Option<String>,
     pub href: Option<String>,

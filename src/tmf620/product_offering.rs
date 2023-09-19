@@ -27,19 +27,19 @@ const PO_VERS_INIT : &str = "1.0";
 const PO_PATH : &str = "offer";
 
 /// Product Offering Reference
-#[derive(Deserialize, Serialize)]
+#[derive(Debug,Deserialize, Serialize)]
 pub struct ProductOfferingRef {}
 
 /// Product Offering Price Reference
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct ProductOfferingPriceRef {}
 
 /// Product Offering Term
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct ProductOfferingTerm {}
 
 /// Product Offering
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct ProductOffering {
     /// Unique identifier
     pub id          : Option<String>,

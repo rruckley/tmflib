@@ -4,9 +4,9 @@
 use serde::{Deserialize,Serialize};
 
 /// Product Specification Reference
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct ProductSpecificationRef {}
 
 /// Product Specification Characteristic Value Use
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct ProductSpecificationCharacteristicValueUse {}

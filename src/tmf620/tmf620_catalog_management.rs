@@ -7,36 +7,36 @@ use super::category::Category;
 use serde::{Deserialize,Serialize};
 
 /// Agreement Reference
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct AgreementRef {}
 
 /// Bundled Product Offering
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct BundledProductOffering {}
 
 /// Channel Reference
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct ChannelRef {}
 
 /// Market Segment Refefence
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct MarketSegmentRef {}
 
 /// Place Reference
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct PlaceRef {}
 
 /// Resource Candidate Reference 
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct ResourceCandidateRef {}
 
 
 /// Service Candidate Reference
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct ServiceCandidateRef {}
 
 /// Service Level Agreement Reference 
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct SLARef {}
 
 /// Root Struct to interact with catalogue

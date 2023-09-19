@@ -10,7 +10,7 @@ use super::MOD_PATH;
 const CAT_PATH : &str = "catalog";
 
 /// Category Resource
-#[derive(Deserialize, Serialize)]
+#[derive(Debug,Deserialize, Serialize)]
 pub struct Category {
     // Scalar fields
     /// Id
@@ -92,7 +92,7 @@ impl Category {
 }
 
 /// Category Reference
-#[derive(Deserialize, Serialize)]
+#[derive(Debug,Deserialize, Serialize)]
 pub struct CategoryRef {
     id      : String,
     href    : String,
