@@ -1,7 +1,7 @@
 //!
 //! Product Offering Module
 
-use crate::tmf620::tmf620::{
+use crate::tmf620::tmf620_catalog_management::{
     AgreementRef,
     BundledProductOffering,
     ChannelRef,
@@ -17,8 +17,10 @@ use crate::tmf620::product_specification::{
     ProductSpecificationRef,
 };
 use crate::common::attachment::AttachmentRefOrValue;
+use serde::{Deserialize,Serialize};
 
 /// Product Offering Reference
+#[derive(Deserialize, Serialize)]
 pub struct ProductOfferingRef {}
 
 /// Product Offering Price Reference
@@ -45,8 +47,9 @@ pub struct ProductOffering {
     pub lifecycle_status : String,
     /// Name of this offering
     pub name        : String,
+    /// Status Reason
     pub status_reason : String,
-    
+    /// Version of this offering
     pub version     : String,
     /// Validity Period
     pub valid_for   : String,
@@ -69,9 +72,14 @@ pub struct ProductOffering {
     pub product_offering_price  : Vec<ProductOfferingPriceRef>,
     /// Product Offering Term
     pub product_offering_term   : Vec<ProductOfferingTerm>,
+    /// Product Specification Characteristic Value Use
     pub prod_sepc_char_value_use : Vec<ProductSpecificationCharacteristicValueUse>,
+    /// Product Specification
     pub product_specification   : Vec<ProductSpecificationRef>,
+    /// Resource Canididates
     pub resource_candidate      : Vec<ResourceCandidateRef>,
+    /// Service Candidates
     pub service_candidate       : Vec<ServiceCandidateRef>,
+    /// Service Level Agreements
     pub service_level_agreement : Vec<SLARef>,
 }
