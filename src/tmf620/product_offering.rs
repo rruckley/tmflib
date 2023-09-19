@@ -18,6 +18,10 @@ use crate::tmf620::product_specification::{
 };
 use crate::common::attachment::AttachmentRefOrValue;
 use serde::{Deserialize,Serialize};
+use serde_json::error::Category;
+
+const PO_VERS_INIT : &str = "1.0";
+const PO_TEMPLATE_CAT : &str = "ProductTemplate";
 
 /// Product Offering Reference
 #[derive(Deserialize, Serialize)]
@@ -35,54 +39,87 @@ pub struct ProductOfferingTerm {}
 #[derive(Deserialize,Serialize)]
 pub struct ProductOffering {
     /// Unique identifier
-    pub id          : String,
+    pub id          : Option<String>,
     /// HREF for API use
-    pub href        : String,
+    pub href        : Option<String>,
     /// Description of offering
-    pub description : String,
+    pub description : Option<String>,
     /// Does this represent a bundle?
     pub is_bundle   : bool,
     /// Is this sellable?
     pub is_sellable : bool,
     /// When was this last updated?
-    pub last_update : String,
+    pub last_update : Option<String>,
     /// Current status
-    pub lifecycle_status : String,
+    pub lifecycle_status : Option<String>,
     /// Name of this offering
     pub name        : String,
     /// Status Reason
-    pub status_reason : String,
+    pub status_reason : Option<String>,
     /// Version of this offering
-    pub version     : String,
+    pub version     : Option<String>,
     /// Validity Period
-    pub valid_for   : String,
+    pub valid_for   : Option<String>,
 
     /// Associated agreements
-    pub agreement   : Vec<AgreementRef>,
+    pub agreement   : Option<Vec<AgreementRef>>,
     /// Attachments
-    pub attachment  : Vec<AttachmentRefOrValue>,
+    pub attachment  : Option<Vec<AttachmentRefOrValue>>,
     /// Bundled Product Offerings
-    pub bundled_product_offering : Vec<BundledProductOffering>,
+    pub bundled_product_offering : Option<Vec<BundledProductOffering>>,
     /// Categories
-    pub category    : Vec<CategoryRef>,
+    pub category    : Option<Vec<CategoryRef>>,
     /// Channels
-    pub channel     : Vec<ChannelRef>,
+    pub channel     : Option<Vec<ChannelRef>>,
     /// Market Segments
-    pub market_segment : Vec<MarketSegmentRef>,
+    pub market_segment : Option<Vec<MarketSegmentRef>>,
     /// Places
-    pub place       : Vec<PlaceRef>,
+    pub place       : Option<Vec<PlaceRef>>,
     /// Product Offering Price
-    pub product_offering_price  : Vec<ProductOfferingPriceRef>,
+    pub product_offering_price  : Option<Vec<ProductOfferingPriceRef>>,
     /// Product Offering Term
-    pub product_offering_term   : Vec<ProductOfferingTerm>,
+    pub product_offering_term   : Option<Vec<ProductOfferingTerm>>,
     /// Product Specification Characteristic Value Use
-    pub prod_sepc_char_value_use : Vec<ProductSpecificationCharacteristicValueUse>,
+    pub prod_sepc_char_value_use : Option<Vec<ProductSpecificationCharacteristicValueUse>>,
     /// Product Specification
-    pub product_specification   : Vec<ProductSpecificationRef>,
+    pub product_specification   : Option<Vec<ProductSpecificationRef>>,
     /// Resource Canididates
-    pub resource_candidate      : Vec<ResourceCandidateRef>,
+    pub resource_candidate      : Option<Vec<ResourceCandidateRef>>,
     /// Service Candidates
-    pub service_candidate       : Vec<ServiceCandidateRef>,
+    pub service_candidate       : Option<Vec<ServiceCandidateRef>>,
     /// Service Level Agreements
-    pub service_level_agreement : Vec<SLARef>,
+    pub service_level_agreement : Option<Vec<SLARef>>,
+}
+
+impl ProductOffering {
+    pub fn new(name : String) -> ProductOffering {
+        let category = Category::new(PO_TEMPLATE_CAT);
+        ProductOffering { 
+            id: None, 
+            href: None, 
+            description: None, 
+            is_bundle: false, 
+            is_sellable: false, 
+            last_update: None, 
+            lifecycle_status: None, 
+            name, 
+            status_reason: None, 
+            version: Some(PO_VERS_INIT.to_string()), 
+            valid_for: None, 
+            agreement: None, 
+            attachment: None, 
+            bundled_product_offering: None, 
+            category: Some(vec![category]), 
+            channel: None, 
+            market_segment: None, 
+            place: None, 
+            product_offering_price: None, 
+            product_offering_term: None, 
+            prod_sepc_char_value_use: None, 
+            product_specification: None, 
+            resource_candidate: None, 
+            service_candidate: None, 
+            service_level_agreement: None ,
+        }
+    }
 }
