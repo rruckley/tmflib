@@ -1,5 +1,6 @@
 //! TMF620 Product Catalogue Module
 
+const MOD_PATH : &str = "tmf620";
 
 pub mod tmf620_catalog_management;
 pub mod catalog;
