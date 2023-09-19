@@ -18,10 +18,13 @@ use crate::tmf620::product_specification::{
 };
 use crate::common::attachment::AttachmentRefOrValue;
 use serde::{Deserialize,Serialize};
-use serde_json::error::Category;
+
+use uuid::Uuid;
+
+use super::MOD_PATH;
 
 const PO_VERS_INIT : &str = "1.0";
-const PO_TEMPLATE_CAT : &str = "ProductTemplate";
+const PO_PATH : &str = "offer";
 
 /// Product Offering Reference
 #[derive(Deserialize, Serialize)]
@@ -92,11 +95,13 @@ pub struct ProductOffering {
 }
 
 impl ProductOffering {
+    /// Create a new instance of ProductOffering object
     pub fn new(name : String) -> ProductOffering {
-        let category = Category::new(PO_TEMPLATE_CAT);
+        let id = Uuid::new_v4().to_string();
+        let href = format!("{}/{}/{}",MOD_PATH,PO_PATH,id);
         ProductOffering { 
-            id: None, 
-            href: None, 
+            id: Some(id), 
+            href: Some(href), 
             description: None, 
             is_bundle: false, 
             is_sellable: false, 
@@ -109,7 +114,7 @@ impl ProductOffering {
             agreement: None, 
             attachment: None, 
             bundled_product_offering: None, 
-            category: Some(vec![category]), 
+            category: None,
             channel: None, 
             market_segment: None, 
             place: None, 
