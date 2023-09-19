@@ -68,11 +68,11 @@ impl CatalogueManagement {
     }
 
     /// Get an instane of category struct for interacting with categories
-    pub fn catalegory(mut self) -> Category {
+    pub fn category(mut self) -> Category {
         match self.category {
             Some(c) => c,
             None => {
-                self.category = Some(Category::new());
+                self.category = Some(Category::new(String::from("root")));
                 self.category.unwrap()
             }
         }
