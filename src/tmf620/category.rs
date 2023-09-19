@@ -3,6 +3,11 @@
 use crate::tmf620::product_offering::ProductOfferingRef;
 
 use serde::{Deserialize,Serialize};
+use uuid::Uuid;
+
+use super::MOD_PATH;
+
+const CAT_PATH : &str = "catalog";
 
 /// Category Resource
 #[derive(Deserialize, Serialize)]
@@ -41,15 +46,17 @@ impl Category {
     /// # use tmflib::tmf620::category::Category;
     /// let cat = Category::new();
     /// ```
-    pub fn new() -> Category {
+    pub fn new(name : String) -> Category {
+        let id = Uuid::new_v4().to_string();
+        let href = format!("/{}/{}/{}",MOD_PATH,CAT_PATH,id);
         Category { 
-            id          : None,
-            href        : None,
+            id          : Some(id),
+            href        : Some(href),
             description : None,
             is_root     : false,
             last_update : None,
             lifecycle_status : None,
-            name        : None,
+            name        : Some(name.clone()),
             parent_id   : None,
             version     : None,
             valid_for   : None,
