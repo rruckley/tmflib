@@ -96,6 +96,11 @@ pub struct ProductOffering {
 
 impl ProductOffering {
     /// Create a new instance of ProductOffering object
+    /// # Examples
+    /// ```
+    /// # use tmflib::tmf620::product_offering::ProductOffering;
+    /// let po = ProductOffering::new(String::from("MyOffer"));
+    /// ```
     pub fn new(name : String) -> ProductOffering {
         let id = Uuid::new_v4().to_string();
         let href = format!("{}/{}/{}",MOD_PATH,PO_PATH,id);
