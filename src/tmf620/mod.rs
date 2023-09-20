@@ -1,4 +1,6 @@
 //! TMF620 Product Catalogue Module
+//! 
+//! Structs associated with product catalogue management
 
 const MOD_PATH : &str = "tmf620";
 
