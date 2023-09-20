@@ -132,4 +132,26 @@ impl ProductOffering {
             service_level_agreement: None ,
         }
     }
+
+    /// Added category refernce to ProductOffering
+    /// # Examples
+    /// ```
+    /// # use tmflib::tmf620::product_offering::ProductOffering;
+    /// # use tmflib::tmf620::category::{Category,CategoryRef};
+    /// let po = ProductOffering::new(String::from("MyOffer"));
+    /// let cat= Category::new(String::from("MyCategory"));
+    /// let result = po.with_category(CategoryRef::from(&cat));
+    /// ```
+    pub fn with_category(mut self, category : CategoryRef) -> Result<String,String> {
+        match self.category {
+            None => {
+                self.category = Some(vec![category]);
+                
+            },
+            Some(mut c) => {
+                c.push(category);
+            }
+        }
+        Ok(String::from("Category added"))
+    }
 }
