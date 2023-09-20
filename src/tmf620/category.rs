@@ -145,8 +145,19 @@ mod tests {
 /// Category Reference
 #[derive(Debug,Deserialize, Serialize)]
 pub struct CategoryRef {
-    id      : String,
-    href    : String,
-    name    : String,
-    version : String,   
+    id      : Option<String>,
+    href    : Option<String>,
+    name    : Option<String>,
+    version : Option<String>,   
+}
+
+impl From<&Category> for CategoryRef {
+    fn from(cat : &Category) -> CategoryRef {
+        CategoryRef { 
+            id  : cat.id.clone(), 
+            href: cat.href.clone(), 
+            name: cat.name.clone(), 
+            version: cat.version.clone() 
+        }
+    }
 }
