@@ -5,6 +5,11 @@ use crate::tmf620::party::RelatedParty;
 use crate::tmf620::category::CategoryRef;
 
 use serde::{Deserialize,Serialize};
+use uuid::Uuid;
+
+use super::MOD_PATH;
+
+const CAT_PATH : &str = "catalog";
 
 /// Catalogue
 #[derive(Deserialize, Serialize)]
@@ -29,13 +34,21 @@ impl Catalog {
     pub fn new() -> Catalog {
         Catalog::default()
     }
+
+    /// Set the name for this Catalog
+    pub fn name(mut self, name : String) -> Catalog {
+        self.name = Some(name.clone());
+        self
+    }
 }
 
 impl std::default::Default for Catalog {
     fn default() -> Catalog {
+        let id = Uuid::new_v4().to_string();
+        let href = format!("/{}/{}/{}",MOD_PATH,CAT_PATH,id);
         Catalog {
-            id          : None,
-            href        : None,
+            id          : Some(id),
+            href        : Some(href),
             catalog_type : None,
             description : None,
             last_update : None,
