@@ -24,7 +24,7 @@ pub struct Catalog {
     version         : Option<String>,
     valid_for       : Option<String>,
     /// Categories
-    category        : Option<Vec<CategoryRef>>,
+    categories       : Option<Vec<CategoryRef>>,
     /// Related parties
     related_party   : Option<Vec<RelatedParty>>,
 }
@@ -39,6 +39,19 @@ impl Catalog {
     pub fn name(mut self, name : String) -> Catalog {
         self.name = Some(name.clone());
         self
+    }
+
+    /// Add a category to a catalog
+    pub fn add_category(mut self, category : CategoryRef) -> Result<String,String> {
+        match self.categories {
+            None => {
+                self.categories = Some(vec![category]);
+            },
+            Some(mut c) => {
+                c.push(category);
+            }
+        }
+        Ok(String::from("Ok"))
     }
 }
 
@@ -56,7 +69,7 @@ impl std::default::Default for Catalog {
             name        : None,
             version     : None,
             valid_for   : None,
-            category    : None,
+            categories    : None,
             related_party : None,
         }
     }
