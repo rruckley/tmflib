@@ -5,9 +5,7 @@ edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Interface library for processing TMF payloads"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-serde = { verison = "1.0.188", features = ["derive"]}
+serde = { version = "1.0.188", features = ["derive"]}
 serde_json = "1.0.107"
 uuid = { version = "1.4.1", features = ["v4"]}
