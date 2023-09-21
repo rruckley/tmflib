@@ -161,3 +161,19 @@ impl From<&Category> for CategoryRef {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use crate::tmf620::category::CAT_VERS;
+
+    use super::{Category,CategoryRef};
+    #[test]
+
+    fn catref_test_from() {
+        let cat = Category::new(String::from("MyCategory"));
+        let cat_ref = CategoryRef::from(&cat);
+
+        assert_eq!(cat_ref.name , Some(String::from("MyCategory")));
+        assert_eq!(cat_ref.version, Some(CAT_VERS.to_string()));
+    }
+}
