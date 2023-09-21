@@ -69,7 +69,7 @@ impl std::default::Default for Catalog {
             name        : None,
             version     : None,
             valid_for   : None,
-            categories    : None,
+            categories    : Some(vec![]),
             related_party : None,
         }
     }
