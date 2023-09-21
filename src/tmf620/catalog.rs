@@ -42,16 +42,16 @@ impl Catalog {
     }
 
     /// Add a category to a catalog
-    pub fn add_category(mut self, category : CategoryRef) -> Result<String,String> {
+    pub fn add_category(self, category : CategoryRef) -> Result<String,String> {
         match self.categories {
             None => {
-                self.categories = Some(vec![category]);
+                Err(String::from("Missing category Vec"))
             },
             Some(mut c) => {
                 c.push(category);
+                Ok(String::from("Category added"))
             }
         }
-        Ok(String::from("Ok"))
     }
 }
 
@@ -73,4 +73,25 @@ impl std::default::Default for Catalog {
             related_party : None,
         }
     }
+}
+
+#[cfg(test)]
+mod tests {
+    
+    use super::Catalog;
+    #[test]
+    fn test_cat_default() {
+        let cat = Catalog::new();
+
+        assert_eq!(cat.name , None);
+    }
+
+    #[test]
+    fn test_cat_name() {
+        let cat = Catalog::new().name(String::from("MyCatalog"));
+
+        assert_eq!(cat.name , Some(String::from("MyCatalog")));
+    }
+
+
 }
