@@ -155,3 +155,24 @@ impl ProductOffering {
         Ok(String::from("Category added"))
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::ProductOffering;
+    use super::PO_VERS_INIT;
+
+    #[test]
+    fn test_po_new_name() {
+        let po = ProductOffering::new(String::from("MyOffer"));
+
+        assert_eq!(po.name , String::from("MyOffer"));
+    }
+
+    #[test]
+    fn test_po_new_version() {
+        let po = ProductOffering::new(String::from("MyOffer"));
+
+        assert_eq!(po.version , Some(PO_VERS_INIT.to_string()));
+    }
+
+}
