@@ -1,7 +1,7 @@
 //! TMF620 Product Catalogue Management
 //! 
 
-use super::catalog::Catalog;
+use super::{catalog::Catalog, product_offering::ProductOffering};
 use super::category::Category;
 
 use serde::{Deserialize,Serialize};
@@ -43,6 +43,8 @@ pub struct SLARef {}
 pub struct CatalogueManagement {
     catalogue   : Option<Catalog>,
     category    : Option<Category>,
+    offers      : Vec<ProductOffering>,
+    categories  : Vec<Category>,
 }
 
 impl CatalogueManagement {
@@ -53,7 +55,22 @@ impl CatalogueManagement {
         CatalogueManagement { 
             catalogue : None,
             category  : None,
+            offers    : vec![],
+            categories : vec![],
         }
+    }
+
+    /// Add a product offer into the catalog
+    pub fn add_offer(&mut self, offer : ProductOffering) -> Result<String,String> {
+        // Ideally we should validate that the category referenced in this PO is valid.
+        self.offers.push(offer);
+        Ok(String::from("Offer added"))
+    }
+
+    /// Added a category into the catalog
+    pub fn add_category(&mut self, category : Category) -> Result<String,String> {
+        self.categories.push(category);
+        Ok(String::from("Category added"))
     }
 
     /// Get an instance of Catalog struct for interacting with catalogues
