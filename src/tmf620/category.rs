@@ -143,7 +143,7 @@ mod tests {
 }
 
 /// Category Reference
-#[derive(Debug,Deserialize, Serialize)]
+#[derive(Clone,Debug,Deserialize, Serialize)]
 pub struct CategoryRef {
     id      : Option<String>,
     href    : Option<String>,
