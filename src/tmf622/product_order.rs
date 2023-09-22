@@ -6,7 +6,7 @@ use serde::{Deserialize,Serialize};
 
 const PO_PATH : &str = "order";
 
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Debug,Default,Deserialize,Serialize)]
 pub struct ProductOrder {
     id : String,
     href : String,
