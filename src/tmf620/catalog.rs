@@ -6,10 +6,13 @@ use crate::tmf620::category::CategoryRef;
 
 use serde::{Deserialize,Serialize};
 use uuid::Uuid;
+use chrono::naive::NaiveDateTime;
+use chrono::Utc;
 
 use super::MOD_PATH;
 
 const CAT_PATH : &str = "catalog";
+const CAT_VERS : &str = "1.0";
 
 /// Catalogue
 #[derive(Deserialize, Serialize)]
@@ -59,15 +62,17 @@ impl std::default::Default for Catalog {
     fn default() -> Catalog {
         let id = Uuid::new_v4().to_string();
         let href = format!("/{}/{}/{}",MOD_PATH,CAT_PATH,id);
+        let now = Utc::now();
+        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         Catalog {
             id          : Some(id),
             href        : Some(href),
             catalog_type : None,
             description : None,
-            last_update : None,
+            last_update : Some(time.to_string()),
             lifecycle_status : None,
             name        : None,
-            version     : None,
+            version     : Some(CAT_VERS.to_string()),
             valid_for   : None,
             categories    : Some(vec![]),
             related_party : None,
@@ -78,6 +83,8 @@ impl std::default::Default for Catalog {
 #[cfg(test)]
 mod tests {
     
+    use crate::tmf620::catalog::CAT_VERS;
+
     use super::Catalog;
     #[test]
     fn test_cat_default() {
@@ -91,6 +98,13 @@ mod tests {
         let cat = Catalog::new().name(String::from("MyCatalog"));
 
         assert_eq!(cat.name , Some(String::from("MyCatalog")));
+    }
+
+    #[test]
+    fn test_cat_vers() {
+        let cat = Catalog::new().name(String::from("MyCatalog"));
+
+        assert_eq!(cat.version , Some(CAT_VERS.to_string()));
     }
 
 
