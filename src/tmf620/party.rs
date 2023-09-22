@@ -4,7 +4,7 @@
 
 use serde::{Deserialize,Serialize};
 /// Related Party
-#[derive(Deserialize,Serialize)]
+#[derive(Debug,Deserialize,Serialize)]
 pub struct RelatedParty {
     id      : String,
     href    : String,
