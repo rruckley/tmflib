@@ -31,15 +31,15 @@ const PO_PATH : &str = "offer";
 pub struct ProductOfferingRef {}
 
 /// Product Offering Price Reference
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct ProductOfferingPriceRef {}
 
 /// Product Offering Term
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct ProductOfferingTerm {}
 
 /// Product Offering
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct ProductOffering {
     /// Unique identifier
     pub id          : Option<String>,
@@ -142,17 +142,12 @@ impl ProductOffering {
     /// let cat= Category::new(String::from("MyCategory"));
     /// let result = po.with_category(CategoryRef::from(&cat));
     /// ```
-    pub fn with_category(mut self, category : CategoryRef) -> Result<String,String> {
-        match self.category {
-            None => {
-                self.category = Some(vec![category]);
-                
-            },
-            Some(mut c) => {
-                c.push(category);
-            }
+    pub fn with_category(mut self, category : CategoryRef) -> ProductOffering {
+        if self.category.is_none() {
+            self.category = Some(vec![]);
         }
-        Ok(String::from("Category added"))
+        self.category.as_mut().unwrap().push(category);
+        self
     }
 }
 
