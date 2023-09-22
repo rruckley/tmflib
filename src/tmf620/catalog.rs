@@ -15,7 +15,7 @@ const CAT_PATH : &str = "catalog";
 const CAT_VERS : &str = "1.0";
 
 /// Catalogue
-#[derive(Deserialize, Serialize)]
+#[derive(Debug,Deserialize, Serialize)]
 pub struct Catalog {
     id              : Option<String>,
     href            : Option<String>,
