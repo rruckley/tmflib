@@ -7,52 +7,53 @@ use super::category::Category;
 use serde::{Deserialize,Serialize};
 
 /// Agreement Reference
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct AgreementRef {}
 
 /// Bundled Product Offering
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct BundledProductOffering {}
 
 /// Channel Reference
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct ChannelRef {}
 
 /// Market Segment Refefence
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct MarketSegmentRef {}
 
 /// Place Reference
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct PlaceRef {}
 
 /// Resource Candidate Reference 
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct ResourceCandidateRef {}
 
 
 /// Service Candidate Reference
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct ServiceCandidateRef {}
 
 /// Service Level Agreement Reference 
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct SLARef {}
 
 /// Root Struct to interact with catalogue
-pub struct CatalogueManagement {
+#[derive(Default)]
+pub struct TMF620CatalogueManagement {
     catalogue   : Option<Catalog>,
     category    : Option<Category>,
     offers      : Vec<ProductOffering>,
     categories  : Vec<Category>,
 }
 
-impl CatalogueManagement {
+impl TMF620CatalogueManagement {
     /// Create new instance for catalogue managment
     /// # Examples
     /// 
-    pub fn new() -> CatalogueManagement {
-        CatalogueManagement { 
+    pub fn new() -> TMF620CatalogueManagement {
+        TMF620CatalogueManagement { 
             catalogue : None,
             category  : None,
             offers    : vec![],
