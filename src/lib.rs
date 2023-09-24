@@ -2,6 +2,8 @@
 
 #[warn(missing_docs)]
 
+const LIB_PATH : &str = "tmflib";
+
 pub mod tmf620;
 pub mod tmf622;
 pub mod tmf629;
