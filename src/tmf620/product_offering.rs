@@ -22,6 +22,7 @@ use serde::{Deserialize,Serialize};
 use uuid::Uuid;
 
 use super::MOD_PATH;
+use super::LIB_PATH;
 
 const PO_VERS_INIT : &str = "1.0";
 const PO_PATH : &str = "offer";
@@ -103,7 +104,7 @@ impl ProductOffering {
     /// ```
     pub fn new(name : String) -> ProductOffering {
         let id = Uuid::new_v4().to_string();
-        let href = format!("{}/{}/{}",MOD_PATH,PO_PATH,id);
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,PO_PATH,id);
         ProductOffering { 
             id: Some(id), 
             href: Some(href), 
