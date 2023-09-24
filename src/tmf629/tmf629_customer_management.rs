@@ -7,7 +7,7 @@ use super::customer::Customer;
 
 use serde::{Deserialize,Serialize};
 
-#[derive(Clone,Debug,Deserialize,Serialize)]
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
 pub struct TMF629CustomerManagement {
     customers : Vec<Customer>,
 }
