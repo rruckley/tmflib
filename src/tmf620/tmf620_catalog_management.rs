@@ -10,10 +10,6 @@ use serde::{Deserialize,Serialize};
 #[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct AgreementRef {}
 
-/// Bundled Product Offering
-#[derive(Clone,Debug,Deserialize,Serialize)]
-pub struct BundledProductOffering {}
-
 /// Channel Reference
 #[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct ChannelRef {}
