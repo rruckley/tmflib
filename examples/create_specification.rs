@@ -4,7 +4,7 @@ use tmflib::tmf620::product_specification::{ProductSpecification,ProductSpecific
 fn main() {
 
     let char1 = ProductSpecificationCharacteristic::new(String::from("OptionalChar"))
-        .description(String::from("This characteristic is mandatory"));
+        .description(String::from("This characteristic is optional."));
     let char2 = ProductSpecificationCharacteristic::new(String::from("MandatoryChar"))
         .cardinality(1,1)
         .description(String::from("This is a mandatory characteristic."));
