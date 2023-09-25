@@ -3,6 +3,7 @@
 use uuid::Uuid;
 use serde::{Deserialize,Serialize};
 
+use super::LIB_PATH;
 use super::MOD_PATH;
 
 const PROD_PATH : &str = "product";
@@ -31,7 +32,7 @@ pub struct Product {
 impl Product {
     pub fn new(name : String) -> Product {
         let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}",MOD_PATH,PROD_PATH,id);
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,PROD_PATH,id);
         Product {
             id,
             href,

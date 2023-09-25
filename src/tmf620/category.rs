@@ -5,9 +5,10 @@ use crate::tmf620::product_offering::ProductOfferingRef;
 use serde::{Deserialize,Serialize};
 use uuid::Uuid;
 
+use super::LIB_PATH;
 use super::MOD_PATH;
 
-const CAT_PATH : &str = "catalog";
+const CAT_PATH : &str = "category";
 const CAT_VERS : &str = "1.0";
 
 /// Category Resource
@@ -49,7 +50,7 @@ impl Category {
     /// ```
     pub fn new(name : String) -> Category {
         let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}",MOD_PATH,CAT_PATH,id);
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CAT_PATH,id);
         Category { 
             id          : Some(id),
             href        : Some(href),

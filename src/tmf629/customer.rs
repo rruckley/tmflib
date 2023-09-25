@@ -4,6 +4,7 @@ use uuid::Uuid;
 use serde::{Deserialize,Serialize};
 use sha256::digest;
 
+use super::LIB_PATH;
 use super::MOD_PATH;
 use super::characteristic::Characteristic;
 use super::contact::ContactMedium;
@@ -26,7 +27,7 @@ impl Customer {
     pub fn new(name : String) -> Customer {
         // 91 143 471 845
         let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{id}",MOD_PATH,CUST_PATH);
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CUST_PATH,id);
         let hash_input = format!("{}:{}",id,name);
         let sha = digest(hash_input);
         let sha_slice = sha.as_str()[..4].to_string().to_ascii_uppercase();

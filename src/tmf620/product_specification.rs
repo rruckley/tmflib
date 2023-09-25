@@ -3,8 +3,8 @@
 
 use serde::{Deserialize,Serialize};
 use uuid::Uuid;
-use std::convert::Into;
 
+use super::LIB_PATH;
 use super::MOD_PATH;
 
 const SPEC_PATH : &str = "productSpecification";
@@ -27,6 +27,12 @@ pub struct ProductSpecificationCharacteristic {
 
 impl ProductSpecificationCharacteristic {
     /// Create a new characteristic
+    /// By default, new characteristics are optional (cardinality: min=0 max=1)
+    /// # Examples
+    /// ```
+    /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristic;
+    /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"));
+    /// ```
     pub fn new(name : String) -> ProductSpecificationCharacteristic {
         ProductSpecificationCharacteristic { 
             configurable    : true, 
@@ -41,6 +47,45 @@ impl ProductSpecificationCharacteristic {
             valid_for       : None 
         }
     }
+
+    /// Set configuraable flag
+    pub fn configurable(mut self, configurable : bool) -> ProductSpecificationCharacteristic {
+        self.configurable = configurable;
+        self
+    }
+
+    /// Set description of characteristic
+    pub fn description(mut self, description : String) -> ProductSpecificationCharacteristic {
+        self.description = Some(description.clone());
+        self    
+    }
+
+    /// Set extensible flag
+    pub fn extensible( mut self, extensible : bool) -> ProductSpecificationCharacteristic {
+        self.extensible = extensible;
+        self
+    }
+
+    /// Set MIN / MAX cardindiality
+    /// Will ignore change if min > max.
+    /// # Examples
+    /// ```
+    /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristic;
+    /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"))
+    ///     .cardinality(0,1);
+    /// ```
+    pub fn cardinality ( mut self, min : u16, max: u16) -> ProductSpecificationCharacteristic {
+        // Quick check to make sure min < max
+        if min > max {
+            // Not sure if we should just ignore this ? 
+            return self;
+        }
+        self.min_cardinality = min;
+        self.max_cardinality = max;
+        self
+    }
+
+
 }
 
 /// Product Specification
@@ -68,7 +113,7 @@ impl ProductSpecification {
     /// Create new instance of Product Specification
     pub fn new(name: String) -> ProductSpecification {
         let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}",MOD_PATH,SPEC_PATH,id);
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,SPEC_PATH,id);
         ProductSpecification { 
             id, 
             href,
@@ -95,11 +140,12 @@ pub struct ProductSpecificationRef {
     pub version : Option<String>,
 }
 
-impl Into<ProductSpecificationRef> for ProductSpecification {
-    fn into(self) -> ProductSpecificationRef {
-        ProductSpecificationRef { id: self.id, href: self.href, name: self.name, version: self.version }
+impl From<ProductSpecification> for ProductSpecificationRef {
+    fn from(ps : ProductSpecification) -> ProductSpecificationRef {
+        ProductSpecificationRef { id: ps.id, href: ps.href, name: ps.name, version: ps.version }
     }
 }
+
 /// Product Specification Characteristic Value Use
 #[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct ProductSpecificationCharacteristicValueUse {}

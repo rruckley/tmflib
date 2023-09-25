@@ -1,8 +1,12 @@
 //! Product Order Module
 
-use super::MOD_PATH;
+
 use uuid::Uuid;
 use serde::{Deserialize,Serialize};
+
+// URL Path components
+use super::LIB_PATH;
+use super::MOD_PATH;
 
 const PO_PATH : &str = "order";
 
@@ -15,7 +19,7 @@ pub struct ProductOrder {
 impl ProductOrder {
     pub fn new() -> ProductOrder {
         let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}",MOD_PATH,PO_PATH,id);
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,PO_PATH,id);
         ProductOrder {
             id,
             href,

@@ -9,7 +9,10 @@ use uuid::Uuid;
 use chrono::naive::NaiveDateTime;
 use chrono::Utc;
 
+// URL Path components
+use super::LIB_PATH;
 use super::MOD_PATH;
+
 
 const CAT_PATH : &str = "catalog";
 const CAT_VERS : &str = "1.0";
@@ -17,8 +20,10 @@ const CAT_VERS : &str = "1.0";
 /// Catalogue
 #[derive(Debug,Deserialize, Serialize)]
 pub struct Catalog {
-    id              : Option<String>,
-    href            : Option<String>,
+    /// Non-optional fields
+    id              : String,
+    href            : String,
+    /// Optional fields
     catalog_type    : Option<String>,
     description     : Option<String>,
     last_update     : Option<String>,
@@ -61,12 +66,12 @@ impl Catalog {
 impl std::default::Default for Catalog {
     fn default() -> Catalog {
         let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}",MOD_PATH,CAT_PATH,id);
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CAT_PATH,id);
         let now = Utc::now();
         let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         Catalog {
-            id          : Some(id),
-            href        : Some(href),
+            id          : id,
+            href        : href,
             catalog_type : None,
             description : None,
             last_update : Some(time.to_string()),
