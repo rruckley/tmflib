@@ -18,7 +18,8 @@ use crate::tmf620::product_specification::{
 };
 use crate::common::attachment::AttachmentRefOrValue;
 use serde::{Deserialize,Serialize};
-
+use chrono::naive::NaiveDateTime;
+use chrono::Utc;
 use uuid::Uuid;
 
 use super::MOD_PATH;
@@ -105,13 +106,15 @@ impl ProductOffering {
     pub fn new(name : String) -> ProductOffering {
         let id = Uuid::new_v4().to_string();
         let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,PO_PATH,id);
+        let now = Utc::now();
+        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         ProductOffering { 
             id: Some(id), 
             href: Some(href), 
             description: None, 
             is_bundle: false, 
             is_sellable: false, 
-            last_update: None, 
+            last_update: Some(time.to_string()), 
             lifecycle_status: None, 
             name, 
             status_reason: None, 
