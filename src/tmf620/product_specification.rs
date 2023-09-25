@@ -125,6 +125,12 @@ impl ProductSpecification {
             product_spec_characteristic : vec![],
         }
     }
+
+    /// Add a new Characteristic into the specification
+    pub fn with_charateristic(mut self, characteristic : ProductSpecificationCharacteristic) -> ProductSpecification {
+        self.product_spec_characteristic.push(characteristic);
+        self
+    }
 }
 
 /// Product Specification Reference
