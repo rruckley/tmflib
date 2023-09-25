@@ -149,3 +149,25 @@ impl From<ProductSpecification> for ProductSpecificationRef {
 /// Product Specification Characteristic Value Use
 #[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct ProductSpecificationCharacteristicValueUse {}
+
+
+#[cfg(test)]
+mod test {
+
+    use super::ProductSpecification;
+    use super::SPEC_VERS;
+    const SPEC_NAME: &str = "MySpecification";
+
+    #[test]
+    fn test_spec_new() {
+        let spec = ProductSpecification::new(SPEC_NAME.to_string());
+
+        assert_eq!(spec.name, SPEC_NAME.to_string());
+    }
+    #[test]
+    fn test_spec_new_vers() {
+        let spec = ProductSpecification::new(SPEC_NAME.to_string());
+
+        assert_eq!(spec.version, Some(SPEC_VERS.to_string()));    
+    }
+}
