@@ -12,3 +12,4 @@ pub mod party;
 pub mod category;
 pub mod product_specification;
 pub mod product_offering;
+pub mod bundled_product_offering;
