@@ -4,6 +4,8 @@ use crate::tmf620::product_offering::ProductOfferingRef;
 
 use serde::{Deserialize,Serialize};
 use uuid::Uuid;
+use chrono::naive::NaiveDateTime;
+use chrono::Utc;
 
 use super::LIB_PATH;
 use super::MOD_PATH;
@@ -51,12 +53,14 @@ impl Category {
     pub fn new(name : String) -> Category {
         let id = Uuid::new_v4().to_string();
         let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CAT_PATH,id);
+        let now = Utc::now();
+        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         Category { 
             id          : Some(id),
             href        : Some(href),
             description : None,
             is_root     : true,
-            last_update : None,
+            last_update : Some(time.to_string()),
             lifecycle_status : None,
             name        : Some(name.clone()),
             parent_id   : None,
