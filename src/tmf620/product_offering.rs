@@ -14,7 +14,7 @@ use crate::tmf620::tmf620_catalog_management::{
 use crate::tmf620::category::CategoryRef;
 use crate::tmf620::product_specification::{
     ProductSpecificationCharacteristicValueUse,
-    ProductSpecificationRef,
+    ProductSpecificationRef, ProductSpecification,
 };
 use crate::common::attachment::AttachmentRefOrValue;
 use serde::{Deserialize,Serialize};
@@ -86,7 +86,7 @@ pub struct ProductOffering {
     /// Product Specification Characteristic Value Use
     pub prod_sepc_char_value_use : Option<Vec<ProductSpecificationCharacteristicValueUse>>,
     /// Product Specification
-    pub product_specification   : Option<Vec<ProductSpecificationRef>>,
+    pub product_specification   : Vec<ProductSpecificationRef>,
     /// Resource Canididates
     pub resource_candidate      : Option<Vec<ResourceCandidateRef>>,
     /// Service Candidates
@@ -127,10 +127,10 @@ impl ProductOffering {
             product_offering_price: None, 
             product_offering_term: None, 
             prod_sepc_char_value_use: None, 
-            product_specification: None, 
-            resource_candidate: None, 
-            service_candidate: None, 
-            service_level_agreement: None ,
+            product_specification: vec![],
+            resource_candidate : None,
+            service_candidate : None,
+            service_level_agreement : None,
         }
     }
 
@@ -148,6 +148,11 @@ impl ProductOffering {
             self.category = Some(vec![]);
         }
         self.category.as_mut().unwrap().push(category);
+        self
+    }
+
+    pub fn with_specification(mut self, specification : ProductSpecification) -> ProductOffering {
+        self.product_specification.push(ProductSpecificationRef::from(specification));
         self
     }
 }
