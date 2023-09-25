@@ -16,7 +16,7 @@ pub enum AttachmentType {
 }
 
 /// Attachment Reference or Value
-#[derive(Clone,Debug,Deserialize,Serialize)]
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
 pub struct AttachmentRefOrValue {
     pub id  : String,
     pub href: String,

@@ -70,8 +70,8 @@ impl std::default::Default for Catalog {
         let now = Utc::now();
         let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         Catalog {
-            id          : id,
-            href        : href,
+            id,
+            href,
             catalog_type : None,
             description : None,
             last_update : Some(time.to_string()),
