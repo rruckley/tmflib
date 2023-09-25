@@ -2,6 +2,8 @@
 //! 
 //! Structs associated with product catalogue management
 
+use super::LIB_PATH;
+
 const MOD_PATH : &str = "tmf620";
 
 pub mod tmf620_catalog_management;

@@ -1,5 +1,5 @@
 //! Product Inventory Module
-
+use super::LIB_PATH;
 
 const MOD_PATH : &str = "tmf637";
 
