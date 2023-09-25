@@ -3,7 +3,6 @@
 
 use crate::tmf620::tmf620_catalog_management::{
     AgreementRef,
-    BundledProductOffering,
     ChannelRef,
     MarketSegmentRef,
     PlaceRef,
@@ -11,6 +10,7 @@ use crate::tmf620::tmf620_catalog_management::{
     ServiceCandidateRef,
     SLARef,
 };
+use crate::tmf620::bundled_product_offering::BundledProductOffering;
 use crate::tmf620::category::CategoryRef;
 use crate::tmf620::product_specification::{
     ProductSpecificationCharacteristicValueUse,
