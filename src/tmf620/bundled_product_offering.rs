@@ -15,9 +15,10 @@ pub struct BundledProductOffering {
 }
 
 impl BundledProductOffering {
+    /// Create new options for BundledProductOffering
     pub fn new(name : String) -> BundledProductOffering {
         let mut offer = ProductOffering::new(name);
-        // Update href to point to bundle instead of stadnard offer path
+        // Update href to point to bundle instead of standard offer path
         let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,BUNDLE_PATH,offer.id.as_ref().unwrap());
         offer.href = Some(href.clone());
         BundledProductOffering {
@@ -45,6 +46,16 @@ impl BundledProductOfferingOption {
             number_rel_offer_default:  
             default, number_rel_offer_lower_limit: 
             min, number_rel_offer_upper_limit: max
+        }
+    }
+}
+
+impl From<ProductOffering> for BundledProductOffering {
+    fn from(po :ProductOffering) -> BundledProductOffering {
+        // Clone source class (po) to leave source untouched
+        BundledProductOffering { 
+            bundled_product_offering_option: None, 
+            offer: po.clone() 
         }
     }
 }
