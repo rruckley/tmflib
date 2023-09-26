@@ -43,56 +43,78 @@ pub struct ProductOfferingTerm {}
 /// Product Offering
 #[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct ProductOffering {
-    /// Unique identifier
+    /// Unique identifier 
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id          : Option<String>,
+    
     /// HREF for API use
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href        : Option<String>,
     /// Description of offering
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub description : Option<String>,
     /// Does this represent a bundle?
     pub is_bundle   : bool,
     /// Is this sellable?
     pub is_sellable : bool,
     /// When was this last updated?
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub last_update : Option<String>,
     /// Current status
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub lifecycle_status : Option<String>,
     /// Name of this offering
     pub name        : String,
     /// Status Reason
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub status_reason : Option<String>,
     /// Version of this offering
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub version     : Option<String>,
     /// Validity Period
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub valid_for   : Option<String>,
 
     /// Associated agreements
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub agreement   : Option<Vec<AgreementRef>>,
     /// Attachments
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub attachment  : Option<Vec<AttachmentRefOrValue>>,
     /// Bundled Product Offerings
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub bundled_product_offering : Option<Vec<BundledProductOffering>>,
     /// Categories
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub category    : Option<Vec<CategoryRef>>,
     /// Channels
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub channel     : Option<Vec<ChannelRef>>,
     /// Market Segments
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub market_segment : Option<Vec<MarketSegmentRef>>,
     /// Places
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub place       : Option<Vec<PlaceRef>>,
     /// Product Offering Price
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub product_offering_price  : Option<Vec<ProductOfferingPriceRef>>,
     /// Product Offering Term
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub product_offering_term   : Option<Vec<ProductOfferingTerm>>,
     /// Product Specification Characteristic Value Use
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub prod_sepc_char_value_use : Option<Vec<ProductSpecificationCharacteristicValueUse>>,
     /// Product Specification
     pub product_specification   : Vec<ProductSpecificationRef>,
     /// Resource Canididates
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub resource_candidate      : Option<Vec<ResourceCandidateRef>>,
     /// Service Candidates
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub service_candidate       : Option<Vec<ServiceCandidateRef>>,
     /// Service Level Agreements
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub service_level_agreement : Option<Vec<SLARef>>,
 }
 
