@@ -2,7 +2,8 @@
 
 #[warn(missing_docs)]
 
-const LIB_PATH : &str = "tmflib";
+/// Primary path for the whole library
+pub const LIB_PATH : &str = "tmflib";
 
 pub mod tmf620;
 pub mod tmf622;
