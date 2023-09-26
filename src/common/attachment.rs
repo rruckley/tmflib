@@ -15,17 +15,32 @@ pub enum AttachmentType {
     External,
 }
 
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct AttachmentSize {
+    amount : f64,
+    units  : String,
+}
+
 /// Attachment Reference or Value
 #[derive(Clone,Default,Debug,Deserialize,Serialize)]
 pub struct AttachmentRefOrValue {
-    pub id  : String,
-    pub href: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id  : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub href: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub attachment_type : Option<AttachmentType>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub content : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub description : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub mime_type : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub url : Option<String>,
-    pub size : u64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub size : Option<AttachmentSize>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub valid_for : Option<String>,
 }
 
@@ -34,14 +49,14 @@ impl AttachmentRefOrValue {
         let id = Uuid::new_v4().to_string();
         let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,ATTACH_PATH,id);
         AttachmentRefOrValue { 
-            id, 
-            href, 
+            id : Some(id), 
+            href : Some(href), 
             attachment_type: None, 
             content: None, 
             description: None, 
             mime_type: None, 
             url: None, 
-            size: 0, 
+            size: None, 
             valid_for: None 
         }
     }
