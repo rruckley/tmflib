@@ -52,4 +52,21 @@ impl Customer {
             characteristic : vec![code,hash],
         }
     }
+
+    pub fn generate_code(&mut self) {
+        // Generate a new code based on id and name
+        let hash_input = format!("{}:{}",self.id,self.name);
+        let sha = digest(hash_input);
+        let sha_slice = sha.as_str()[..4].to_string().to_ascii_uppercase();
+        let code = Characteristic {
+            name    : String::from("code"),
+            value_type : String::from("string"),
+            value : sha_slice,
+        };
+        let hash = Characteristic {
+            name    : String::from("hash"),
+            value_type : String::from("string"),
+            value   : sha,
+        };
+    }
 }
