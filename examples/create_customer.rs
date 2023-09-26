@@ -3,7 +3,9 @@
 use tmflib::tmf629::customer::Customer;
 
 fn main() {
-    let customer = Customer::new(String::from("A Customer"));
+    let mut customer = Customer::new(String::from("A Customer"));
 
-    dbg!(customer);
+    customer.name(String::from("NewName"));
+
+    println!("{}",serde_json::to_string(&customer).unwrap());
 }
