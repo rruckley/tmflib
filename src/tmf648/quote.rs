@@ -5,6 +5,7 @@ use serde::{Deserialize,Serialize};
 use crate::LIB_PATH;
 use super::MOD_PATH;
 use super::quote_item::QuoteItem;
+use crate::common::note::Note;
 
 const QUOTE_PATH : &str = "quote";
 const QUOTE_VERS : &str = "1.0";
@@ -19,15 +20,18 @@ pub enum QuoteStateType {
     Accepted,
 }
 
+
 #[derive(Clone,Debug,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Quote {
     id      : String,
     href    : String,
     description : Option<String>,
     external_id : Option<String>,
-    version : String,
+    note    : Option<Vec<Note>>,
     state   : QuoteStateType,
     quote_item : Vec<QuoteItem>,
+    version : String,
 }
 
 impl Quote {
@@ -39,6 +43,7 @@ impl Quote {
             href,
             description : None,
             external_id : None,
+            note        : None,
             version     : QUOTE_VERS.to_string(),
             state       : QuoteStateType::Accepted,
             quote_item  : vec![],
