@@ -56,8 +56,13 @@ impl Customer {
 
     pub fn generate_id(&mut self) {
         let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CUST_PATH,id);
         self.id = Some(id);
+        // New id requires new href
+        self.generate_href();
+    }
+
+    fn generate_href(&mut self) {
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CUST_PATH,id);
         self.href = Some(href);
     }
 
@@ -68,6 +73,9 @@ impl Customer {
         if self.id.is_none() {
             self.generate_id();
         };
+        if self.href.is_none() {
+            self.generate_href();
+        }
         let hash_input = format!("{}:{}",self.id.as_ref().unwrap(),self.name);
         let sha = digest(hash_input);
         let sha_slice = sha.as_str()[..4].to_string().to_ascii_uppercase();
