@@ -15,6 +15,7 @@ const CAT_VERS : &str = "1.0";
 
 /// Category Resource
 #[derive(Debug,Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Category {
     // Scalar fields
     /// Id

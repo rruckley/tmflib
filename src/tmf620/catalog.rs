@@ -19,6 +19,7 @@ const CAT_VERS : &str = "1.0";
 
 /// Catalogue
 #[derive(Debug,Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Catalog {
     /// Non-optional fields
     id              : String,
@@ -32,7 +33,7 @@ pub struct Catalog {
     version         : Option<String>,
     valid_for       : Option<String>,
     /// Categories
-    categories       : Option<Vec<CategoryRef>>,
+    category       : Option<Vec<CategoryRef>>,
     /// Related parties
     related_party   : Option<Vec<RelatedParty>>,
 }
@@ -51,7 +52,7 @@ impl Catalog {
 
     /// Add a category to a catalog
     pub fn add_category(self, category : CategoryRef) -> Result<String,String> {
-        match self.categories {
+        match self.category {
             None => {
                 Err(String::from("Missing category Vec"))
             },
@@ -79,7 +80,7 @@ impl std::default::Default for Catalog {
             name        : None,
             version     : Some(CAT_VERS.to_string()),
             valid_for   : None,
-            categories    : Some(vec![]),
+            category    : Some(vec![]),
             related_party : None,
         }
     }
