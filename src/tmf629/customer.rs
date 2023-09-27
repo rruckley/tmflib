@@ -68,5 +68,7 @@ impl Customer {
             value_type : String::from("string"),
             value   : sha,
         };
+        self.characteristic.push(code);
+        self.characteristic.push(hash);
     }
 }
