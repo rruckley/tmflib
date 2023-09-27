@@ -10,17 +10,18 @@ use super::characteristic::Characteristic;
 use super::contact::ContactMedium;
 
 const CUST_PATH : &str = "customer";
+pub const CUST_STATUS : &str = "New";
 
 #[derive(Clone,Debug,Deserialize,Serialize)]
 pub struct Customer {
-    href    : String,
-    id      : String,
+    href    : Option<String>,
+    id      : Option<String>,
     name    : String,
     pub status : Option<String>,
     pub status_reason : Option<String>,
     pub valid_for   : Option<String>,
-    contact_medium  : Vec<ContactMedium>,
-    characteristic  : Vec<Characteristic>,
+    contact_medium  : Option<Vec<ContactMedium>>,
+    characteristic  : Option<Vec<Characteristic>>,
 }
 
 impl Customer {
@@ -42,20 +43,32 @@ impl Customer {
             value   : sha,
         };
         Customer {
-            id,
-            href,
+            id : Some(id),
+            href : Some(href),
             name,
-            status : None,
+            status : Some(CUST_STATUS.to_string()),
             status_reason: None,
             valid_for: None,
-            contact_medium : vec![],
-            characteristic : vec![code,hash],
+            contact_medium : Some(vec![]),
+            characteristic : Some(vec![code,hash]),
         }
     }
 
+    pub fn generate_id(&mut self) {
+        let id = Uuid::new_v4().to_string();
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CUST_PATH,id);
+        self.id = Some(id);
+        self.href = Some(href);
+    }
+
     pub fn generate_code(&mut self) {
-        // Generate a new code based on id and name
-        let hash_input = format!("{}:{}",self.id,self.name);
+        // Generate a new code based on name
+
+        // Generate Id if none exists
+        if self.id.is_none() {
+            self.generate_id();
+        };
+        let hash_input = format!("{}:{}",self.id.as_ref().unwrap(),self.name);
         let sha = digest(hash_input);
         let sha_slice = sha.as_str()[..4].to_string().to_ascii_uppercase();
         let code = Characteristic {
@@ -68,7 +81,12 @@ impl Customer {
             value_type : String::from("string"),
             value   : sha,
         };
-        self.characteristic.push(code);
-        self.characteristic.push(hash);
+        // Create vec if it doesn't exist
+        if self.characteristic.is_none() {
+            self.characteristic = Some(vec![]);
+        }
+    
+        self.characteristic.as_mut().unwrap().push(code);
+        self.characteristic.as_mut().unwrap().push(hash);
     }
 }
