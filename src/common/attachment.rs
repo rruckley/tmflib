@@ -9,8 +9,9 @@ use crate::LIB_PATH;
 
 const ATTACH_PATH: &str = "attachment";
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub enum AttachmentType {
+    #[default]
     InLine,
     External,
 }

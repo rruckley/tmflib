@@ -10,17 +10,18 @@ use crate::LIB_PATH;
 const QUOTE_PATH: &str = "quote";
 const QUOTE_VERS: &str = "1.0";
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
 pub enum QuoteStateType {
     Rejected,
     Pending,
     InProgress,
     Cancelled,
     Approved,
+    #[default]
     Accepted,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
     id: String,

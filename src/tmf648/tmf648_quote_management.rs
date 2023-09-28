@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use super::quote::Quote;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Default,Deserialize, Serialize)]
 pub struct TMF648QuoteManagement {
     quotes: Vec<Quote>,
 }

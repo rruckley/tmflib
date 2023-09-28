@@ -8,8 +8,9 @@ use super::MOD_PATH;
 
 const PROD_PATH: &str = "product";
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize, Serialize)]
 enum ProductStatusType {
+    #[default]
     Created,
     Cancelled,
     Active,
@@ -20,7 +21,7 @@ enum ProductStatusType {
     Aborted,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Product {
     id: String,
     href: String,
