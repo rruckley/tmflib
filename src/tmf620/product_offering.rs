@@ -42,6 +42,7 @@ pub struct ProductOfferingTerm {}
 
 /// Product Offering
 #[derive(Clone,Debug,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier 
     #[serde(skip_serializing_if = "Option::is_none")]

@@ -5,6 +5,7 @@ use std::hash::Hash;
 
 /// Contact Medium
 #[derive(Clone,Default,Debug,Deserialize,Hash,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ContactMedium {
     characteristic : ContactCharacteristic,
     prefferred      : bool,
@@ -24,6 +25,7 @@ impl ContactMedium {
 
 /// Contact Characteristic
 #[derive(Clone,Default,Debug,Deserialize,Hash,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ContactCharacteristic {
     email_address   : Option<String>,
     phone_number    : Option<String>,

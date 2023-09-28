@@ -13,6 +13,7 @@ const CUST_PATH : &str = "customer";
 pub const CUST_STATUS : &str = "New";
 
 #[derive(Clone,Debug,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Customer {
     href    : Option<String>,
     id      : Option<String>,
@@ -61,9 +62,14 @@ impl Customer {
         self.generate_href();
     }
 
-    fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CUST_PATH,id);
-        self.href = Some(href);
+    pub fn generate_href(&mut self) {
+        match &self.id {
+            Some(_) => {
+                let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CUST_PATH,self.id.as_ref().unwrap());
+                self.href = Some(href);
+            },
+            None => self.generate_id(),
+        }
     }
 
     pub fn generate_code(&mut self) {
