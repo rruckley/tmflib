@@ -1,14 +1,14 @@
 //! Product Module
-//! 
+//!
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use serde::{Deserialize,Serialize};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
 
-const PROD_PATH : &str = "product";
+const PROD_PATH: &str = "product";
 
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 enum ProductStatusType {
     Created,
     Cancelled,
@@ -20,25 +20,25 @@ enum ProductStatusType {
     Aborted,
 }
 
-#[derive(Debug,Deserialize,Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Product {
-    id      : String,
-    href    : String,
-    description : Option<String>,
-    name    : String,
-    status  : ProductStatusType,
+    id: String,
+    href: String,
+    description: Option<String>,
+    name: String,
+    status: ProductStatusType,
 }
 
 impl Product {
-    pub fn new(name : String) -> Product {
+    pub fn new(name: String) -> Product {
         let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,PROD_PATH,id);
+        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, PROD_PATH, id);
         Product {
             id,
             href,
-            description : None,
+            description: None,
             name,
-            status : ProductStatusType::Created,
+            status: ProductStatusType::Created,
         }
     }
 }

@@ -1,5 +1,5 @@
 //! Common Modules
-//! 
+//!
 
 const MOD_PATH: &str = "common";
 

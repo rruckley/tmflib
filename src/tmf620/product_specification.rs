@@ -1,28 +1,28 @@
 //! Product Specification Module
-//! 
+//!
 
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use super::LIB_PATH;
 use super::MOD_PATH;
 
-const SPEC_PATH : &str = "productSpecification";
-const SPEC_VERS : &str = "1.0";
+const SPEC_PATH: &str = "productSpecification";
+const SPEC_VERS: &str = "1.0";
 
 /// Product Specification Characteristic
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ProductSpecificationCharacteristic {
-    configurable    : bool,
-    description     : Option<String>,
-    extensible      : bool,
-    is_unique       : bool,
-    max_cardinality : u16,
-    min_cardinality : u16,
-    name            : String,
-    regex           : Option<String>,
-    value_type      : Option<String>,
-    valid_for       : Option<String>,
+    configurable: bool,
+    description: Option<String>,
+    extensible: bool,
+    is_unique: bool,
+    max_cardinality: u16,
+    min_cardinality: u16,
+    name: String,
+    regex: Option<String>,
+    value_type: Option<String>,
+    valid_for: Option<String>,
 }
 
 impl ProductSpecificationCharacteristic {
@@ -33,35 +33,35 @@ impl ProductSpecificationCharacteristic {
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristic;
     /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"));
     /// ```
-    pub fn new(name : String) -> ProductSpecificationCharacteristic {
-        ProductSpecificationCharacteristic { 
-            configurable    : true, 
-            description     : None, 
-            extensible      : false, 
-            is_unique       : false, 
-            max_cardinality : 1, 
-            min_cardinality : 0, 
-            name, 
-            regex           : None, 
-            value_type      : None, 
-            valid_for       : None 
+    pub fn new(name: String) -> ProductSpecificationCharacteristic {
+        ProductSpecificationCharacteristic {
+            configurable: true,
+            description: None,
+            extensible: false,
+            is_unique: false,
+            max_cardinality: 1,
+            min_cardinality: 0,
+            name,
+            regex: None,
+            value_type: None,
+            valid_for: None,
         }
     }
 
     /// Set configuraable flag
-    pub fn configurable(mut self, configurable : bool) -> ProductSpecificationCharacteristic {
+    pub fn configurable(mut self, configurable: bool) -> ProductSpecificationCharacteristic {
         self.configurable = configurable;
         self
     }
 
     /// Set description of characteristic
-    pub fn description(mut self, description : String) -> ProductSpecificationCharacteristic {
+    pub fn description(mut self, description: String) -> ProductSpecificationCharacteristic {
         self.description = Some(description.clone());
-        self    
+        self
     }
 
     /// Set extensible flag
-    pub fn extensible( mut self, extensible : bool) -> ProductSpecificationCharacteristic {
+    pub fn extensible(mut self, extensible: bool) -> ProductSpecificationCharacteristic {
         self.extensible = extensible;
         self
     }
@@ -74,88 +74,93 @@ impl ProductSpecificationCharacteristic {
     /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"))
     ///     .cardinality(0,1);
     /// ```
-    pub fn cardinality ( mut self, min : u16, max: u16) -> ProductSpecificationCharacteristic {
+    pub fn cardinality(mut self, min: u16, max: u16) -> ProductSpecificationCharacteristic {
         // Quick check to make sure min < max
         if min > max {
-            // Not sure if we should just ignore this ? 
+            // Not sure if we should just ignore this ?
             return self;
         }
         self.min_cardinality = min;
         self.max_cardinality = max;
         self
     }
-
-
 }
 
 /// Product Specification
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ProductSpecification {
     /// Id
-    pub id : String,
+    pub id: String,
     /// HREF where object is located
-    pub href : String,
+    pub href: String,
     /// Brand
-    pub brand : Option<String>,
+    pub brand: Option<String>,
     /// Description
-    pub description : Option<String>,
+    pub description: Option<String>,
     /// Is a bundle?
-    pub is_bundle : bool,
+    pub is_bundle: bool,
     /// Name
-    pub name : String,
+    pub name: String,
     /// Version of this record
-    pub version : Option<String>,
+    pub version: Option<String>,
     /// Set of characteristics for this specification
-    pub product_spec_characteristic : Vec<ProductSpecificationCharacteristic>,  
+    pub product_spec_characteristic: Vec<ProductSpecificationCharacteristic>,
 }
 
 impl ProductSpecification {
     /// Create new instance of Product Specification
     pub fn new(name: String) -> ProductSpecification {
         let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,SPEC_PATH,id);
-        ProductSpecification { 
-            id, 
+        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, SPEC_PATH, id);
+        ProductSpecification {
+            id,
             href,
-            brand : None,
-            description : None,
-            is_bundle : false, 
+            brand: None,
+            description: None,
+            is_bundle: false,
             name,
             version: Some(SPEC_VERS.to_string()),
-            product_spec_characteristic : vec![],
+            product_spec_characteristic: vec![],
         }
     }
 
     /// Add a new Characteristic into the specification
-    pub fn with_charateristic(mut self, characteristic : ProductSpecificationCharacteristic) -> ProductSpecification {
+    pub fn with_charateristic(
+        mut self,
+        characteristic: ProductSpecificationCharacteristic,
+    ) -> ProductSpecification {
         self.product_spec_characteristic.push(characteristic);
         self
     }
 }
 
 /// Product Specification Reference
-#[derive(Clone,Debug,Deserialize,Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ProductSpecificationRef {
     /// Id
-    pub id : String,
+    pub id: String,
     /// HREF where object is located
-    pub href : String,
+    pub href: String,
     /// Description
-    pub name : String,
+    pub name: String,
     /// Version of this record
-    pub version : Option<String>,
+    pub version: Option<String>,
 }
 
 impl From<ProductSpecification> for ProductSpecificationRef {
-    fn from(ps : ProductSpecification) -> ProductSpecificationRef {
-        ProductSpecificationRef { id: ps.id, href: ps.href, name: ps.name, version: ps.version }
+    fn from(ps: ProductSpecification) -> ProductSpecificationRef {
+        ProductSpecificationRef {
+            id: ps.id,
+            href: ps.href,
+            name: ps.name,
+            version: ps.version,
+        }
     }
 }
 
 /// Product Specification Characteristic Value Use
-#[derive(Clone,Debug,Deserialize,Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ProductSpecificationCharacteristicValueUse {}
-
 
 #[cfg(test)]
 mod test {
@@ -174,6 +179,6 @@ mod test {
     fn test_spec_new_vers() {
         let spec = ProductSpecification::new(SPEC_NAME.to_string());
 
-        assert_eq!(spec.version, Some(SPEC_VERS.to_string()));    
+        assert_eq!(spec.version, Some(SPEC_VERS.to_string()));
     }
 }

@@ -1,21 +1,19 @@
 //! TMF629 Customer Management Module
-//! 
-//! 
-//! 
+//!
+//!
+//!
 
 use super::customer::Customer;
 
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct TMF629CustomerManagement {
-    customers : Vec<Customer>,
+    customers: Vec<Customer>,
 }
 
 impl TMF629CustomerManagement {
     pub fn new() -> TMF629CustomerManagement {
-        TMF629CustomerManagement { 
-            customers: vec![] 
-        }
+        TMF629CustomerManagement { customers: vec![] }
     }
 }
