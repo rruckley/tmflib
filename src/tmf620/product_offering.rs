@@ -121,7 +121,7 @@ pub struct ProductOffering {
     /// Product Offering Relationship.
     /// Links to other product offers.
     #[serde(skip_serializing_if = "Option::is_none")]
-    product_offering_relationship: Option<Vec<ProductOfferingRelationship>>,
+    pub product_offering_relationship: Option<Vec<ProductOfferingRelationship>>,
     /// Product Offering Term
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_offering_term: Option<Vec<ProductOfferingTerm>>,
@@ -174,7 +174,7 @@ impl ProductOffering {
             place: None,
             product_offering_price: None,
             product_offering_term: None,
-            product_offering_relationship: None,
+            product_offering_relationship: Some(vec![]),
             prod_sepc_char_value_use: None,
             product_specification: vec![],
             resource_candidate: None,
