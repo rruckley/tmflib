@@ -40,9 +40,22 @@ pub struct ProductOfferingRelationship {
     id: Option<String>,
     href: Option<String>,
     name: Option<String>,
-    relationship_type: Option<String>,
-    role: Option<String>,
-    valid_for: Option<String>,
+    pub relationship_type: Option<String>,
+    pub role: Option<String>,
+    pub valid_for: Option<String>,
+}
+
+impl From<ProductOffering> for ProductOfferingRelationship {
+    fn from(po : ProductOffering) -> ProductOfferingRelationship {
+        ProductOfferingRelationship {
+            id: po.id.clone(),
+            href: po.href.clone(),
+            name: Some(po.name.clone()),
+            relationship_type: None,
+            role : None,
+            valid_for: None,
+        }
+    }
 }
 
 /// Product Offering
