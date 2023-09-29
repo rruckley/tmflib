@@ -11,6 +11,7 @@ use crate::tmf620::tmf620_catalog_management::{
     AgreementRef, ChannelRef, MarketSegmentRef, PlaceRef, ResourceCandidateRef, SLARef,
     ServiceCandidateRef,
 };
+use super::product_offering_price::ProductOfferingPriceRef;
 use chrono::naive::NaiveDateTime;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
@@ -24,11 +25,21 @@ const PO_PATH: &str = "offer";
 
 /// Product Offering Reference
 #[derive(Debug, Deserialize, Serialize)]
-pub struct ProductOfferingRef {}
+pub struct ProductOfferingRef {
+    id: String,
+    href: String,
+    name : String,
+}
 
-/// Product Offering Price Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct ProductOfferingPriceRef {}
+impl From<ProductOffering> for ProductOfferingRef {
+    /// Convert from ProductOffering into ProductOfferingRef
+    fn from(po : ProductOffering) -> ProductOfferingRef {
+        ProductOfferingRef { 
+            id: po.id.unwrap().clone(), 
+            href: po.href.unwrap().clone(), 
+            name: po.name.clone() }
+    }
+}
 
 /// Product Offering Term
 #[derive(Clone, Debug, Deserialize, Serialize)]
