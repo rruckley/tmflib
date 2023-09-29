@@ -11,5 +11,6 @@ pub mod catalog;
 pub mod category;
 pub mod party;
 pub mod product_offering;
+pub mod product_offering_price;
 pub mod product_specification;
 pub mod tmf620_catalog_management;
