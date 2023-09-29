@@ -10,6 +10,12 @@ use super::LIB_PATH;
 use super::MOD_PATH;
 
 const CUST_PATH: &str = "customer";
+// Each character of id has 36 options [0..9] with [A..Z]
+// Len 1 gives 36 codes
+// Len 2 gives 1296 codes
+// Len 3 gives 46,656 codes
+// Len 4 gives 1,679,616 codes
+const CUST_ID_LEN : usize = 4;
 pub const CUST_STATUS: &str = "New";
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -32,7 +38,7 @@ impl Customer {
         let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, CUST_PATH, id);
         let hash_input = format!("{}:{}", id, name);
         let sha = digest(hash_input);
-        let sha_slice = sha.as_str()[..4].to_string().to_ascii_uppercase();
+        let sha_slice = sha.as_str()[..CUST_ID_LEN].to_string().to_ascii_uppercase();
         let code = Characteristic {
             name: String::from("code"),
             value_type: String::from("string"),
