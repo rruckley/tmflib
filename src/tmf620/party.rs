@@ -4,7 +4,7 @@
 
 use serde::{Deserialize, Serialize};
 /// Related Party
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RelatedParty {
     id: String,
