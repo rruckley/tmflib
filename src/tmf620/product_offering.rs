@@ -138,7 +138,7 @@ pub struct ProductOffering {
     pub product_offering_term: Option<Vec<ProductOfferingTerm>>,
     /// Product Specification Characteristic Value Use
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub prod_sepc_char_value_use: Option<Vec<ProductSpecificationCharacteristicValueUse>>,
+    pub prod_spec_char_value_use: Option<Vec<ProductSpecificationCharacteristicValueUse>>,
     /// Product Specification
     pub product_specification: Vec<ProductSpecificationRef>,
     /// Resource Canididates
@@ -186,7 +186,7 @@ impl ProductOffering {
             product_offering_price: None,
             product_offering_term: None,
             product_offering_relationship: Some(vec![]),
-            prod_sepc_char_value_use: None,
+            prod_spec_char_value_use: Some(vec![]),
             product_specification: vec![],
             resource_candidate: None,
             service_candidate: None,
@@ -214,6 +214,11 @@ impl ProductOffering {
     pub fn with_specification(mut self, specification: ProductSpecification) -> ProductOffering {
         self.product_specification
             .push(ProductSpecificationRef::from(specification));
+        self
+    }
+
+    pub fn with_char_value_use(mut self, char_value_use : ProductSpecificationCharacteristicValueUse) -> ProductOffering {
+        self.prod_spec_char_value_use.as_mut().unwrap().push(char_value_use);
         self
     }
 
