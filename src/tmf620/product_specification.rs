@@ -215,6 +215,10 @@ impl ProductSpecificationCharacteristicValueUse {
             product_specification : None, 
         }
     }
+
+    pub fn with_spec(&mut self, specification : ProductSpecification) {
+        self.product_specification = Some(ProductSpecificationRef::from(specification));
+    }
 }
 
 #[cfg(test)]
