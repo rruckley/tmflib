@@ -199,6 +199,7 @@ pub struct ProductSpecificationCharacteristicValueUse {
     value_type: String,
     valid_for: Option<String>,
     product_spec_characteristic_value : Option<ProductSpecificationCharacteristicValue>,
+    product_specification : Option<ProductSpecificationRef>,
 }
 
 impl ProductSpecificationCharacteristicValueUse {
@@ -211,6 +212,7 @@ impl ProductSpecificationCharacteristicValueUse {
             value_type: String::from("String"), 
             valid_for: None,
             product_spec_characteristic_value : None,
+            product_specification : None, 
         }
     }
 }
