@@ -29,24 +29,17 @@ impl Customer {
     pub fn new(name: String) -> Customer {
         // 91 143 471 845
         let id = Uuid::new_v4().to_string();
-<<<<<<< HEAD
+
         let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, CUST_PATH, id);
         let hash_input = format!("{}:{}", id, name);
         let sha = digest(hash_input);
         let sha_slice = sha.as_str()[..CUST_ID_LEN].to_string().to_ascii_uppercase();
-=======
-<<<<<<< HEAD
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CUST_PATH,id);
-=======
-        let href = format!("/{}/{}/{id}",MOD_PATH,CUST_PATH);
         // Not sure on including the name here but this id is only generated on new(), so a name change would
         // not impact the generated code. Ideally as we're throwing away a log of the resulting hash to get the
         // code, it might help avoid collisions if we add some more entropy?
->>>>>>> 9dce372 (updates)
         let hash_input = format!("{}:{}",id,name);
         let sha = digest(hash_input);
         let sha_slice = sha.as_str()[..CUST_ID_SIZE].to_string().to_ascii_uppercase();
->>>>>>> dff9dec (updates)
         let code = Characteristic {
             name: String::from("code"),
             value_type: String::from("string"),
@@ -92,7 +85,6 @@ impl Customer {
         }
     }
 
-<<<<<<< HEAD
     pub fn generate_code(&mut self) {
         // Generate a new code based on name
 
