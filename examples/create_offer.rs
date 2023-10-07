@@ -25,17 +25,6 @@ let spec = ProductSpecification::new(String::from("MySpecification"))
         .with_category(CategoryRef::from(&category))
         .with_specification(spec.clone())
         .with_char_value_use(char_value_use);
-
-    //dbg!(&spec);
-    let category = Category::new(String::from("Template"));
-    let offer = ProductOffering::new(String::from("ProductOffering"))
-        .with_category(CategoryRef::from(&category));
-
-    let offer = ProductOffering::new(String::from("ProductOffering"));
-    let category    = Category::new(String::from("Category"));
-    let catref  = CategoryRef::from(&category);
-    offer.with_category(CategoryRef::from(&category));
-
-
+ 
     dbg!(&offer);
 }
