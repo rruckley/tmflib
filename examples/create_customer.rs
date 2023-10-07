@@ -7,5 +7,5 @@ fn main() {
 
     customer.name(String::from("NewName"));
 
-    println!("{}",serde_json::to_string(&customer).unwrap());
+    dbg!(customer);
 }
