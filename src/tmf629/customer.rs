@@ -11,6 +11,7 @@ use super::MOD_PATH;
 
 const CUST_PATH : &str = "customer";
 const CUST_ID_SIZE : usize = 5;
+const CUST_STATUS : &str = "New";
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -31,9 +32,6 @@ impl Customer {
         let id = Uuid::new_v4().to_string();
 
         let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, CUST_PATH, id);
-        let hash_input = format!("{}:{}", id, name);
-        let sha = digest(hash_input);
-        let sha_slice = sha.as_str()[..CUST_ID_LEN].to_string().to_ascii_uppercase();
         // Not sure on including the name here but this id is only generated on new(), so a name change would
         // not impact the generated code. Ideally as we're throwing away a log of the resulting hash to get the
         // code, it might help avoid collisions if we add some more entropy?
@@ -115,6 +113,8 @@ impl Customer {
 
         self.characteristic.as_mut().unwrap().push(code);
         self.characteristic.as_mut().unwrap().push(hash);
+    }
+
     pub fn name(&mut self, name : String) {
         self.name = name.clone();
     }
