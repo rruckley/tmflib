@@ -22,8 +22,8 @@ const CAT_VERS: &str = "1.0";
 #[serde(rename_all = "camelCase")]
 pub struct Catalog {
     /// Non-optional fields
-    id: String,
-    href: String,
+    pub id: Option<String>,
+    pub href: Option<String>,
     /// Optional fields
     #[serde(skip_serializing_if = "Option::is_none")]
     catalog_type: Option<String>,
@@ -78,8 +78,8 @@ impl std::default::Default for Catalog {
         let now = Utc::now();
         let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         Catalog {
-            id,
-            href,
+            id : Some(id),
+            href : Some(href),
             catalog_type: None,
             description: None,
             last_update: Some(time.to_string()),
@@ -103,8 +103,8 @@ impl EventPayload<Catalog,CatalogEventType> for Catalog {
             domain: None,
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
-            href: Some(self.href.clone()),
-            id: Some(self.id.clone()),
+            href: self.href.clone(),
+            id: self.id.clone(),
             title: self.name.clone(),
             event_time: event_time.to_string(),
             priority: None,
