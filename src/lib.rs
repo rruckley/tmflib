@@ -19,6 +19,11 @@
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmflib";
 
+pub trait HasId {
+    fn generate_id(&mut self);
+    fn generate_href(&mut self);
+}
+
 pub mod common;
 pub mod tmf620;
 pub mod tmf622;
