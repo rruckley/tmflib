@@ -24,7 +24,7 @@ const PO_VERS_INIT: &str = "1.0";
 const PO_PATH: &str = "offer";
 
 /// Product Offering Reference
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ProductOfferingRef {
     id: String,
     href: String,
