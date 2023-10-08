@@ -6,6 +6,7 @@ use uuid::Uuid;
 
 use super::characteristic::Characteristic;
 use super::contact::ContactMedium;
+use super::HasId;
 use super::LIB_PATH;
 use super::MOD_PATH;
 
@@ -60,29 +61,6 @@ impl Customer {
         }
     }
 
-    pub fn generate_id(&mut self) {
-        let id = Uuid::new_v4().to_string();
-        self.id = Some(id);
-        // New id requires new href
-        self.generate_href();
-    }
-
-    pub fn generate_href(&mut self) {
-        match &self.id {
-            Some(_) => {
-                let href = format!(
-                    "/{}/{}/{}/{}",
-                    LIB_PATH,
-                    MOD_PATH,
-                    CUST_PATH,
-                    self.id.as_ref().unwrap()
-                );
-                self.href = Some(href);
-            }
-            None => self.generate_id(),
-        }
-    }
-
     pub fn generate_code(&mut self) {
         // Generate a new code based on name
 
@@ -117,5 +95,48 @@ impl Customer {
 
     pub fn name(&mut self, name : String) {
         self.name = name.clone();
+    }
+}
+
+impl HasId for Customer {
+    fn get_id(&mut self) -> String {
+        match &self.id {
+            None => {
+                self.generate_id();
+                self.id.as_ref().unwrap().clone()
+            }
+            Some(id) => id.to_string(),
+        }
+    }
+
+    fn get_href(&mut self) -> String {
+  
+        if self.href.is_none() {
+            self.generate_href();
+        }
+        self.href.as_ref().unwrap().clone()
+    }
+
+    fn generate_id(&mut self) {
+        let id = Uuid::new_v4().to_string();
+        self.id = Some(id);
+        // New id requires new href
+        self.generate_href();
+    }
+
+    fn generate_href(&mut self) {
+        match &self.id {
+            Some(_) => {
+                let href = format!(
+                    "/{}/{}/{}/{}",
+                    LIB_PATH,
+                    MOD_PATH,
+                    CUST_PATH,
+                    self.id.as_ref().unwrap()
+                );
+                self.href = Some(href);
+            }
+            None => self.generate_id(),
+        }
     }
 }

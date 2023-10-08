@@ -9,6 +9,7 @@ use uuid::Uuid;
 
 use super::LIB_PATH;
 use super::MOD_PATH;
+use super::HasId;
 
 const CAT_PATH: &str = "category";
 const CAT_VERS: &str = "1.0";
@@ -83,15 +84,6 @@ impl Category {
         }
     }
 
-    /// Generate a new Id for this category
-    pub fn generate_id(&mut self) {
-        // No return type for now
-        let id = Uuid::new_v4().as_simple().to_string();
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CAT_PATH,id);
-        self.id = Some(id);
-        self.href = Some(href);
-    }
-
     /// Set the description of this category
     /// # Examples
     /// ```
@@ -133,6 +125,35 @@ impl Category {
             self.parent_id = None;
         }
         self
+    }
+}
+
+impl HasId for Category {
+    fn get_id(&mut self) -> String {
+        if self.id.is_none() {
+            self.generate_id();
+        }
+        self.id.as_ref().unwrap().clone()
+    }
+
+    fn get_href(&mut self) -> String {
+        if self.href.is_none() {
+            self.generate_href();
+        }
+        self.href.as_ref().unwrap().clone()
+    }
+
+    fn generate_href(&mut self) {
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CAT_PATH,self.get_id());
+        self.href = Some(href);    
+    }
+
+    fn generate_id(&mut self) {
+        // No return type for now
+        // Using simple format as SurrealDB doesn't like dashes in standard format.
+        let id = Uuid::new_v4().as_simple().to_string(); 
+        self.id = Some(id);
+        self.generate_href();
     }
 }
 
