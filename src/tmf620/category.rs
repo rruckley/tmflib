@@ -14,33 +14,44 @@ const CAT_PATH: &str = "category";
 const CAT_VERS: &str = "1.0";
 
 /// Category Resource
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Category {
     // Scalar fields
     /// Id
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HREF where object is located
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Description
-    description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// Is this the root of a heirarchy of categories?
     pub is_root: bool,
     /// When was this object last updated?
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub last_update: Option<String>,
     /// What is the status of this object?
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub lifecycle_status: Option<String>,
     /// Name
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /// Id of parent in the heirarchy
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub parent_id: Option<String>,
     /// Version of this record
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
     /// How long his this object valid for?
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub valid_for: Option<String>,
     /// Subcategory
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub sub_category: Option<Vec<CategoryRef>>,
     /// Product Offering
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub product_offering: Option<Vec<ProductOfferingRef>>,
 }
 
@@ -52,7 +63,7 @@ impl Category {
     /// let cat = Category::new(String::from("MyCategory"));
     /// ```
     pub fn new(name: String) -> Category {
-        let id = Uuid::new_v4().to_string();
+        let id = Uuid::new_v4().as_simple().to_string();
         let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, CAT_PATH, id);
         let now = Utc::now();
         let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
@@ -70,6 +81,15 @@ impl Category {
             sub_category: None,
             product_offering: None,
         }
+    }
+
+    /// Generate a new Id for this category
+    pub fn generate_id(&mut self) {
+        // No return type for now
+        let id = Uuid::new_v4().as_simple().to_string();
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CAT_PATH,id);
+        self.id = Some(id);
+        self.href = Some(href);
     }
 
     /// Set the description of this category
