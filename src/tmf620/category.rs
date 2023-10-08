@@ -84,6 +84,13 @@ impl Category {
         }
     }
 
+    pub fn generate_id(&mut self) {
+        let id = Uuid::new_v4().to_string();
+        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, CAT_PATH, id);
+        self.id = Some(id);
+        self.href = Some(href);
+    } 
+
     /// Set the description of this category
     /// # Examples
     /// ```
