@@ -34,3 +34,4 @@ pub mod tmf637;
 pub mod tmf638;
 pub mod tmf641;
 pub mod tmf648;
+pub mod tmf700;
