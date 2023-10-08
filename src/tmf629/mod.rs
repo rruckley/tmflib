@@ -14,6 +14,7 @@
 
 //! TMF629 Customer Management
 use super::LIB_PATH;
+use super::HasId;
 const MOD_PATH: &str = "tmf629";
 
 pub mod characteristic;
