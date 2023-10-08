@@ -11,7 +11,7 @@ use super::MOD_PATH;
 
 const CUST_PATH : &str = "customer";
 const CUST_ID_SIZE : usize = 5;
-const CUST_STATUS : &str = "New";
+pub const CUST_STATUS : &str = "New";
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
