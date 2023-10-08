@@ -22,6 +22,8 @@ pub const LIB_PATH: &str = "tmflib";
 pub trait HasId {
     fn generate_id(&mut self);
     fn generate_href(&mut self);
+    fn get_id(&mut self) -> String;
+    fn get_href(&mut self) -> String;
 }
 
 pub mod common;
