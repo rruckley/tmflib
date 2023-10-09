@@ -19,4 +19,5 @@ use super::HasId;
 const MOD_PATH: &str = "tmf622";
 
 pub mod product_order;
+pub mod product_order_item;
 pub mod tmf622_product_order_managment;
