@@ -16,6 +16,9 @@
 
 #[warn(missing_docs)]
 
+use chrono::naive::NaiveDateTime;
+use chrono::Utc;
+
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmflib";
 
@@ -33,6 +36,25 @@ pub trait CreateTMF<T : Default + HasId> {
         let mut item = T::default();
         // Generate unit id
         item.generate_id();
+        item
+    }
+}
+
+pub trait HasLastUpdate {
+    fn get_timestamp() -> String {
+        let now = Utc::now();
+        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        time.to_string()
+    }
+    fn set_last_update(&mut self, time : String);
+}
+
+pub trait CreateTMFWithTime<T : Default + HasId + HasLastUpdate> {
+    fn create_with_time() -> T {
+        // Create default instance
+        let mut item = T::default();
+        item.generate_id();
+        item.set_last_update(T::get_timestamp());
         item
     }
 }
