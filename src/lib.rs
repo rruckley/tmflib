@@ -22,6 +22,7 @@ use chrono::Utc;
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmflib";
 
+/// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId {
     fn generate_id(&mut self);
     fn generate_href(&mut self);
@@ -29,7 +30,7 @@ pub trait HasId {
     fn get_href(&mut self) -> String;
 }
 
-// Create Trait
+/// Trait to create TMF structs that have the HasId trait
 pub trait CreateTMF<T : Default + HasId> {
     fn create() -> T {
         // Create default instance
@@ -40,6 +41,7 @@ pub trait CreateTMF<T : Default + HasId> {
     }
 }
 
+/// Trait indicating a TMF sturct has a last_update or similar timestamp field.
 pub trait HasLastUpdate {
     fn get_timestamp() -> String {
         let now = Utc::now();
@@ -49,6 +51,7 @@ pub trait HasLastUpdate {
     fn set_last_update(&mut self, time : String);
 }
 
+/// Trait to create a TMF struct including a timestamp field
 pub trait CreateTMFWithTime<T : Default + HasId + HasLastUpdate> {
     fn create_with_time() -> T {
         // Create default instance
