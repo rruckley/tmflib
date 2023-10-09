@@ -1,7 +1,7 @@
 //! Catalogue Module
 //!
 //!
-use crate::HasId;
+use crate::{HasId, CreateTMFWithTime,HasLastUpdate};
 use crate::tmf620::category::CategoryRef;
 use crate::tmf620::party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
@@ -19,7 +19,7 @@ const CAT_PATH: &str = "catalog";
 const CAT_VERS: &str = "1.0";
 
 /// Catalogue
-#[derive(Clone,Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Catalog {
     /// Non-optional fields
@@ -48,10 +48,23 @@ pub struct Catalog {
     related_party: Option<Vec<RelatedParty>>,
 }
 
+impl HasLastUpdate for Catalog {
+    fn set_last_update(&mut self, time : String) {
+        self.last_update = Some(time);
+    }
+}
+
+impl CreateTMFWithTime<Catalog> for Catalog {
+
+}
+
 impl Catalog {
     /// Create a new instance of catalog struct
     pub fn new() -> Catalog {
-        Catalog::default()
+        let mut cat = Catalog::create_with_time();
+        cat.version = Some(CAT_VERS.to_string());
+        cat.category = Some(vec![]);
+        cat
     }
 
     /// Set the name for this Catalog
@@ -98,28 +111,6 @@ impl HasId for Catalog {
         let id = Uuid::new_v4().as_simple().to_string(); 
         self.id = Some(id);
         self.generate_href();
-    }
-}
-
-impl std::default::Default for Catalog {
-    fn default() -> Catalog {
-        let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, CAT_PATH, id);
-        let now = Utc::now();
-        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
-        Catalog {
-            id : Some(id),
-            href : Some(href),
-            catalog_type: None,
-            description: None,
-            last_update: Some(time.to_string()),
-            lifecycle_status: None,
-            name: None,
-            version: Some(CAT_VERS.to_string()),
-            valid_for: None,
-            category: Some(vec![]),
-            related_party: None,
-        }
     }
 }
 
