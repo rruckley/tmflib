@@ -18,12 +18,17 @@
 
 use chrono::naive::NaiveDateTime;
 use chrono::Utc;
+use uuid::Uuid;
 
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmflib";
 
 /// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId {
+    fn get_uuid(&self) -> String {
+        // Using simple format as SurrealDB doesn't like dashes in standard format.
+        Uuid::new_v4().as_simple().to_string()
+    }
     fn generate_id(&mut self);
     fn generate_href(&mut self);
     fn get_id(&mut self) -> String;
@@ -35,7 +40,7 @@ pub trait CreateTMF<T : Default + HasId> {
     fn create() -> T {
         // Create default instance
         let mut item = T::default();
-        // Generate unit id
+        // Generate unique id
         item.generate_id();
         item
     }
