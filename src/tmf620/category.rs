@@ -1,5 +1,6 @@
 //! Category Module
 
+use crate::CreateTMF;
 use crate::tmf620::product_offering::ProductOfferingRef;
 
 use chrono::naive::NaiveDateTime;
@@ -15,7 +16,7 @@ const CAT_PATH: &str = "category";
 const CAT_VERS: &str = "1.0";
 
 /// Category Resource
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Category {
     // Scalar fields
@@ -134,6 +135,8 @@ impl Category {
         self
     }
 }
+
+impl CreateTMF<Category> for Category {}
 
 impl HasId for Category {
     fn get_id(&mut self) -> String {
