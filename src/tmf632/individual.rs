@@ -10,9 +10,9 @@ const IND_PATH : &str = "individual";
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Individual {
-    id: Option<String>,
-    href: Option<String>,
-    full_name: String,
+    pub id: Option<String>,
+    pub href: Option<String>,
+    pub full_name: String,
 }
 
 impl CreateTMF<Individual> for Individual {}
@@ -39,6 +39,27 @@ impl HasId for Individual {
         self.href.as_ref().unwrap().clone()   
     }
     fn get_id(&mut self) -> String {
-        self.href.as_ref().unwrap().clone()    
+        if self.id.is_none() {
+            self.generate_id();
+        }
+        self.id.as_ref().unwrap().clone() 
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::Individual;
+    #[test]
+    fn test_individual_create_id() {
+        let ind = Individual::new(String::from("APerson"));
+
+        assert_eq!(ind.id.is_some(),true);
+    }
+
+    #[test]
+    fn test_individual_create_href() {
+        let ind = Individual::new(String::from("APerson"));
+
+        assert_eq!(ind.href.is_some(),true);
     }
 }
