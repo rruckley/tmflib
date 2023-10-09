@@ -11,7 +11,7 @@ use crate::tmf620::tmf620_catalog_management::{
     AgreementRef, ChannelRef, MarketSegmentRef, PlaceRef, ResourceCandidateRef, SLARef,
     ServiceCandidateRef,
 };
-use crate::{CreateTMFWithTime,HasLastUpdate};
+use crate::{CreateTMFWithTime,HasLastUpdate, HasId};
 use super::product_offering_price::ProductOfferingPriceRef;
 use chrono::naive::NaiveDateTime;
 use chrono::Utc;
@@ -71,7 +71,7 @@ impl From<ProductOffering> for ProductOfferingRelationship {
 }
 
 /// Product Offering
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier
@@ -153,13 +153,32 @@ pub struct ProductOffering {
     pub service_level_agreement: Option<Vec<SLARef>>,
 }
 
+impl HasId for ProductOffering {
+    fn generate_href(&mut self) {
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,PO_PATH,self.get_id());
+        self.href = Some(href);
+    }
+    fn generate_id(&mut self) {
+        let id = self.get_uuid();
+        self.id = Some(id);
+        // Since ID has just changed, update href also
+        self.generate_href(); 
+    }
+    fn get_href(&mut self) -> String {
+        self.href.as_ref().unwrap().clone()    
+    }
+    fn get_id(&mut self) -> String {
+        self.id.as_ref().unwrap().clone()
+        
+    }
+}
+
 impl HasLastUpdate for ProductOffering {
     fn set_last_update(&mut self, time : String) {
         self.last_update = Some(time);
     }
 }
-impl CreateTMFWithTime<ProductOffering> for ProductOffering {
-}
+impl CreateTMFWithTime<ProductOffering> for ProductOffering {}
 
 impl ProductOffering {
     /// Create a new instance of ProductOffering object
@@ -170,6 +189,7 @@ impl ProductOffering {
     /// ```
     pub fn new(name: String) -> ProductOffering {
         let mut offer = ProductOffering::create_with_time();
+        offer.name = name;
         offer.version = Some(PO_VERS_INIT.to_string());
         offer.product_offering_relationship = Some(vec![]);
         offer.prod_spec_char_value_use = Some(vec![]);
