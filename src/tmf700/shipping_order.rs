@@ -4,6 +4,7 @@
 use super::LIB_PATH;
 use super::MOD_PATH;
 use super::HasId;
+use super::CreateTMF;
 
 use uuid::Uuid;
 use serde::{Deserialize,Serialize};
@@ -17,12 +18,11 @@ pub struct ShippingOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
 }
+impl CreateTMF<ShippingOrder> for ShippingOrder {}
 
 impl ShippingOrder {
     pub fn new() -> ShippingOrder {
-        let mut so = ShippingOrder::default();
-        so.generate_id();
-        so
+        ShippingOrder::create()
     }
 }
 
