@@ -7,6 +7,7 @@ use tmflib::tmf629::customer::Customer;
 use tmflib::tmf632::individual::Individual;
 
 fn main() {
+    // This example simple creates in memory structures without reference to any persistence
     let offer = ProductOffering::new(String::from("Sample Offering"));
     let customer = Customer::new(String::from("Sample Customer"));
     let person = Individual::new("Ryan Ruckley".to_string());
