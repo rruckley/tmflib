@@ -26,6 +26,17 @@ pub trait HasId {
     fn get_href(&mut self) -> String;
 }
 
+// Create Trait
+pub trait CreateTMF<T : Default + HasId> {
+    fn create() -> T {
+        // Create default instance
+        let mut item = T::default();
+        // Generate unit id
+        item.generate_id();
+        item
+    }
+}
+
 pub mod common;
 pub mod tmf620;
 pub mod tmf622;
