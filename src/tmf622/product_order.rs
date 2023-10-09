@@ -3,7 +3,8 @@
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::HasId;
+use super::HasId;
+use crate::{CreateTMFWithTime,HasLastUpdate};
 
 // URL Path components
 use super::LIB_PATH;
@@ -15,13 +16,20 @@ const PO_PATH: &str = "order";
 pub struct ProductOrder {
     id: Option<String>,
     href: Option<String>,
+    order_date: Option<String>,
 }
+
+impl HasLastUpdate for ProductOrder {
+    fn set_last_update(&mut self, time : String) {
+        self.order_date = Some(time);
+    }
+}
+
+impl CreateTMFWithTime<ProductOrder> for ProductOrder {}
 
 impl ProductOrder {
     pub fn new() -> ProductOrder {
-        let mut po = ProductOrder::default();
-        po.generate_id();
-        po
+        ProductOrder::create_with_time()
     }
 }
 
