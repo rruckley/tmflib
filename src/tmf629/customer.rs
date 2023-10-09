@@ -34,7 +34,7 @@ impl CreateTMF<Customer> for Customer {}
 impl Customer {
     pub fn new(name: String) -> Customer {
         let mut cust = Customer::create();
-        // Not sure on including the name here but this id is only generated on new(), so a name change would
+        // Not sure on including the name here but the id is only generated on create(), so a name change would
         // not impact the generated code. Ideally as we're throwing away a log of the resulting hash to get the
         // code, it might help avoid collisions if we add some more entropy?
         let hash_input = format!("{}:{}",cust.get_id(),name);
