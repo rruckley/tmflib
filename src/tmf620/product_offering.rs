@@ -11,6 +11,7 @@ use crate::tmf620::tmf620_catalog_management::{
     AgreementRef, ChannelRef, MarketSegmentRef, PlaceRef, ResourceCandidateRef, SLARef,
     ServiceCandidateRef,
 };
+use crate::{CreateTMFWithTime,HasLastUpdate};
 use super::product_offering_price::ProductOfferingPriceRef;
 use chrono::naive::NaiveDateTime;
 use chrono::Utc;
@@ -152,6 +153,14 @@ pub struct ProductOffering {
     pub service_level_agreement: Option<Vec<SLARef>>,
 }
 
+impl HasLastUpdate for ProductOffering {
+    fn set_last_update(&mut self, time : String) {
+        self.last_update = Some(time);
+    }
+}
+impl CreateTMFWithTime<ProductOffering> for ProductOffering {
+}
+
 impl ProductOffering {
     /// Create a new instance of ProductOffering object
     /// # Examples
@@ -160,38 +169,12 @@ impl ProductOffering {
     /// let po = ProductOffering::new(String::from("MyOffer"));
     /// ```
     pub fn new(name: String) -> ProductOffering {
-        let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, PO_PATH, id);
-        let now = Utc::now();
-        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
-        ProductOffering {
-            id: Some(id),
-            href: Some(href),
-            description: None,
-            is_bundle: false,
-            is_sellable: false,
-            last_update: Some(time.to_string()),
-            lifecycle_status: None,
-            name,
-            status_reason: None,
-            version: Some(PO_VERS_INIT.to_string()),
-            valid_for: None,
-            agreement: None,
-            attachment: None,
-            bundled_product_offering: None,
-            category: None,
-            channel: None,
-            market_segment: None,
-            place: None,
-            product_offering_price: None,
-            product_offering_term: None,
-            product_offering_relationship: Some(vec![]),
-            prod_spec_char_value_use: Some(vec![]),
-            product_specification: vec![],
-            resource_candidate: None,
-            service_candidate: None,
-            service_level_agreement: None,
-        }
+        let mut offer = ProductOffering::create_with_time();
+        offer.version = Some(PO_VERS_INIT.to_string());
+        offer.product_offering_relationship = Some(vec![]);
+        offer.prod_spec_char_value_use = Some(vec![]);
+
+        offer
     }
 
     /// Added category refernce to ProductOffering
