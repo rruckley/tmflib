@@ -4,6 +4,8 @@ use serde::{Deserialize, Serialize};
 use sha256::digest;
 use uuid::Uuid;
 
+use crate::CreateTMF;
+
 use super::characteristic::Characteristic;
 use super::contact::ContactMedium;
 use super::HasId;
@@ -14,12 +16,12 @@ const CUST_PATH : &str = "customer";
 const CUST_ID_SIZE : usize = 5;
 pub const CUST_STATUS : &str = "New";
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Customer {
-    href: Option<String>,
-    id: Option<String>,
-    name: String,
+    pub href: Option<String>,
+    pub id: Option<String>,
+    pub name: String,
     pub status: Option<String>,
     pub status_reason: Option<String>,
     pub valid_for: Option<String>,
@@ -27,16 +29,15 @@ pub struct Customer {
     characteristic: Option<Vec<Characteristic>>,
 }
 
+impl CreateTMF<Customer> for Customer {}
+
 impl Customer {
     pub fn new(name: String) -> Customer {
-        // 91 143 471 845
-        let id = Uuid::new_v4().to_string();
-
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, CUST_PATH, id);
+        let mut cust = Customer::create();
         // Not sure on including the name here but this id is only generated on new(), so a name change would
         // not impact the generated code. Ideally as we're throwing away a log of the resulting hash to get the
         // code, it might help avoid collisions if we add some more entropy?
-        let hash_input = format!("{}:{}",id,name);
+        let hash_input = format!("{}:{}",cust.get_id(),name);
         let sha = digest(hash_input);
         let sha_slice = sha.as_str()[..CUST_ID_SIZE].to_string().to_ascii_uppercase();
         let code = Characteristic {
@@ -49,16 +50,11 @@ impl Customer {
             value_type: String::from("string"),
             value: sha,
         };
-        Customer {
-            id: Some(id),
-            href: Some(href),
-            name,
-            status: Some(CUST_STATUS.to_string()),
-            status_reason: None,
-            valid_for: None,
-            contact_medium: Some(vec![]),
-            characteristic: Some(vec![code, hash]),
-        }
+        
+        cust.status = Some(CUST_STATUS.to_string());
+        cust.contact_medium = Some(vec![]);
+        cust.characteristic= Some(vec![code, hash]);
+        cust
     }
 
     pub fn generate_code(&mut self) {
@@ -68,9 +64,6 @@ impl Customer {
         if self.id.is_none() {
             self.generate_id();
         };
-        if self.href.is_none() {
-            self.generate_href();
-        }
         let hash_input = format!("{}:{}", self.id.as_ref().unwrap(), self.name);
         let sha = digest(hash_input);
         let sha_slice = sha.as_str()[..4].to_string().to_ascii_uppercase();
