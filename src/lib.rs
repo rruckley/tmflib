@@ -71,6 +71,7 @@ pub mod common;
 pub mod tmf620;
 pub mod tmf622;
 pub mod tmf629;
+pub mod tmf632;
 pub mod tmf637;
 pub mod tmf638;
 pub mod tmf641;
