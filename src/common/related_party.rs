@@ -4,6 +4,7 @@ use std::convert::From;
 use serde::{Deserialize,Serialize};
 
 use crate::tmf629::customer::Customer;
+use crate::tmf632::individual::Individual;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize )]
 pub struct RelatedParty {
@@ -21,6 +22,17 @@ impl From<&Customer> for RelatedParty {
             name: cust.name.clone(), 
             role: "customer".to_string() 
         }    
+    }
+}
+
+impl From<&Individual> for RelatedParty {
+    fn from(value: &Individual) -> Self {
+        RelatedParty { 
+            id: value.id.as_ref().unwrap().clone(), 
+            href: value.href.as_ref().unwrap().clone(), 
+            name: value.full_name.clone(), 
+            role: "individual".to_string() 
+        }
     }
 }
 
