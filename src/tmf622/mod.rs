@@ -15,6 +15,7 @@
 //! Product Order Management
 
 use super::LIB_PATH;
+use super::HasId;
 const MOD_PATH: &str = "tmf622";
 
 pub mod product_order;
