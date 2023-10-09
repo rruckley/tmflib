@@ -107,8 +107,8 @@ impl HasId for Catalog {
 
     fn generate_id(&mut self) {
         // No return type for now
-        // Using simple format as SurrealDB doesn't like dashes in standard format.
-        let id = Uuid::new_v4().as_simple().to_string(); 
+
+        let id = self.get_uuid();
         self.id = Some(id);
         self.generate_href();
     }
