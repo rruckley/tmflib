@@ -20,3 +20,4 @@ const MOD_PATH: &str = "common";
 pub mod attachment;
 pub mod note;
 pub mod event;
+pub mod related_party;
