@@ -5,6 +5,7 @@ use serde::{Deserialize,Serialize};
 
 use crate::tmf629::customer::Customer;
 use crate::tmf632::individual::Individual;
+use crate::tmf632::organization::Organization;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize )]
 pub struct RelatedParty {
@@ -20,8 +21,19 @@ impl From<&Customer> for RelatedParty {
             id: cust.id.as_ref().unwrap().clone(), 
             href: cust.href.as_ref().unwrap().clone(), 
             name: cust.name.clone(), 
-            role: "customer".to_string() 
+            role: "Customer".to_string() 
         }    
+    }
+}
+
+impl From<Organization> for RelatedParty {
+    fn from(org : Organization) -> Self {
+        RelatedParty { 
+            id: org.id.as_ref().unwrap().clone(), 
+            href: org.href.as_ref().unwrap().clone(), 
+            name: org.name.clone(), 
+            role: String::from("Organization"),
+        }
     }
 }
 
@@ -31,7 +43,7 @@ impl From<&Individual> for RelatedParty {
             id: value.id.as_ref().unwrap().clone(), 
             href: value.href.as_ref().unwrap().clone(), 
             name: value.full_name.clone(), 
-            role: "individual".to_string() 
+            role: "Individual".to_string() 
         }
     }
 }
