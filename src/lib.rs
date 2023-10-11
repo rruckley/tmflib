@@ -37,6 +37,13 @@ pub trait HasId {
 
 /// Trait to create TMF structs that have the HasId trait
 pub trait CreateTMF<T : Default + HasId> {
+    /// Create a new instance of a TMF object that has id and href fields.
+    /// # Example
+    /// ```
+    /// # use crate::tmflib::tmf629::customer::Customer;
+    /// use crate::tmflib::CreateTMF;
+    /// let offering = Customer::create();
+    /// ```` 
     fn create() -> T {
         // Create default instance
         let mut item = T::default();
