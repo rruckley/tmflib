@@ -7,7 +7,7 @@ use uuid::Uuid;
 use crate::CreateTMF;
 
 use super::characteristic::Characteristic;
-use super::contact::ContactMedium;
+use crate::common::contact::ContactMedium;
 use super::HasId;
 use super::LIB_PATH;
 use super::MOD_PATH;
