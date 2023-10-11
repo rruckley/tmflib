@@ -6,14 +6,16 @@ use crate::{CreateTMF, HasId};
 
 use crate::LIB_PATH;
 use super::MOD_PATH;
+use crate::common::contact::ContactMedium;
 
 const ORG_PATH : &str = "organization";
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Organization {
-    id: Option<String>,
-    href: Option<String>,
-    name: String,
+    contact_medium: Vec<ContactMedium>,
+    pub id: Option<String>,
+    pub href: Option<String>,
+    pub name: String,
 }
 
 impl Organization {
