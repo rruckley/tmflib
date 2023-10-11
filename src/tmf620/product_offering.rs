@@ -13,10 +13,7 @@ use crate::tmf620::tmf620_catalog_management::{
 };
 use crate::{CreateTMFWithTime,HasLastUpdate, HasId};
 use super::product_offering_price::ProductOfferingPriceRef;
-use chrono::naive::NaiveDateTime;
-use chrono::Utc;
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 use super::LIB_PATH;
 use super::MOD_PATH;
