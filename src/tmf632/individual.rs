@@ -5,14 +5,18 @@ use serde::{Deserialize, Serialize};
 use crate::{HasId,CreateTMF};
 use crate::LIB_PATH;
 use super::MOD_PATH;
+use crate::common::related_party::RelatedParty;
+use crate::common::contact::ContactMedium;
 
 const IND_PATH : &str = "individual";
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Individual {
+    pub contact_medium: Vec<ContactMedium>,
     pub id: Option<String>,
     pub href: Option<String>,
     pub full_name: String,
+    pub related_party: Vec<RelatedParty>,
 }
 
 impl CreateTMF<Individual> for Individual {}
@@ -21,7 +25,18 @@ impl Individual {
     pub fn new(name : String) -> Individual {
         let mut ind = Individual::create();
         ind.full_name = name;
+        ind.related_party = vec![];
         ind
+    }
+
+    /// Add a related party to the individual
+    pub fn add_party(&mut self, party : RelatedParty) {
+        self.related_party.push(party);
+    }
+
+    /// Add a contact medium to the individual
+    pub fn add_contact(&mut self, medium : ContactMedium) {
+        self.contact_medium.push(medium);
     }
 }
 
