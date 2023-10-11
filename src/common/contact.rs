@@ -28,6 +28,11 @@ impl ContactMedium {
     }
 
     /// Generate a new contact medium representing email address
+    /// # Example
+    /// ```
+    /// use tmflib::common::contact::ContactMedium;
+    /// let medium = ContactMedium::email("john.smith@optus.com.au");
+    /// ````
     pub fn email(email: &str) -> ContactMedium {
         let char = MediumCharacteristic {
             email_address : Some(email.to_string()),
