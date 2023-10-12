@@ -34,6 +34,7 @@ impl CreateTMF<Customer> for Customer {}
 impl Customer {
     pub fn new(name: String) -> Customer {
         let mut cust = Customer::create();
+        cust.name = name.clone();
         // Not sure on including the name here but the id is only generated on create(), so a name change would
         // not impact the generated code. Ideally as we're throwing away a log of the resulting hash to get the
         // code, it might help avoid collisions if we add some more entropy?
@@ -131,5 +132,17 @@ impl HasId for Customer {
             }
             None => self.generate_id(),
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_customer_new_name() {
+        let customer = Customer::new(String::from("ACustomer"));
+
+        assert_eq!(customer.name, String::from("ACustomer"));
     }
 }

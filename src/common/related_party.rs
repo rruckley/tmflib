@@ -69,6 +69,7 @@ mod test {
         let cust = Customer::new(String::from("ACustomer"));
         let party = RelatedParty::from(&cust);
         assert_eq!(cust.name, party.name);
+        assert_eq!(party.name, String::from("ACustomer"));
     }
     #[test]
     fn test_related_party_from_customer_role() {
