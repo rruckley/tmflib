@@ -16,10 +16,11 @@ pub struct GeographicAddress {
     pub id: Option<String>,
     pub href: Option<String>,
     pub name : String,
-    pub street_name : Option<String>,
-    pub street_nr: Option<String>,
-    pub state_or_province: Option<String>,
-    pub street_type: Option<String>,
+    locality: Option<String>,
+    street_name : Option<String>,
+    street_nr: Option<String>,
+    state_or_province: Option<String>,
+    street_type: Option<String>,
 }
 
 impl GeographicAddress {
@@ -29,23 +30,27 @@ impl GeographicAddress {
         address
     }
 
-    pub fn street(mut self, street: String) -> GeographicAddress {
+    pub fn street(mut self, street: &str) -> GeographicAddress {
         if street.split(' ').count() > 1 {
             // Attempt to split string like "Lumeah Ave" into two parts
         }
-        self.street_name = Some(street);
+        self.street_name = Some(street.to_string());
         self
     }
-    pub fn street_type(mut self, street_type: String) -> GeographicAddress {
-        self.street_type = Some(street_type);
+    pub fn street_type(mut self, street_type: &str) -> GeographicAddress {
+        self.street_type = Some(street_type.to_string());
         self
     }
-    pub fn number(mut self, number : String) -> GeographicAddress {
-        self.street_nr = Some(number);
+    pub fn number(mut self, number : &str) -> GeographicAddress {
+        self.street_nr = Some(number.to_string());
         self
     }
-    pub fn state(mut self, state : String) -> GeographicAddress {
-        self.state_or_province = Some(state);
+    pub fn suburb(mut self, suburb: &str) -> GeographicAddress {
+        self.locality = Some(suburb.to_string());
+        self
+    }
+    pub fn state(mut self, state : &str) -> GeographicAddress {
+        self.state_or_province = Some(state.to_string());
         self
     }
 }
