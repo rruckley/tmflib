@@ -6,7 +6,7 @@ use tmflib::tmf629::customer::Customer;
 
 fn main() {
     let customer = Customer::new(String::from("BigCustomer"));
-    let mut poq = ProductOfferingQualification::new();
+    let mut poq = ProductOfferingQualification::new(None);
     poq.add_party(RelatedParty::from(&customer));
 
     dbg!(poq);
