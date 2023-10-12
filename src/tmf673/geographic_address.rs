@@ -16,6 +16,10 @@ pub struct GeographicAddress {
     pub id: Option<String>,
     pub href: Option<String>,
     pub name : String,
+    pub street_name : Option<String>,
+    pub street_nr: Option<String>,
+    pub state_or_province: Option<String>,
+    pub street_type: Option<String>,
 }
 
 impl GeographicAddress {
@@ -23,6 +27,26 @@ impl GeographicAddress {
         let mut address = GeographicAddress::create();
         address.name = name;
         address
+    }
+
+    pub fn street(mut self, street: String) -> GeographicAddress {
+        if street.split(' ').count() > 1 {
+            // Attempt to split string like "Lumeah Ave" into two parts
+        }
+        self.street_name = Some(street);
+        self
+    }
+    pub fn street_type(mut self, street_type: String) -> GeographicAddress {
+        self.street_type = Some(street_type);
+        self
+    }
+    pub fn number(mut self, number : String) -> GeographicAddress {
+        self.street_nr = Some(number);
+        self
+    }
+    pub fn state(mut self, state : String) -> GeographicAddress {
+        self.state_or_province = Some(state);
+        self
     }
 }
 
