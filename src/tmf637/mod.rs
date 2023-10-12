@@ -12,7 +12,7 @@
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-//! Product Inventory Module
+//! TMF637 Product Inventory Module
 use super::LIB_PATH;
 
 const MOD_PATH: &str = "tmf637";

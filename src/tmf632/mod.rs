@@ -1,4 +1,4 @@
-//! Party Management Modules
+//! TMF632 Party Management Modules
 
 const MOD_PATH : &str = "tmf632";
 
