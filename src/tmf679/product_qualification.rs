@@ -23,7 +23,7 @@ pub enum TaskStateType {
     Acknowledged,
     /// Qualification has been terminated with an error
     TerminatedWithError,
-    /// Qualification is in progress [default]
+    /// Qualification is in progress
     #[default]
     InProgress,
     /// Qualification has completed
