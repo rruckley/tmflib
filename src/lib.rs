@@ -14,7 +14,7 @@
 
 //! TMF Library
 
-#[warn(missing_docs)]
+#![warn(missing_docs)]
 
 use chrono::naive::NaiveDateTime;
 use chrono::Utc;
@@ -25,13 +25,20 @@ pub const LIB_PATH: &str = "tmflib";
 
 /// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId {
+    /// Get a new UUID in simple format
     fn get_uuid(&self) -> String {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
         Uuid::new_v4().as_simple().to_string()
     }
+    /// Generate and store a new ID
     fn generate_id(&mut self);
+    /// Generate a new HTML reference.
+    /// # Details
+    /// This is usually triggered directly from generate_id() but can be manually triggered.
     fn generate_href(&mut self);
+    /// Extract the id of this object into a new String
     fn get_id(&mut self) -> String;
+    /// Extract the HREF of this object into a new String
     fn get_href(&mut self) -> String;
 }
 
@@ -55,16 +62,19 @@ pub trait CreateTMF<T : Default + HasId> {
 
 /// Trait indicating a TMF sturct has a last_update or similar timestamp field.
 pub trait HasLastUpdate {
+    /// Geneate a timestamp for now(), useful for updating last_updated fields
     fn get_timestamp() -> String {
         let now = Utc::now();
         let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         time.to_string()
     }
+    /// Store a timestamp into last_update field (if available)
     fn set_last_update(&mut self, time : String);
 }
 
 /// Trait to create a TMF struct including a timestamp field
 pub trait CreateTMFWithTime<T : Default + HasId + HasLastUpdate> {
+    /// Create a new TMF object, also set last_update field to now()
     fn create_with_time() -> T {
         // Create default instance
         let mut item = T::default();

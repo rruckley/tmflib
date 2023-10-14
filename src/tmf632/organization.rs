@@ -10,17 +10,22 @@ use crate::common::contact::ContactMedium;
 
 const ORG_PATH : &str = "organization";
 
+/// Organisation record (sic)
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Organization {
     contact_medium: Vec<ContactMedium>,
+    /// Unique id of this organization record
     pub id: Option<String>,
+    /// HTML reference to this organization record
     pub href: Option<String>,
+    /// Name of this Organization
     pub name: String,
 }
 
 impl Organization {
+    /// Create a new organization record with a name
     pub fn new(name : String) -> Organization {
-        let mut org = Organization::default();
+        let mut org = Organization::create();
         org.name = name;
         org
     }

@@ -10,17 +10,25 @@ use crate::LIB_PATH;
 const QUOTE_PATH: &str = "quote";
 const QUOTE_VERS: &str = "1.0";
 
+/// Status of the quote object
 #[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
 pub enum QuoteStateType {
+    /// Quote has been rejected
     Rejected,
+    /// Quote status is pending an outcome
     Pending,
+    /// Quote is being processed
     InProgress,
+    /// Quote has been cancelled
     Cancelled,
+    /// Quote is fully approved
     Approved,
     #[default]
+    /// Quote has been recieved and accepted
     Accepted,
 }
 
+/// Product Quote
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
@@ -35,6 +43,7 @@ pub struct Quote {
 }
 
 impl Quote {
+    /// Create a new Product Quote
     pub fn new() -> Quote {
         let id = Uuid::new_v4().to_string();
         let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, QUOTE_PATH, id);
@@ -55,6 +64,7 @@ impl Quote {
         self.external_id = Some(id);
     }
 
+    /// Add a quote item into a product quote
     pub fn add_quote(&mut self, item: QuoteItem) -> Result<String, String> {
         self.quote_item.push(item);
         Ok(String::from("Quote Item Added"))

@@ -7,11 +7,17 @@ use crate::tmf629::customer::Customer;
 use crate::tmf632::individual::Individual;
 use crate::tmf632::organization::Organization;
 
+/// Reference to a Customer (TMF629) , Organisation or Individual (TMF632)
 #[derive(Clone, Debug, Default, Deserialize, Serialize )]
+#[serde(rename_all = "camelCase")]
 pub struct RelatedParty {
+    /// Unique Id of the referenced party
     pub id: String,
+    /// HTML reference of the related party
     pub href: String,
+    /// Name of the related party
     pub name: String,
+    /// Role of the relationship, e.g. Parent/Child
     pub role: String,
 }
 

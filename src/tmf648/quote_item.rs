@@ -5,6 +5,7 @@ use uuid::Uuid;
 
 use crate::common::attachment::AttachmentRefOrValue;
 
+/// Quote Item, line item for a product quote
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct QuoteItem {
     id: String,
@@ -17,6 +18,7 @@ pub struct QuoteItem {
 }
 
 impl QuoteItem {
+    /// Create a new quote item
     pub fn new() -> QuoteItem {
         let id = Uuid::new_v4().to_string();
         QuoteItem {

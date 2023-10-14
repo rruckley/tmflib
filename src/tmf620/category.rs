@@ -85,6 +85,7 @@ impl Category {
         }
     }
 
+    /// Generate a unique id for this object
     pub fn generate_id(&mut self) {
         let id = Uuid::new_v4().to_string();
         let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, CAT_PATH, id);

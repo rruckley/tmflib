@@ -10,18 +10,25 @@ use crate::common::contact::ContactMedium;
 
 const IND_PATH : &str = "individual";
 
+/// An individual
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Individual {
+    /// Methods for contacting this individual
     pub contact_medium: Vec<ContactMedium>,
+    /// Unique id for this individual
     pub id: Option<String>,
+    /// HTML reference for this individual object
     pub href: Option<String>,
+    /// Full name of the individual
     pub full_name: String,
+    /// Parties related to this individual, e.g. company / organization
     pub related_party: Vec<RelatedParty>,
 }
 
 impl CreateTMF<Individual> for Individual {}
 
 impl Individual {
+    /// Create a new instance of indiviudal object
     pub fn new(name : String) -> Individual {
         let mut ind = Individual::create();
         ind.full_name = name;

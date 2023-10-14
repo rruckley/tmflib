@@ -23,6 +23,7 @@ enum ProductStatusType {
     Aborted,
 }
 
+/// Product record from the Product Inventory
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct Product {
     id: Option<String>,
@@ -52,6 +53,7 @@ impl HasId for Product {
 impl CreateTMF<Product> for Product {}
 
 impl Product {
+    /// Create a new product object
     pub fn new(name: String) -> Product {
         let mut product = Product::create();
         product.status = ProductStatusType::Created;

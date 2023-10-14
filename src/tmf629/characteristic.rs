@@ -2,10 +2,13 @@
 
 use serde::{Deserialize, Serialize};
 
-/// Customer Characteristic
+/// Customer Characteristics
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Characteristic {
+    /// Name of characteristic
     pub name: String,
+    /// Type of characteristic
     pub value_type: String,
+    /// Value of characteristic
     pub value: String,
 }

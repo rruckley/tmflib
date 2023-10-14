@@ -11,16 +11,20 @@ use serde::{Deserialize,Serialize};
 
 const SHIP_PATH : &str = "shipping";
 
+/// Order for shipping of tangible goods
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ShippingOrder {
+    /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
+    /// HTML Reference to this object
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
 }
 impl CreateTMF<ShippingOrder> for ShippingOrder {}
 
 impl ShippingOrder {
+    /// Create new ShippingOrder
     pub fn new() -> ShippingOrder {
         ShippingOrder::create()
     }

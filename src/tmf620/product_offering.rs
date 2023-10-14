@@ -49,8 +49,15 @@ pub struct ProductOfferingRelationship {
     id: Option<String>,
     href: Option<String>,
     name: Option<String>,
+    /// Type of relationship between product offerings
+    /// # Example
+    /// Parent/Child
     pub relationship_type: Option<String>,
+    /// Role of this relationship
+    /// # Example
+    /// Child
     pub role: Option<String>,
+    /// How long is this relationship valid for?
     pub valid_for: Option<String>,
 }
 
@@ -211,18 +218,20 @@ impl ProductOffering {
         self
     }
 
+    /// Add specification into this Product Offering
     pub fn with_specification(mut self, specification: ProductSpecification) -> ProductOffering {
         self.product_specification
             .push(ProductSpecificationRef::from(specification));
         self
     }
 
+    /// Add characteristic value uses into this Product Offering
     pub fn with_char_value_use(mut self, char_value_use : ProductSpecificationCharacteristicValueUse) -> ProductOffering {
         self.prod_spec_char_value_use.as_mut().unwrap().push(char_value_use);
         self
     }
 
-    // Create a link between two ProductOfferings
+    /// Create a link between two ProductOfferings
     pub fn link_po(&mut self, remote_po : ProductOffering, relationship_type : &str, role : &str) {
         // Create a link from ourselves into remote_po using type and role prodived.
         let mut offer_rel = ProductOfferingRelationship::from(remote_po);

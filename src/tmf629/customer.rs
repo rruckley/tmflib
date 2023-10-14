@@ -14,16 +14,24 @@ use super::MOD_PATH;
 
 const CUST_PATH : &str = "customer";
 const CUST_ID_SIZE : usize = 5;
+/// Default customer status
 pub const CUST_STATUS : &str = "New";
 
+/// Customer object
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Customer {
+    /// Html Reference to this object
     pub href: Option<String>,
+    /// Unique Id
     pub id: Option<String>,
+    /// Name of this 
     pub name: String,
+    /// Customer status
     pub status: Option<String>,
+    /// Reason for current status
     pub status_reason: Option<String>,
+    /// Validity of this record
     pub valid_for: Option<String>,
     contact_medium: Option<Vec<ContactMedium>>,
     characteristic: Option<Vec<Characteristic>>,
@@ -32,6 +40,7 @@ pub struct Customer {
 impl CreateTMF<Customer> for Customer {}
 
 impl Customer {
+    /// Create new customer object
     pub fn new(name: String) -> Customer {
         let mut cust = Customer::create();
         cust.name = name.clone();
@@ -58,6 +67,7 @@ impl Customer {
         cust
     }
 
+    /// Geneate a unique customer code via cryptographic functions
     pub fn generate_code(&mut self) {
         // Generate a new code based on name
 
@@ -87,6 +97,7 @@ impl Customer {
         self.characteristic.as_mut().unwrap().push(hash);
     }
 
+    /// Set the name of the customer
     pub fn name(&mut self, name : String) {
         self.name = name.clone();
     }

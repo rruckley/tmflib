@@ -16,15 +16,21 @@ use crate::tmf620::product_offering::ProductOfferingRef;
 
 const POQ_PATH : &str = "qualification";
 
+/// Qualification Item Status
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum TaskStateType {
+    /// Qualification is acknowledged but not processed
     Acknowledged,
+    /// Qualification has been terminated with an error
     TerminatedWithError,
+    /// Qualification is in progress [default]
     #[default]
     InProgress,
+    /// Qualification has completed
     Done,
 }
 
+/// Product Offering Qualification
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ProductOfferingQualification {
     category: Option<CategoryRef>,
@@ -56,6 +62,7 @@ impl HasId for ProductOfferingQualification {
 impl CreateTMF<ProductOfferingQualification> for ProductOfferingQualification {}
 
 impl ProductOfferingQualification {
+    /// Create a new Product Offering Qualification from a Product Offering Reference
     pub fn new(offering_ref: Option<ProductOfferingRef>) -> ProductOfferingQualification {
         let mut poq = ProductOfferingQualification::create();
         let mut poqi = ProductOfferingQualificationItem::new();
@@ -63,6 +70,7 @@ impl ProductOfferingQualification {
         poq.product_offering_qualification_item.push(poqi);
         poq
     }
+    /// Add a party into this Product Offering Qualification
     pub fn add_party(&mut self, party : RelatedParty) {
         self.related_party.push(party);
     }

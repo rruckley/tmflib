@@ -5,15 +5,21 @@ use std::convert::From;
 
 use crate::tmf620::product_offering::{ProductOffering,ProductOfferingRef};
 
+/// Action Type for Order Items
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum OrderItemActionType {
+    /// Add Order Item [Default]
     #[default]
     Add,
+    /// Modify Order Item
     Modify,
+    /// Delete Order Item
     Delete,
+    /// No change
     NoChange,
 }
 
+/// Line item for a Product Order
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ProductOrderItem {
     quantity: u16,

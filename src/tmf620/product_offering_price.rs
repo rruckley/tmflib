@@ -22,6 +22,7 @@ impl From<ProductOfferingPrice> for ProductOfferingPriceRef {
     }
 }
 
+/// Pricing linked to a Product Offering
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ProductOfferingPrice {
     id: Option<String>,
@@ -31,6 +32,7 @@ pub struct ProductOfferingPrice {
 }
 
 impl ProductOfferingPrice {
+    /// Create a new Price Offering Price object
     pub fn new(name :  String) -> ProductOfferingPrice {
         let id = Uuid::new_v4().to_string();
         let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,PRICE_PATH,id);

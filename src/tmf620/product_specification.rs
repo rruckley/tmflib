@@ -160,7 +160,12 @@ impl From<ProductSpecification> for ProductSpecificationRef {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+/// Product Specification Characteristic Value
+/// # Detalis
+/// This object contains values used by a specification characteristic.
+/// # Example
+/// If the Product Offering is "Internet", then the Specification might be "Bandwidht" and the Value might be "100Mb"
+#[derive(Clone, Debug ,Default , Deserialize, Serialize)]
 pub struct ProductSpecificationCharacteristicValue {
     is_default: bool,
     range_interval: Option<String>,
@@ -174,18 +179,16 @@ pub struct ProductSpecificationCharacteristicValue {
 }
 
 impl ProductSpecificationCharacteristicValue {
+    /// Create a new Product Specification Characteristic Value with a value
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
+    /// let pscv = ProductSpecificationCharacteristicValue::new(String::from("100Mb"));
+    /// ```
     pub fn new(value : String) -> ProductSpecificationCharacteristicValue {
-        ProductSpecificationCharacteristicValue {
-            is_default: false,
-            range_interval: None,
-            regex: None,
-            unit_of_measure: None,
-            value_from: None,
-            value_to: None,
-            value_type: None,
-            value_for: None,
-            value,
-        }
+        let mut pscv = ProductSpecificationCharacteristicValue::default();
+        pscv.value = value;
+        pscv
     }
 }
 
@@ -203,6 +206,7 @@ pub struct ProductSpecificationCharacteristicValueUse {
 }
 
 impl ProductSpecificationCharacteristicValueUse {
+    /// Create a new instance of ProductSpecificationCharacteristicValueUse
     pub fn new(name : String) -> ProductSpecificationCharacteristicValueUse {
         ProductSpecificationCharacteristicValueUse { 
             description: None, 
@@ -216,6 +220,7 @@ impl ProductSpecificationCharacteristicValueUse {
         }
     }
 
+    /// Add a specificatoin into the ProductSpecificationCharacteristicValueUse
     pub fn with_spec(&mut self, specification : ProductSpecification) {
         self.product_specification = Some(ProductSpecificationRef::from(specification));
     }

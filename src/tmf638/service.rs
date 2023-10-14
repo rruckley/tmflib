@@ -21,6 +21,7 @@ enum ServiceStateType {
     Terminated,
 }
 
+/// Service record from the Service Inventory
 #[derive(Clone,Debug,Default,Deserialize,Serialize)]
 pub struct Service {
     id: Option<String>,
@@ -30,6 +31,7 @@ pub struct Service {
 }
 
 impl Service {
+    /// Create a new service object for the inventory
     pub fn new(name : String) -> Service {
         let id = Uuid::new_v4().to_string();
         let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,SERVICE_PATH,id);

@@ -24,6 +24,7 @@ const CAT_VERS: &str = "1.0";
 pub struct Catalog {
     /// Non-optional fields
     pub id: Option<String>,
+    /// HTML reference to this object
     pub href: Option<String>,
     /// Optional fields
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -136,10 +137,15 @@ impl EventPayload<Catalog,CatalogEventType> for Catalog {
     }
 }
 
+
+/// Type of event fot he catalog events
 #[derive(Debug,Deserialize,Serialize)]
 pub enum CatalogEventType {
+    /// Catalog has been created
     CatalogCreateEvent,
+    /// Catalog has been deleted
     CatalogDeleteEvent,
+    /// A Batch event has been triggered for a catalog
     CatalogBatchEvent,
 }
 
@@ -154,8 +160,11 @@ impl std::fmt::Display for CatalogEventType {
 }
 
 // Notifications
+/// Catalog created Event
 pub struct CatalogCreateEvent {}
+/// Catalog Deteted Event
 pub struct CatalogDeleteEvent {}
+/// Catalog Batch Event
 pub struct CatalogBatchEvent {}
 
 #[cfg(test)]

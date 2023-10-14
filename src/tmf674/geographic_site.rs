@@ -11,6 +11,10 @@ use crate::LIB_PATH;
 use super::MOD_PATH;
 const GEO_PATH: &str = "site";
 
+/// Refernce to a place
+/// # Uses
+/// Link to a place
+/// Provide a place locally within the payload
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct PlaceRefOrValue {
     id: String,
@@ -28,6 +32,7 @@ impl From<GeographicAddress> for PlaceRefOrValue {
     }
 }
 
+/// Geographic Site
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct GeographicSite {
     id: Option<String>,
@@ -37,11 +42,13 @@ pub struct GeographicSite {
 }
 
 impl GeographicSite {
+    /// Create a new Geographic Site with a name
     pub fn new(name : String) -> GeographicSite {
         let mut site = GeographicSite::create();
         site.name = name;
         site
     }
+    /// Set the place on this Site
     pub fn place(mut self, place : PlaceRefOrValue) -> GeographicSite {
         self.place = Some(place);
         self    

@@ -4,7 +4,9 @@ use serde::{Deserialize, Serialize};
 use std::hash::Hash;
 
 
+/// Characteristics for contact mediums
 #[derive(Clone, Debug, Default, Deserialize, Hash, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct MediumCharacteristic {
     email_address : Option<String>,
 }
@@ -19,6 +21,7 @@ pub struct ContactMedium {
 }
 
 impl ContactMedium {
+    /// Create a new contact medium
     pub fn new() -> ContactMedium {
         ContactMedium {
             preferred: false,

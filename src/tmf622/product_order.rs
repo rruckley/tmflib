@@ -15,6 +15,7 @@ use super::product_order_item::ProductOrderItem;
 
 const PO_PATH: &str = "order";
 
+/// ProductOrder
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct ProductOrder {
     id: Option<String>,
@@ -33,14 +34,27 @@ impl HasLastUpdate for ProductOrder {
 impl CreateTMFWithTime<ProductOrder> for ProductOrder {}
 
 impl ProductOrder {
+    /// Create a new product order via trait
     pub fn new() -> ProductOrder {
         ProductOrder::create_with_time()
     }
 
+    /// Add an ProductOrderItem into the ProductOrder
     pub fn add_order_item(&mut self, order_item : ProductOrderItem) {
         self.product_order_item.push(order_item);
     }
 
+    /// Add a RelatedParty into the ProductOrder
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf622::product_order::ProductOrder;
+    /// use tmflib::common::related_party::RelatedParty;
+    /// use tmflib::tmf629::customer::Customer;
+    /// let customer = Customer::new(String::from("My Customer"));
+    /// let mut order = ProductOrder::new();
+    /// order.add_party(RelatedParty::from(&customer));
+    /// dbg!(order);
+    /// ```
     pub fn add_party(&mut self, party: RelatedParty) {
         self.related_party.push(party);
     }
