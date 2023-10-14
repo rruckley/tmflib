@@ -18,7 +18,7 @@ pub enum ProductActionType {
     Modify,
     /// Delete an offering
     Delete,
-    /// Make no change [default]
+    /// Make no change
     #[default]
     NoChange,
 }
