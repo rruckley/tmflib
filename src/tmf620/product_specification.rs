@@ -186,9 +186,7 @@ impl ProductSpecificationCharacteristicValue {
     /// let pscv = ProductSpecificationCharacteristicValue::new(String::from("100Mb"));
     /// ```
     pub fn new(value : String) -> ProductSpecificationCharacteristicValue {
-        let mut pscv = ProductSpecificationCharacteristicValue::default();
-        pscv.value = value;
-        pscv
+        ProductSpecificationCharacteristicValue { value, ..Default::default() }
     }
 }
 

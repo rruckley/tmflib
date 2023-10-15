@@ -40,12 +40,11 @@ impl ContactMedium {
         let char = MediumCharacteristic {
             email_address : Some(email.to_string()),
         };
-        let medium = ContactMedium {
+        ContactMedium {
             preferred : false,
             medium_type : Some(String::from("email")),
             characteristic : Some(char),
-        };
-        medium
+        }
     }
 }
 

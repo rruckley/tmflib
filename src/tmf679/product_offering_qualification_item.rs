@@ -42,8 +42,6 @@ impl ProductOfferingQualificationItem {
     /// Create a new Product Offering Qualification Item
     pub fn new() -> ProductOfferingQualificationItem {
         let id = Uuid::new_v4().simple().to_string();
-        let mut poqi = ProductOfferingQualificationItem::default();
-        poqi.id = Some(id);
-        poqi
+        ProductOfferingQualificationItem { id: Some(id), ..Default::default() }
     }
 }

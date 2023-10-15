@@ -31,9 +31,6 @@ impl From<ProductOffering> for ProductOrderItem {
     fn from(po: ProductOffering) -> Self {
         // first convert to ProductOfferRef
         let offer_ref = ProductOfferingRef::from(po);
-        let mut order_item = ProductOrderItem::default();
-        order_item.product_offering = Some(offer_ref);
-        order_item.quantity = 1;
-        order_item
+        ProductOrderItem { quantity: 1, product_offering: Some(offer_ref), ..Default::default() }
     }
 }
