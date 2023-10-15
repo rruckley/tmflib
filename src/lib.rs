@@ -54,7 +54,7 @@ pub trait CreateTMF<T : Default + HasId> {
     fn create() -> T {
         // Create default instance
         let mut item = T::default();
-        // Generate unique id
+        // Generate unique id and href
         item.generate_id();
         item
     }
