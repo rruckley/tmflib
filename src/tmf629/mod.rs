@@ -19,4 +19,3 @@ const MOD_PATH: &str = "tmf629";
 
 pub mod characteristic;
 pub mod customer;
-pub mod tmf629_customer_management;
