@@ -1,16 +1,17 @@
 //! Category Module
 
 use crate::CreateTMF;
+use crate::HasLastUpdate;
 use crate::tmf620::product_offering::ProductOfferingRef;
 
-use chrono::naive::NaiveDateTime;
-use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use super::LIB_PATH;
 use super::MOD_PATH;
 use super::HasId;
+
+use crate::CreateTMFWithTime;
 
 const CAT_PATH: &str = "category";
 const CAT_VERS: &str = "1.0";
@@ -29,7 +30,7 @@ pub struct Category {
     /// Description
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    /// Is this the root of a heirarchy of categories?
+    /// Is this the root of a heirarchy of categories? Default is false.
     pub is_root: bool,
     /// When was this object last updated?
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -57,6 +58,14 @@ pub struct Category {
     pub product_offering: Option<Vec<ProductOfferingRef>>,
 }
 
+impl HasLastUpdate for Category {
+    fn set_last_update(&mut self, time : String) {
+        self.last_update = Some(time);
+    }
+}
+
+impl CreateTMFWithTime<Category> for Category {}
+
 impl Category {
     /// Create a new instance of the Category struct
     /// # Examples
@@ -65,24 +74,10 @@ impl Category {
     /// let cat = Category::new(String::from("MyCategory"));
     /// ```
     pub fn new(name: String) -> Category {
-        let id = Uuid::new_v4().as_simple().to_string();
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, CAT_PATH, id);
-        let now = Utc::now();
-        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
-        Category {
-            id: Some(id),
-            href: Some(href),
-            description: None,
-            is_root: true,
-            last_update: Some(time.to_string()),
-            lifecycle_status: None,
-            name: Some(name.clone()),
-            parent_id: None,
-            version: Some(CAT_VERS.to_string()),
-            valid_for: None,
-            sub_category: None,
-            product_offering: None,
-        }
+        let mut cat = Category::create_with_time();
+        cat.version = Some(CAT_VERS.to_string());
+        cat.name = Some(name);
+        cat
     }
 
     /// Generate a unique id for this object
@@ -187,7 +182,7 @@ mod tests {
     #[test]
     fn cat_test_root() {
         let cat = Category::new(String::from("MyCategory"));
-        assert_eq!(cat.is_root, true);
+        assert_eq!(cat.is_root, false);
     }
 
     #[test]
