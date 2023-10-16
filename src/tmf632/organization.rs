@@ -40,7 +40,8 @@ impl HasId for Organization {
     }
     fn generate_id(&mut self) {
         let id = self.get_uuid();
-        self.id = Some(id);    
+        self.id = Some(id);
+        self.generate_href();
     }
     fn get_href(&mut self) -> String {
         self.href.as_ref().unwrap().clone()
