@@ -8,7 +8,9 @@ use std::hash::Hash;
 #[derive(Clone, Debug, Default, Deserialize, Hash, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MediumCharacteristic {
+    contact_type: Option<String>,
     email_address : Option<String>,
+    phone_number: Option<String>,
 }
 
 /// Contact Medium
@@ -39,11 +41,32 @@ impl ContactMedium {
     pub fn email(email: &str) -> ContactMedium {
         let char = MediumCharacteristic {
             email_address : Some(email.to_string()),
+            contact_type: Some(String::from("email")),
+            phone_number: None,
         };
         ContactMedium {
             preferred : false,
             medium_type : Some(String::from("email")),
             characteristic : Some(char),
+        }
+    }
+
+    /// Generate a new contact medium representing a mobile phone number
+    /// # Example
+    /// ```
+    /// use tmflib::common::contact::ContactMedium;
+    /// let medium = ContactMedium::mobile("0411 111 111");
+    /// ```
+    pub fn mobile(mobile : &str) -> ContactMedium {
+        let char = MediumCharacteristic {
+            email_address : None,
+            contact_type: Some(String::from("mobile")),
+            phone_number: Some(mobile.to_string()),
+        };
+        ContactMedium { 
+            characteristic: Some(char), 
+            medium_type: Some(String::from("phone")), 
+            preferred: false,
         }
     }
 }

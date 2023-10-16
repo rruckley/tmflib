@@ -36,6 +36,34 @@ impl Individual {
         ind
     }
 
+    /// Convenience function to add an email contact medium
+    /// # Example
+    /// ```
+    /// use tmflib::tmf632::individual::Individual;
+    /// 
+    /// let individual = Individual::new("John Smith".to_string())
+    ///     .email("john.smith@example.com");
+    /// ```
+    pub fn email(mut self, email : &str) -> Individual {
+        let medium = ContactMedium::email(email);
+        self.add_contact(medium);
+        self
+    }
+
+    /// Convenience funciton to add a mobile number contact medium
+    /// # Example
+    /// ```
+    /// use tmflib::tmf632::individual::Individual;
+    /// 
+    /// let individual = Individual::new("John Smith".to_string())
+    ///     .mobile("0411 111 111");
+    /// ```
+    pub fn mobile(mut self, mobile: &str) -> Individual {
+        let medium = ContactMedium::mobile(mobile);
+        self.add_contact(medium);
+        self
+    }
+
     /// Add a related party to the individual
     pub fn add_party(&mut self, party : RelatedParty) {
         self.related_party.push(party);
