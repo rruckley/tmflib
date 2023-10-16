@@ -109,7 +109,7 @@ impl HasId for Catalog {
     fn generate_id(&mut self) {
         // No return type for now
 
-        let id = self.get_uuid();
+        let id = Catalog::get_uuid();
         self.id = Some(id);
         self.generate_href();
     }
