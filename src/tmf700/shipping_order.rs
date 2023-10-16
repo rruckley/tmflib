@@ -13,6 +13,7 @@ const SHIP_PATH : &str = "shipping";
 
 /// Order for shipping of tangible goods
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ShippingOrder {
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]

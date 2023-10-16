@@ -57,29 +57,34 @@ impl From<&Individual> for RelatedParty {
 #[cfg(test)]
 mod test {
     use crate::tmf629::customer::Customer;
+    use crate::tmf632::organization::Organization;
     use super::RelatedParty;
     #[test]
     fn test_related_party_from_customer_id() {
-        let cust = Customer::new(String::from("ACustomer"));
+        let org = Organization::new(String::from("ACustomer"));
+        let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
         assert_eq!(cust.id.unwrap(), party.id);
     }
     #[test]
     fn test_related_party_from_customer_href() {
-        let cust = Customer::new(String::from("ACustomer"));
+        let org = Organization::new(String::from("ACustomer"));
+        let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
         assert_eq!(cust.href.unwrap(), party.href);
     }
     #[test]
     fn test_related_party_from_customer_name() {
-        let cust = Customer::new(String::from("ACustomer"));
+        let org = Organization::new(String::from("ACustomer"));
+        let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
         assert_eq!(cust.name, party.name);
         assert_eq!(party.name, String::from("ACustomer"));
     }
     #[test]
     fn test_related_party_from_customer_role() {
-        let cust = Customer::new(String::from("ACustomer"));
+        let org = Organization::new(String::from("ACustomer"));
+        let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
         assert_eq!(party.role, String::from("Customer"));
     }

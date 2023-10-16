@@ -17,6 +17,7 @@ const PO_PATH: &str = "order";
 
 /// ProductOrder
 #[derive(Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductOrder {
     id: Option<String>,
     href: Option<String>,
@@ -50,7 +51,10 @@ impl ProductOrder {
     /// # use tmflib::tmf622::product_order::ProductOrder;
     /// use tmflib::common::related_party::RelatedParty;
     /// use tmflib::tmf629::customer::Customer;
-    /// let customer = Customer::new(String::from("My Customer"));
+    /// use tmflib::tmf632::organization::Organization;
+    /// 
+    /// let organization = Organization::new(String::from("My Customer"));
+    /// let customer = Customer::new(organization);
     /// let mut order = ProductOrder::new();
     /// order.add_party(RelatedParty::from(&customer));
     /// dbg!(order);

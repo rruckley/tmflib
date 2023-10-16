@@ -6,11 +6,13 @@ use tmflib::tmf622::product_order_item::ProductOrderItem;
 use tmflib::tmf620::product_offering::ProductOffering;
 use tmflib::tmf629::customer::Customer;
 use tmflib::tmf632::individual::Individual;
+use tmflib::tmf632::organization::Organization;
 
 fn main() {
     // This example simple creates in memory structures without reference to any persistence
     let offer = ProductOffering::new(String::from("Sample Offering"));
-    let customer = Customer::new(String::from("Sample Customer"));
+    let org = Organization::new(String::from("ACustomer"));
+    let customer = Customer::new(org);
     let mut person = Individual::new("Ryan Ruckley".to_string());
     person.add_contact(ContactMedium::email("Ryan Ruckley"));
     let mut order = ProductOrder::new();

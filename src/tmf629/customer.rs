@@ -5,9 +5,11 @@ use sha256::digest;
 use uuid::Uuid;
 
 use crate::CreateTMF;
+use crate::tmf632::organization::Organization;
 
 use super::characteristic::Characteristic;
 use crate::common::contact::ContactMedium;
+use crate::common::related_party::RelatedParty;
 use super::HasId;
 use super::LIB_PATH;
 use super::MOD_PATH;
@@ -35,19 +37,21 @@ pub struct Customer {
     pub valid_for: Option<String>,
     contact_medium: Option<Vec<ContactMedium>>,
     characteristic: Option<Vec<Characteristic>>,
+    related_party: Vec<RelatedParty>,
+    engaged_party: Option<RelatedParty>,
 }
 
 impl CreateTMF<Customer> for Customer {}
 
 impl Customer {
     /// Create new customer object
-    pub fn new(name: String) -> Customer {
+    pub fn new(org: Organization) -> Customer {
         let mut cust = Customer::create();
-        cust.name = name.clone();
+        cust.name = org.name.clone();
         // Not sure on including the name here but the id is only generated on create(), so a name change would
         // not impact the generated code. Ideally as we're throwing away a log of the resulting hash to get the
         // code, it might help avoid collisions if we add some more entropy?
-        let hash_input = format!("{}:{}",cust.get_id(),name);
+        let hash_input = format!("{}:{}",cust.get_id(),cust.name);
         let sha = digest(hash_input);
         let sha_slice = sha.as_str()[..CUST_ID_SIZE].to_string().to_ascii_uppercase();
         let code = Characteristic {
@@ -60,6 +64,7 @@ impl Customer {
             value_type: String::from("string"),
             value: sha,
         };
+        cust.engaged_party = Some(RelatedParty::from(org));
         
         cust.status = Some(CUST_STATUS.to_string());
         cust.contact_medium = Some(vec![]);
@@ -146,14 +151,25 @@ impl HasId for Customer {
     }
 }
 
+impl From<&Organization> for Customer {
+    fn from(value: &Organization) -> Self {
+        let mut customer = Customer::new(value.to_owned());
+        customer.generate_code();
+        customer
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
 
     #[test]
     fn test_customer_new_name() {
-        let customer = Customer::new(String::from("ACustomer"));
+        let org = Organization::new(String::from("ACustomer"));
+        let customer = Customer::new(org);
 
         assert_eq!(customer.name, String::from("ACustomer"));
+        assert_eq!(customer.id.is_some(),true);
+        assert_eq!(customer.href.is_some(),true);
     }
 }
