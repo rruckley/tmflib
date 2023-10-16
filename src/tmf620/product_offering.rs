@@ -7,13 +7,12 @@ use crate::tmf620::category::CategoryRef;
 use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
-use crate::tmf620::tmf620_catalog_management::{
-    AgreementRef, ChannelRef, MarketSegmentRef, PlaceRef, ResourceCandidateRef, SLARef,
-    ServiceCandidateRef,
-};
+
 use crate::{CreateTMFWithTime,HasLastUpdate, HasId};
 use super::product_offering_price::ProductOfferingPriceRef;
 use serde::{Deserialize, Serialize};
+
+use super::{AgreementRef,ChannelRef,MarketSegmentRef,PlaceRef,ResourceCandidateRef,ServiceCandidateRef,SLARef};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
