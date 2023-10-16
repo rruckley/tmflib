@@ -26,7 +26,7 @@ pub const LIB_PATH: &str = "tmflib";
 /// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId {
     /// Get a new UUID in simple format
-    fn get_uuid(&self) -> String {
+    fn get_uuid() -> String {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
         Uuid::new_v4().as_simple().to_string()
     }
@@ -93,6 +93,7 @@ pub mod tmf637;
 pub mod tmf639;
 pub mod tmf638;
 pub mod tmf641;
+pub mod tmf646;
 pub mod tmf648;
 pub mod tmf673;
 pub mod tmf674;
