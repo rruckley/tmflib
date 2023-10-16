@@ -18,6 +18,7 @@
 
 use super::LIB_PATH;
 use super::HasId;
+use serde::{Deserialize, Serialize};
 
 const MOD_PATH: &str = "tmf620";
 
@@ -28,3 +29,32 @@ pub mod party;
 pub mod product_offering;
 pub mod product_offering_price;
 pub mod product_specification;
+
+/// Agreement Reference
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct AgreementRef {}
+
+/// Channel Reference
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct ChannelRef {}
+
+/// Market Segment Refefence
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct MarketSegmentRef {}
+
+/// Place Reference
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct PlaceRef {}
+
+/// Resource Candidate Reference
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct ResourceCandidateRef {}
+
+/// Service Candidate Reference
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct ServiceCandidateRef {}
+
+/// Service Level Agreement Reference
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct SLARef {}
+

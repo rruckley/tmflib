@@ -51,3 +51,10 @@ impl HasId for Organization {
         self.id.as_ref().unwrap().clone()    
     }
 }
+
+impl From<String> for Organization {
+    fn from(value: String) -> Self {
+        // Generate an Organization from a given string, treating String as name
+        Organization::new(value)
+    }
+}
