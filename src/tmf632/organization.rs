@@ -40,7 +40,7 @@ impl HasId for Organization {
         self.href = Some(href);   
     }
     fn generate_id(&mut self) {
-        let id = self.get_uuid();
+        let id = Organization::get_uuid();
         self.id = Some(id);
         self.generate_href();
     }
