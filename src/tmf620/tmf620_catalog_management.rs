@@ -10,33 +10,6 @@ use super::{catalog::{Catalog,CatalogEventType}, product_offering::ProductOfferi
 
 use serde::{Deserialize, Serialize};
 
-/// Agreement Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct AgreementRef {}
-
-/// Channel Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct ChannelRef {}
-
-/// Market Segment Refefence
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct MarketSegmentRef {}
-
-/// Place Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct PlaceRef {}
-
-/// Resource Candidate Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct ResourceCandidateRef {}
-
-/// Service Candidate Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct ServiceCandidateRef {}
-
-/// Service Level Agreement Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct SLARef {}
 
 /// Root Struct to interact with catalogue
 #[derive(Default)]
