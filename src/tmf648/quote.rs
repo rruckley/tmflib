@@ -12,6 +12,7 @@ const QUOTE_VERS: &str = "1.0";
 
 /// Status of the quote object
 #[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub enum QuoteStateType {
     /// Quote has been rejected
     Rejected,

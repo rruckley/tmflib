@@ -14,6 +14,7 @@ const GEO_PATH : &str = "address";
 
 /// Geographic Address 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct GeographicAddress {
     /// Unique Id
     pub id: Option<String>,

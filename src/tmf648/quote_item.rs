@@ -7,6 +7,7 @@ use crate::common::attachment::AttachmentRefOrValue;
 
 /// Quote Item, line item for a product quote
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct QuoteItem {
     id: String,
     action: Option<String>,

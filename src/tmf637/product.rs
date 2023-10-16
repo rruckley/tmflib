@@ -11,6 +11,7 @@ use super::MOD_PATH;
 const PROD_PATH: &str = "product";
 
 #[derive(Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 enum ProductStatusType {
     #[default]
     Created,
@@ -25,6 +26,7 @@ enum ProductStatusType {
 
 /// Product record from the Product Inventory
 #[derive(Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Product {
     id: Option<String>,
     href: Option<String>,

@@ -5,6 +5,7 @@ use super::product::Product;
 
 /// Product Inventory management layer
 #[derive(Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct TMF637ProductInventory {
     products: Vec<Product>,
 }

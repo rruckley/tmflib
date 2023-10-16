@@ -7,6 +7,7 @@ use crate::tmf620::product_offering::{ProductOffering,ProductOfferingRef};
 
 /// Action Type for Order Items
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub enum OrderItemActionType {
     /// Add Order Item [Default]
     #[default]
@@ -21,6 +22,7 @@ pub enum OrderItemActionType {
 
 /// Line item for a Product Order
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductOrderItem {
     quantity: u16,
     action: OrderItemActionType,

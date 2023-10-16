@@ -18,6 +18,7 @@ const POQ_PATH : &str = "qualification";
 
 /// Qualification Item Status
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub enum TaskStateType {
     /// Qualification is acknowledged but not processed
     Acknowledged,
@@ -32,6 +33,7 @@ pub enum TaskStateType {
 
 /// Product Offering Qualification
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductOfferingQualification {
     category: Option<CategoryRef>,
     id: Option<String>,

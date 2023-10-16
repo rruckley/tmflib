@@ -16,6 +16,7 @@ const GEO_PATH: &str = "site";
 /// Link to a place
 /// Provide a place locally within the payload
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PlaceRefOrValue {
     id: String,
     href: String,
@@ -34,6 +35,7 @@ impl From<GeographicAddress> for PlaceRefOrValue {
 
 /// Geographic Site
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct GeographicSite {
     id: Option<String>,
     href: Option<String>,

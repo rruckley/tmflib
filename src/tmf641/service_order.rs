@@ -9,6 +9,7 @@ const SO_PATH: &str = "order";
 
 /// Service Order Object
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ServiceOrder {
     id: String,
     href: String,

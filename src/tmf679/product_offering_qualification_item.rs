@@ -11,6 +11,7 @@ use super::product_qualification::TaskStateType;
 
 /// Action for this product offering
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub enum ProductActionType {
     /// Add a new offering
     Add,
@@ -25,6 +26,7 @@ pub enum ProductActionType {
 
 /// Product Offering Qualification
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductOfferingQualificationItem {
     /// Action for this qualification
     pub action: ProductActionType,

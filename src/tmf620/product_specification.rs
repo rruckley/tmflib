@@ -14,6 +14,7 @@ const CHAR_VALUE_MAX_CARD : u16 = 1;
 
 /// Product Specification Characteristic
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristic {
     configurable: bool,
     description: Option<String>,
@@ -90,6 +91,7 @@ impl ProductSpecificationCharacteristic {
 
 /// Product Specification
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductSpecification {
     /// Id
     pub id: String,
@@ -166,6 +168,7 @@ impl From<ProductSpecification> for ProductSpecificationRef {
 /// # Example
 /// If the Product Offering is "Internet", then the Specification might be "Bandwidht" and the Value might be "100Mb"
 #[derive(Clone, Debug ,Default , Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristicValue {
     is_default: bool,
     range_interval: Option<String>,

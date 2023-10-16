@@ -46,6 +46,7 @@ impl BundledProductOffering {
 /// # Detalis
 /// This controls the cardinality of included bundled offerings, e.g. min max default etc.
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct BundledProductOfferingOption {
     number_rel_offer_default: u8,
     number_rel_offer_lower_limit: u8,

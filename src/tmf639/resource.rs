@@ -11,6 +11,7 @@ const RESOURCE_PATH : &str  = "resource";
 
 /// TMF Resource 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Resource {
     id: Option<String>,
     href: Option<String>,

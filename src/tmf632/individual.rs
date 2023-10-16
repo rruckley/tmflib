@@ -12,6 +12,7 @@ const IND_PATH : &str = "individual";
 
 /// An individual
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Individual {
     /// Methods for contacting this individual
     pub contact_medium: Vec<ContactMedium>,

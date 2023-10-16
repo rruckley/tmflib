@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 /// # Warning
 /// This will be moved into platypus
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct TMF629CustomerManagement {
     customers: Vec<Customer>,
 }

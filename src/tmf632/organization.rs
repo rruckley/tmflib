@@ -12,6 +12,7 @@ const ORG_PATH : &str = "organization";
 
 /// Organisation record (sic)
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Organization {
     contact_medium: Vec<ContactMedium>,
     /// Unique id of this organization record

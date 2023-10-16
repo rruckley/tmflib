@@ -11,6 +11,7 @@ use super::LIB_PATH;
 const SERVICE_PATH : &str = "service";
 
 #[derive(Clone,Debug,Default,Deserialize,PartialEq,Serialize)]
+#[serde(rename_all = "camelCase")]
 enum ServiceStateType {
     FeasibilityChecked,
     Designed,
@@ -23,6 +24,7 @@ enum ServiceStateType {
 
 /// Service record from the Service Inventory
 #[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Service {
     id: Option<String>,
     href: Option<String>,

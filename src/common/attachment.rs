@@ -11,6 +11,7 @@ const ATTACH_PATH: &str = "attachment";
 
 /// Attachment Type
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub enum AttachmentType {
     /// Inline Attachment, i.e. inside the payload
     #[default]
@@ -21,6 +22,7 @@ pub enum AttachmentType {
 
 /// Attachment Size
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct AttachmentSize {
     amount: f64,
     units: String,
