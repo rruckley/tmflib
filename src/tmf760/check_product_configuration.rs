@@ -12,6 +12,7 @@ const CPC_PATH : &str = "checkConfig";
 
 /// Configuration Check Status
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub enum TaskStateType {
     /// Config request has been recieved and acknowledged
     #[default]
@@ -30,6 +31,7 @@ pub enum TaskStateType {
 
 /// Check Product Configuration request object
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CheckProductConfiguration {
     id: Option<String>,
     href: Option<String>,
