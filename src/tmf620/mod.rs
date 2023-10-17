@@ -46,10 +46,6 @@ pub struct MarketSegmentRef {}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct PlaceRef {}
 
-/// Service Candidate Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct ServiceCandidateRef {}
-
 /// Service Level Agreement Reference
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct SLARef {}

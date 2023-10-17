@@ -109,21 +109,17 @@ impl Customer {
 }
 
 impl HasId for Customer {
-    fn get_id(&mut self) -> String {
+    fn get_id(&self) -> String {
         match &self.id {
             None => {
-                self.generate_id();
+               
                 self.id.as_ref().unwrap().clone()
             }
             Some(id) => id.to_string(),
         }
     }
 
-    fn get_href(&mut self) -> String {
-  
-        if self.href.is_none() {
-            self.generate_href();
-        }
+    fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()
     }
 

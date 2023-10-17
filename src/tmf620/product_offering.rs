@@ -10,10 +10,11 @@ use crate::tmf620::product_specification::{
 
 use crate::{CreateTMFWithTime,HasLastUpdate, HasId};
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
+use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
 use serde::{Deserialize, Serialize};
 
-use super::{AgreementRef,ChannelRef,MarketSegmentRef,PlaceRef,ServiceCandidateRef,SLARef};
+use super::{AgreementRef,ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
@@ -168,10 +169,10 @@ impl HasId for ProductOffering {
         // Since ID has just changed, update href also
         self.generate_href(); 
     }
-    fn get_href(&mut self) -> String {
+    fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()    
     }
-    fn get_id(&mut self) -> String {
+    fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()
         
     }

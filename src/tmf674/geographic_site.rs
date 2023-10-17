@@ -69,10 +69,10 @@ impl HasId for GeographicSite {
         self.id = Some(id);
         self.generate_href();    
     }
-    fn get_href(&mut self) -> String {
+    fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()    
     }
-    fn get_id(&mut self) -> String {
+    fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()    
     }
 }

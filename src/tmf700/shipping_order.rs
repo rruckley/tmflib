@@ -41,16 +41,11 @@ impl HasId for ShippingOrder {
         self.id = Some(id);
         self.generate_href();    
     }
-    fn get_href(&mut self) -> String {
-        if self.href.is_none() {
-            self.generate_href();
-        }    
+    fn get_href(&self) -> String {  
         self.href.as_ref().unwrap().clone()
     }
-    fn get_id(&mut self) -> String {
-        if self.id.is_none() {
-            self.generate_id();
-        }  
+    fn get_id(&self) -> String {
+ 
         self.id.as_ref().unwrap().clone()
     }
 }
@@ -76,7 +71,7 @@ mod test {
 
     #[test]
     fn shipping_order_create_href_matches_id() {
-        let mut so = ShippingOrder::new();
+        let so = ShippingOrder::new();
         let id = so.get_id();
         let href = so.get_href();
 

@@ -37,9 +37,9 @@ pub trait HasId {
     /// This is usually triggered directly from generate_id() but can be manually triggered.
     fn generate_href(&mut self);
     /// Extract the id of this object into a new String
-    fn get_id(&mut self) -> String;
+    fn get_id(&self) -> String;
     /// Extract the HREF of this object into a new String
-    fn get_href(&mut self) -> String;
+    fn get_href(&self) -> String;
 }
 
 /// Trait to create TMF structs that have the HasId trait
@@ -89,6 +89,7 @@ pub mod tmf620;
 pub mod tmf622;
 pub mod tmf629;
 pub mod tmf632;
+pub mod tmf633;
 pub mod tmf634;
 pub mod tmf637;
 pub mod tmf639;
