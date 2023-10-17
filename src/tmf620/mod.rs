@@ -46,10 +46,6 @@ pub struct MarketSegmentRef {}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct PlaceRef {}
 
-/// Resource Candidate Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct ResourceCandidateRef {}
-
 /// Service Candidate Reference
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ServiceCandidateRef {}

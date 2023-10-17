@@ -9,10 +9,11 @@ use crate::tmf620::product_specification::{
 };
 
 use crate::{CreateTMFWithTime,HasLastUpdate, HasId};
+use crate::tmf634::resource_candidate::ResourceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
 use serde::{Deserialize, Serialize};
 
-use super::{AgreementRef,ChannelRef,MarketSegmentRef,PlaceRef,ResourceCandidateRef,ServiceCandidateRef,SLARef};
+use super::{AgreementRef,ChannelRef,MarketSegmentRef,PlaceRef,ServiceCandidateRef,SLARef};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
