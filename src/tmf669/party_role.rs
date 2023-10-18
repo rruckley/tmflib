@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId,CreateTMF,LIB_PATH};
+use crate::{HasId,CreateTMF,LIB_PATH, common::related_party::RelatedParty};
 
 use super::MOD_PATH;
 
@@ -17,6 +17,10 @@ pub struct PartyRole {
    pub href: Option<String>,
    /// Name of Role
    pub name: String,
+   /// Entity that is associated with this role
+   engaged_party: Option<RelatedParty>,
+   /// Other related parties
+   related_party: Vec<RelatedParty>,
 }
 
 impl PartyRole {

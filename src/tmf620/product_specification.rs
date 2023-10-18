@@ -2,10 +2,10 @@
 //!
 
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
-use super::LIB_PATH;
 use super::MOD_PATH;
+
+use crate::{HasId,CreateTMF,LIB_PATH};
 
 const SPEC_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
@@ -39,15 +39,10 @@ impl ProductSpecificationCharacteristic {
     pub fn new(name: String) -> ProductSpecificationCharacteristic {
         ProductSpecificationCharacteristic {
             configurable: true,
-            description: None,
-            extensible: false,
-            is_unique: false,
             max_cardinality: CHAR_VALUE_MAX_CARD,
             min_cardinality: CHAR_VALUE_MIN_CARD,
             name,
-            regex: None,
-            value_type: None,
-            valid_for: None,
+            ..Default::default()
         }
     }
 
@@ -94,9 +89,9 @@ impl ProductSpecificationCharacteristic {
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecification {
     /// Id
-    pub id: String,
+    pub id: Option<String>,
     /// HREF where object is located
-    pub href: String,
+    pub href: Option<String>,
     /// Brand
     pub brand: Option<String>,
     /// Description
@@ -113,19 +108,11 @@ pub struct ProductSpecification {
 
 impl ProductSpecification {
     /// Create new instance of Product Specification
-    pub fn new(name: String) -> ProductSpecification {
-        let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, SPEC_PATH, id);
-        ProductSpecification {
-            id,
-            href,
-            brand: None,
-            description: None,
-            is_bundle: false,
-            name,
-            version: Some(SPEC_VERS.to_string()),
-            product_spec_characteristic: vec![],
-        }
+    pub fn new(name: String) -> ProductSpecification {       
+        let mut prod_spec = ProductSpecification::create();
+        prod_spec.name = name;
+        prod_spec.version = Some(SPEC_VERS.to_string());
+        prod_spec
     }
 
     /// Add a new Characteristic into the specification
@@ -135,6 +122,26 @@ impl ProductSpecification {
     ) -> ProductSpecification {
         self.product_spec_characteristic.push(characteristic);
         self
+    }
+}
+
+impl CreateTMF<ProductSpecification> for ProductSpecification {}
+
+impl HasId for ProductSpecification {
+    fn generate_href(&mut self) {
+        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, SPEC_PATH, self.get_id());
+        self.href = Some(href);    
+    }
+    fn generate_id(&mut self) {
+        let id = ProductSpecification::get_uuid();
+        self.id = Some(id);
+        self.generate_href();    
+    }
+    fn get_href(&self) -> String {
+        self.href.as_ref().unwrap().clone()    
+    }
+    fn get_id(&self) -> String {
+        self.id.as_ref().unwrap().clone()
     }
 }
 
@@ -154,8 +161,8 @@ pub struct ProductSpecificationRef {
 impl From<ProductSpecification> for ProductSpecificationRef {
     fn from(ps: ProductSpecification) -> ProductSpecificationRef {
         ProductSpecificationRef {
-            id: ps.id,
-            href: ps.href,
+            id: ps.id.unwrap(),
+            href: ps.href.unwrap(),
             name: ps.name,
             version: ps.version,
         }

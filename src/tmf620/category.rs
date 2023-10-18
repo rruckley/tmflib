@@ -5,7 +5,6 @@ use crate::HasLastUpdate;
 use crate::tmf620::product_offering::ProductOfferingRef;
 
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 use super::LIB_PATH;
 use super::MOD_PATH;
@@ -80,14 +79,6 @@ impl Category {
         cat
     }
 
-    /// Generate a unique id for this object
-    pub fn generate_id(&mut self) {
-        let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, CAT_PATH, id);
-        self.id = Some(id);
-        self.href = Some(href);
-    } 
-
     /// Set the description of this category
     /// # Examples
     /// ```
@@ -151,7 +142,7 @@ impl HasId for Category {
     fn generate_id(&mut self) {
         // No return type for now
         // Using simple format as SurrealDB doesn't like dashes in standard format.
-        let id = Uuid::new_v4().as_simple().to_string(); 
+        let id = Category::get_uuid();
         self.id = Some(id);
         self.generate_href();
     }
