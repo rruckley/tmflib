@@ -12,8 +12,8 @@
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-//! Resource Catalogue Modules
+//! Party Role Management
 
-const MOD_PATH : &str = "tmf634";
+const MOD_PATH : &str = "tmf669";
 
-pub mod resource_candidate;
+pub mod party_role;
