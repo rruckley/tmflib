@@ -11,8 +11,8 @@ fn main() {
     // Create an organisation
     let organisation = Organization::new(String::from("An Organisation"));
     let customer = Customer::from(&organisation);
-    let resource = Resource::new("VLAN")
-        .add_party(RelatedParty::from(&customer));
+    let mut resource = Resource::new("VLAN");
+    resource.add_party(RelatedParty::from(&customer));
 
     dbg!(resource);
 }
