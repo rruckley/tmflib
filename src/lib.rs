@@ -97,6 +97,7 @@ pub mod tmf638;
 pub mod tmf641;
 pub mod tmf646;
 pub mod tmf648;
+pub mod tmf669;
 pub mod tmf673;
 pub mod tmf674;
 pub mod tmf679;
