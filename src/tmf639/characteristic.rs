@@ -1,10 +1,6 @@
 //! Characteristic Module
 
 use serde::{Deserialize, Serialize};
-use crate::LIB_PATH;
-
-const CHAR_PATH : &str = "characteristic";
-
 
 /// Resource Characteristic
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
