@@ -16,6 +16,7 @@ pub struct CartItem {
 }
 
 impl CartItem {
+    /// Add a note to this cart item
     pub fn add_note(&mut self, note : Note) {
         self.note.push(note);
     }
