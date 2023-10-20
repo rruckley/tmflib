@@ -3,6 +3,9 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{HasId,CreateTMF,LIB_PATH};
+use crate::common::contact::ContactMedium;
+use crate::common::related_party::RelatedParty;
+use crate::common::note::Note;
 
 use super::MOD_PATH;
 use super::cart_item::CartItem;
@@ -13,12 +16,16 @@ const CART_PATH : &str = "cart";
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShoppingCart {
+    /// Contact Medium
+    pub contact_medium: Vec<ContactMedium>,
     /// Id
     pub id: Option<String>,
     /// HTTP Reference
     pub href: Option<String>,
     /// Cart Items
     cart_item : Vec<CartItem>,
+    /// Related Party
+    related_party: Vec<RelatedParty>,
 }
 
 impl ShoppingCart {
@@ -30,6 +37,10 @@ impl ShoppingCart {
     /// Add item to shopping cart
     pub fn add_item(&mut self, item : CartItem) {
         self.cart_item.push(item);
+    }
+    /// Add Related Party
+    pub fn add_party(&mut self, party : RelatedParty) {
+        self.related_party.push(party);
     }
 }
 
