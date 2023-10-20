@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use crate::{HasId,CreateTMF,LIB_PATH};
 use crate::common::contact::ContactMedium;
 use crate::common::related_party::RelatedParty;
-use crate::common::note::Note;
+
 
 use super::MOD_PATH;
 use super::cart_item::CartItem;
