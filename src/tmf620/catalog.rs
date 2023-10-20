@@ -3,7 +3,7 @@
 //!
 use crate::{HasId, CreateTMFWithTime,HasLastUpdate};
 use crate::tmf620::category::CategoryRef;
-use crate::tmf620::party::RelatedParty;
+use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
 
 use chrono::naive::NaiveDateTime;
@@ -44,7 +44,7 @@ pub struct Catalog {
     /// Categories
     #[serde(skip_serializing_if = "Option::is_none")]
     category: Option<Vec<CategoryRef>>,
-    /// Related parties
+    /// Related parties for party specific catalogs
     #[serde(skip_serializing_if = "Option::is_none")]
     related_party: Option<Vec<RelatedParty>>,
 }
@@ -61,10 +61,12 @@ impl CreateTMFWithTime<Catalog> for Catalog {
 
 impl Catalog {
     /// Create a new instance of catalog struct
-    pub fn new() -> Catalog {
+    pub fn new(name : &str) -> Catalog {
         let mut cat = Catalog::create_with_time();
+        cat.name = Some(name.to_owned());
         cat.version = Some(CAT_VERS.to_string());
         cat.category = Some(vec![]);
+        cat.related_party = Some(vec![]);
         cat
     }
 
@@ -75,14 +77,13 @@ impl Catalog {
     }
 
     /// Add a category to a catalog
-    pub fn add_category(self, category: CategoryRef) -> Result<String, String> {
-        match self.category {
-            None => Err(String::from("Missing category Vec")),
-            Some(mut c) => {
-                c.push(category);
-                Ok(String::from("Category added"))
-            }
-        }
+    pub fn add_category(&mut self, category: CategoryRef) {
+        self.category.as_mut().unwrap().push(category);
+    }
+
+    /// Add party to a catalog
+    pub fn add_party(&mut self, party : RelatedParty) {
+        self.related_party.as_mut().unwrap().push(party);
     }
 }
 
@@ -167,23 +168,17 @@ mod tests {
     use crate::tmf620::catalog::CAT_VERS;
 
     use super::Catalog;
-    #[test]
-    fn test_cat_default() {
-        let cat = Catalog::new();
-
-        assert_eq!(cat.name, None);
-    }
 
     #[test]
     fn test_cat_name() {
-        let cat = Catalog::new().name(String::from("MyCatalog"));
+        let cat = Catalog::new("MyCatalog");
 
         assert_eq!(cat.name, Some(String::from("MyCatalog")));
     }
 
     #[test]
     fn test_cat_vers() {
-        let cat = Catalog::new().name(String::from("MyCatalog"));
+        let cat = Catalog::new("MyCatalog");
 
         assert_eq!(cat.version, Some(CAT_VERS.to_string()));
     }
