@@ -10,5 +10,5 @@ repository = "https://github.com/rruckley/tmflib"
 chrono = "0.4.31"
 serde = { version = "1.0.188", features = ["derive"]}
 serde_json = "1.0.107"
-sha256 = "1.4.0"
+sha256 = { version = "1.4", default-features = false }
 uuid = { version = "1.4.1", features = ["v4"]}
