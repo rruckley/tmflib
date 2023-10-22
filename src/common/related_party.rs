@@ -1,4 +1,10 @@
 //! Related Party Module
+//! # Description
+//! This object provides a link to any of the party objects, specifically:
+//! - Customer
+//! - Party Role
+//! - Individual
+//! - Organization
 
 use std::convert::From;
 use serde::{Deserialize,Serialize};
@@ -57,9 +63,8 @@ impl From<&Individual> for RelatedParty {
     }
 }
 
-/// Taken from https://engage.tmforum.org/discussion/role-in-relatedparty?ReturnUrl=%2fcommunities%2fcommunity-home%2fdigestviewer%3fcommunitykey%3dd543b8ba-9d3a-4121-85ce-5b68e6c31ce5
+/// See: <https://engage.tmforum.org/discussion/role-in-relatedparty?ReturnUrl=%2fcommunities%2fcommunity-home%2fdigestviewer%3fcommunitykey%3dd543b8ba-9d3a-4121-85ce-5b68e6c31ce5>
 /// 
-
 impl From<&PartyRole> for RelatedParty {
     fn from(value: &PartyRole) -> Self {
         RelatedParty { 

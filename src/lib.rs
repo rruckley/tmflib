@@ -13,6 +13,11 @@
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 //! TMF Library
+//! # Description
+//! This library covers objects required to interact with various TMF defined APIs. 
+//! It does not define how to interact with those APIs nor provide a REST interface (at this stage)
+//! but simply provides definitions of all the schema and some helpful functions to create compliant objects
+//! that can then be seriliased into or from JSON as required.
 
 #![warn(missing_docs)]
 
@@ -84,23 +89,43 @@ pub trait CreateTMFWithTime<T : Default + HasId + HasLastUpdate> {
     }
 }
 
+/// Common Modules
 pub mod common;
+/// Product Catalogue
 pub mod tmf620;
+/// Product Order
 pub mod tmf622;
+/// Customer
 pub mod tmf629;
+/// Party
 pub mod tmf632;
+/// Service Catalog
 pub mod tmf633;
+/// Resource Catalog
 pub mod tmf634;
+/// Product Inventory
 pub mod tmf637;
-pub mod tmf639;
+/// Service Inventory
 pub mod tmf638;
+/// Resource Inventory
+pub mod tmf639;
+/// Service Order
 pub mod tmf641;
+/// Appointment
 pub mod tmf646;
+/// Quote
 pub mod tmf648;
+/// Shopping Cart
 pub mod tmf663;
+/// Party Role
 pub mod tmf669;
+/// Geographic Address
 pub mod tmf673;
+/// Geographic Site
 pub mod tmf674;
+/// Product Offering Qualification
 pub mod tmf679;
+/// Shipping Order [Pre-Prod]
 pub mod tmf700;
+/// Product Configuration
 pub mod tmf760;

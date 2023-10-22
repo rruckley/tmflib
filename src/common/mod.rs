@@ -13,7 +13,7 @@
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 //! Common Modules
-//!
+//! 
 
 const MOD_PATH: &str = "common";
 
