@@ -15,14 +15,18 @@ const IND_PATH : &str = "individual";
 #[serde(rename_all = "camelCase")]
 pub struct Individual {
     /// Methods for contacting this individual
-    pub contact_medium: Vec<ContactMedium>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub contact_medium: Option<Vec<ContactMedium>>,
     /// Unique id for this individual
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HTML reference for this individual object
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Full name of the individual
     pub full_name: String,
     /// Parties related to this individual, e.g. company / organization
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
 }
 
@@ -35,6 +39,7 @@ impl Individual {
         ind.full_name = name.to_owned();
         // Need this as default would be None
         ind.related_party = Some(vec![]);
+        ind.contact_medium = Some(vec![]);
         ind
     }
 
@@ -73,7 +78,7 @@ impl Individual {
 
     /// Add a contact medium to the individual
     pub fn add_contact(&mut self, medium : ContactMedium) {
-        self.contact_medium.push(medium);
+        self.contact_medium.as_mut().unwrap().push(medium);
     }
 }
 
