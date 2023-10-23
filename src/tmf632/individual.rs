@@ -23,7 +23,7 @@ pub struct Individual {
     /// Full name of the individual
     pub full_name: String,
     /// Parties related to this individual, e.g. company / organization
-    pub related_party: Vec<RelatedParty>,
+    pub related_party: Option<Vec<RelatedParty>>,
 }
 
 impl CreateTMF<Individual> for Individual {}
@@ -33,7 +33,8 @@ impl Individual {
     pub fn new(name : &str) -> Individual {
         let mut ind = Individual::create();
         ind.full_name = name.to_owned();
-        ind.related_party = vec![];
+        // Need this as default would be None
+        ind.related_party = Some(vec![]);
         ind
     }
 
@@ -67,7 +68,7 @@ impl Individual {
 
     /// Add a related party to the individual
     pub fn add_party(&mut self, party : RelatedParty) {
-        self.related_party.push(party);
+        self.related_party.as_mut().unwrap().push(party);
     }
 
     /// Add a contact medium to the individual
