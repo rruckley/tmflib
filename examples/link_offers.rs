@@ -1,5 +1,5 @@
 //! Example to link Product Offers
-//! 
+//! # Description
 
 use tmflib::tmf620::product_offering::ProductOffering;
 
