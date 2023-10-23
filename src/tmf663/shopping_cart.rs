@@ -17,30 +17,37 @@ const CART_PATH : &str = "cart";
 #[serde(rename_all = "camelCase")]
 pub struct ShoppingCart {
     /// Contact Medium
-    pub contact_medium: Vec<ContactMedium>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub contact_medium: Option<Vec<ContactMedium>>,
     /// Id
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HTTP Reference
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Cart Items
-    cart_item : Vec<CartItem>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    cart_item : Option<Vec<CartItem>>,
     /// Related Party
-    related_party: Vec<RelatedParty>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    related_party: Option<Vec<RelatedParty>>,
 }
 
 impl ShoppingCart {
     /// Create a new shopping cart
     pub fn new() -> ShoppingCart {
-        let cart = ShoppingCart::create();
+        let mut cart = ShoppingCart::create();
+        cart.cart_item = Some(vec![]);
+        cart.related_party = Some(vec![]);
         cart
     }
     /// Add item to shopping cart
     pub fn add_item(&mut self, item : CartItem) {
-        self.cart_item.push(item);
+        self.cart_item.as_mut().unwrap().push(item);
     }
     /// Add Related Party
     pub fn add_party(&mut self, party : RelatedParty) {
-        self.related_party.push(party);
+        self.related_party.as_mut().unwrap().push(party);
     }
 }
 
