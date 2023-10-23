@@ -117,6 +117,8 @@ pub mod tmf646;
 pub mod tmf648;
 /// Shopping Cart
 pub mod tmf663;
+/// Account
+pub mod tmf666;
 /// Party Role
 pub mod tmf669;
 /// Geographic Address
