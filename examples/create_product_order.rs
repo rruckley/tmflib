@@ -13,8 +13,8 @@ fn main() {
     let offer = ProductOffering::new(String::from("Sample Offering"));
     let org = Organization::new(String::from("ACustomer"));
     let customer = Customer::new(org);
-    let mut person = Individual::new("Ryan Ruckley".to_string());
-    person.add_contact(ContactMedium::email("Ryan Ruckley"));
+    let mut person = Individual::new("John Smith");
+    person.add_contact(ContactMedium::email("John.Smith@example.com"));
     let mut order = ProductOrder::new();
     order.add_order_item(ProductOrderItem::from(offer));
     order.add_party(RelatedParty::from(&customer));

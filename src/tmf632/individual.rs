@@ -30,9 +30,9 @@ impl CreateTMF<Individual> for Individual {}
 
 impl Individual {
     /// Create a new instance of indiviudal object
-    pub fn new(name : String) -> Individual {
+    pub fn new(name : &str) -> Individual {
         let mut ind = Individual::create();
-        ind.full_name = name;
+        ind.full_name = name.to_owned();
         ind.related_party = vec![];
         ind
     }
@@ -42,7 +42,7 @@ impl Individual {
     /// ```
     /// use tmflib::tmf632::individual::Individual;
     /// 
-    /// let individual = Individual::new("John Smith".to_string())
+    /// let individual = Individual::new("John Smith")
     ///     .email("john.smith@example.com");
     /// ```
     pub fn email(mut self, email : &str) -> Individual {
@@ -56,7 +56,7 @@ impl Individual {
     /// ```
     /// use tmflib::tmf632::individual::Individual;
     /// 
-    /// let individual = Individual::new("John Smith".to_string())
+    /// let individual = Individual::new("John Smith")
     ///     .mobile("0411 111 111");
     /// ```
     pub fn mobile(mut self, mobile: &str) -> Individual {
@@ -99,14 +99,14 @@ mod test {
     use super::Individual;
     #[test]
     fn test_individual_create_id() {
-        let ind = Individual::new(String::from("APerson"));
+        let ind = Individual::new("APerson");
 
         assert_eq!(ind.id.is_some(),true);
     }
 
     #[test]
     fn test_individual_create_href() {
-        let ind = Individual::new(String::from("APerson"));
+        let ind = Individual::new("APerson");
 
         assert_eq!(ind.href.is_some(),true);
     }

@@ -12,7 +12,7 @@ fn main() {
     let mut cart = ShoppingCart::new();
     let offer = ProductOffering::new(String::from("MyProductOffer"));
     let por = ProductOfferingRef::from(offer);
-    let individual = Individual::new("John Smith".to_string())
+    let individual = Individual::new("John Smith")
         .email("john.smith@example.com")
         .mobile("0411 111 111");
     let note1 = Note::from("Checking on stock levels");
