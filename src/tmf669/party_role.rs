@@ -30,6 +30,17 @@ impl PartyRole {
         role.name = name.to_owned();
         role
     }
+
+    /// Set engaged party
+    pub fn engaged_party(mut self, related_party: RelatedParty) -> PartyRole {
+        self.engaged_party = Some(related_party);
+        self
+    }
+
+    /// Add a related party
+    pub fn add_party(&mut self, party : RelatedParty) {
+        self.related_party.push(party);
+    }
 }
 
 impl HasId for PartyRole {
