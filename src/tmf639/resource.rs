@@ -114,4 +114,7 @@ impl HasId for Resource {
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()
     }
+    fn get_class() -> String {
+        RESOURCE_PATH.to_owned()
+    }
 }

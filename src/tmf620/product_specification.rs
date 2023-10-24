@@ -143,6 +143,9 @@ impl HasId for ProductSpecification {
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()
     }
+    fn get_class() -> String {
+        SPEC_PATH.to_owned()
+    }
 }
 
 /// Product Specification Reference

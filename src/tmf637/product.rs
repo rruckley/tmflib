@@ -51,6 +51,9 @@ impl HasId for Product {
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()    
     }
+    fn get_class() -> String {
+        PROD_PATH.to_owned()
+    }
 }
 impl CreateTMF<Product> for Product {}
 

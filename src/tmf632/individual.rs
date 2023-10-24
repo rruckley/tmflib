@@ -98,6 +98,9 @@ impl HasId for Individual {
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone() 
     }
+    fn get_class() -> String {
+        IND_PATH.to_owned()
+    }
 }
 
 #[cfg(test)]

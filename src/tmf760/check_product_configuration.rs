@@ -65,5 +65,8 @@ impl HasId for CheckProductConfiguration {
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()     
     }
+    fn get_class() -> String {
+        CPC_PATH.to_owned()
+    }
     
 }

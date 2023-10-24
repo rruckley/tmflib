@@ -59,6 +59,9 @@ impl HasId for PartyRole {
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()
     }
+    fn get_class() -> String {
+        ROLE_PATH.to_owned()
+    }
 }
 
 impl CreateTMF<PartyRole> for PartyRole {}

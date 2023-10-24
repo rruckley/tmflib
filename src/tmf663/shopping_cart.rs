@@ -67,6 +67,9 @@ impl HasId for ShoppingCart {
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()    
     }
+    fn get_class() -> String {
+        CART_PATH.to_owned()
+    }
 }
 
 impl CreateTMF<ShoppingCart> for ShoppingCart {}

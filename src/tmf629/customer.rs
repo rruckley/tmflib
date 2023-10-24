@@ -145,6 +145,9 @@ impl HasId for Customer {
             None => self.generate_id(),
         }
     }
+    fn get_class() -> String {
+        CUST_PATH.to_owned()
+    }
 }
 
 impl From<&Organization> for Customer {

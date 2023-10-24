@@ -49,6 +49,9 @@ impl HasId for ServiceCandidate {
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()
     }
+    fn get_class() -> String {
+        SC_PATH.to_owned()
+    }
 }
 
 impl CreateTMF<ServiceCandidate> for ServiceCandidate {}

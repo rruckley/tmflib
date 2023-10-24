@@ -146,6 +146,10 @@ impl HasId for Category {
         self.id = Some(id);
         self.generate_href();
     }
+
+    fn get_class() -> String {
+        CAT_VERS.to_owned()
+    }
 }
 
 #[cfg(test)]
