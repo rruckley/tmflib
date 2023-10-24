@@ -45,6 +45,8 @@ pub trait HasId {
     fn get_id(&self) -> String;
     /// Extract the HREF of this object into a new String
     fn get_href(&self) -> String;
+    /// Get the class of this object
+    fn get_class() -> String;
 }
 
 /// Trait to create TMF structs that have the HasId trait

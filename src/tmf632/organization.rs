@@ -73,6 +73,9 @@ impl HasId for Organization {
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()    
     }
+    fn get_class() -> String {
+        ORG_PATH.to_owned()
+    }
 }
 
 impl From<String> for Organization {

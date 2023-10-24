@@ -176,6 +176,9 @@ impl HasId for ProductOffering {
         self.id.as_ref().unwrap().clone()
         
     }
+    fn get_class() -> String {
+        PO_PATH.to_owned()
+    }
 }
 
 impl HasLastUpdate for ProductOffering {

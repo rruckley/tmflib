@@ -48,6 +48,9 @@ impl HasId for ShippingOrder {
  
         self.id.as_ref().unwrap().clone()
     }
+    fn get_class() -> String {
+        SHIP_PATH.to_owned()
+    }
 }
 
 #[cfg(test)]

@@ -108,6 +108,10 @@ impl HasId for Catalog {
         self.id = Some(id);
         self.generate_href();
     }
+
+    fn get_class() -> String {
+        CAT_PATH.to_owned()
+    }
 }
 
 impl EventPayload<Catalog,CatalogEventType> for Catalog {

@@ -57,4 +57,8 @@ impl HasId for ProductOfferingPrice {
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()
     }
+
+    fn get_class() -> String {
+        PRICE_PATH.to_owned()
+    }
 }

@@ -58,6 +58,9 @@ impl HasId for Appointment {
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()    
     }
+    fn get_class() -> String {
+        APP_PATH.to_owned()
+    }
 }
 
 impl CreateTMF<Appointment> for Appointment {}
