@@ -169,9 +169,10 @@ pub struct CatalogBatchEvent {}
 #[cfg(test)]
 mod tests {
 
-    use crate::tmf620::catalog::CAT_VERS;
+    use crate::tmf620::catalog::{CAT_VERS,CAT_PATH};
 
     use super::Catalog;
+    use crate::HasId;
 
     #[test]
     fn test_cat_name() {
@@ -185,5 +186,11 @@ mod tests {
         let cat = Catalog::new("MyCatalog");
 
         assert_eq!(cat.version, Some(CAT_VERS.to_string()));
+    }
+
+    #[test]
+    fn test_cat_class() {
+
+        assert_eq!(Catalog::get_class(),CAT_PATH.to_owned());
     }
 }
