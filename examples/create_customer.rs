@@ -5,9 +5,7 @@ use tmflib::tmf632::organization::Organization;
 
 fn main() {
     let org = Organization::new(String::from("ACustomer"));
-    let mut customer = Customer::new(org);
-
-    //ccustomer.name(String::from("NewName"));
+    let customer = Customer::new(org);
 
     dbg!(customer);
 }
