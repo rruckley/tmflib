@@ -2,6 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
+use crate::common::related_party::RelatedParty;
 use crate::{CreateTMF, HasId};
 
 use crate::LIB_PATH;
@@ -10,17 +11,38 @@ use crate::common::contact::ContactMedium;
 
 const ORG_PATH : &str = "organization";
 
+/// Organization Status
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub enum OrganizationStateType {
+    /// Initialized
+    #[default]
+    Initialized,
+    /// Validation complete
+    Validated,
+    /// No longer valid
+    Closed,
+}
+
 /// Organisation record (sic)
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Organization {
-    contact_medium: Vec<ContactMedium>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    contact_medium: Option<Vec<ContactMedium>>,
     /// Unique id of this organization record
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HTML reference to this organization record
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Name of this Organization
     pub name: String,
+    /// Related Party
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub related_party: Option<Vec<RelatedParty>>,
+    /// Status
+    pub status: Option<OrganizationStateType>,
 }
 
 impl Organization {
@@ -28,6 +50,7 @@ impl Organization {
     pub fn new(name : String) -> Organization {
         let mut org = Organization::create();
         org.name = name;
+        org.related_party = Some(vec![]);
         org
     }
 }
