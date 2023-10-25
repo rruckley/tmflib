@@ -10,7 +10,7 @@ use crate::tmf632::organization::Organization;
 use super::characteristic::Characteristic;
 use crate::common::contact::ContactMedium;
 use crate::common::related_party::RelatedParty;
-use super::HasId;
+use crate::{HasId,HasName};
 use super::LIB_PATH;
 use super::MOD_PATH;
 
@@ -39,6 +39,12 @@ pub struct Customer {
     characteristic: Option<Vec<Characteristic>>,
     related_party: Vec<RelatedParty>,
     engaged_party: Option<RelatedParty>,
+}
+
+impl HasName for Customer {
+    fn get_name(&self) -> String {
+        self.name.clone()
+    }
 }
 
 impl CreateTMF<Customer> for Customer {}
