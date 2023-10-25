@@ -91,6 +91,16 @@ pub trait CreateTMFWithTime<T : Default + HasId + HasLastUpdate> {
     }
 }
 
+/// Does an object have a name field?
+pub trait HasName : HasId {
+    /// Return name of object
+    fn get_name(&self) -> String;
+    /// Match against the name
+    fn find(&self, pattern : &str) -> bool {
+        self.get_name().contains(pattern.trim())
+    }
+}
+
 /// Common Modules
 pub mod common;
 /// Product Catalogue
