@@ -1,7 +1,7 @@
 //! Catalogue Module
 //!
 //!
-use crate::{HasId, CreateTMFWithTime,HasLastUpdate};
+use crate::{HasId, HasName, CreateTMFWithTime,HasLastUpdate};
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
@@ -52,6 +52,12 @@ pub struct Catalog {
 impl HasLastUpdate for Catalog {
     fn set_last_update(&mut self, time : String) {
         self.last_update = Some(time);
+    }
+}
+
+impl HasName for Catalog {
+    fn get_name(&self) -> String {
+        self.name.clone().unwrap_or("NoName".to_string())
     }
 }
 
