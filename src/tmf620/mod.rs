@@ -25,7 +25,6 @@ const MOD_PATH: &str = "tmf620";
 pub mod bundled_product_offering;
 pub mod catalog;
 pub mod category;
-pub mod party;
 pub mod product_offering;
 pub mod product_offering_price;
 pub mod product_specification;
