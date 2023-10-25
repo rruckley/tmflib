@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId,CreateTMF};
+use crate::{HasId,HasName,CreateTMF};
 use crate::LIB_PATH;
 use super::MOD_PATH;
 use crate::common::related_party::RelatedParty;
@@ -79,6 +79,12 @@ impl Individual {
     /// Add a contact medium to the individual
     pub fn add_contact(&mut self, medium : ContactMedium) {
         self.contact_medium.as_mut().unwrap().push(medium);
+    }
+}
+
+impl HasName for Individual {
+    fn get_name(&self) -> String {
+        self.full_name.clone()
     }
 }
 

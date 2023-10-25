@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::related_party::RelatedParty;
-use crate::{CreateTMF, HasId};
+use crate::{CreateTMF, HasId, HasName};
 
 use crate::LIB_PATH;
 use super::MOD_PATH;
@@ -52,6 +52,12 @@ impl Organization {
         org.name = name;
         org.related_party = Some(vec![]);
         org
+    }
+}
+
+impl HasName for Organization {
+    fn get_name(&self) -> String {
+        self.name.clone()
     }
 }
 
