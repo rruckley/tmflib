@@ -8,7 +8,7 @@ use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
 
-use crate::{CreateTMFWithTime,HasLastUpdate, HasId};
+use crate::{CreateTMFWithTime,HasLastUpdate, HasId, HasName};
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
 use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
@@ -156,6 +156,12 @@ pub struct ProductOffering {
     /// Service Level Agreements
     #[serde(skip_serializing_if = "Option::is_none")]
     pub service_level_agreement: Option<Vec<SLARef>>,
+}
+
+impl HasName for ProductOffering {
+    fn get_name(&self) -> String {
+        self.name.clone()
+    }
 }
 
 impl HasId for ProductOffering {

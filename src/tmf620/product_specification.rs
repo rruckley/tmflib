@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId,CreateTMF,LIB_PATH};
+use crate::{HasId, HasName, CreateTMF, LIB_PATH};
 
 const SPEC_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
@@ -122,6 +122,12 @@ impl ProductSpecification {
     ) -> ProductSpecification {
         self.product_spec_characteristic.push(characteristic);
         self
+    }
+}
+
+impl HasName for ProductSpecification {
+    fn get_name(&self) -> String {
+        self.name.clone()
     }
 }
 

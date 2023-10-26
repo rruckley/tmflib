@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
-use super::HasId;
+use crate::{HasId,HasName};
 
 use crate::CreateTMFWithTime;
 
@@ -60,6 +60,12 @@ pub struct Category {
 impl HasLastUpdate for Category {
     fn set_last_update(&mut self, time : String) {
         self.last_update = Some(time);
+    }
+}
+
+impl HasName for Category {
+    fn get_name(&self) -> String {
+        self.name.as_ref().unwrap().clone()
     }
 }
 
