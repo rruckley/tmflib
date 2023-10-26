@@ -17,7 +17,6 @@
 //! Structs associated with product catalogue management
 
 use super::LIB_PATH;
-use super::HasId;
 use serde::{Deserialize, Serialize};
 
 const MOD_PATH: &str = "tmf620";
