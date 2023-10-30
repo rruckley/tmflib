@@ -4,7 +4,7 @@ use serde::{Deserialize,Serialize};
 
 use super::MOD_PATH;
 use crate::{HasId,CreateTMF, LIB_PATH};
-const PRICE_PATH : &str = "price";
+const PRICE_PATH : &str = "productOfferingPrice ";
 const PRICE_VERS : &str = "1.0";
 
 /// Product Offering Price Reference
