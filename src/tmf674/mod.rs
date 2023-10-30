@@ -16,4 +16,4 @@
 
 pub mod geographic_site;
 
-const MOD_PATH : &str = "tmf674";
+const MOD_PATH : &str = "tmf674/v4";

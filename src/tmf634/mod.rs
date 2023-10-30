@@ -14,6 +14,6 @@
 
 //! Resource Catalogue Modules
 
-const MOD_PATH : &str = "tmf634";
+const MOD_PATH : &str = "tmf634/v4";
 
 pub mod resource_candidate;

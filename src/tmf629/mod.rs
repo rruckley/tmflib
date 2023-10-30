@@ -17,7 +17,7 @@
 //! This module represents the common case of a customer. Customer is a specific instance of a Party Role [tmf669]. 
 //! This means to create a customer, an organisation (from [tmf632]) must be supplied. 
 use super::LIB_PATH;
-const MOD_PATH: &str = "tmf629";
+const MOD_PATH: &str = "tmf629/v4";
 
 pub mod characteristic;
 pub mod customer;
