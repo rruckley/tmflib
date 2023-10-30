@@ -14,6 +14,6 @@
 
 //! Appointment Management Modules
 
-const MOD_PATH : &str = "tmf646";
+const MOD_PATH : &str = "tmf646/v4";
 
 pub mod appointment;

@@ -16,6 +16,6 @@
 
 use super::LIB_PATH;
 
-const MOD_PATH : &str = "tmf638";
+const MOD_PATH : &str = "tmf638/v4";
 
 pub mod service;

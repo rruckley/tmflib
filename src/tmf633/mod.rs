@@ -14,6 +14,6 @@
 
 //! Service Catalogue Modules
 
-const MOD_PATH : &str = "tmf633";
+const MOD_PATH : &str = "tmf633/v4";
 
 pub mod service_candidate;

@@ -14,7 +14,7 @@
 
 //! TMF632 Party Management Modules
 
-const MOD_PATH : &str = "tmf632";
+const MOD_PATH : &str = "tmf632/v4";
 
 pub mod individual;
 pub mod organization;

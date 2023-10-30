@@ -14,7 +14,7 @@
 
 //! TMF648 Quote Module
 
-const MOD_PATH: &str = "tmf648";
+const MOD_PATH: &str = "tmf648/v4";
 
 pub mod quote;
 pub mod quote_item;
