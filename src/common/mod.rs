@@ -22,3 +22,4 @@ pub mod contact;
 pub mod note;
 pub mod event;
 pub mod related_party;
+pub mod related_place;

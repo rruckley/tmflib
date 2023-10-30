@@ -5,7 +5,7 @@ use uuid::Uuid;
 use std::convert::From;
 
 use crate::CreateTMF;
-use crate::HasId;
+use crate::{HasName,HasId};
 use crate::tmf673::geographic_address::GeographicAddress;
 use crate::LIB_PATH;
 use super::MOD_PATH;
@@ -37,9 +37,9 @@ impl From<GeographicAddress> for PlaceRefOrValue {
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GeographicSite {
-    id: Option<String>,
-    href: Option<String>,
-    name: String,
+    pub id: Option<String>,
+    pub href: Option<String>,
+    pub name: String,
     place: Option<PlaceRefOrValue>,
 }
 
@@ -58,6 +58,12 @@ impl GeographicSite {
 }
 
 impl CreateTMF<GeographicSite> for GeographicSite {}
+
+impl HasName for GeographicSite {
+    fn get_name(&self) -> String {
+        self.name.clone()
+    }
+}
 
 impl HasId for GeographicSite {
     fn generate_href(&mut self) {
