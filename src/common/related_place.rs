@@ -4,7 +4,7 @@
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 use crate::tmf674::geographic_site::GeographicSite;
-use crate::{HasId,HasName};
+use crate::HasId;
 
 /// Reference to a place (TMF673, TMF674, TMF674)
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

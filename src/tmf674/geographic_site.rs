@@ -37,8 +37,11 @@ impl From<GeographicAddress> for PlaceRefOrValue {
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GeographicSite {
+    /// Id
     pub id: Option<String>,
+    /// HREF
     pub href: Option<String>,
+    /// Name
     pub name: String,
     place: Option<PlaceRefOrValue>,
 }
