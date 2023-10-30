@@ -10,7 +10,7 @@ use crate::tmf632::organization::Organization;
 use super::characteristic::Characteristic;
 use crate::common::contact::ContactMedium;
 use crate::common::related_party::RelatedParty;
-use crate::{HasId,HasName};
+use crate::{HasId,HasName, TimePeriod};
 use super::LIB_PATH;
 use super::MOD_PATH;
 
@@ -34,7 +34,7 @@ pub struct Customer {
     /// Reason for current status
     pub status_reason: Option<String>,
     /// Validity of this record
-    pub valid_for: Option<String>,
+    pub valid_for: Option<TimePeriod>,
     contact_medium: Option<Vec<ContactMedium>>,
     characteristic: Option<Vec<Characteristic>>,
     related_party: Vec<RelatedParty>,

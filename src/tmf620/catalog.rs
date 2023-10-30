@@ -1,7 +1,7 @@
 //! Catalogue Module
 //!
 //!
-use crate::{HasId, HasName, CreateTMFWithTime,HasLastUpdate};
+use crate::{HasId, HasName, CreateTMFWithTime,HasLastUpdate, TimePeriod};
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
@@ -40,7 +40,7 @@ pub struct Catalog {
     #[serde(skip_serializing_if = "Option::is_none")]
     version: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    valid_for: Option<String>,
+    valid_for: Option<TimePeriod>,
     /// Categories
     #[serde(skip_serializing_if = "Option::is_none")]
     category: Option<Vec<CategoryRef>>,

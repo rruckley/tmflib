@@ -8,7 +8,7 @@ use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
 
-use crate::{CreateTMFWithTime,HasLastUpdate, HasId, HasName};
+use crate::{CreateTMFWithTime,HasLastUpdate, HasId, HasName, TimePeriod};
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
 use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
@@ -59,7 +59,7 @@ pub struct ProductOfferingRelationship {
     /// Child
     pub role: Option<String>,
     /// How long is this relationship valid for?
-    pub valid_for: Option<String>,
+    pub valid_for: Option<TimePeriod>,
 }
 
 impl From<ProductOffering> for ProductOfferingRelationship {
@@ -109,7 +109,7 @@ pub struct ProductOffering {
     pub version: Option<String>,
     /// Validity Period
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub valid_for: Option<String>,
+    pub valid_for: Option<TimePeriod>,
 
     /// Associated agreements
     #[serde(skip_serializing_if = "Option::is_none")]

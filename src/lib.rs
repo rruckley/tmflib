@@ -24,9 +24,20 @@
 use chrono::naive::NaiveDateTime;
 use chrono::Utc;
 use uuid::Uuid;
+use serde::{Deserialize, Serialize};
 
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmf-api";
+
+/// Standard TMF TimePeriod structure
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TimePeriod {
+    /// Start of time period
+    pub start_date_time: String,
+    /// End of time period
+    pub end_date_time: String,
+}
 
 /// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId {

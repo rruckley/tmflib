@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasName, CreateTMF, LIB_PATH};
+use crate::{HasId, HasName, CreateTMF, LIB_PATH, TimePeriod};
 
 const SPEC_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
@@ -25,7 +25,7 @@ pub struct ProductSpecificationCharacteristic {
     name: String,
     regex: Option<String>,
     value_type: Option<String>,
-    valid_for: Option<String>,
+    valid_for: Option<TimePeriod>,
 }
 
 impl ProductSpecificationCharacteristic {
@@ -217,7 +217,7 @@ pub struct ProductSpecificationCharacteristicValueUse {
     min_cardinality: u16,
     name: String,
     value_type: String,
-    valid_for: Option<String>,
+    valid_for: Option<TimePeriod>,
     product_spec_characteristic_value : Option<ProductSpecificationCharacteristicValue>,
     product_specification : Option<ProductSpecificationRef>,
 }

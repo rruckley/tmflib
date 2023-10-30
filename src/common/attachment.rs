@@ -4,6 +4,8 @@
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
+use crate::TimePeriod;
+
 use super::MOD_PATH;
 use crate::LIB_PATH;
 
@@ -58,7 +60,7 @@ pub struct AttachmentRefOrValue {
     pub size: Option<AttachmentSize>,
     /// How long is this attachment valid for?
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub valid_for: Option<String>,
+    pub valid_for: Option<TimePeriod>,
 }
 
 impl AttachmentRefOrValue {

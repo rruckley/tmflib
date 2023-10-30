@@ -1,7 +1,6 @@
 //! Category Module
 
-use crate::CreateTMF;
-use crate::HasLastUpdate;
+use crate::{CreateTMF,HasLastUpdate, TimePeriod};
 use crate::tmf620::product_offering::ProductOfferingRef;
 
 use serde::{Deserialize, Serialize};
@@ -49,7 +48,7 @@ pub struct Category {
     pub version: Option<String>,
     /// How long his this object valid for?
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub valid_for: Option<String>,
+    pub valid_for: Option<TimePeriod>,
     /// Subcategory
     #[serde(skip_serializing_if = "Option::is_none")]
     pub sub_category: Option<Vec<CategoryRef>>,
@@ -85,6 +84,15 @@ impl Category {
         cat.name = Some(name);
         cat.is_root = Some(false);
         cat
+    }
+
+    /// Is this a root category
+    pub fn root(&self) -> bool {
+        // Extract is_root in a safe manner
+        match self.is_root {
+            Some(b) => b,
+            None => false,
+        }
     }
 
     /// Set the description of this category
