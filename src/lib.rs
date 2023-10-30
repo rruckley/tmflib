@@ -36,7 +36,8 @@ pub struct TimePeriod {
     /// Start of time period
     pub start_date_time: String,
     /// End of time period
-    pub end_date_time: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub end_date_time: Option<String>,
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field

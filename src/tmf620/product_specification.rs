@@ -17,14 +17,19 @@ const CHAR_VALUE_MAX_CARD : u16 = 1;
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristic {
     configurable: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
-    extensible: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    extensible: Option<bool>,
     is_unique: bool,
     max_cardinality: u16,
     min_cardinality: u16,
     name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     regex: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     value_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
 }
 
@@ -60,7 +65,7 @@ impl ProductSpecificationCharacteristic {
 
     /// Set extensible flag
     pub fn extensible(mut self, extensible: bool) -> ProductSpecificationCharacteristic {
-        self.extensible = extensible;
+        self.extensible = Some(extensible);
         self
     }
 
