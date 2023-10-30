@@ -19,7 +19,7 @@
 use super::LIB_PATH;
 use serde::{Deserialize, Serialize};
 
-const MOD_PATH: &str = "tmf620/v4";
+const MOD_PATH: &str = "productCatalogManagement/v4";
 
 pub mod bundled_product_offering;
 pub mod catalog;
