@@ -30,7 +30,8 @@ pub struct Category {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     /// Is this the root of a heirarchy of categories? Default is false.
-    pub is_root: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_root: Option<bool>,
     /// When was this object last updated?
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_update: Option<String>,
@@ -82,6 +83,7 @@ impl Category {
         let mut cat = Category::create_with_time();
         cat.version = Some(CAT_VERS.to_string());
         cat.name = Some(name);
+        cat.is_root = Some(false);
         cat
     }
 
@@ -106,7 +108,7 @@ impl Category {
     /// ```
     pub fn parent(mut self, parent_id: String) -> Category {
         // Since we are setting a parent, we cannot be root anymore
-        self.is_root = false;
+        self.is_root = Some(false);
         self.parent_id = Some(parent_id);
         self
     }
@@ -120,8 +122,8 @@ impl Category {
     ///     .is_root(true);
     /// ```
     pub fn is_root(mut self, root: bool) -> Category {
-        self.is_root = root;
-        if self.is_root {
+        self.is_root = Some(root);
+        if self.is_root.unwrap() {
             // Remove parent
             self.parent_id = None;
         }
@@ -177,14 +179,14 @@ mod tests {
     #[test]
     fn cat_test_root() {
         let cat = Category::new(String::from("MyCategory"));
-        assert_eq!(cat.is_root, false);
+        assert_eq!(cat.is_root.unwrap(), false);
     }
 
     #[test]
     fn cat_test_parent() {
         let cat = Category::new(String::from("MyCategory")).parent(String::from("parent_id"));
         assert_eq!(cat.parent_id, Some(String::from("parent_id")));
-        assert_eq!(cat.is_root, false);
+        assert_eq!(cat.is_root.unwrap(), false);
     }
 }
 
