@@ -20,7 +20,7 @@ use super::LIB_PATH;
 use super::MOD_PATH;
 
 const PO_VERS_INIT: &str = "1.0";
-const PO_PATH: &str = "offer";
+const PO_PATH: &str = "productOffering";
 
 /// Product Offering Reference
 #[derive(Clone, Debug, Deserialize, Serialize)]
