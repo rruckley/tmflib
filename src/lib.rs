@@ -26,7 +26,7 @@ use chrono::Utc;
 use uuid::Uuid;
 
 /// Primary path for the whole library
-pub const LIB_PATH: &str = "tmflib";
+pub const LIB_PATH: &str = "tmf-api";
 
 /// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId {
