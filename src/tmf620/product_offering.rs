@@ -90,9 +90,11 @@ pub struct ProductOffering {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     /// Does this represent a bundle?
-    pub is_bundle: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_bundle: Option<bool>,
     /// Is this sellable?
-    pub is_sellable: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_sellable: Option<bool>,
     /// When was this last updated?
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_update: Option<String>,
