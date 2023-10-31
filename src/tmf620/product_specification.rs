@@ -94,18 +94,24 @@ impl ProductSpecificationCharacteristic {
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecification {
     /// Id
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HREF where object is located
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Brand
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub brand: Option<String>,
     /// Description
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     /// Is a bundle?
-    pub is_bundle: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_bundle: Option<bool>,
     /// Name
     pub name: String,
     /// Version of this record
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
     /// Set of characteristics for this specification
     pub product_spec_characteristic: Vec<ProductSpecificationCharacteristic>,
