@@ -167,7 +167,7 @@ pub struct ProductSpecificationRef {
     /// HREF where object is located
     pub href: String,
     /// Description
-    pub name: String,
+    pub name: Option<String>,
     /// Version of this record
     pub version: Option<String>,
 }
@@ -177,10 +177,23 @@ impl From<ProductSpecification> for ProductSpecificationRef {
         ProductSpecificationRef {
             id: ps.id.unwrap(),
             href: ps.href.unwrap(),
-            name: ps.name,
+            name: Some(ps.name),
             version: ps.version,
         }
     }
+}
+
+/// Enum to cover value with many types
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[serde(untagged)]
+pub enum ValueEnum {
+    /// Unknown type
+    #[default]
+    BadValue,
+    /// String Value
+    Str(String),
+    /// Integer Value
+    Int(u16),
 }
 
 /// Product Specification Characteristic Value
@@ -198,8 +211,8 @@ pub struct ProductSpecificationCharacteristicValue {
     value_from: Option<String>,
     value_to: Option<String>,
     value_type: Option<String>,
-    value_for: Option<String>,
-    value: String,
+    valid_for: Option<TimePeriod>,
+    value: ValueEnum,
 }
 
 impl ProductSpecificationCharacteristicValue {
@@ -209,13 +222,14 @@ impl ProductSpecificationCharacteristicValue {
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
     /// let pscv = ProductSpecificationCharacteristicValue::new(String::from("100Mb"));
     /// ```
-    pub fn new(value : String) -> ProductSpecificationCharacteristicValue {
+    pub fn new(value : ValueEnum) -> ProductSpecificationCharacteristicValue {
         ProductSpecificationCharacteristicValue { value, ..Default::default() }
     }
 }
 
 /// Product Specification Characteristic Value Use
 #[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristicValueUse {
     description: Option<String>,
     max_cardinality: u16,
@@ -223,7 +237,7 @@ pub struct ProductSpecificationCharacteristicValueUse {
     name: String,
     value_type: String,
     valid_for: Option<TimePeriod>,
-    product_spec_characteristic_value : Option<ProductSpecificationCharacteristicValue>,
+    product_spec_characteristic_value : Option<Vec<ProductSpecificationCharacteristicValue>>,
     product_specification : Option<ProductSpecificationRef>,
 }
 
