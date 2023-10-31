@@ -146,16 +146,16 @@ pub struct ProductOffering {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub prod_spec_char_value_use: Option<Vec<ProductSpecificationCharacteristicValueUse>>,
     /// Product Specification
-    pub product_specification: Vec<ProductSpecificationRef>,
+    pub product_specification: Option<ProductSpecificationRef>,
     /// Resource Canididates
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub resource_candidate: Option<Vec<ResourceCandidateRef>>,
+    pub resource_candidate: Option<ResourceCandidateRef>,
     /// Service Candidates
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub service_candidate: Option<Vec<ServiceCandidateRef>>,
+    pub service_candidate: Option<ServiceCandidateRef>,
     /// Service Level Agreements
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub service_level_agreement: Option<Vec<SLARef>>,
+    pub service_level_agreement: Option<SLARef>,
 }
 
 impl HasName for ProductOffering {
@@ -230,8 +230,7 @@ impl ProductOffering {
 
     /// Add specification into this Product Offering
     pub fn with_specification(mut self, specification: ProductSpecification) -> ProductOffering {
-        self.product_specification
-            .push(ProductSpecificationRef::from(specification));
+        self.product_specification = Some(ProductSpecificationRef::from(specification));
         self
     }
 
