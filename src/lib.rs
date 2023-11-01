@@ -87,6 +87,7 @@ pub trait HasLastUpdate {
         let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         time.to_string()
     }
+
     /// Store a timestamp into last_update field (if available)
     fn set_last_update(&mut self, time : String);
 }
