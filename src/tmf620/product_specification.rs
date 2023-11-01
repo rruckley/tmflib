@@ -114,7 +114,7 @@ pub struct ProductSpecification {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
     /// Set of characteristics for this specification
-    pub product_spec_characteristic: Vec<ProductSpecificationCharacteristic>,
+    pub product_spec_characteristic: Option<Vec<ProductSpecificationCharacteristic>>,
 }
 
 impl ProductSpecification {
@@ -131,7 +131,7 @@ impl ProductSpecification {
         mut self,
         characteristic: ProductSpecificationCharacteristic,
     ) -> ProductSpecification {
-        self.product_spec_characteristic.push(characteristic);
+        self.product_spec_characteristic.as_mut().unwrap().push(characteristic);
         self
     }
 }
@@ -202,6 +202,24 @@ pub enum ValueEnum {
     Int(u16),
 }
 
+impl From<String> for ValueEnum {
+    fn from(value: String) -> Self {
+        ValueEnum::Str(value)
+    }
+}
+
+impl From<u16> for ValueEnum {
+    fn from(value: u16) -> Self {
+        ValueEnum::Int(value)
+    }
+}
+
+impl From<&str> for ValueEnum {
+    fn from(value: &str) -> Self {
+        ValueEnum::Str(value.to_owned())
+    }
+}
+
 /// Product Specification Characteristic Value
 /// # Detalis
 /// This object contains values used by a specification characteristic.
@@ -226,7 +244,7 @@ impl ProductSpecificationCharacteristicValue {
     /// # Example
     /// ```
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
-    /// let pscv = ProductSpecificationCharacteristicValue::new(String::from("100Mb"));
+    /// let pscv = ProductSpecificationCharacteristicValue::new("100Mb".into());
     /// ```
     pub fn new(value : ValueEnum) -> ProductSpecificationCharacteristicValue {
         ProductSpecificationCharacteristicValue { value, ..Default::default() }
