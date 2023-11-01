@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasName, CreateTMF, LIB_PATH, TimePeriod};
+use crate::{HasId, HasName, CreateTMF, LIB_PATH, TimePeriod, CreateTMFWithTime, HasLastUpdate};
 
 const SPEC_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
@@ -108,6 +108,9 @@ pub struct ProductSpecification {
     /// Is a bundle?
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_bundle: Option<bool>,
+    /// Timestamp of last change to this payload
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub last_update: Option<String>,
     /// Name
     pub name: String,
     /// Version of this record
@@ -120,9 +123,11 @@ pub struct ProductSpecification {
 impl ProductSpecification {
     /// Create new instance of Product Specification
     pub fn new(name: String) -> ProductSpecification {       
-        let mut prod_spec = ProductSpecification::create();
+        let mut prod_spec = ProductSpecification::create_with_time();
         prod_spec.name = name;
         prod_spec.version = Some(SPEC_VERS.to_string());
+
+        prod_spec.product_spec_characteristic= Some(vec![]);
         prod_spec
     }
 
@@ -143,6 +148,13 @@ impl HasName for ProductSpecification {
 }
 
 impl CreateTMF<ProductSpecification> for ProductSpecification {}
+impl CreateTMFWithTime<ProductSpecification> for ProductSpecification {}
+
+impl HasLastUpdate for ProductSpecification {
+    fn set_last_update(&mut self, time : String) {
+        self.last_update = Some(time);
+    }
+}
 
 impl HasId for ProductSpecification {
     fn generate_href(&mut self) {
