@@ -4,7 +4,7 @@ use serde::{Deserialize,Serialize};
 
 use super::MOD_PATH;
 use crate::{HasId,CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, TimePeriod};
-const PRICE_PATH : &str = "productOfferingPrice ";
+const PRICE_PATH : &str = "productOfferingPrice";
 const PRICE_VERS : &str = "1.0";
 
 /// Constraints
