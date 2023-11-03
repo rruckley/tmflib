@@ -89,6 +89,16 @@ impl ProductSpecificationCharacteristic {
     }
 }
 
+/// Bundled Products
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct BundledProductSpecification {
+    id: String,
+    href: String,
+    lifecycle_status: Option<String>,
+    name: String, 
+}
+
 /// Product Specification
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -111,13 +121,21 @@ pub struct ProductSpecification {
     /// Timestamp of last change to this payload
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_update: Option<String>,
+    /// Status of this specification
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub lifecycle_status: Option<String>,
     /// Name
     pub name: String,
+    /// Product Number / Code
+    #[serde(skip_serializing_if = "Option::is_none")]
+    product_number: Option<String>,
     /// Version of this record
     #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
     /// Set of characteristics for this specification
     pub product_spec_characteristic: Option<Vec<ProductSpecificationCharacteristic>>,
+    /// Bundled specifications
+    pub bundled_product_specification: Option<Vec<BundledProductSpecification>>,
 }
 
 impl ProductSpecification {
@@ -129,6 +147,11 @@ impl ProductSpecification {
 
         prod_spec.product_spec_characteristic= Some(vec![]);
         prod_spec
+    }
+
+    /// Set lifecycle status
+    pub fn status(&mut self, status : &str) {
+        self.lifecycle_status = Some(status.to_owned());
     }
 
     /// Add a new Characteristic into the specification
