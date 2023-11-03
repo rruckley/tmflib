@@ -45,7 +45,7 @@ pub trait HasId {
     /// Get a new UUID in simple format
     fn get_uuid() -> String {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
-        Uuid::new_v4().as_simple().to_string()
+        Uuid::new_v4().simple().to_string()
     }
     /// Generate and store a new ID
     fn generate_id(&mut self);
