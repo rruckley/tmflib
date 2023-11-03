@@ -213,6 +213,11 @@ impl ProductOffering {
         offer
     }
 
+    /// Set status of this ProductOffering
+    pub fn status(&mut self, status : &str) {
+        self.lifecycle_status = Some(status.to_owned());
+    }
+
     /// Added category refernce to ProductOffering
     /// # Examples
     /// ```
