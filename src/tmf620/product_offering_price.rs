@@ -59,7 +59,7 @@ impl From<ProductOfferingPrice> for ProductOfferingPriceRef {
         ProductOfferingPriceRef { 
             id: pop.id.clone(), 
             href: pop.href.clone(), 
-            name: pop.name.clone(),
+            name: pop.name.as_ref().unwrap().clone(),
         ..Default::default()
         }
     }
@@ -84,8 +84,10 @@ pub struct ProductOfferingPrice {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Name
-    pub name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Versoin
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
     constraint: Option<Vec<ConstraintRef>>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -100,12 +102,17 @@ pub struct ProductOfferingPrice {
     percentage: Option<f32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     price_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     recurring_charge_period_length: Option<u16>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     recurring_charge_period_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     price: Option<Price>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     unit_of_measure: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     tax: Option<Vec<TaxItem>>,
 }
 
@@ -114,7 +121,7 @@ impl ProductOfferingPrice {
     pub fn new(name :  String) -> ProductOfferingPrice {
         let mut pop = ProductOfferingPrice::create_with_time();
         pop.version = Some(PRICE_VERS.to_string());
-        pop.name = name;
+        pop.name = Some(name);
         pop
     }
 }

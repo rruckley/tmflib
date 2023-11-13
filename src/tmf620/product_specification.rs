@@ -125,7 +125,8 @@ pub struct ProductSpecification {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub lifecycle_status: Option<String>,
     /// Name
-    pub name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Product Number / Code
     #[serde(skip_serializing_if = "Option::is_none")]
     product_number: Option<String>,
@@ -133,8 +134,10 @@ pub struct ProductSpecification {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
     /// Set of characteristics for this specification
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub product_spec_characteristic: Option<Vec<ProductSpecificationCharacteristic>>,
     /// Bundled specifications
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub bundled_product_specification: Option<Vec<BundledProductSpecification>>,
 }
 
@@ -142,7 +145,7 @@ impl ProductSpecification {
     /// Create new instance of Product Specification
     pub fn new(name: String) -> ProductSpecification {       
         let mut prod_spec = ProductSpecification::create_with_time();
-        prod_spec.name = name;
+        prod_spec.name = Some(name);
         prod_spec.version = Some(SPEC_VERS.to_string());
 
         prod_spec.product_spec_characteristic= Some(vec![]);
@@ -166,7 +169,7 @@ impl ProductSpecification {
 
 impl HasName for ProductSpecification {
     fn get_name(&self) -> String {
-        self.name.clone()
+        self.name.as_ref().unwrap().clone()
     }
 }
 
@@ -218,7 +221,7 @@ impl From<ProductSpecification> for ProductSpecificationRef {
         ProductSpecificationRef {
             id: ps.id.unwrap(),
             href: ps.href.unwrap(),
-            name: Some(ps.name),
+            name: ps.name,
             version: ps.version,
         }
     }
@@ -358,7 +361,7 @@ mod test {
     fn test_spec_new() {
         let spec = ProductSpecification::new(SPEC_NAME.to_string());
 
-        assert_eq!(spec.name, SPEC_NAME.to_string());
+        assert_eq!(spec.name, Some(SPEC_NAME.to_string()));
     }
     #[test]
     fn test_spec_new_vers() {
