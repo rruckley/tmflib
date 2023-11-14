@@ -140,6 +140,8 @@ pub mod tmf641;
 pub mod tmf646;
 /// Quote
 pub mod tmf648;
+/// Service Test
+pub mod tmf653;
 /// Shopping Cart
 pub mod tmf663;
 /// Account
