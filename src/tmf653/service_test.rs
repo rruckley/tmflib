@@ -3,6 +3,7 @@
 use serde::{Deserialize,Serialize};
 
 use crate::{HasId,CreateTMF,TimePeriod,LIB_PATH};
+use crate::common::related_party::RelatedParty;
 use super::MOD_PATH;
 
 const TEST_PATH : &str = "serviceTest";
@@ -39,6 +40,7 @@ pub struct ServiceTest {
     start_date_time: Option<String>,
     state: Option<ExecutionStateType>,
     valid_for: Option<TimePeriod>,
+    related_party: Option<Vec<RelatedParty>>,
 }
 
 impl ServiceTest {
