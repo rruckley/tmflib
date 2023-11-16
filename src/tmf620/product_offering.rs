@@ -36,7 +36,7 @@ impl From<ProductOffering> for ProductOfferingRef {
         ProductOfferingRef { 
             id: po.id.unwrap().clone(), 
             href: po.href.unwrap().clone(), 
-            name: po.name.clone() }
+            name: po.name.as_ref().unwrap().clone() }
     }
 }
 
@@ -67,7 +67,7 @@ impl From<ProductOffering> for ProductOfferingRelationship {
         ProductOfferingRelationship {
             id: po.id.clone(),
             href: po.href.clone(),
-            name: Some(po.name.clone()),
+            name: po.name.clone(),
             relationship_type: None,
             role : None,
             valid_for: None,
@@ -102,7 +102,7 @@ pub struct ProductOffering {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub lifecycle_status: Option<String>,
     /// Name of this offering
-    pub name: String,
+    pub name: Option<String>,
     /// Status Reason
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status_reason: Option<String>,
@@ -162,7 +162,7 @@ pub struct ProductOffering {
 
 impl HasName for ProductOffering {
     fn get_name(&self) -> String {
-        self.name.clone()
+        self.name.as_ref().unwrap().clone()
     }
 }
 
@@ -205,7 +205,7 @@ impl ProductOffering {
     /// ```
     pub fn new(name: String) -> ProductOffering {
         let mut offer = ProductOffering::create_with_time();
-        offer.name = name;
+        offer.name = Some(name);
         offer.version = Some(PO_VERS_INIT.to_string());
         offer.product_offering_relationship = Some(vec![]);
         offer.prod_spec_char_value_use = Some(vec![]);
@@ -266,7 +266,7 @@ mod test {
     fn test_po_new_name() {
         let po = ProductOffering::new(String::from("MyOffer"));
 
-        assert_eq!(po.name, String::from("MyOffer"));
+        assert_eq!(po.name, Some(String::from("MyOffer")));
     }
 
     #[test]

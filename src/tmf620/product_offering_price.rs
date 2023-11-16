@@ -3,7 +3,7 @@
 use serde::{Deserialize,Serialize};
 
 use super::MOD_PATH;
-use crate::{HasId,CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, TimePeriod};
+use crate::{HasId,HasName, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, TimePeriod};
 const PRICE_PATH : &str = "productOfferingPrice";
 const PRICE_VERS : &str = "1.0";
 
@@ -147,6 +147,12 @@ impl HasId for ProductOfferingPrice {
 
     fn get_class() -> String {
         PRICE_PATH.to_owned()
+    }
+}
+
+impl HasName for ProductOfferingPrice {
+    fn get_name(&self) -> String {
+        self.name.as_ref().unwrap().clone()
     }
 }
 
