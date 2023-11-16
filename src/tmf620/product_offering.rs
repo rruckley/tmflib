@@ -102,6 +102,7 @@ pub struct ProductOffering {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub lifecycle_status: Option<String>,
     /// Name of this offering
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /// Status Reason
     #[serde(skip_serializing_if = "Option::is_none")]
