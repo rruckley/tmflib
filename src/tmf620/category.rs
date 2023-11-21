@@ -164,7 +164,7 @@ impl HasId for Category {
     }
 
     fn get_class() -> String {
-        CAT_VERS.to_owned()
+        CAT_PATH.to_owned()
     }
 }
 
@@ -172,6 +172,8 @@ impl HasId for Category {
 mod tests {
     use super::Category;
     use super::CAT_VERS;
+    use super::CAT_PATH;
+    use crate::HasId;
     #[test]
     fn cat_test_name() {
         let cat = Category::new(String::from("MyCategory"));
@@ -195,6 +197,12 @@ mod tests {
         let cat = Category::new(String::from("MyCategory")).parent(String::from("parent_id"));
         assert_eq!(cat.parent_id, Some(String::from("parent_id")));
         assert_eq!(cat.is_root.unwrap(), false);
+    }
+
+    #[test]
+    fn cat_test_class() {
+        
+        assert_eq!(Category::get_class(),CAT_PATH);
     }
 }
 
