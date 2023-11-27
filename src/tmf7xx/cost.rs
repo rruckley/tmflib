@@ -7,6 +7,20 @@ use super::MOD_PATH;
 
 const COST_PATH : &str = "cost";
 
+/// Price structure
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CostEntry {
+    unit : String,
+    amount : f32,
+}
+
+impl Default for CostEntry {
+    fn default() -> Self {
+        CostEntry { unit: "Dollars".to_owned(), amount: 1.0 }
+    }
+}
+
 /// Cost Management
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -19,6 +33,8 @@ pub struct Cost {
     pub name: Option<String>,
     /// Validity
     pub valid_for: Option<TimePeriod>,
+    /// Cost Value
+    pub cost : CostEntry,
 }
 
 impl Cost {
