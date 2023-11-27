@@ -1,6 +1,6 @@
 //! Cost Module
 
-use crate::{HasId,CreateTMF,LIB_PATH};
+use crate::{HasId,CreateTMF,LIB_PATH,TimePeriod};
 use serde::{Deserialize,Serialize};
 
 use super::MOD_PATH;
@@ -17,6 +17,8 @@ pub struct Cost {
     pub href: Option<String>,
     /// Name of this cost
     pub name: Option<String>,
+    /// Validity
+    pub valid_for: Option<TimePeriod>,
 }
 
 impl Cost {
@@ -24,6 +26,7 @@ impl Cost {
     pub fn new(name : &str) -> Cost {
         let mut cost = Cost::create();
         cost.name = Some(name.to_owned());
+        cost.valid_for = Some(TimePeriod::default());
         cost
     }
 }
