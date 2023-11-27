@@ -158,3 +158,5 @@ pub mod tmf679;
 pub mod tmf700;
 /// Product Configuration
 pub mod tmf760;
+/// Cost Management
+pub mod tmf7xx;
