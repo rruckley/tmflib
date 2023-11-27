@@ -6,6 +6,7 @@ use serde::{Deserialize,Serialize};
 use super::MOD_PATH;
 
 const COST_PATH : &str = "cost";
+const COST_DEFAULT : f32 = 1.0;
 
 /// Price structure
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -17,7 +18,7 @@ pub struct CostEntry {
 
 impl Default for CostEntry {
     fn default() -> Self {
-        CostEntry { unit: "Dollars".to_owned(), amount: 1.0 }
+        CostEntry { unit: "Dollars".to_owned(), amount: COST_DEFAULT }
     }
 }
 
@@ -69,3 +70,22 @@ impl HasId for Cost {
 }
 
 impl CreateTMF<Cost> for Cost {}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_new_name() {
+        let cost = Cost::new("MyCost");
+
+        assert_eq!(cost.name.unwrap(),"MyCost".to_string());
+    }
+
+    #[test]
+    fn test_default_cost() {
+        let cost = Cost::new("MyCost");
+        assert_eq!(cost.cost.unit,"Dollars".to_string());
+        assert_eq!(cost.cost.amount,COST_DEFAULT);
+    }
+}
