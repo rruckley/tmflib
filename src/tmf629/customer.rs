@@ -79,14 +79,17 @@ impl Customer {
     }
 
     /// Geneate a unique customer code via cryptographic functions
-    pub fn generate_code(&mut self) {
+    pub fn generate_code(&mut self, offset : Option<u32>) {
         // Generate a new code based on name
 
         // Generate Id if none exists
         if self.id.is_none() {
             self.generate_id();
         };
-        let hash_input = format!("{}:{}", self.id.as_ref().unwrap(), self.name);
+        let hash_input = match offset {
+            Some(o) => format!("{}:{}:{}", self.id.as_ref().unwrap(), self.name,o),
+            None => format!("{}:{}", self.id.as_ref().unwrap(), self.name),
+        };
         let sha = digest(hash_input);
         let sha_slice = sha.as_str()[..4].to_string().to_ascii_uppercase();
         let code = Characteristic {
@@ -159,7 +162,7 @@ impl HasId for Customer {
 impl From<&Organization> for Customer {
     fn from(value: &Organization) -> Self {
         let mut customer = Customer::new(value.to_owned());
-        customer.generate_code();
+        customer.generate_code(None);
         customer
     }
 }
