@@ -2,6 +2,7 @@
 
 use crate::{HasId,CreateTMF,LIB_PATH,TimePeriod};
 use serde::{Deserialize,Serialize};
+use std::convert::From;
 
 use super::MOD_PATH;
 
@@ -22,6 +23,27 @@ impl Default for CostEntry {
     }
 }
 
+/// Cost Reference
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CostRef {
+    id: String,
+    href: String,
+    name: String,
+    value: CostEntry,
+}
+
+impl From<Cost> for CostRef {
+    fn from(value: Cost) -> Self {
+        CostRef {
+            id: value.get_id(),
+            href: value.get_href(),
+            name: value.name.unwrap_or("NoName".to_string()),
+            value: value.cost,
+        }
+    }
+}
+
 /// Cost Management
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -36,6 +58,10 @@ pub struct Cost {
     pub valid_for: Option<TimePeriod>,
     /// Cost Value
     pub cost : CostEntry,
+    /// Parent Cost
+    pub parent : Option<String>,
+    /// Child Costs
+    pub child_costs : Option<Vec<CostRef>>,
 }
 
 impl Cost {
@@ -44,7 +70,26 @@ impl Cost {
         let mut cost = Cost::create();
         cost.name = Some(name.to_owned());
         cost.valid_for = Some(TimePeriod::default());
+        cost.child_costs = Some(vec![]);
         cost
+    }
+    /// Add a child into this cost model
+    pub fn add_child(&mut self,cost : Cost) {
+        self.child_costs.as_mut().unwrap().push(CostRef::from(cost));
+    }
+
+    /// Sum up all costs from this entry down
+    pub fn total_cost(&self) -> f32 {
+        match self.child_costs.as_ref() {
+            Some(cc) => {
+                let vec = cc.clone();
+                let sum = vec.into_iter().fold(0.0,|acc,cf| {
+                    acc + cf.value.amount
+                });
+                sum + self.cost.amount
+            }
+            None => self.cost.amount,
+        }
     }
 }
 
