@@ -3,7 +3,8 @@
 use tmflib::tmf7xx::cost::{CostEntry,Cost};
 
 fn main() {
-    let mut cost = Cost::new("MyCost");
+    let mut cost = Cost::new("ParentCost")
+        .cost(CostEntry{unit: "Dollars".to_string(),amount: 37.5});
     let child_cost = Cost::new("ChildCost")
         .cost(CostEntry{unit: "Dollars".to_string(),amount: 10.0});
 
