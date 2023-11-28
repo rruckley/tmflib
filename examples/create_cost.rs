@@ -3,7 +3,12 @@
 use tmflib::tmf7xx::cost::Cost;
 
 fn main() {
-    let cost = Cost::new("MyCost");
+    let mut cost = Cost::new("MyCost");
+    let child_cost = Cost::new("ChildCost");
 
-    dbg!(cost);
+    cost.add_child(child_cost);
+
+    dbg!(&cost);
+
+    println!("Total cost: {}",cost.total_cost())
 }
