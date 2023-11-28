@@ -51,18 +51,24 @@ impl From<Cost> for CostRef {
 #[serde(rename_all = "camelCase")]
 pub struct Cost {
     /// Unique Id
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HREF to this object
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Name of this cost
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /// Validity
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub valid_for: Option<TimePeriod>,
     /// Cost Value
     pub cost : CostEntry,
     /// Parent Cost
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub parent : Option<String>,
     /// Child Costs
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub child_costs : Option<Vec<CostRef>>,
 }
 
