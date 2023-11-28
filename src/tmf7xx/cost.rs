@@ -13,8 +13,10 @@ const COST_DEFAULT : f32 = 1.0;
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CostEntry {
-    unit : String,
-    amount : f32,
+    /// Currency Unit
+    pub unit : String,
+    /// Amount of currency
+    pub amount : f32,
 }
 
 impl Default for CostEntry {
@@ -72,6 +74,11 @@ impl Cost {
         cost.valid_for = Some(TimePeriod::default());
         cost.child_costs = Some(vec![]);
         cost
+    }
+    /// Set value for this cost
+    pub fn cost(mut self, cost : CostEntry) -> Cost {
+        self.cost = cost;
+        self
     }
     /// Add a child into this cost model
     pub fn add_child(&mut self,cost : Cost) {
