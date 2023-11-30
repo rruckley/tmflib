@@ -37,8 +37,9 @@ pub struct Quote {
     pub id: String,
     /// HTML Reference to quote
     pub href: String,
+    /// Quote description
     #[serde(skip_serializing_if = "Option::is_none")]
-    description: Option<String>,
+    pub description: Option<String>,
     /// External reference
     #[serde(skip_serializing_if = "Option::is_none")]
     external_id: Option<String>,
@@ -89,6 +90,7 @@ impl Quote {
             }
         }
     }
+
 }
 
 #[cfg(test)]
@@ -109,5 +111,20 @@ mod test {
         let quote = Quote::new();
 
         assert_eq!(quote.state, QuoteStateType::Accepted);
+    }
+
+    #[test]
+    fn quote_test_description() {
+        let mut quote = Quote::new();
+        quote.description = Some("description".to_string());
+
+        assert_eq!(quote.description(), "description".to_string())
+    }
+
+    #[test]
+    fn quote_test_no_description() {
+        let quote = Quote::new();
+        
+        assert_eq!(quote.description(),format!("Quote-{}",quote.id));
     }
 }
