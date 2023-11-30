@@ -33,14 +33,23 @@ pub enum QuoteStateType {
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
-    id: String,
-    href: String,
+    /// Unique Id
+    pub id: String,
+    /// HTML Reference to quote
+    pub href: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
+    /// External reference
+    #[serde(skip_serializing_if = "Option::is_none")]
     external_id: Option<String>,
+    /// Notes for Quote
+    #[serde(skip_serializing_if = "Option::is_none")]
     note: Option<Vec<Note>>,
-    state: QuoteStateType,
+    /// Quote status
+    pub state: QuoteStateType,
     quote_item: Vec<QuoteItem>,
-    version: String,
+    /// Current quote version
+    pub version: String,
 }
 
 impl Quote {
@@ -69,6 +78,16 @@ impl Quote {
     pub fn add_quote(&mut self, item: QuoteItem) -> Result<String, String> {
         self.quote_item.push(item);
         Ok(String::from("Quote Item Added"))
+    }
+
+    /// Get a description for this quote
+    pub fn description(&self) -> String {
+        match &self.description {
+            Some(d) => d.clone(),
+            None => {
+                format!("Quote-{}",self.id)
+            }
+        }
     }
 }
 
