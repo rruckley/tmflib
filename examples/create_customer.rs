@@ -7,5 +7,7 @@ fn main() {
     let org = Organization::new(String::from("ACustomer"));
     let customer = Customer::new(org);
 
-    dbg!(customer);
+    dbg!(&customer);
+
+    println!("Customer Code: {}",customer.get_characteristic("code").unwrap().value);
 }
