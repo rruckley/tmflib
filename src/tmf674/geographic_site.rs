@@ -38,11 +38,14 @@ impl From<GeographicAddress> for PlaceRefOrValue {
 #[serde(rename_all = "camelCase")]
 pub struct GeographicSite {
     /// Id
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HREF
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Name
     pub name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     place: Option<PlaceRefOrValue>,
 }
 
