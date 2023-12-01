@@ -1,6 +1,8 @@
 //! Asynchronous Events
 //! 
 use serde::{Deserialize, Serialize};
+use crate::HasId;
+use std::fmt::Display;
 
 /// Generic Event structure, will be linked into event specific payloads.
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -44,7 +46,7 @@ pub struct Event<T,U> {
 }
 
 /// Trait for types that can generate an event
-pub trait EventPayload<T,U> {
+pub trait EventPayload<T : HasId,U : Display> {
     /// Generate a new event payload
     fn generate_event(&self,event_type : U) -> Event<T,U>;
 }
