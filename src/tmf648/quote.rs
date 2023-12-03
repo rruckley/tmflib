@@ -33,14 +33,24 @@ pub enum QuoteStateType {
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
-    id: String,
-    href: String,
-    description: Option<String>,
+    /// Unique Id
+    pub id: String,
+    /// HTML Reference to quote
+    pub href: String,
+    /// Quote description
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    /// External reference
+    #[serde(skip_serializing_if = "Option::is_none")]
     external_id: Option<String>,
+    /// Notes for Quote
+    #[serde(skip_serializing_if = "Option::is_none")]
     note: Option<Vec<Note>>,
-    state: QuoteStateType,
+    /// Quote status
+    pub state: QuoteStateType,
     quote_item: Vec<QuoteItem>,
-    version: String,
+    /// Current quote version
+    pub version: String,
 }
 
 impl Quote {
@@ -70,6 +80,17 @@ impl Quote {
         self.quote_item.push(item);
         Ok(String::from("Quote Item Added"))
     }
+
+    /// Get a description for this quote
+    pub fn description(&self) -> String {
+        match &self.description {
+            Some(d) => d.clone(),
+            None => {
+                format!("Quote-{}",self.id)
+            }
+        }
+    }
+
 }
 
 #[cfg(test)]
@@ -90,5 +111,20 @@ mod test {
         let quote = Quote::new();
 
         assert_eq!(quote.state, QuoteStateType::Accepted);
+    }
+
+    #[test]
+    fn quote_test_description() {
+        let mut quote = Quote::new();
+        quote.description = Some("description".to_string());
+
+        assert_eq!(quote.description(), "description".to_string())
+    }
+
+    #[test]
+    fn quote_test_no_description() {
+        let quote = Quote::new();
+        
+        assert_eq!(quote.description(),format!("Quote-{}",quote.id));
     }
 }
