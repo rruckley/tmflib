@@ -1,11 +1,10 @@
 //! Quote Module
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 use super::quote_item::QuoteItem;
 use super::MOD_PATH;
 use crate::common::note::Note;
-use crate::LIB_PATH;
+use crate::{LIB_PATH, HasId, CreateTMF};
 
 const QUOTE_PATH: &str = "quote";
 const QUOTE_VERS: &str = "1.0";
@@ -34,9 +33,11 @@ pub enum QuoteStateType {
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
     /// Unique Id
-    pub id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// HTML Reference to quote
-    pub href: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub href: Option<String>,
     /// Quote description
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -47,27 +48,24 @@ pub struct Quote {
     #[serde(skip_serializing_if = "Option::is_none")]
     note: Option<Vec<Note>>,
     /// Quote status
-    pub state: QuoteStateType,
-    quote_item: Vec<QuoteItem>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub state: Option<QuoteStateType>,
+    /// Vector of quote items
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quote_item: Option<Vec<QuoteItem>>,
     /// Current quote version
-    pub version: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub version: Option<String>,
 }
 
 impl Quote {
     /// Create a new Product Quote
     pub fn new() -> Quote {
-        let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, QUOTE_PATH, id);
-        Quote {
-            id,
-            href,
-            description: None,
-            external_id: None,
-            note: None,
-            version: QUOTE_VERS.to_string(),
-            state: QuoteStateType::Accepted,
-            quote_item: vec![],
-        }
+        let mut quote = Quote::create();
+        quote.version = Some(QUOTE_VERS.to_string());
+        quote.state = Some(QuoteStateType::Accepted);
+        quote.quote_item = Some(vec![]);
+        quote
     }
 
     /// Set external Id for this quote
@@ -77,7 +75,7 @@ impl Quote {
 
     /// Add a quote item into a product quote
     pub fn add_quote(&mut self, item: QuoteItem) -> Result<String, String> {
-        self.quote_item.push(item);
+        self.quote_item.as_mut().unwrap().push(item);
         Ok(String::from("Quote Item Added"))
     }
 
@@ -86,31 +84,55 @@ impl Quote {
         match &self.description {
             Some(d) => d.clone(),
             None => {
-                format!("Quote-{}",self.id)
+                format!("Quote-{}",self.get_id())
             }
         }
     }
 
 }
 
+impl HasId for Quote {
+    fn generate_href(&mut self) {
+        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,QUOTE_PATH,self.get_id());
+        self.href = Some(href);    
+    }
+    fn generate_id(&mut self) {
+        let id = Quote::get_uuid();
+        self.id = Some(id);
+        self.generate_href();    
+    }
+    fn get_class() -> String {
+        QUOTE_PATH.to_owned()    
+    }
+    fn get_href(&self) -> String {
+        self.href.as_ref().unwrap().clone()    
+    }
+    fn get_id(&self) -> String {
+        self.id.as_ref().unwrap().clone()
+    }
+}
+
+impl CreateTMF<Quote> for Quote {}
+
 #[cfg(test)]
 mod test {
     use super::QuoteStateType;
     use crate::tmf648::quote::QUOTE_VERS;
+    use crate::HasId;
 
     use super::Quote;
     #[test]
     fn quote_test_new_vers() {
         let quote = Quote::new();
 
-        assert_eq!(quote.version, QUOTE_VERS.to_string());
+        assert_eq!(quote.version, Some(QUOTE_VERS.to_string()));
     }
 
     #[test]
     fn quote_test_new_state() {
         let quote = Quote::new();
 
-        assert_eq!(quote.state, QuoteStateType::Accepted);
+        assert_eq!(quote.state, Some(QuoteStateType::Accepted));
     }
 
     #[test]
@@ -125,6 +147,6 @@ mod test {
     fn quote_test_no_description() {
         let quote = Quote::new();
         
-        assert_eq!(quote.description(),format!("Quote-{}",quote.id));
+        assert_eq!(quote.description(),format!("Quote-{}",quote.get_id()));
     }
 }
