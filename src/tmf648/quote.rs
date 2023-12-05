@@ -56,6 +56,12 @@ pub struct Quote {
     /// Current quote version
     #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
+    /// Order Submission Date
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub order_date: Option<String>,
+    /// Requested Start Date
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub start_date: Option<String>,
 }
 
 impl Quote {
