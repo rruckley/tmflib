@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use super::quote_item::QuoteItem;
 use super::MOD_PATH;
+use super::quote_price::QuotePrice;
 use crate::common::note::Note;
 use crate::{LIB_PATH, HasId, CreateTMF};
 
@@ -62,6 +63,9 @@ pub struct Quote {
     /// Requested Start Date
     #[serde(skip_serializing_if = "Option::is_none")]
     pub start_date: Option<String>,
+    /// Total Quote Pricing
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quote_total_price : Option<Vec<QuotePrice>>,
 }
 
 impl Quote {
@@ -71,6 +75,7 @@ impl Quote {
         quote.version = Some(QUOTE_VERS.to_string());
         quote.state = Some(QuoteStateType::Accepted);
         quote.quote_item = Some(vec![]);
+        quote.quote_total_price = Some(vec![]);
         quote
     }
 
@@ -83,6 +88,11 @@ impl Quote {
     pub fn add_quote(&mut self, item: QuoteItem) -> Result<String, String> {
         self.quote_item.as_mut().unwrap().push(item);
         Ok(String::from("Quote Item Added"))
+    }
+
+    /// Add a price entry to this quote
+    pub fn price(&mut self, price : QuotePrice) {
+        self.quote_total_price.as_mut().unwrap().push(price);
     }
 
     /// Get a description for this quote
