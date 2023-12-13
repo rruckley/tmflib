@@ -8,6 +8,8 @@ use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
 use crate::tmf620::product_specification::ProductSpecificationRef;
 
+use super::quote_price::QuotePrice;
+
 /// Status of product for Quote Item
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub enum ProductStatusType {
@@ -90,6 +92,9 @@ pub struct QuoteItem {
     /// Product
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product : Option<ProductRefOrValue>,
+    /// Quote Item Pricing
+    #[serde(skip_serializing_if = "Option::is_none")]
+    quote_item_price : Option<Vec<QuotePrice>>,
 }
 
 impl QuoteItem {
@@ -99,7 +104,13 @@ impl QuoteItem {
         QuoteItem {
             id : Some(id),
             quantity : 1,
+            quote_item_price : Some(vec![]),
             ..Default::default()
         }
+    }
+
+    /// Add QuotePrice to this QuoteItem
+    pub fn price(&mut self, price : QuotePrice) {
+        self.quote_item_price.as_mut().unwrap().push(price);
     }
 }
