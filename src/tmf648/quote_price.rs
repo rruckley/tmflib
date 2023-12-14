@@ -51,7 +51,7 @@ impl Price {
     /// Set the tax inclusive price
     pub fn set_inc_price(&mut self, inc_price : f32, currency_code : Option<&str>) {
         self.tax_included_amount.value = inc_price;
-        self.duty_free_amount.value = inc_price / self.tax_rate;
+        self.duty_free_amount.value = inc_price / (1.0 + self.tax_rate);
         let currency_code = currency_code.unwrap_or(AUS_CURRENCY);
         let _result = self.set_currency(currency_code);
     }
@@ -97,15 +97,15 @@ impl QuotePrice {
         }    
     }
     /// Return the price inclusive of Tax
-    pub fn inc_tax(self) -> f32 {
-        match self.price {
+    pub fn inc_tax(&self) -> f32 {
+        match self.price.as_ref() {
             Some(p) => p.tax_included_amount.value,
             None => 0.0,
         }
     }
     /// Return the price exclusive of Tax
-    pub fn ex_tax(self) -> f32 {
-        match self.price {
+    pub fn ex_tax(&self) -> f32 {
+        match self.price.as_ref() {
             Some(p) => p.duty_free_amount.value,
             None => 0.0,
         }
@@ -121,5 +121,51 @@ impl QuotePrice {
     pub fn period(mut self, period : &str) -> QuotePrice {
         self.recurring_charge_period = Some(period.to_owned());
         self
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_price_inc() {
+        let price = Price::new_inc(100.0);
+        assert_eq!(price.duty_free_amount.value,100.0/(1.0+price.tax_rate));
+    }
+
+    #[test]
+    fn test_price_ex() {
+        let price = Price::new_ex(100.0);
+        assert_eq!(price.tax_included_amount.value,100.0*(1.0+price.tax_rate));
+    }
+
+    #[test]
+    fn test_quote_price_none() {
+        let quote_price = QuotePrice::new("MyQuotePrice");
+
+        assert_eq!(quote_price.price.is_none(),true);
+        assert_eq!(quote_price.inc_tax(),0.0);
+        assert_eq!(quote_price.ex_tax(),0.0);
+    }
+
+    #[test]
+    fn test_quote_price_inc() {
+        const PRICE : f32 = 3600.0;
+        let price = Price::new_inc(PRICE);
+        let quote_price = QuotePrice::new("IncPrice")
+            .price(price.clone());
+        assert_eq!(quote_price.inc_tax(),PRICE);
+        assert_eq!(quote_price.ex_tax(),PRICE/(1.0+price.tax_rate));
+    }
+
+    #[test]
+    fn test_quote_price_ex() {
+        const PRICE : f32 = 3600.0;
+        let price = Price::new_ex(PRICE);
+        let quote_price = QuotePrice::new("IncPrice")
+            .price(price.clone());
+        assert_eq!(quote_price.ex_tax(),PRICE);
+        assert_eq!(quote_price.inc_tax(),PRICE*(1.0+price.tax_rate));
     }
 }
