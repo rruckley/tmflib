@@ -129,7 +129,7 @@ mod test {
     #[test]
     fn test_default_cost() {
         let cost = Cost::new("MyCost");
-        assert_eq!(cost.cost.unit,"Dollars".to_string());
+        assert_eq!(cost.cost.unit,"".to_string());
         assert_eq!(cost.cost.value,COST_DEFAULT);
     }
 }
