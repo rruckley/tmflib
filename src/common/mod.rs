@@ -21,5 +21,6 @@ pub mod attachment;
 pub mod contact;
 pub mod note;
 pub mod event;
+pub mod money;
 pub mod related_party;
 pub mod related_place;

@@ -19,8 +19,11 @@ const PO_PATH: &str = "order";
 #[derive(Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOrder {
+    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     href: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     order_date: Option<String>,
     product_order_item: Vec<ProductOrderItem>,
     related_party: Vec<RelatedParty>,

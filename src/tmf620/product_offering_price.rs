@@ -4,6 +4,7 @@ use serde::{Deserialize,Serialize};
 
 use super::MOD_PATH;
 use crate::{HasId,HasName, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, TimePeriod};
+use crate::common::money::Money;
 const PRICE_PATH : &str = "productOfferingPrice";
 const PRICE_VERS : &str = "1.0";
 
@@ -22,22 +23,13 @@ pub struct ConstraintRef {
     version: Option<String>,
 }
 
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
-
-/// Tax Amount in local currency
-pub struct TaxAmount {
-    unit: String,
-    value: u32,
-}
-
 /// Tax Details
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TaxItem {
     tax_category: String,
     tax_rate: f32,
-    tax_amount: TaxAmount,
+    tax_amount: Money,
 }
 
 /// Product Offering Price Reference
@@ -65,14 +57,6 @@ impl From<ProductOfferingPrice> for ProductOfferingPriceRef {
     }
 }
 
-/// Price structure
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Price {
-    unit : String,
-    amount : f32,
-}
-
 /// Pricing linked to a Product Offering
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -89,6 +73,7 @@ pub struct ProductOfferingPrice {
     /// Versoin
     #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     constraint: Option<Vec<ConstraintRef>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
@@ -107,7 +92,7 @@ pub struct ProductOfferingPrice {
     #[serde(skip_serializing_if = "Option::is_none")]
     recurring_charge_period_type: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    price: Option<Price>,
+    price: Option<Money>,
     #[serde(skip_serializing_if = "Option::is_none")]
     unit_of_measure: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]

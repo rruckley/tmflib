@@ -86,10 +86,8 @@ impl Customer {
         if self.id.is_none() {
             self.generate_id();
         };
-        let hash_input = match offset {
-            Some(o) => format!("{}:{}:{}", self.id.as_ref().unwrap(), self.name,o),
-            None => format!("{}:{}", self.id.as_ref().unwrap(), self.name),
-        };
+        let offset = offset.unwrap_or(0);
+        let hash_input = format!("{}:{}:{}", self.id.as_ref().unwrap(), self.name,offset);
         let sha = digest(hash_input);
         let sha_slice = sha.as_str()[..4].to_string().to_ascii_uppercase();
         let code = Characteristic {
@@ -109,6 +107,17 @@ impl Customer {
 
         self.characteristic.as_mut().unwrap().push(code);
         self.characteristic.as_mut().unwrap().push(hash);
+    }
+
+    /// Try to find characteristic with given name
+    pub fn get_characteristic(&self, characteristic : &str) -> Option<Characteristic> {
+    match self.characteristic.clone() {
+        Some(c) => {
+            c.into_iter().filter(|x| x.name == characteristic).next()
+        },
+        None => None,
+    }
+
     }
 
     /// Set the name of the customer
