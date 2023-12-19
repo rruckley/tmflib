@@ -109,6 +109,17 @@ impl Customer {
         self.characteristic.as_mut().unwrap().push(hash);
     }
 
+    /// Try to find characteristic with given name
+    pub fn get_characteristic(&self, characteristic : &str) -> Option<Characteristic> {
+    match self.characteristic.clone() {
+        Some(c) => {
+            c.into_iter().filter(|x| x.name == characteristic).next()
+        },
+        None => None,
+    }
+
+    }
+
     /// Set the name of the customer
     pub fn name(&mut self, name : String) {
         self.name = name.clone();
