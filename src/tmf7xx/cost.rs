@@ -5,25 +5,10 @@ use serde::{Deserialize,Serialize};
 use std::convert::From;
 
 use super::MOD_PATH;
+use crate::common::money::Money;
 
 const COST_PATH : &str = "cost";
 const COST_DEFAULT : f32 = 1.0;
-
-/// Price structure
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct CostEntry {
-    /// Currency Unit
-    pub unit : String,
-    /// Amount of currency
-    pub amount : f32,
-}
-
-impl Default for CostEntry {
-    fn default() -> Self {
-        CostEntry { unit: "Dollars".to_owned(), amount: COST_DEFAULT }
-    }
-}
 
 /// Cost Reference
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -32,7 +17,7 @@ pub struct CostRef {
     id: String,
     href: String,
     name: String,
-    value: CostEntry,
+    value: Money,
 }
 
 impl From<Cost> for CostRef {
@@ -41,7 +26,7 @@ impl From<Cost> for CostRef {
             id: value.get_id(),
             href: value.get_href(),
             name: value.name.unwrap_or("NoName".to_string()),
-            value: value.cost,
+            value: value.cost.clone(),
         }
     }
 }
@@ -63,7 +48,7 @@ pub struct Cost {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub valid_for: Option<TimePeriod>,
     /// Cost Value
-    pub cost : CostEntry,
+    pub cost : Money,
     /// Parent Cost
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parent : Option<String>,
@@ -79,10 +64,11 @@ impl Cost {
         cost.name = Some(name.to_owned());
         cost.valid_for = Some(TimePeriod::default());
         cost.child_costs = Some(vec![]);
+        cost.cost.value = COST_DEFAULT;
         cost
     }
     /// Set value for this cost
-    pub fn cost(mut self, cost : CostEntry) -> Cost {
+    pub fn cost(mut self, cost : Money) -> Cost {
         self.cost = cost;
         self
     }
@@ -97,11 +83,11 @@ impl Cost {
             Some(cc) => {
                 let vec = cc.clone();
                 let sum = vec.into_iter().fold(0.0,|acc,cf| {
-                    acc + cf.value.amount
+                    acc + cf.value.value
                 });
-                sum + self.cost.amount
+                sum + self.cost.value
             }
-            None => self.cost.amount,
+            None => self.cost.value,
         }
     }
 }
@@ -144,6 +130,6 @@ mod test {
     fn test_default_cost() {
         let cost = Cost::new("MyCost");
         assert_eq!(cost.cost.unit,"Dollars".to_string());
-        assert_eq!(cost.cost.amount,COST_DEFAULT);
+        assert_eq!(cost.cost.value,COST_DEFAULT);
     }
 }
