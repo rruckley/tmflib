@@ -5,7 +5,7 @@ use uuid::Uuid;
 use super::LIB_PATH;
 use super::MOD_PATH;
 
-const SO_PATH: &str = "order";
+const SO_PATH: &str = "serviceOrder";
 
 /// Service Order Object
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

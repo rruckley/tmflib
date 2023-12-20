@@ -9,7 +9,7 @@ use super::CreateTMF;
 use uuid::Uuid;
 use serde::{Deserialize,Serialize};
 
-const SHIP_PATH : &str = "shipping";
+const SHIP_PATH : &str = "shippingOrder";
 
 /// Order for shipping of tangible goods
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

@@ -19,6 +19,6 @@
 //! The role defines a specialisation of how the party object is used and thus a reference to a party (via [tmf632]) is required.
 //! This is achieved via the [common/related_party] object.
 
-const MOD_PATH : &str = "tmf669/v4";
+const MOD_PATH : &str = "partyRoleManagement/v4";
 
 pub mod party_role;

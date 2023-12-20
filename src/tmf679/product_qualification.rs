@@ -14,7 +14,7 @@ use crate::common::related_party::RelatedParty;
 use crate::tmf620::category::CategoryRef;
 use crate::tmf620::product_offering::ProductOfferingRef;
 
-const POQ_PATH : &str = "qualification";
+const POQ_PATH : &str = "productOfferingQualification";
 
 /// Qualification Item Status
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

@@ -9,7 +9,7 @@ use crate::{HasName,HasId};
 use crate::tmf673::geographic_address::GeographicAddress;
 use crate::LIB_PATH;
 use super::MOD_PATH;
-const GEO_PATH: &str = "site";
+const GEO_PATH: &str = "geographicSite";
 
 /// Refernce to a place
 /// # Uses

@@ -7,7 +7,7 @@ use uuid::Uuid;
 use crate::{HasId,CreateTMF};
 use crate::LIB_PATH;
 use super::MOD_PATH;
-const CPC_PATH : &str = "checkConfig";
+const CPC_PATH : &str = "CheckProductConfiguration";
 
 
 /// Configuration Check Status

@@ -6,7 +6,7 @@ use crate::{HasId,CreateTMF,LIB_PATH, common::related_party::RelatedParty};
 
 use super::MOD_PATH;
 
-const ROLE_PATH : &str = "role";
+const ROLE_PATH : &str = "partyRole";
 
 /// Party Role
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

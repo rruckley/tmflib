@@ -16,7 +16,7 @@
 //!
 use super::LIB_PATH;
 
-const MOD_PATH: &str = "service";
+const MOD_PATH: &str = "serviceOrder/v4";
 
 /// Service Order 
 pub mod service_order;

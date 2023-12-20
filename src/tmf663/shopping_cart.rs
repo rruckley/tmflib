@@ -10,7 +10,7 @@ use crate::common::related_party::RelatedParty;
 use super::MOD_PATH;
 use super::cart_item::CartItem;
 
-const CART_PATH : &str = "cart";
+const CART_PATH : &str = "shoppingCart";
 
 /// Shopping Cart
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

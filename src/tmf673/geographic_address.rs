@@ -9,7 +9,7 @@ use crate::LIB_PATH;
 
 use super::MOD_PATH;
 
-const GEO_PATH : &str = "address";
+const GEO_PATH : &str = "geographicAddress";
 
 
 /// Geographic Address 

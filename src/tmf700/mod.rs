@@ -17,6 +17,7 @@
 use super::LIB_PATH;
 use super::HasId;
 use super::CreateTMF;
-const MOD_PATH : &str = "tmf700/v4";
+/// Common path for TMF700
+pub const MOD_PATH : &str = "shippingOrder/v4";
 
 pub mod shipping_order;

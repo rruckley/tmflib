@@ -3,7 +3,7 @@
 
 use serde::{Deserialize, Serialize};
 
-const RC_PATH : &str = "candidate";
+const RC_PATH : &str = "resourceCandidate";
 
 use super::MOD_PATH;
 use crate::{LIB_PATH, HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime};

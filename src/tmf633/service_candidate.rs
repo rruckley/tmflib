@@ -6,7 +6,7 @@ use std::convert::From;
 use crate::{HasId,HasLastUpdate, CreateTMF, CreateTMFWithTime, LIB_PATH};
 
 use super::MOD_PATH;
-const SC_PATH : &str = "candidate";
+const SC_PATH : &str = "serviceCandidate";
 
 /// Service Candidate 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
