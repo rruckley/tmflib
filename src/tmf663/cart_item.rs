@@ -2,7 +2,10 @@
 
 use serde::{Deserialize, Serialize};
 use crate::common::note::Note;
+#[cfg(feature = "v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
+#[cfg(feature = "v5")]
+use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
 use std::convert::From;
 use uuid::Uuid;

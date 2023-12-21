@@ -12,7 +12,10 @@ use super::MOD_PATH;
 use super::product_offering_qualification_item::ProductOfferingQualificationItem;
 use crate::common::related_party::RelatedParty;
 use crate::tmf620::category::CategoryRef;
+#[cfg(feature = "v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
+#[cfg(feature = "v5")]
+use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
 const POQ_PATH : &str = "qualification";
 

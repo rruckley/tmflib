@@ -3,7 +3,10 @@
 
 use serde::{Deserialize, Serialize};
 use std::convert::From;
-use crate::tmf674::geographic_site::GeographicSite;
+#[cfg(feature = "v4")]
+use crate::tmf674::geographic_site_v4::GeographicSite;
+#[cfg(feature = "v5")]
+use crate::tmf674::geographic_site_v5::GeographicSite;
 use crate::HasId;
 
 /// Reference to a place (TMF673, TMF674, TMF674)
