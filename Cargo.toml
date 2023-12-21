@@ -6,6 +6,11 @@ authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Interface library for processing TMF payloads"
 repository = "https://github.com/rruckley/tmflib"
 
+[features]
+default = ["v4"]
+v4 = []
+v5 = []
+
 [dependencies]
 chrono = "0.4.31"
 rust_iso4217 = "0.1.1"
