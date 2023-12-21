@@ -3,7 +3,10 @@
 use serde::{Deserialize,Serialize};
 use std::convert::From;
 
+#[cfg(feature = "v4")]
 use crate::tmf620::product_offering::{ProductOffering,ProductOfferingRef};
+#[cfg(feature = "v5")]
+use crate::tmf620::product_offering_v5::{ProductOffering,ProductOfferingRef};
 
 /// Action Type for Order Items
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

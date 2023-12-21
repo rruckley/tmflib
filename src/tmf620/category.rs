@@ -1,7 +1,10 @@
 //! Category Module
 
 use crate::{CreateTMF,HasLastUpdate, TimePeriod};
+#[cfg(feature = "v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
+#[cfg(feature = "v5")]
+use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
 use serde::{Deserialize, Serialize};
 
