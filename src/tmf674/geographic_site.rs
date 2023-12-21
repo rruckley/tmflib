@@ -4,8 +4,7 @@ use serde::{Deserialize,Serialize};
 use uuid::Uuid;
 use std::convert::From;
 
-use crate::CreateTMF;
-use crate::{HasName,HasId};
+use crate::{HasName,HasId,CreateTMF,TimePeriod};
 use crate::tmf673::geographic_address::GeographicAddress;
 use crate::LIB_PATH;
 use super::MOD_PATH;
@@ -33,6 +32,17 @@ impl From<GeographicAddress> for PlaceRefOrValue {
     }
 }
 
+
+/// Relationship to other sites
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct GeographicSiteRelationship {
+    id : String,
+    href : String,
+    relationship_type : String,
+    role : String,
+    valid_for: TimePeriod,
+}
+
 /// Geographic Site
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -43,10 +53,22 @@ pub struct GeographicSite {
     /// HREF
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
-    /// Name
+    /// Site Code
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub code : Option<String>,
+    /// Site Description
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description : Option<String>,
+    /// Site Name
     pub name: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     place: Option<PlaceRefOrValue>,
+    /// Site Status
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub status : Option<String>,
+    /// Relationships to other sides, e.g. floor , building,tenant
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub site_relationship: Option<Vec<GeographicSiteRelationship>>,
 }
 
 impl GeographicSite {
@@ -60,6 +82,12 @@ impl GeographicSite {
     pub fn place(mut self, place : PlaceRefOrValue) -> GeographicSite {
         self.place = Some(place);
         self    
+    }
+
+    /// Set the code for this site
+    pub fn code(mut self, code : String) -> GeographicSite {
+        self.code = Some(code);
+        self
     }
 }
 
