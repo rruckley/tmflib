@@ -1,6 +1,6 @@
 [package]
 name = "tmflib"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Interface library for processing TMF payloads"
@@ -12,6 +12,7 @@ tmf674-v5 = []
 default = ["v4"]
 v4 = ["tmf674-v4"]
 v5 = ["tmf674-v5"]
+client = ["v4"]
 
 [dependencies]
 chrono = "0.4.31"

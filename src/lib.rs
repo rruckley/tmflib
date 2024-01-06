@@ -168,3 +168,6 @@ pub mod tmf679;
 pub mod tmf700;
 /// Product Configuration
 pub mod tmf760;
+
+#[cfg(feature = "client")]
+pub mod client;
