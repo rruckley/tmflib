@@ -7,9 +7,11 @@ description = "Interface library for processing TMF payloads"
 repository = "https://github.com/rruckley/tmflib"
 
 [features]
+tmf674-v4 = []
+tmf674-v5 = []
 default = ["v4"]
-v4 = []
-v5 = []
+v4 = ["tmf674-v4"]
+v5 = ["tmf674-v5"]
 
 [dependencies]
 chrono = "0.4.31"

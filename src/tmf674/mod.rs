@@ -14,12 +14,12 @@
 
 //! TMF674 Geographic Site Module
 
-#[cfg(feature = "v4")]
+#[cfg(feature = "tmf674-v4")]
 pub mod geographic_site_v4;
-#[cfg(feature = "v5")]
+#[cfg(feature = "tmf674-v5")]
 pub mod geographic_site_v5;
 
-#[cfg(feature = "v4")]
+#[cfg(feature = "tmf674-v4")]
 const MOD_PATH : &str = "tmf674/v4";
-#[cfg(feature = "v5")]
+#[cfg(feature = "tmf674-v5")]
 const MOD_PATH : &str = "tmf674/v5";
