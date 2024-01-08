@@ -31,9 +31,9 @@ pub struct GeographicAddress {
 
 impl GeographicAddress {
     /// Create a new Geographic Address
-    pub fn new(name : String) -> GeographicAddress {
+    pub fn new(name : impl Into<String>) -> GeographicAddress {
         let mut address = GeographicAddress::create();
-        address.name = name;
+        address.name = name.into();
         address
     }
 

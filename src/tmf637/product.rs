@@ -59,10 +59,10 @@ impl CreateTMF<Product> for Product {}
 
 impl Product {
     /// Create a new product object
-    pub fn new(name: String) -> Product {
+    pub fn new(name: impl Into<String>) -> Product {
         let mut product = Product::create();
         product.status = ProductStatusType::Created;
-        product.name = name;
+        product.name = name.into();
         product
     }
 }

@@ -34,9 +34,9 @@ impl CreateTMF<Individual> for Individual {}
 
 impl Individual {
     /// Create a new instance of indiviudal object
-    pub fn new(name : &str) -> Individual {
+    pub fn new(name : impl Into<String>) -> Individual {
         let mut ind = Individual::create();
-        ind.full_name = name.to_owned();
+        ind.full_name = name.into();
         // Need this as default would be None
         ind.related_party = Some(vec![]);
         ind.contact_medium = Some(vec![]);
