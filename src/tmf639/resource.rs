@@ -85,9 +85,9 @@ impl CreateTMF<Resource> for Resource {}
 
 impl Resource {
     /// Create a new Resource Inventory record
-    pub fn new(name : &str) -> Resource {
+    pub fn new(name : impl Into<String>) -> Resource {
         let mut resource = Resource::create();
-        resource.name = name.to_owned();
+        resource.name = name.into();
         resource.resource_version = Some(RESOURCE_VERS.to_owned());
         resource    
     }

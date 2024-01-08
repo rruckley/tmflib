@@ -50,8 +50,8 @@ pub struct Catalog {
 }
 
 impl HasLastUpdate for Catalog {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.last_update = Some(time.into());
     }
 }
 
@@ -67,9 +67,9 @@ impl CreateTMFWithTime<Catalog> for Catalog {
 
 impl Catalog {
     /// Create a new instance of catalog struct
-    pub fn new(name : &str) -> Catalog {
+    pub fn new(name : impl Into<String>) -> Catalog {
         let mut cat = Catalog::create_with_time();
-        cat.name = Some(name.to_owned());
+        cat.name = Some(name.into());
         cat.version = Some(CAT_VERS.to_string());
         cat.category = Some(vec![]);
         cat.related_party = Some(vec![]);

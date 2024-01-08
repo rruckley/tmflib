@@ -18,8 +18,8 @@ pub struct BundledProductOffering {
 
 impl BundledProductOffering {
     /// Create new options for BundledProductOffering
-    pub fn new(name: String) -> BundledProductOffering {
-        let mut offer = ProductOffering::new(name);
+    pub fn new(name: impl Into<String>) -> BundledProductOffering {
+        let mut offer = ProductOffering::new(name.into());
         // Update href to point to bundle instead of standard offer path
         let href = format!(
             "/{}/{}/{}/{}",

@@ -45,9 +45,9 @@ pub struct ServiceTest {
 
 impl ServiceTest {
     /// Create new ServiceTest
-    pub fn new(name : &str) -> ServiceTest {
+    pub fn new(name : impl Into<String>) -> ServiceTest {
         let mut st = ServiceTest::create();
-        st.name = Some(name.to_owned());
+        st.name = Some(name.into());
         st
     }
 }

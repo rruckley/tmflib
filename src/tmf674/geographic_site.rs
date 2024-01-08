@@ -109,9 +109,9 @@ pub struct GeographicSite {
 
 impl GeographicSite {
     /// Create a new Geographic Site with a name
-    pub fn new(name : String) -> GeographicSite {
+    pub fn new(name : impl Into<String>) -> GeographicSite {
         let mut site = GeographicSite::create();
-        site.name = name;
+        site.name = name.into();
         site.calendar = Some(vec![]);
         site
     }

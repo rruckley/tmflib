@@ -103,10 +103,10 @@ pub struct ProductOfferingPrice {
 
 impl ProductOfferingPrice {
     /// Create a new Price Offering Price object
-    pub fn new(name :  String) -> ProductOfferingPrice {
+    pub fn new(name :  impl Into<String>) -> ProductOfferingPrice {
         let mut pop = ProductOfferingPrice::create_with_time();
         pop.version = Some(PRICE_VERS.to_string());
-        pop.name = Some(name);
+        pop.name = Some(name.into());
         pop
     }
 }
@@ -142,7 +142,7 @@ impl HasName for ProductOfferingPrice {
 }
 
 impl HasLastUpdate for ProductOfferingPrice {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.last_update = Some(time.into());
     }
 }

@@ -30,8 +30,8 @@ pub struct ProductOrder {
 }
 
 impl HasLastUpdate for ProductOrder {
-    fn set_last_update(&mut self, time : String) {
-        self.order_date = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.order_date = Some(time.into());
     }
 }
 

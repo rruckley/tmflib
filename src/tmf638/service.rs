@@ -34,13 +34,13 @@ pub struct Service {
 
 impl Service {
     /// Create a new service object for the inventory
-    pub fn new(name : String) -> Service {
+    pub fn new(name : impl Into<String>) -> Service {
         let id = Uuid::new_v4().to_string();
         let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,SERVICE_PATH,id);
         Service {
             id:Some(id), 
             href: Some(href), 
-            name,
+            name : name.into(),
             state : ServiceStateType::Inactive,
         }
     }

@@ -90,9 +90,9 @@ pub struct QuotePrice {
 
 impl QuotePrice {
     /// Create a new QuotePrice object with a given name
-    pub fn new(name : &str) -> QuotePrice {
+    pub fn new(name :impl Into<String>) -> QuotePrice {
         QuotePrice {
-            name : Some(name.to_owned()),
+            name : Some(name.into()),
             ..Default::default()
         }    
     }

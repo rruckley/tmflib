@@ -13,7 +13,7 @@ pub struct Characteristic {
 
 impl Characteristic {
     /// Create a new resource characteristic
-    pub fn new(name: String) -> Characteristic {
-        Characteristic { name, ..Default::default() }
+    pub fn new(name: impl Into<String>) -> Characteristic {
+        Characteristic { name : name.into(), ..Default::default() }
     }
 }

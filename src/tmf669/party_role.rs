@@ -25,9 +25,9 @@ pub struct PartyRole {
 
 impl PartyRole {
     /// Create new PartyRole with given name
-    pub fn new(name : &str) -> PartyRole {
+    pub fn new(name : impl Into<String>) -> PartyRole {
         let mut role = PartyRole::create();
-        role.name = name.to_owned();
+        role.name = name.into();
         role
     }
 
