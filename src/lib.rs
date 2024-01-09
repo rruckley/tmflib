@@ -154,6 +154,8 @@ pub mod tmf673;
 pub mod tmf674;
 /// Product Offering Qualification
 pub mod tmf679;
+/// Sales Management
+pub mod tmf699;
 /// Shipping Order [Pre-Prod]
 pub mod tmf700;
 /// Product Configuration
