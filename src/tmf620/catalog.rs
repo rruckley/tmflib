@@ -102,8 +102,12 @@ impl HasId for Catalog {
         self.href.as_ref().unwrap().clone()
     }
 
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,Catalog::get_class())    
+    }
+
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CAT_PATH,self.get_id());
+        let href = format!("{}/{}",Catalog::get_class_href(),self.get_id());
         self.href = Some(href);    
     }
 

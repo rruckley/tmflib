@@ -169,7 +169,7 @@ impl HasName for ProductOffering {
 
 impl HasId for ProductOffering {
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,PO_PATH,self.get_id());
+        let href = format!("/{}/{}",ProductOffering::get_class_href(),self.get_id());
         self.href = Some(href);
     }
     fn generate_id(&mut self) {
@@ -180,6 +180,9 @@ impl HasId for ProductOffering {
     }
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()    
+    }
+    fn get_class_href() -> String {
+        format!("{}/{}/{}",LIB_PATH,MOD_PATH,ProductOffering::get_class()) 
     }
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()
