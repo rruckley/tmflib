@@ -14,9 +14,9 @@
 
 //! TMF641 Service Order Management Modules
 //!
-use super::LIB_PATH;
 
 const MOD_PATH: &str = "serviceOrder/v4";
 
 /// Service Order 
 pub mod service_order;
+pub mod service_order_item;

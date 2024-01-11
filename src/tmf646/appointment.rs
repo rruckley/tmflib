@@ -4,9 +4,9 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH};
+use crate::{HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, TimePeriod};
 
-const APP_PATH : &str = "appointment";
+const CLASS_PATH : &str = "appointment";
 
 /// Appointment booking status
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -29,9 +29,31 @@ pub enum AppointmentStateType {
 pub struct Appointment {
     id: Option<String>,
     href: Option<String>,
+    category: Option<String>,
     creation_date: Option<String>,
+    description: Option<String>,
+    external_id: Option<String>,
     last_update: Option<String>,
     status: AppointmentStateType,
+    valid_for: Option<TimePeriod>,
+}
+
+/// Reference to an appointment
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct AppointmentRef {
+    description: String,
+    href: String,
+    id: String,
+}
+
+impl From<Appointment> for AppointmentRef {
+    fn from(value: Appointment) -> Self {
+        AppointmentRef {
+            description: value.get_href(),
+            href: value.href.unwrap().clone(),
+            id: value.id.unwrap().clone(),
+        }
+    }
 }
 
 impl Appointment {
@@ -62,7 +84,7 @@ impl HasId for Appointment {
         self.id.as_ref().unwrap().clone()    
     }
     fn get_class() -> String {
-        APP_PATH.to_owned()
+        CLASS_PATH.to_owned()
     }
 }
 
