@@ -44,7 +44,7 @@ impl Appointment {
 
 impl HasId for Appointment {
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,APP_PATH,self.get_id());
+        let href = format!("{}/{}",Appointment::get_class_href(),self.get_id());
         self.href = Some(href);       
     }
     fn generate_id(&mut self) {
@@ -54,6 +54,9 @@ impl HasId for Appointment {
     }
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()
+    }
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,Appointment::get_class())
     }
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()    
@@ -66,9 +69,11 @@ impl HasId for Appointment {
 impl CreateTMF<Appointment> for Appointment {}
 
 impl HasLastUpdate for Appointment {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time.clone());
-        self.creation_date = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        let time1 = time.into();
+        let time2 = time1.clone();
+        self.last_update = Some(time1);
+        self.creation_date = Some(time2);
     }
 }
 

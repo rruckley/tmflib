@@ -50,8 +50,8 @@ pub struct Catalog {
 }
 
 impl HasLastUpdate for Catalog {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.last_update = Some(time.into());
     }
 }
 
@@ -67,9 +67,9 @@ impl CreateTMFWithTime<Catalog> for Catalog {
 
 impl Catalog {
     /// Create a new instance of catalog struct
-    pub fn new(name : &str) -> Catalog {
+    pub fn new(name : impl Into<String>) -> Catalog {
         let mut cat = Catalog::create_with_time();
-        cat.name = Some(name.to_owned());
+        cat.name = Some(name.into());
         cat.version = Some(CAT_VERS.to_string());
         cat.category = Some(vec![]);
         cat.related_party = Some(vec![]);
@@ -102,8 +102,12 @@ impl HasId for Catalog {
         self.href.as_ref().unwrap().clone()
     }
 
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,Catalog::get_class())    
+    }
+
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CAT_PATH,self.get_id());
+        let href = format!("{}/{}",Catalog::get_class_href(),self.get_id());
         self.href = Some(href);    
     }
 

@@ -140,6 +140,12 @@ impl HasId for Customer {
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()
     }
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}",
+        LIB_PATH,
+        MOD_PATH,
+        CUST_PATH)   
+    }
 
     fn generate_id(&mut self) {
         let id = Uuid::new_v4().to_string();
@@ -152,11 +158,9 @@ impl HasId for Customer {
         match &self.id {
             Some(_) => {
                 let href = format!(
-                    "/{}/{}/{}/{}",
-                    LIB_PATH,
-                    MOD_PATH,
-                    CUST_PATH,
-                    self.id.as_ref().unwrap()
+                    "{}/{}",
+                    Customer::get_class_href(),
+                    self.get_id()
                 );
                 self.href = Some(href);
             }

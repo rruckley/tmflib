@@ -30,8 +30,8 @@ pub struct ProductOrder {
 }
 
 impl HasLastUpdate for ProductOrder {
-    fn set_last_update(&mut self, time : String) {
-        self.order_date = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.order_date = Some(time.into());
     }
 }
 
@@ -70,7 +70,7 @@ impl ProductOrder {
 impl HasId for ProductOrder {
     fn generate_href(&mut self) {
         let id = self.get_id();
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, PO_PATH, id);    
+        let href = format!("{}/{}",ProductOrder::get_class_href(),id);
         self.href = Some(href);
     }
     fn generate_id(&mut self) {
@@ -80,6 +80,9 @@ impl HasId for ProductOrder {
     }
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()   
+    }
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}", LIB_PATH, MOD_PATH, PO_PATH)   
     }
     fn get_id(&self) -> String {    
         self.id.as_ref().unwrap().clone()

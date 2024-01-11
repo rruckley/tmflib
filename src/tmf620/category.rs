@@ -58,8 +58,8 @@ pub struct Category {
 }
 
 impl HasLastUpdate for Category {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.last_update = Some(time.into());
     }
 }
 
@@ -78,10 +78,10 @@ impl Category {
     /// # use tmflib::tmf620::category::Category;
     /// let cat = Category::new(String::from("MyCategory"));
     /// ```
-    pub fn new(name: String) -> Category {
+    pub fn new(name: impl Into<String>) -> Category {
         let mut cat = Category::create_with_time();
         cat.version = Some(CAT_VERS.to_string());
-        cat.name = Some(name);
+        cat.name = Some(name.into());
         cat.is_root = Some(false);
         cat
     }
@@ -150,8 +150,12 @@ impl HasId for Category {
         self.href.as_ref().unwrap().clone()
     }
 
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,Category::get_class())
+    }
+
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CAT_PATH,self.get_id());
+        let href = format!("{}/{}",Category::get_class_href(),self.get_id());
         self.href = Some(href);    
     }
 

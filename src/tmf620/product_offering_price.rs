@@ -103,10 +103,10 @@ pub struct ProductOfferingPrice {
 
 impl ProductOfferingPrice {
     /// Create a new Price Offering Price object
-    pub fn new(name :  String) -> ProductOfferingPrice {
+    pub fn new(name :  impl Into<String>) -> ProductOfferingPrice {
         let mut pop = ProductOfferingPrice::create_with_time();
         pop.version = Some(PRICE_VERS.to_string());
-        pop.name = Some(name);
+        pop.name = Some(name.into());
         pop
     }
 }
@@ -115,7 +115,7 @@ impl CreateTMFWithTime<ProductOfferingPrice> for ProductOfferingPrice {}
 
 impl HasId for ProductOfferingPrice {
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,PRICE_PATH,self.get_id());
+        let href = format!("{}/{}",ProductOfferingPrice::get_class_href(),self.get_id());
         self.href = Some(href);
     }
     fn generate_id(&mut self) {
@@ -125,6 +125,9 @@ impl HasId for ProductOfferingPrice {
     }
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()
+    }
+    fn get_class_href() -> String {
+        format!("{}/{}/{}",LIB_PATH,MOD_PATH,ProductOfferingPrice::get_class())
     }
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()
@@ -142,7 +145,7 @@ impl HasName for ProductOfferingPrice {
 }
 
 impl HasLastUpdate for ProductOfferingPrice {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.last_update = Some(time.into());
     }
 }
