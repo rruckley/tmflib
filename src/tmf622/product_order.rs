@@ -13,7 +13,7 @@ use super::MOD_PATH;
 
 use super::product_order_item::ProductOrderItem;
 
-const PO_PATH: &str = "order";
+const PO_PATH: &str = "productOrder";
 
 /// ProductOrder
 #[derive(Debug, Default, Deserialize, Serialize)]

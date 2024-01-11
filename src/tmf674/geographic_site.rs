@@ -8,7 +8,7 @@ use crate::{HasName,HasId,CreateTMF,TimePeriod};
 use crate::tmf673::geographic_address::GeographicAddress;
 use crate::LIB_PATH;
 use super::MOD_PATH;
-const GEO_PATH: &str = "site";
+const GEO_PATH: &str = "geographicSite";
 const DEFAULT_TZ : &str = "AEST";
 
 /// Refernce to a place

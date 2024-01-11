@@ -15,6 +15,6 @@
 //! TMF637 Product Inventory Module
 use super::LIB_PATH;
 
-const MOD_PATH: &str = "tmf637/v4";
+const MOD_PATH: &str = "productInventoryManagement/v4";
 
 pub mod product;
