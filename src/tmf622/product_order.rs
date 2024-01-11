@@ -13,7 +13,7 @@ use super::MOD_PATH;
 
 use super::product_order_item::ProductOrderItem;
 
-const PO_PATH: &str = "order";
+const PO_PATH: &str = "productOrder";
 
 /// ProductOrder
 #[derive(Debug, Default, Deserialize, Serialize)]
@@ -30,8 +30,8 @@ pub struct ProductOrder {
 }
 
 impl HasLastUpdate for ProductOrder {
-    fn set_last_update(&mut self, time : String) {
-        self.order_date = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.order_date = Some(time.into());
     }
 }
 

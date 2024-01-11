@@ -6,7 +6,7 @@ use crate::{HasId,CreateTMF,LIB_PATH, common::related_party::RelatedParty};
 
 use super::MOD_PATH;
 
-const ROLE_PATH : &str = "role";
+const ROLE_PATH : &str = "partyRole";
 
 /// Party Role
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -25,9 +25,9 @@ pub struct PartyRole {
 
 impl PartyRole {
     /// Create new PartyRole with given name
-    pub fn new(name : &str) -> PartyRole {
+    pub fn new(name : impl Into<String>) -> PartyRole {
         let mut role = PartyRole::create();
-        role.name = name.to_owned();
+        role.name = name.into();
         role
     }
 

@@ -7,7 +7,7 @@ use crate::{HasId,CreateTMF};
 use crate::common::note::Note;
 use super::service_order_item::ServiceOrderItem;
 
-const CLASS_PATH: &str = "order";
+const CLASS_PATH: &str = "serviceOrder";
 
 /// Service Order Object
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

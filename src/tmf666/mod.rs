@@ -2,4 +2,4 @@
 
 pub mod billing_account;
 
-const MOD_PATH : &str = "tmf666/v4";
+const MOD_PATH : &str = "accountManagement/v4";
