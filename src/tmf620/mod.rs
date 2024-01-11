@@ -19,9 +19,9 @@
 use super::LIB_PATH;
 use serde::{Deserialize, Serialize};
 
-#[cfg(feature = "v4")]
+#[cfg(feature = "tmf620-v4")]
 const MOD_PATH: &str = "productCatalogManagement/v4";
-#[cfg(feature = "v5")]
+#[cfg(feature = "tmf620-v5")]
 const MOD_PATH: &str = "productCatalogManagement/v5";
 
 pub mod bundled_product_offering;

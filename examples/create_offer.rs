@@ -1,6 +1,10 @@
 //! Create a product template
 //! 
+
+#[cfg(feature = "tmf620-v4")]
 use tmflib::tmf620::product_offering::ProductOffering;
+#[cfg(feature = "tmf620-v5")]
+use tmflib::tmf620::product_offering_v5::ProductOffering;
 use tmflib::tmf620::category::{Category,CategoryRef};
 use tmflib::tmf620::product_specification::{ProductSpecification,ProductSpecificationCharacteristic, ProductSpecificationCharacteristicValueUse};
 

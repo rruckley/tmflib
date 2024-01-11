@@ -199,7 +199,7 @@ impl ProductOffering {
     /// Create a new instance of ProductOffering object
     /// # Examples
     /// ```
-    /// # use tmflib::tmf620::product_offering::ProductOffering;
+    /// # use tmflib::tmf620::product_offering_v5::ProductOffering;
     /// let po = ProductOffering::new(String::from("MyOffer"));
     /// ```
     pub fn new(name: String) -> ProductOffering {
@@ -220,7 +220,7 @@ impl ProductOffering {
     /// Added category refernce to ProductOffering
     /// # Examples
     /// ```
-    /// # use tmflib::tmf620::product_offering::ProductOffering;
+    /// # use tmflib::tmf620::product_offering_v5::ProductOffering;
     /// # use tmflib::tmf620::category::{Category,CategoryRef};
     /// let po = ProductOffering::new(String::from("MyOffer"));
     /// let cat= Category::new(String::from("MyCategory"));
