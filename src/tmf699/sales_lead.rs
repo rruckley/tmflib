@@ -16,7 +16,7 @@ use crate::{HasId,CreateTMF};
 
 use serde::{Deserialize,Serialize};
 
-const SALES_PATH : &str = "salesLead";
+const CLASS_PATH : &str = "salesLead";
 
 /// Sales Lead Priorities
 #[derive(Clone,Debug,Default,Deserialize,Serialize)]
@@ -97,7 +97,7 @@ pub struct SalesLead {
 
 impl HasId for SalesLead {
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,SALES_PATH,self.get_id());
+        let href = format!("{}/{}",SalesLead::get_class_href(),self.get_id());
         self.href = Some(href);    
     }
     fn generate_id(&mut self) {
@@ -106,10 +106,13 @@ impl HasId for SalesLead {
         self.generate_href();    
     }
     fn get_class() -> String {
-        SALES_PATH.to_string()    
+        CLASS_PATH.to_string()    
     }
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()    
+    }
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,SalesLead::get_class())  
     }
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()    

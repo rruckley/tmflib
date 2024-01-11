@@ -1,6 +1,5 @@
 //! Test Sales LEad
 
-
 use tmflib::tmf699::sales_lead::SalesLead;
 
 fn main() {
