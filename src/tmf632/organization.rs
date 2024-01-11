@@ -47,9 +47,9 @@ pub struct Organization {
 
 impl Organization {
     /// Create a new organization record with a name
-    pub fn new(name : String) -> Organization {
+    pub fn new(name : impl Into<String>) -> Organization {
         let mut org = Organization::create();
-        org.name = name;
+        org.name = name.into();
         org.related_party = Some(vec![]);
         org
     }

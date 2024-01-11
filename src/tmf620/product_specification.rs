@@ -41,12 +41,12 @@ impl ProductSpecificationCharacteristic {
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristic;
     /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"));
     /// ```
-    pub fn new(name: String) -> ProductSpecificationCharacteristic {
+    pub fn new(name: impl Into<String>) -> ProductSpecificationCharacteristic {
         ProductSpecificationCharacteristic {
             configurable: true,
             max_cardinality: CHAR_VALUE_MAX_CARD,
             min_cardinality: CHAR_VALUE_MIN_CARD,
-            name,
+            name : name.into(),
             ..Default::default()
         }
     }
@@ -143,9 +143,9 @@ pub struct ProductSpecification {
 
 impl ProductSpecification {
     /// Create new instance of Product Specification
-    pub fn new(name: String) -> ProductSpecification {       
+    pub fn new(name: impl Into<String>) -> ProductSpecification {       
         let mut prod_spec = ProductSpecification::create_with_time();
-        prod_spec.name = Some(name);
+        prod_spec.name = Some(name.into());
         prod_spec.version = Some(SPEC_VERS.to_string());
 
         prod_spec.product_spec_characteristic= Some(vec![]);
@@ -177,8 +177,8 @@ impl CreateTMF<ProductSpecification> for ProductSpecification {}
 impl CreateTMFWithTime<ProductSpecification> for ProductSpecification {}
 
 impl HasLastUpdate for ProductSpecification {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.last_update = Some(time.into());
     }
 }
 
@@ -308,12 +308,12 @@ pub struct ProductSpecificationCharacteristicValueUse {
 
 impl ProductSpecificationCharacteristicValueUse {
     /// Create a new instance of ProductSpecificationCharacteristicValueUse
-    pub fn new(name : String) -> ProductSpecificationCharacteristicValueUse {
+    pub fn new(name : impl Into<String>) -> ProductSpecificationCharacteristicValueUse {
         ProductSpecificationCharacteristicValueUse { 
             description: None, 
             max_cardinality: 1, 
             min_cardinality: 0, 
-            name, 
+            name : name.into(), 
             value_type: String::from("String"), 
             valid_for: None,
             product_spec_characteristic_value : None,

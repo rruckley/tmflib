@@ -20,9 +20,9 @@ pub struct ResourceCandidate {
 
 impl ResourceCandidate {
     /// Create a new ResourceCandidate instance
-    pub fn new(name : String) -> ResourceCandidate {
+    pub fn new(name : impl Into<String>) -> ResourceCandidate {
         let mut rc = ResourceCandidate::create_with_time();
-        rc.name = name;
+        rc.name = name.into();
         rc
     }
 
@@ -60,8 +60,8 @@ impl HasId for ResourceCandidate {
 impl CreateTMF<ResourceCandidate> for ResourceCandidate {}
 
 impl HasLastUpdate for ResourceCandidate {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.last_update = Some(time.into());
     }
 }
 

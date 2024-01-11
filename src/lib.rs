@@ -91,7 +91,7 @@ pub trait HasLastUpdate {
     }
 
     /// Store a timestamp into last_update field (if available)
-    fn set_last_update(&mut self, time : String);
+    fn set_last_update(&mut self, time : impl Into<String>);
 }
 
 /// Trait to create a TMF struct including a timestamp field

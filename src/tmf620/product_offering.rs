@@ -194,8 +194,8 @@ impl HasId for ProductOffering {
 }
 
 impl HasLastUpdate for ProductOffering {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.last_update = Some(time.into());
     }
 }
 impl CreateTMFWithTime<ProductOffering> for ProductOffering {}
@@ -207,9 +207,9 @@ impl ProductOffering {
     /// # use tmflib::tmf620::product_offering::ProductOffering;
     /// let po = ProductOffering::new(String::from("MyOffer"));
     /// ```
-    pub fn new(name: String) -> ProductOffering {
+    pub fn new(name: impl Into<String>) -> ProductOffering {
         let mut offer = ProductOffering::create_with_time();
-        offer.name = Some(name);
+        offer.name = Some(name.into());
         offer.version = Some(PO_VERS_INIT.to_string());
         offer.product_offering_relationship = Some(vec![]);
         offer.prod_spec_char_value_use = Some(vec![]);

@@ -69,9 +69,11 @@ impl HasId for Appointment {
 impl CreateTMF<Appointment> for Appointment {}
 
 impl HasLastUpdate for Appointment {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time.clone());
-        self.creation_date = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        let time1 = time.into();
+        let time2 = time1.clone();
+        self.last_update = Some(time1);
+        self.creation_date = Some(time2);
     }
 }
 

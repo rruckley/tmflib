@@ -19,9 +19,9 @@ pub struct BillingAccount {
 
 impl BillingAccount {
     /// Create new Billing Account
-    pub fn new(name : &str) -> BillingAccount {
+    pub fn new(name :impl Into<String>) -> BillingAccount {
         let mut account = BillingAccount::create();
-        account.name = name.to_owned();
+        account.name = name.into();
         account
     }
 }
@@ -52,8 +52,8 @@ impl HasId for BillingAccount {
 
 impl CreateTMF<BillingAccount> for BillingAccount {}
 impl HasLastUpdate for BillingAccount {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.last_update = Some(time.into());
     }
 }
 impl CreateTMFWithTime<BillingAccount> for BillingAccount {}
