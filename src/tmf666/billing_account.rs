@@ -3,13 +3,14 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{HasId,HasLastUpdate,CreateTMF,CreateTMFWithTime, LIB_PATH};
+use tmflib_derive::HasId;
 
 use super::MOD_PATH;
 
-const ACCOUNT_PATH : &str = "account";
+const CLASS_PATH : &str = "account";
 
 /// Billing Account
-#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[derive( Clone, Debug, Default, Deserialize, HasId, Serialize)]
 pub struct BillingAccount {
     id: Option<String>,
     href: Option<String>,
@@ -23,30 +24,6 @@ impl BillingAccount {
         let mut account = BillingAccount::create();
         account.name = name.into();
         account
-    }
-}
-
-impl HasId for BillingAccount {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",BillingAccount::get_class_href(),self.get_id());
-        self.href = Some(href);    
-    }
-    fn generate_id(&mut self) {
-        let id = BillingAccount::get_uuid();
-        self.id = Some(id);
-        self.generate_href();
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,BillingAccount::get_class())    
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()    
-    }
-    fn get_class() -> String {
-        ACCOUNT_PATH.to_owned()
     }
 }
 
