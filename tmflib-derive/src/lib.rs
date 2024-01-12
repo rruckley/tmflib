@@ -22,7 +22,7 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
 
     let out = quote! {
 
-        impl tmflib::HasId for #name {
+        impl HasId for #name {
             fn generate_id(&mut self) {
                 let id = #name::get_uuid();
                 self.id = id.into();
@@ -42,7 +42,7 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
                 CLASS_PATH.to_string()
             }
             fn get_class_href() -> String {
-                format!("{}/{}/{}",LIB_PATH,MOD_PATH,#name::get_class())
+                format!("/{}/{}/{}",LIB_PATH,MOD_PATH,#name::get_class())
             }
         }
     };
