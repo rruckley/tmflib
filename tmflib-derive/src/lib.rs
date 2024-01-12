@@ -45,6 +45,8 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
                 format!("/{}/{}/{}",LIB_PATH,MOD_PATH,#name::get_class())
             }
         }
+
+        impl CreateTMF<#name> for #name {}
     };
     out.into()
 }
