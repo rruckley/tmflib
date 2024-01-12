@@ -2,14 +2,14 @@
 
 
 use tmflib_derive::HasId;
-use tmflib::HasId;
+use tmflib::{CreateTMF, HasId};
 
 // Defined required consts
 const CLASS_PATH : &str = "mytmf";
 const LIB_PATH : &str = "tmf-lib";
 const MOD_PATH : &str = "tmf7xx";
 
-#[derive(HasId)]
+#[derive(Default,HasId)]
 struct MyTMF {
     pub id : Option<String>,
     pub href : Option<String>,
