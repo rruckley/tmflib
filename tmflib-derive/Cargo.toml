@@ -2,8 +2,9 @@
 name = "tmflib-derive"
 version = "0.1.0"
 edition = "2021"
+authors = ["Ryan Ruckley <rruckley@gmail.com>"]
+description = "Derive macro for the tmflib::HasId trait"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
 proc-macro = true
 
