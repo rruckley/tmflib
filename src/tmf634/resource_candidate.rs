@@ -10,7 +10,7 @@ use crate::{LIB_PATH, HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime};
 use tmflib_derive::HasId;
 
 /// Resource Candidate (Catalog Entry)
-#[derive(Clone, Debug, Default, Deserialize,HasId, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 pub struct ResourceCandidate {
     id: Option<String>,
     href: Option<String>,
@@ -33,8 +33,6 @@ impl ResourceCandidate {
         self
     }
 }
-
-impl CreateTMF<ResourceCandidate> for ResourceCandidate {}
 
 impl HasLastUpdate for ResourceCandidate {
     fn set_last_update(&mut self, time : impl Into<String>) {

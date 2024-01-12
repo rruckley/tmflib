@@ -27,7 +27,6 @@ impl BillingAccount {
     }
 }
 
-impl CreateTMF<BillingAccount> for BillingAccount {}
 impl HasLastUpdate for BillingAccount {
     fn set_last_update(&mut self, time : impl Into<String>) {
         self.last_update = Some(time.into());

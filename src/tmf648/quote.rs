@@ -6,8 +6,9 @@ use super::MOD_PATH;
 use super::quote_price::QuotePrice;
 use crate::common::note::Note;
 use crate::{LIB_PATH, HasId, CreateTMF};
+use tmflib_derive::HasId;
 
-const QUOTE_PATH: &str = "quote";
+const CLASS_PATH: &str = "quote";
 const QUOTE_VERS: &str = "1.0";
 
 /// Status of the quote object
@@ -30,7 +31,7 @@ pub enum QuoteStateType {
 }
 
 /// Product Quote
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
     /// Unique Id
@@ -106,32 +107,6 @@ impl Quote {
     }
 
 }
-
-impl HasId for Quote {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",Quote::get_class_href(),self.get_id());
-        self.href = Some(href);    
-    }
-    fn generate_id(&mut self) {
-        let id = Quote::get_uuid();
-        self.id = Some(id);
-        self.generate_href();    
-    }
-    fn get_class() -> String {
-        QUOTE_PATH.to_owned()    
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,Quote::get_class())
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-}
-
-impl CreateTMF<Quote> for Quote {}
 
 #[cfg(test)]
 mod test {

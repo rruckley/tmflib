@@ -35,8 +35,6 @@ pub struct Product {
     status: ProductStatusType,
 }
 
-impl CreateTMF<Product> for Product {}
-
 impl Product {
     /// Create a new product object
     pub fn new(name: impl Into<String>) -> Product {

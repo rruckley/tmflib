@@ -13,7 +13,6 @@
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 //! TMF637 Product Inventory Module
-use super::LIB_PATH;
 
 const MOD_PATH: &str = "productInventoryManagement/v4";
 

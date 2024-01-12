@@ -14,8 +14,6 @@
 
 //! TMF638 Service Inventory Module
 
-use super::LIB_PATH;
-
 const MOD_PATH : &str = "serviceInventory/v4";
 
 pub mod service;
