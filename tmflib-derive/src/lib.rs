@@ -16,8 +16,8 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
     };
     let name = input.ident;
     // Ensure id field is present
-    let id = fields.iter().find(|s| *s == "id").expect("No id field present");
-    let href = fields.iter().find(|s| *s == "href").expect("No href field present");
+    let _id = fields.iter().find(|s| *s == "id").expect("No id field present");
+    let _href = fields.iter().find(|s| *s == "href").expect("No href field present");
     // Generate HasId impl block based on this name.
 
     let out = quote! {
