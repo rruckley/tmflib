@@ -26,18 +26,18 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
             fn generate_id(&mut self) {
                 let id = #name::get_uuid();
                 self.id = id;
+                self.generate_href();
             }
             /// Generate a new HTML reference.
             /// # Details
             /// This is usually triggered directly from generate_id() but can be manually triggered.
             fn generate_href(&mut self) {
-                let href = format!("/{}",CLASS_PATH);
+                let href = format!("{}}/{}",#name::get_class_href(),self.get_id);
                 self.href = href;
             }
             /// Extract the id of this object into a new String
             fn get_id(&self) -> String {
-                
-                "id".to_string()
+                self.id.clone()
             }
             /// Extract the HREF of this object into a new String
             fn get_href(&self) -> String {
@@ -45,11 +45,11 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
             }
             /// Get the class of this object
             fn get_class() -> String {
-                "class".to_string()
+                CLASS_PATH.to_string()
             }
             /// Get Class HREF
             fn get_class_href() -> String {
-                "class_href".to_string()
+                format!("{}/{}/{}",LIB_PATH,MOD_PATH,#name::get_class())
             }
         }
     };
