@@ -11,14 +11,14 @@ const MOD_PATH : &str = "tmf7xx";
 
 #[derive(HasId)]
 struct MyTMF {
-    pub id : String,
-    pub href : String,
+    pub id : Option<String>,
+    pub href : Option<String>,
 }
 
 fn main() {
     let mut my_tmf = MyTMF {
-        id : "123".to_string(),
-        href: "http://me".to_string(),
+        id : Some("123".to_string()),
+        href: Some("http://me".to_string()),
     };
 
     my_tmf.generate_href();

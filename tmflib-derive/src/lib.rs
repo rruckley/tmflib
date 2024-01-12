@@ -25,18 +25,18 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
         impl tmflib::HasId for #name {
             fn generate_id(&mut self) {
                 let id = #name::get_uuid();
-                self.id = id;
+                self.id = id.into();
                 self.generate_href();
             }
             fn generate_href(&mut self) {
                 let href = format!("{}/{}",#name::get_class_href(),self.get_id());
-                self.href = href;
+                self.href = href.into();
             }
             fn get_id(&self) -> String {
-                self.id.clone()
+                self.id.as_ref().unwrap().clone()
             }
             fn get_href(&self) -> String {
-                self.href.clone()
+                self.href.as_ref().unwrap().clone()
             }
             fn get_class() -> String {
                 CLASS_PATH.to_string()
