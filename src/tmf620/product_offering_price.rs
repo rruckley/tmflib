@@ -5,7 +5,9 @@ use serde::{Deserialize,Serialize};
 use super::MOD_PATH;
 use crate::{HasId,HasName, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, TimePeriod};
 use crate::common::money::Money;
-const PRICE_PATH : &str = "productOfferingPrice";
+use tmflib_derive::HasId;
+
+const CLASS_PATH : &str = "productOfferingPrice";
 const PRICE_VERS : &str = "1.0";
 
 /// Constraints
@@ -58,7 +60,7 @@ impl From<ProductOfferingPrice> for ProductOfferingPriceRef {
 }
 
 /// Pricing linked to a Product Offering
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOfferingPrice {
     /// Unique Id
@@ -110,33 +112,8 @@ impl ProductOfferingPrice {
         pop
     }
 }
-impl CreateTMF<ProductOfferingPrice> for ProductOfferingPrice {}
+
 impl CreateTMFWithTime<ProductOfferingPrice> for ProductOfferingPrice {}
-
-impl HasId for ProductOfferingPrice {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",ProductOfferingPrice::get_class_href(),self.get_id());
-        self.href = Some(href);
-    }
-    fn generate_id(&mut self) {
-        let id = ProductOfferingPrice::get_uuid();
-        self.id = Some(id);
-        self.generate_href();
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()
-    }
-    fn get_class_href() -> String {
-        format!("{}/{}/{}",LIB_PATH,MOD_PATH,ProductOfferingPrice::get_class())
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-
-    fn get_class() -> String {
-        PRICE_PATH.to_owned()
-    }
-}
 
 impl HasName for ProductOfferingPrice {
     fn get_name(&self) -> String {

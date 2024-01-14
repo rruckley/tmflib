@@ -4,12 +4,13 @@ use serde::{Deserialize, Serialize};
 use std::convert::From;
 
 use crate::{HasId,HasLastUpdate, CreateTMF, CreateTMFWithTime, LIB_PATH};
+use tmflib_derive::HasId;
 
 use super::MOD_PATH;
-const SC_PATH : &str = "serviceCandidate";
+const CLASS_PATH : &str = "serviceCandidate";
 
 /// Service Candidate 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 pub struct ServiceCandidate {
     id: Option<String>,
     href: Option<String>,
@@ -32,32 +33,6 @@ impl From<String> for ServiceCandidate {
     }
 }
 
-
-impl HasId for ServiceCandidate {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",ServiceCandidate::get_class_href(),self.get_id());
-        self.href = Some(href);       
-    }
-    fn generate_id(&mut self) {
-        let id = ServiceCandidate::get_uuid();
-        self.id = Some(id);   
-        self.generate_href(); 
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,ServiceCandidate::get_class())   
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-    fn get_class() -> String {
-        SC_PATH.to_owned()
-    }
-}
-
-impl CreateTMF<ServiceCandidate> for ServiceCandidate {}
 
 impl HasLastUpdate for ServiceCandidate {
     fn set_last_update(&mut self, time : impl Into<String>) {

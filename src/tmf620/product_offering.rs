@@ -8,7 +8,7 @@ use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
 
-use crate::{CreateTMFWithTime,HasLastUpdate, HasId, HasName, TimePeriod};
+use crate::{CreateTMF, CreateTMFWithTime,HasLastUpdate, HasId, HasName, TimePeriod};
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
 use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
@@ -16,11 +16,13 @@ use serde::{Deserialize, Serialize};
 
 use super::{AgreementRef,ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
 
+use tmflib_derive::HasId;
+
 use super::LIB_PATH;
 use super::MOD_PATH;
 
 const PO_VERS_INIT: &str = "1.0";
-const PO_PATH: &str = "productOffering";
+const CLASS_PATH: &str = "productOffering";
 
 /// Product Offering Reference
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -76,7 +78,7 @@ impl From<ProductOffering> for ProductOfferingRelationship {
 }
 
 /// Product Offering
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier
@@ -164,32 +166,6 @@ pub struct ProductOffering {
 impl HasName for ProductOffering {
     fn get_name(&self) -> String {
         self.name.as_ref().unwrap().clone()
-    }
-}
-
-impl HasId for ProductOffering {
-    fn generate_href(&mut self) {
-        let href = format!("/{}/{}",ProductOffering::get_class_href(),self.get_id());
-        self.href = Some(href);
-    }
-    fn generate_id(&mut self) {
-        let id = ProductOffering::get_uuid();
-        self.id = Some(id);
-        // Since ID has just changed, update href also
-        self.generate_href(); 
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_class_href() -> String {
-        format!("{}/{}/{}",LIB_PATH,MOD_PATH,ProductOffering::get_class()) 
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-        
-    }
-    fn get_class() -> String {
-        PO_PATH.to_owned()
     }
 }
 

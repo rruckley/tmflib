@@ -2,7 +2,6 @@
 //!
 use serde::{Deserialize, Serialize};
 use sha256::digest;
-use uuid::Uuid;
 
 use crate::CreateTMF;
 use crate::tmf632::organization::Organization;
@@ -11,16 +10,18 @@ use super::characteristic::Characteristic;
 use crate::common::contact::ContactMedium;
 use crate::common::related_party::RelatedParty;
 use crate::{HasId,HasName, TimePeriod};
-use super::LIB_PATH;
+use tmflib_derive::HasId;
+
+use crate::LIB_PATH;
 use super::MOD_PATH;
 
-const CUST_PATH : &str = "customer";
+const CLASS_PATH : &str = "customer";
 const CUST_ID_SIZE : usize = 5;
 /// Default customer status
 pub const CUST_STATUS : &str = "New";
 
 /// Customer object
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Customer {
     /// Html Reference to this object
@@ -46,8 +47,6 @@ impl HasName for Customer {
         self.name.clone()
     }
 }
-
-impl CreateTMF<Customer> for Customer {}
 
 impl Customer {
     /// Create new customer object
@@ -123,52 +122,6 @@ impl Customer {
     /// Set the name of the customer
     pub fn name(&mut self, name : String) {
         self.name = name.clone();
-    }
-}
-
-impl HasId for Customer {
-    fn get_id(&self) -> String {
-        match &self.id {
-            None => {
-               
-                self.id.as_ref().unwrap().clone()
-            }
-            Some(id) => id.to_string(),
-        }
-    }
-
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",
-        LIB_PATH,
-        MOD_PATH,
-        CUST_PATH)   
-    }
-
-    fn generate_id(&mut self) {
-        let id = Uuid::new_v4().to_string();
-        self.id = Some(id);
-        // New id requires new href
-        self.generate_href();
-    }
-
-    fn generate_href(&mut self) {
-        match &self.id {
-            Some(_) => {
-                let href = format!(
-                    "{}/{}",
-                    Customer::get_class_href(),
-                    self.get_id()
-                );
-                self.href = Some(href);
-            }
-            None => self.generate_id(),
-        }
-    }
-    fn get_class() -> String {
-        CUST_PATH.to_owned()
     }
 }
 

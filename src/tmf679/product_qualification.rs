@@ -2,11 +2,9 @@
 
 
 use serde::{Deserialize,Serialize};
-use uuid::Uuid;
 
-use crate::HasId;
-use crate::CreateTMF;
-use crate::LIB_PATH;
+use crate::{HasId,CreateTMF,LIB_PATH};
+use tmflib_derive::HasId;
 
 use super::MOD_PATH;
 use super::product_offering_qualification_item::ProductOfferingQualificationItem;
@@ -14,7 +12,7 @@ use crate::common::related_party::RelatedParty;
 use crate::tmf620::category::CategoryRef;
 use crate::tmf620::product_offering::ProductOfferingRef;
 
-const POQ_PATH : &str = "productOfferingQualification";
+const CLASS_PATH : &str = "productOfferingQualification";
 
 /// Qualification Item Status
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -32,7 +30,7 @@ pub enum TaskStateType {
 }
 
 /// Product Offering Qualification
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOfferingQualification {
     category: Option<CategoryRef>,
@@ -42,32 +40,6 @@ pub struct ProductOfferingQualification {
     product_offering_qualification_item: Vec<ProductOfferingQualificationItem>,
     related_party: Vec<RelatedParty>,
 }
-
-impl HasId for ProductOfferingQualification {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",ProductOfferingQualification::get_class_href(),self.get_id());
-        self.href = Some(href);  
-    }
-    fn generate_id(&mut self) {
-        let id = Uuid::new_v4().simple().to_string();
-        self.id = Some(id);
-        self.generate_href();
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,ProductOfferingQualification::get_class())
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()    
-    }
-    fn get_class() -> String {
-        POQ_PATH.to_owned()
-    }
-}
-
-impl CreateTMF<ProductOfferingQualification> for ProductOfferingQualification {}
 
 impl ProductOfferingQualification {
     /// Create a new Product Offering Qualification from a Product Offering Reference

@@ -8,14 +8,15 @@ use serde::{Deserialize, Serialize};
 use super::LIB_PATH;
 use super::MOD_PATH;
 use crate::{HasId,HasName};
+use tmflib_derive::HasId;
 
 use crate::CreateTMFWithTime;
 
-const CAT_PATH: &str = "category";
+const CLASS_PATH: &str = "category";
 const CAT_VERS: &str = "1.0";
 
 /// Category Resource
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Category {
     // Scalar fields
@@ -139,44 +140,11 @@ impl Category {
     }
 }
 
-impl CreateTMF<Category> for Category {}
-
-impl HasId for Category {
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()
-    }
-
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,Category::get_class())
-    }
-
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",Category::get_class_href(),self.get_id());
-        self.href = Some(href);    
-    }
-
-    fn generate_id(&mut self) {
-        // No return type for now
-        // Using simple format as SurrealDB doesn't like dashes in standard format.
-        let id = Category::get_uuid();
-        self.id = Some(id);
-        self.generate_href();
-    }
-
-    fn get_class() -> String {
-        CAT_PATH.to_owned()
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::Category;
     use super::CAT_VERS;
-    use super::CAT_PATH;
+    use super::CLASS_PATH;
     use crate::HasId;
     #[test]
     fn cat_test_name() {
@@ -206,7 +174,7 @@ mod tests {
     #[test]
     fn cat_test_class() {
         
-        assert_eq!(Category::get_class(),CAT_PATH);
+        assert_eq!(Category::get_class(),CLASS_PATH);
     }
 }
 

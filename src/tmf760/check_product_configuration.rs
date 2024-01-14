@@ -2,12 +2,12 @@
 //! 
 
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 use crate::{HasId,CreateTMF};
+use tmflib_derive::HasId;
 use crate::LIB_PATH;
 use super::MOD_PATH;
-const CPC_PATH : &str = "CheckProductConfiguration";
+const CLASS_PATH : &str = "CheckProductConfiguration";
 
 
 /// Configuration Check Status
@@ -30,7 +30,7 @@ pub enum TaskStateType {
 }
 
 /// Check Product Configuration request object
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CheckProductConfiguration {
     id: Option<String>,
@@ -45,31 +45,4 @@ impl CheckProductConfiguration {
     pub fn new() -> CheckProductConfiguration {
         CheckProductConfiguration::create()
     }
-}
-
-impl CreateTMF<CheckProductConfiguration> for CheckProductConfiguration {}
-
-impl HasId for CheckProductConfiguration {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",CheckProductConfiguration::get_class_href(),self.get_id());
-        self.href = Some(href);  
-    }
-    fn generate_id(&mut self) {
-        let id = Uuid::new_v4().simple().to_string();
-        self.id = Some(id);
-        self.generate_href();    
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,CheckProductConfiguration::get_class())    
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()     
-    }
-    fn get_class() -> String {
-        CPC_PATH.to_owned()
-    }
-    
 }

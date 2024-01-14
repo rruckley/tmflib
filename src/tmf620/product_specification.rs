@@ -6,8 +6,9 @@ use serde::{Deserialize, Serialize};
 use super::MOD_PATH;
 
 use crate::{HasId, HasName, CreateTMF, LIB_PATH, TimePeriod, CreateTMFWithTime, HasLastUpdate};
+use tmflib_derive::HasId;
 
-const SPEC_PATH: &str = "productSpecification";
+const CLASS_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
 const CHAR_VALUE_MIN_CARD : u16 = 0;
 const CHAR_VALUE_MAX_CARD : u16 = 1;
@@ -100,7 +101,7 @@ pub struct BundledProductSpecification {
 }
 
 /// Product Specification
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecification {
     /// Id
@@ -173,36 +174,11 @@ impl HasName for ProductSpecification {
     }
 }
 
-impl CreateTMF<ProductSpecification> for ProductSpecification {}
 impl CreateTMFWithTime<ProductSpecification> for ProductSpecification {}
 
 impl HasLastUpdate for ProductSpecification {
     fn set_last_update(&mut self, time : impl Into<String>) {
         self.last_update = Some(time.into());
-    }
-}
-
-impl HasId for ProductSpecification {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",ProductSpecification::get_class_href(), self.get_id());
-        self.href = Some(href);    
-    }
-    fn generate_id(&mut self) {
-        let id = ProductSpecification::get_uuid();
-        self.id = Some(id);
-        self.generate_href();    
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_class_href() -> String {
-        format!("{}/{}/{}", LIB_PATH, MOD_PATH, SPEC_PATH)   
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-    fn get_class() -> String {
-        SPEC_PATH.to_owned()
     }
 }
 

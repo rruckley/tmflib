@@ -1,10 +1,11 @@
 //! Catalogue Module
 //!
 //!
-use crate::{HasId, HasName, CreateTMFWithTime,HasLastUpdate, TimePeriod};
+use crate::{HasId, CreateTMF, HasName, CreateTMFWithTime,HasLastUpdate, TimePeriod};
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
+use tmflib_derive::HasId;
 
 use chrono::naive::NaiveDateTime;
 use chrono::Utc;
@@ -15,11 +16,11 @@ use uuid::Uuid;
 use super::LIB_PATH;
 use super::MOD_PATH;
 
-const CAT_PATH: &str = "catalog";
+const CLASS_PATH: &str = "catalog";
 const CAT_VERS: &str = "1.0";
 
 /// Catalogue
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Catalog {
     /// Non-optional fields
@@ -93,37 +94,6 @@ impl Catalog {
     }
 }
 
-impl HasId for Catalog {
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()
-    }
-
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,Catalog::get_class())    
-    }
-
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",Catalog::get_class_href(),self.get_id());
-        self.href = Some(href);    
-    }
-
-    fn generate_id(&mut self) {
-        // No return type for now
-
-        let id = Catalog::get_uuid();
-        self.id = Some(id);
-        self.generate_href();
-    }
-
-    fn get_class() -> String {
-        CAT_PATH.to_owned()
-    }
-}
-
 impl EventPayload<Catalog,CatalogEventType> for Catalog {
     fn generate_event(&self,event_type : CatalogEventType) -> crate::common::event::Event<Catalog,CatalogEventType> {       
         let now = Utc::now();
@@ -179,7 +149,7 @@ pub struct CatalogBatchEvent {}
 #[cfg(test)]
 mod tests {
 
-    use crate::tmf620::catalog::{CAT_VERS,CAT_PATH};
+    use crate::tmf620::catalog::{CAT_VERS,CLASS_PATH};
 
     use super::Catalog;
     use crate::HasId;
@@ -201,6 +171,6 @@ mod tests {
     #[test]
     fn test_cat_class() {
 
-        assert_eq!(Catalog::get_class(),CAT_PATH.to_owned());
+        assert_eq!(Catalog::get_class(),CLASS_PATH.to_owned());
     }
 }

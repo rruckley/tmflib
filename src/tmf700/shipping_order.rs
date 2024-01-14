@@ -1,18 +1,16 @@
 //! Shipping Order Module
 //! 
 
-use super::LIB_PATH;
 use super::MOD_PATH;
-use super::HasId;
-use super::CreateTMF;
+use super::{HasId,CreateTMF,LIB_PATH};
+use tmflib_derive::HasId;
 
-use uuid::Uuid;
 use serde::{Deserialize,Serialize};
 
-const SHIP_PATH : &str = "shippingOrder";
+const CLASS_PATH : &str = "shippingOrder";
 
 /// Order for shipping of tangible goods
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShippingOrder {
     /// Unique Id
@@ -22,36 +20,11 @@ pub struct ShippingOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
 }
-impl CreateTMF<ShippingOrder> for ShippingOrder {}
 
 impl ShippingOrder {
     /// Create new ShippingOrder
     pub fn new() -> ShippingOrder {
         ShippingOrder::create()
-    }
-}
-
-impl HasId for ShippingOrder {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",ShippingOrder::get_class_href(),self.get_id()); 
-        self.href = Some(href);
-    }
-    fn generate_id(&mut self) {
-        let id = Uuid::new_v4().simple().to_string();
-        self.id = Some(id);
-        self.generate_href();    
-    }
-    fn get_href(&self) -> String {  
-        self.href.as_ref().unwrap().clone()
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,SHIP_PATH)     
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-    fn get_class() -> String {
-        SHIP_PATH.to_owned()
     }
 }
 

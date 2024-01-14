@@ -2,13 +2,13 @@
 //!
 use serde::{Deserialize, Serialize};
 
-use crate::CreateTMF;
-use crate::HasId;
+use crate::{CreateTMF, HasId};
+use tmflib_derive::HasId;
 
-use super::LIB_PATH;
+use crate::LIB_PATH;
 use super::MOD_PATH;
 
-const PROD_PATH: &str = "product";
+const CLASS_PATH: &str = "product";
 
 #[derive(Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -25,7 +25,7 @@ enum ProductStatusType {
 }
 
 /// Product record from the Product Inventory
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize,HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Product {
     id: Option<String>,
@@ -34,31 +34,6 @@ pub struct Product {
     name: String,
     status: ProductStatusType,
 }
-
-impl HasId for Product {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",Product::get_class_href(), self.get_id());
-        self.href = Some(href);    
-    }
-    fn generate_id(&mut self) {
-        let id = Product::get_uuid();
-        self.id = Some(id);
-        self.generate_href();
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}", LIB_PATH, MOD_PATH, PROD_PATH) 
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()    
-    }
-    fn get_class() -> String {
-        PROD_PATH.to_owned()
-    }
-}
-impl CreateTMF<Product> for Product {}
 
 impl Product {
     /// Create a new product object

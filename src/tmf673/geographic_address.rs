@@ -1,19 +1,18 @@
 //! Geographic Address Module
 
 use serde::{Deserialize,Serialize};
-use uuid::Uuid;
 
-use crate::CreateTMF;
-use crate::HasId;
+use crate::{HasId,CreateTMF};
+use tmflib_derive::HasId;
 use crate::LIB_PATH;
 
 use super::MOD_PATH;
 
-const GEO_PATH : &str = "geographicAddress";
+const CLASS_PATH : &str = "geographicAddress";
 
 
 /// Geographic Address 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GeographicAddress {
     /// Unique Id
@@ -66,29 +65,3 @@ impl GeographicAddress {
         self
     }
 }
-
-impl HasId for GeographicAddress {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",GeographicAddress::get_class_href(),self.get_id());
-        self.href = Some(href);
-    }
-    fn generate_id(&mut self) {
-        let id = Uuid::new_v4().as_simple().to_string();
-        self.id = Some(id);
-        self.generate_href();    
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,GeographicAddress::get_class())    
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()    
-    }
-    fn get_class() -> String {
-        GEO_PATH.to_owned()
-    }
-}
-
-impl CreateTMF<GeographicAddress> for GeographicAddress {}
