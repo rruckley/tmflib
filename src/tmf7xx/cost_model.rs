@@ -34,7 +34,7 @@ impl From<Cost> for CostRef {
 /// Cost Management
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Cost {
+pub struct CostModel {
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
@@ -57,7 +57,7 @@ pub struct Cost {
     pub child_costs : Option<Vec<CostRef>>,
 }
 
-impl Cost {
+impl CostModel {
     /// Create new cost entry
     pub fn new(name : &str) -> Cost {
         let mut cost = Cost::create();
