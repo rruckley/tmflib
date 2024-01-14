@@ -1,6 +1,6 @@
 //! Create Cost Example
 
-use tmflib::tmf7xx::cost::Cost;
+use tmflib::tmf7xx::cost_model::Cost;
 use tmflib::common::money::Money;
 
 fn main() {
