@@ -34,9 +34,9 @@ impl CreateTMF<Individual> for Individual {}
 
 impl Individual {
     /// Create a new instance of indiviudal object
-    pub fn new(name : &str) -> Individual {
+    pub fn new(name : impl Into<String>) -> Individual {
         let mut ind = Individual::create();
-        ind.full_name = name.to_owned();
+        ind.full_name = name.into();
         // Need this as default would be None
         ind.related_party = Some(vec![]);
         ind.contact_medium = Some(vec![]);
@@ -90,7 +90,7 @@ impl HasName for Individual {
 
 impl HasId for Individual {
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,IND_PATH,self.get_id());
+        let href = format!("{}/{}",Individual::get_class_href(),self.get_id());
         self.href = Some(href);    
     }
     fn generate_id(&mut self) {
@@ -100,6 +100,9 @@ impl HasId for Individual {
     }
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()   
+    }
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,Individual::get_class())    
     }
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone() 

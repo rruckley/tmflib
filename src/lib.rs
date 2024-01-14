@@ -68,6 +68,8 @@ pub trait HasId {
     fn get_href(&self) -> String;
     /// Get the class of this object
     fn get_class() -> String;
+    /// Get Class HREF
+    fn get_class_href() -> String;
 }
 
 /// Trait to create TMF structs that have the HasId trait
@@ -98,7 +100,7 @@ pub trait HasLastUpdate {
     }
 
     /// Store a timestamp into last_update field (if available)
-    fn set_last_update(&mut self, time : String);
+    fn set_last_update(&mut self, time : impl Into<String>);
 }
 
 /// Trait to create a TMF struct including a timestamp field
@@ -163,6 +165,8 @@ pub mod tmf673;
 pub mod tmf674;
 /// Product Offering Qualification
 pub mod tmf679;
+/// Sales Management
+pub mod tmf699;
 /// Shipping Order [Pre-Prod]
 pub mod tmf700;
 /// Product Configuration

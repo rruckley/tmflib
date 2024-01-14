@@ -19,16 +19,16 @@ pub struct BillingAccount {
 
 impl BillingAccount {
     /// Create new Billing Account
-    pub fn new(name : &str) -> BillingAccount {
+    pub fn new(name :impl Into<String>) -> BillingAccount {
         let mut account = BillingAccount::create();
-        account.name = name.to_owned();
+        account.name = name.into();
         account
     }
 }
 
 impl HasId for BillingAccount {
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,ACCOUNT_PATH,self.get_id());
+        let href = format!("{}/{}",BillingAccount::get_class_href(),self.get_id());
         self.href = Some(href);    
     }
     fn generate_id(&mut self) {
@@ -38,6 +38,9 @@ impl HasId for BillingAccount {
     }
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()    
+    }
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,BillingAccount::get_class())    
     }
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()    
@@ -49,8 +52,8 @@ impl HasId for BillingAccount {
 
 impl CreateTMF<BillingAccount> for BillingAccount {}
 impl HasLastUpdate for BillingAccount {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.last_update = Some(time.into());
     }
 }
 impl CreateTMFWithTime<BillingAccount> for BillingAccount {}

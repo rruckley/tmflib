@@ -169,7 +169,7 @@ impl HasName for ProductOffering {
 
 impl HasId for ProductOffering {
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,PO_PATH,self.get_id());
+        let href = format!("/{}/{}",ProductOffering::get_class_href(),self.get_id());
         self.href = Some(href);
     }
     fn generate_id(&mut self) {
@@ -181,6 +181,9 @@ impl HasId for ProductOffering {
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()    
     }
+    fn get_class_href() -> String {
+        format!("{}/{}/{}",LIB_PATH,MOD_PATH,ProductOffering::get_class()) 
+    }
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()
         
@@ -191,8 +194,8 @@ impl HasId for ProductOffering {
 }
 
 impl HasLastUpdate for ProductOffering {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.last_update = Some(time.into());
     }
 }
 impl CreateTMFWithTime<ProductOffering> for ProductOffering {}
@@ -204,9 +207,9 @@ impl ProductOffering {
     /// # use tmflib::tmf620::product_offering::ProductOffering;
     /// let po = ProductOffering::new(String::from("MyOffer"));
     /// ```
-    pub fn new(name: String) -> ProductOffering {
+    pub fn new(name: impl Into<String>) -> ProductOffering {
         let mut offer = ProductOffering::create_with_time();
-        offer.name = Some(name);
+        offer.name = Some(name.into());
         offer.version = Some(PO_VERS_INIT.to_string());
         offer.product_offering_relationship = Some(vec![]);
         offer.prod_spec_char_value_use = Some(vec![]);

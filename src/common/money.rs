@@ -23,12 +23,26 @@ impl Money {
     /// money.currency("AUD");
     /// money.value = 100.0;
     /// ```
+    
+    #[cfg(not(target_arch = "wasm32"))]
     pub fn currency(&mut self, currency_code : &str) -> Result<String,String> {
         let c = rust_iso4217::from_code(currency_code);
         match c {
             Some (c) => {
                 self.unit = c.code.into();
-                Ok(c.name.into())
+                Ok(self.unit.clone())
+            },
+            None => Err("Currency Code not found".into())
+        }
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    pub fn currency(&mut self, currency_code : &str) -> Result<String,String> {
+        let c = rust_iso4217::from_code(currency_code);
+        match c {
+            Some (c) => {
+                self.unit = c.code();
+                Ok(self.unit.clone())
             },
             None => Err("Currency Code not found".into())
         }

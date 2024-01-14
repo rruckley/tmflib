@@ -6,7 +6,7 @@ use std::convert::From;
 use crate::{HasId,HasLastUpdate, CreateTMF, CreateTMFWithTime, LIB_PATH};
 
 use super::MOD_PATH;
-const SC_PATH : &str = "candidate";
+const SC_PATH : &str = "serviceCandidate";
 
 /// Service Candidate 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -19,9 +19,9 @@ pub struct ServiceCandidate {
 
 impl ServiceCandidate {
     /// Create new instance of Service Candidate
-    pub fn new(name : String) -> ServiceCandidate {
+    pub fn new(name : impl Into<String>) -> ServiceCandidate {
         let mut sc = ServiceCandidate::create_with_time();
-        sc.name = name;
+        sc.name = name.into();
         sc
     }
 }
@@ -35,7 +35,7 @@ impl From<String> for ServiceCandidate {
 
 impl HasId for ServiceCandidate {
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,SC_PATH,self.get_id());
+        let href = format!("{}/{}",ServiceCandidate::get_class_href(),self.get_id());
         self.href = Some(href);       
     }
     fn generate_id(&mut self) {
@@ -45,6 +45,9 @@ impl HasId for ServiceCandidate {
     }
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()
+    }
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,ServiceCandidate::get_class())   
     }
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()
@@ -57,8 +60,8 @@ impl HasId for ServiceCandidate {
 impl CreateTMF<ServiceCandidate> for ServiceCandidate {}
 
 impl HasLastUpdate for ServiceCandidate {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        self.last_update = Some(time.into());
     }
 }
 

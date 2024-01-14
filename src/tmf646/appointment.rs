@@ -4,9 +4,9 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH};
+use crate::{HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, TimePeriod};
 
-const APP_PATH : &str = "appointment";
+const CLASS_PATH : &str = "appointment";
 
 /// Appointment booking status
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -29,9 +29,31 @@ pub enum AppointmentStateType {
 pub struct Appointment {
     id: Option<String>,
     href: Option<String>,
+    category: Option<String>,
     creation_date: Option<String>,
+    description: Option<String>,
+    external_id: Option<String>,
     last_update: Option<String>,
     status: AppointmentStateType,
+    valid_for: Option<TimePeriod>,
+}
+
+/// Reference to an appointment
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct AppointmentRef {
+    description: String,
+    href: String,
+    id: String,
+}
+
+impl From<Appointment> for AppointmentRef {
+    fn from(value: Appointment) -> Self {
+        AppointmentRef {
+            description: value.get_href(),
+            href: value.href.unwrap().clone(),
+            id: value.id.unwrap().clone(),
+        }
+    }
 }
 
 impl Appointment {
@@ -44,7 +66,7 @@ impl Appointment {
 
 impl HasId for Appointment {
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,APP_PATH,self.get_id());
+        let href = format!("{}/{}",Appointment::get_class_href(),self.get_id());
         self.href = Some(href);       
     }
     fn generate_id(&mut self) {
@@ -55,20 +77,25 @@ impl HasId for Appointment {
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()
     }
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,Appointment::get_class())
+    }
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()    
     }
     fn get_class() -> String {
-        APP_PATH.to_owned()
+        CLASS_PATH.to_owned()
     }
 }
 
 impl CreateTMF<Appointment> for Appointment {}
 
 impl HasLastUpdate for Appointment {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time.clone());
-        self.creation_date = Some(time);
+    fn set_last_update(&mut self, time : impl Into<String>) {
+        let time1 = time.into();
+        let time2 = time1.clone();
+        self.last_update = Some(time1);
+        self.creation_date = Some(time2);
     }
 }
 

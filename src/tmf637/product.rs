@@ -37,7 +37,7 @@ pub struct Product {
 
 impl HasId for Product {
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, PROD_PATH, self.get_id());
+        let href = format!("{}/{}",Product::get_class_href(), self.get_id());
         self.href = Some(href);    
     }
     fn generate_id(&mut self) {
@@ -47,6 +47,9 @@ impl HasId for Product {
     }
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()    
+    }
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}", LIB_PATH, MOD_PATH, PROD_PATH) 
     }
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()    
@@ -59,10 +62,10 @@ impl CreateTMF<Product> for Product {}
 
 impl Product {
     /// Create a new product object
-    pub fn new(name: String) -> Product {
+    pub fn new(name: impl Into<String>) -> Product {
         let mut product = Product::create();
         product.status = ProductStatusType::Created;
-        product.name = name;
+        product.name = name.into();
         product
     }
 }
