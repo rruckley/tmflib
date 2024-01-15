@@ -7,7 +7,7 @@ use std::convert::From;
 use super::MOD_PATH;
 use crate::common::money::Money;
 
-const COST_PATH : &str = "cost";
+const CLASS_PATH : &str = "model";
 const COST_DEFAULT : f32 = 1.0;
 
 /// Cost Reference

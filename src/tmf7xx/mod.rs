@@ -1,4 +1,4 @@
-//! TMF7XX Cost Management Module
+//! TMF7XX Cost Model Management Module
 
-const MOD_PATH : &str = "costManagement/v5";
+const MOD_PATH : &str = "costModel/v5";
 pub mod cost_model;
