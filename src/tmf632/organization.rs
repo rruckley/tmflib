@@ -4,12 +4,13 @@ use serde::{Deserialize, Serialize};
 
 use crate::common::related_party::RelatedParty;
 use crate::{CreateTMF, HasId, HasName};
+use tmflib_derive::HasId;
 
 use crate::LIB_PATH;
 use super::MOD_PATH;
 use crate::common::contact::ContactMedium;
 
-const ORG_PATH : &str = "organization";
+const CLASS_PATH : &str = "organization";
 
 /// Organization Status
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -25,7 +26,7 @@ pub enum OrganizationStateType {
 }
 
 /// Organisation record (sic)
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Organization {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -58,32 +59,6 @@ impl Organization {
 impl HasName for Organization {
     fn get_name(&self) -> String {
         self.name.clone()
-    }
-}
-
-impl CreateTMF<Organization> for Organization {}
-
-impl HasId for Organization {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",Organization::get_class_href(),self.get_id());
-        self.href = Some(href);   
-    }
-    fn generate_id(&mut self) {
-        let id = Organization::get_uuid();
-        self.id = Some(id);
-        self.generate_href();
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,Organization::get_class())    
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()    
-    }
-    fn get_class() -> String {
-        ORG_PATH.to_owned()
     }
 }
 

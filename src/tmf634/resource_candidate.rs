@@ -3,13 +3,14 @@
 
 use serde::{Deserialize, Serialize};
 
-const RC_PATH : &str = "resourceCandidate";
+const CLASS_PATH : &str = "resourceCandidate";
 
 use super::MOD_PATH;
 use crate::{LIB_PATH, HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime};
+use tmflib_derive::HasId;
 
 /// Resource Candidate (Catalog Entry)
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 pub struct ResourceCandidate {
     id: Option<String>,
     href: Option<String>,
@@ -32,32 +33,6 @@ impl ResourceCandidate {
         self
     }
 }
-
-impl HasId for ResourceCandidate {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",ResourceCandidate::get_class_href(),self.get_id());
-        self.href = Some(href);    
-    }   
-    fn generate_id(&mut self) {
-        let id = ResourceCandidate::get_uuid();
-        self.id = Some(id);
-        self.generate_href();
-    } 
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,ResourceCandidate::get_class())
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()    
-    }
-    fn get_class() -> String {
-        RC_PATH.to_owned()
-    }
-}
-
-impl CreateTMF<ResourceCandidate> for ResourceCandidate {}
 
 impl HasLastUpdate for ResourceCandidate {
     fn set_last_update(&mut self, time : impl Into<String>) {

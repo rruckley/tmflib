@@ -1,11 +1,11 @@
 //! Product Order Module
 
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 use super::HasId;
+use tmflib_derive::HasId;
 use crate::common::related_party::RelatedParty;
-use crate::{CreateTMFWithTime,HasLastUpdate};
+use crate::{CreateTMF, CreateTMFWithTime,HasLastUpdate};
 
 // URL Path components
 use super::LIB_PATH;
@@ -13,10 +13,10 @@ use super::MOD_PATH;
 
 use super::product_order_item::ProductOrderItem;
 
-const PO_PATH: &str = "productOrder";
+const CLASS_PATH: &str = "productOrder";
 
 /// ProductOrder
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -64,30 +64,5 @@ impl ProductOrder {
     /// ```
     pub fn add_party(&mut self, party: RelatedParty) {
         self.related_party.push(party);
-    }
-}
-
-impl HasId for ProductOrder {
-    fn generate_href(&mut self) {
-        let id = self.get_id();
-        let href = format!("{}/{}",ProductOrder::get_class_href(),id);
-        self.href = Some(href);
-    }
-    fn generate_id(&mut self) {
-        let id = Uuid::new_v4().simple().to_string();
-        self.id = Some(id);
-        self.generate_href(); 
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()   
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}", LIB_PATH, MOD_PATH, PO_PATH)   
-    }
-    fn get_id(&self) -> String {    
-        self.id.as_ref().unwrap().clone()
-    }
-    fn get_class() -> String {
-        PO_PATH.to_owned()
     }
 }

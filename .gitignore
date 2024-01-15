@@ -1,3 +1,4 @@
 /target
 /Cargo.lock
 /tmflib-derive/target
+/tmflib-derive/Cargo.lock

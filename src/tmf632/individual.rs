@@ -3,15 +3,16 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{HasId,HasName,CreateTMF};
+use tmflib_derive::HasId;
 use crate::LIB_PATH;
 use super::MOD_PATH;
 use crate::common::related_party::RelatedParty;
 use crate::common::contact::ContactMedium;
 
-const IND_PATH : &str = "individual";
+const CLASS_PATH : &str = "individual";
 
 /// An individual
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Individual {
     /// Methods for contacting this individual
@@ -29,8 +30,6 @@ pub struct Individual {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
 }
-
-impl CreateTMF<Individual> for Individual {}
 
 impl Individual {
     /// Create a new instance of indiviudal object
@@ -85,30 +84,6 @@ impl Individual {
 impl HasName for Individual {
     fn get_name(&self) -> String {
         self.full_name.clone()
-    }
-}
-
-impl HasId for Individual {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",Individual::get_class_href(),self.get_id());
-        self.href = Some(href);    
-    }
-    fn generate_id(&mut self) {
-        let id = Individual::get_uuid();
-        self.id = Some(id);
-        self.generate_href();    
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()   
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,Individual::get_class())    
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone() 
-    }
-    fn get_class() -> String {
-        IND_PATH.to_owned()
     }
 }
 

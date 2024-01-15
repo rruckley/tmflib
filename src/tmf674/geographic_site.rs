@@ -1,14 +1,14 @@
 //! Geographic Site Module
 
 use serde::{Deserialize,Serialize};
-use uuid::Uuid;
 use std::convert::From;
 
 use crate::{HasName,HasId,CreateTMF,TimePeriod};
+use tmflib_derive::HasId;
 use crate::tmf673::geographic_address::GeographicAddress;
 use crate::LIB_PATH;
 use super::MOD_PATH;
-const GEO_PATH: &str = "geographicSite";
+const CLASS_PATH: &str = "geographicSite";
 const DEFAULT_TZ : &str = "AEST";
 
 /// Refernce to a place
@@ -78,7 +78,7 @@ impl CalendarPeriod {
     }
 }
 /// Geographic Site
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GeographicSite {
     /// Id
@@ -134,35 +134,9 @@ impl GeographicSite {
     }
 }
 
-impl CreateTMF<GeographicSite> for GeographicSite {}
-
 impl HasName for GeographicSite {
     fn get_name(&self) -> String {
         self.name.clone()
-    }
-}
-
-impl HasId for GeographicSite {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",GeographicSite::get_class_href(),self.get_id());
-        self.href = Some(href);    
-    }
-    fn generate_id(&mut self) {
-        let id = Uuid::new_v4().simple().to_string();
-        self.id = Some(id);
-        self.generate_href();    
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,GeographicSite::get_class()) 
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()    
-    }
-    fn get_class() -> String {
-        GEO_PATH.to_owned()
     }
 }
 
