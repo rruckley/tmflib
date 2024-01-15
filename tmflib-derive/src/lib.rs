@@ -91,7 +91,7 @@ pub fn hasname_derive(input: TokenStream) -> TokenStream {
     // Ensure id field is present
     let _name = fields.iter().find(|s| *s == "name").expect("No name field present");
     let out = quote! {
-        impl HasId for #name {
+        impl HasName for #name {
             fn get_name(&self) -> String {
                 self.name.clone().unwrap_or("NoName".to_string())
             }
