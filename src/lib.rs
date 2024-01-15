@@ -172,4 +172,5 @@ pub mod tmf700;
 /// Product Configuration
 pub mod tmf760;
 /// Cost Management
+#[cfg(feature = "tmf7xx")]
 pub mod tmf7xx;
