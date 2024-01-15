@@ -13,16 +13,16 @@ const COST_DEFAULT : f32 = 1.0;
 /// Cost Reference
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CostRef {
+pub struct CostModelRef {
     id: String,
     href: String,
     name: String,
     value: Money,
 }
 
-impl From<Cost> for CostRef {
-    fn from(value: Cost) -> Self {
-        CostRef {
+impl From<CostModel> for CostModelRef {
+    fn from(value: CostModel) -> Self {
+        CostModelRef {
             id: value.get_id(),
             href: value.get_href(),
             name: value.name.unwrap_or("NoName".to_string()),
@@ -54,13 +54,13 @@ pub struct CostModel {
     pub parent : Option<String>,
     /// Child Costs
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub child_costs : Option<Vec<CostRef>>,
+    pub child_costs : Option<Vec<CostModelRef>>,
 }
 
 impl CostModel {
     /// Create new cost entry
-    pub fn new(name : &str) -> Cost {
-        let mut cost = Cost::create();
+    pub fn new(name : &str) -> CostModel {
+        let mut cost = CostModel::create();
         cost.name = Some(name.to_owned());
         cost.valid_for = Some(TimePeriod::default());
         cost.child_costs = Some(vec![]);
@@ -68,13 +68,13 @@ impl CostModel {
         cost
     }
     /// Set value for this cost
-    pub fn cost(mut self, cost : Money) -> Cost {
+    pub fn cost(mut self, cost : Money) -> CostModel {
         self.cost = cost;
         self
     }
     /// Add a child into this cost model
-    pub fn add_child(&mut self,cost : Cost) {
-        self.child_costs.as_mut().unwrap().push(CostRef::from(cost));
+    pub fn add_child(&mut self,cost : CostModel) {
+        self.child_costs.as_mut().unwrap().push(CostModelRef::from(cost));
     }
 
     /// Sum up all costs from this entry down
@@ -92,28 +92,31 @@ impl CostModel {
     }
 }
 
-impl HasId for Cost {
+impl HasId for CostModel {
     fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,COST_PATH,self.get_id());
+        let href = format!("{}/{}",CostModel::get_class_href(),self.get_id());
         self.href = Some(href);    
     }
     fn generate_id(&mut self) {
-        let id = Cost::get_uuid();
+        let id = CostModel::get_uuid();
         self.id = Some(id);
         self.generate_href();    
     }
     fn get_class() -> String {
-        COST_PATH.to_string()    
+        CLASS_PATH.to_string()    
     }
     fn get_href(&self) -> String {
         self.href.as_ref().unwrap().clone()    
+    }
+    fn get_class_href() -> String {
+        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,CostModel::get_class())
     }
     fn get_id(&self) -> String {
         self.id.as_ref().unwrap().clone()       
     }
 }
 
-impl CreateTMF<Cost> for Cost {}
+impl CreateTMF<CostModel> for CostModel {}
 
 #[cfg(test)]
 mod test {
@@ -121,14 +124,14 @@ mod test {
 
     #[test]
     fn test_new_name() {
-        let cost = Cost::new("MyCost");
+        let cost = CostModel::new("MyCostModel");
 
-        assert_eq!(cost.name.unwrap(),"MyCost".to_string());
+        assert_eq!(cost.name.unwrap(),"MyCostModel".to_string());
     }
 
     #[test]
     fn test_default_cost() {
-        let cost = Cost::new("MyCost");
+        let cost = CostModel::new("MyCostModel");
         assert_eq!(cost.cost.unit,"".to_string());
         assert_eq!(cost.cost.value,COST_DEFAULT);
     }
