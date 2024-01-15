@@ -67,10 +67,11 @@ pub fn haslastupdate_derive(input: TokenStream) -> TokenStream {
     let out = quote! {
         impl HasLastUpdate for #name {
             fn set_last_update(&mut self, time : impl Into<String>) {
-                self.last_update = time.into();
+                self.last_update = Some(time.into());
             }
         }
-    
+
+        impl CreateTMFWithTime<#name> for #name {}
     };
     out.into()
 }
