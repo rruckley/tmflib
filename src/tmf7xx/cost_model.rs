@@ -1,6 +1,7 @@
 //! Cost Module
 
 use crate::{HasId,CreateTMF,LIB_PATH,TimePeriod};
+use tmflib_derive::HasId;
 use serde::{Deserialize,Serialize};
 use std::convert::From;
 
@@ -32,7 +33,7 @@ impl From<CostModel> for CostModelRef {
 }
 
 /// Cost Management
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize,HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CostModel {
     /// Unique Id
@@ -91,32 +92,6 @@ impl CostModel {
         }
     }
 }
-
-impl HasId for CostModel {
-    fn generate_href(&mut self) {
-        let href = format!("{}/{}",CostModel::get_class_href(),self.get_id());
-        self.href = Some(href);    
-    }
-    fn generate_id(&mut self) {
-        let id = CostModel::get_uuid();
-        self.id = Some(id);
-        self.generate_href();    
-    }
-    fn get_class() -> String {
-        CLASS_PATH.to_string()    
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_class_href() -> String {
-        format!("/{}/{}/{}",LIB_PATH,MOD_PATH,CostModel::get_class())
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()       
-    }
-}
-
-impl CreateTMF<CostModel> for CostModel {}
 
 #[cfg(test)]
 mod test {
