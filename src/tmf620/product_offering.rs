@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 
 use super::{AgreementRef,ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
 
-use tmflib_derive::HasId;
+use tmflib_derive::{HasId,HasLastUpdate};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
@@ -78,7 +78,7 @@ impl From<ProductOffering> for ProductOfferingRelationship {
 }
 
 /// Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier
@@ -168,13 +168,6 @@ impl HasName for ProductOffering {
         self.name.as_ref().unwrap().clone()
     }
 }
-
-impl HasLastUpdate for ProductOffering {
-    fn set_last_update(&mut self, time : impl Into<String>) {
-        self.last_update = Some(time.into());
-    }
-}
-impl CreateTMFWithTime<ProductOffering> for ProductOffering {}
 
 impl ProductOffering {
     /// Create a new instance of ProductOffering object

@@ -5,7 +5,7 @@ use serde::{Deserialize,Serialize};
 use super::MOD_PATH;
 use crate::{HasId,HasName, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, TimePeriod};
 use crate::common::money::Money;
-use tmflib_derive::HasId;
+use tmflib_derive::{HasId,HasLastUpdate};
 
 const CLASS_PATH : &str = "productOfferingPrice";
 const PRICE_VERS : &str = "1.0";
@@ -60,7 +60,7 @@ impl From<ProductOfferingPrice> for ProductOfferingPriceRef {
 }
 
 /// Pricing linked to a Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOfferingPrice {
     /// Unique Id
@@ -113,16 +113,8 @@ impl ProductOfferingPrice {
     }
 }
 
-impl CreateTMFWithTime<ProductOfferingPrice> for ProductOfferingPrice {}
-
 impl HasName for ProductOfferingPrice {
     fn get_name(&self) -> String {
         self.name.as_ref().unwrap().clone()
-    }
-}
-
-impl HasLastUpdate for ProductOfferingPrice {
-    fn set_last_update(&mut self, time : impl Into<String>) {
-        self.last_update = Some(time.into());
     }
 }

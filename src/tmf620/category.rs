@@ -1,14 +1,14 @@
 //! Category Module
 
-use crate::{CreateTMF,HasLastUpdate, TimePeriod};
+use crate::{CreateTMF, TimePeriod};
 use crate::tmf620::product_offering::ProductOfferingRef;
 
 use serde::{Deserialize, Serialize};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
-use crate::{HasId,HasName};
-use tmflib_derive::HasId;
+use crate::{HasId,HasName,HasLastUpdate};
+use tmflib_derive::{HasId,HasLastUpdate,HasName};
 
 use crate::CreateTMFWithTime;
 
@@ -16,7 +16,7 @@ const CLASS_PATH: &str = "category";
 const CAT_VERS: &str = "1.0";
 
 /// Category Resource
-#[derive(Clone, Default, Debug, Deserialize, HasId, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Category {
     // Scalar fields
@@ -57,20 +57,6 @@ pub struct Category {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_offering: Option<Vec<ProductOfferingRef>>,
 }
-
-impl HasLastUpdate for Category {
-    fn set_last_update(&mut self, time : impl Into<String>) {
-        self.last_update = Some(time.into());
-    }
-}
-
-impl HasName for Category {
-    fn get_name(&self) -> String {
-        self.name.as_ref().unwrap().clone()
-    }
-}
-
-impl CreateTMFWithTime<Category> for Category {}
 
 impl Category {
     /// Create a new instance of the Category struct
