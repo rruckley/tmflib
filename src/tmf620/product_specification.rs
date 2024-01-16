@@ -7,6 +7,7 @@ use super::MOD_PATH;
 
 use crate::{HasId, HasName, CreateTMF, LIB_PATH, TimePeriod, CreateTMFWithTime, HasLastUpdate};
 use tmflib_derive::{HasId,HasLastUpdate,HasName};
+use crate::tmf633::service_specification::ServiceSpecification;
 
 const CLASS_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
@@ -189,6 +190,14 @@ impl From<ProductSpecification> for ProductSpecificationRef {
             name: ps.name,
             version: ps.version,
         }
+    }
+}
+
+impl From<ServiceSpecification> for ProductSpecification {
+    fn from(value: ServiceSpecification) -> Self {
+        let mut ps = ProductSpecification::create();
+        ps.name = Some(value.get_name());
+        ps
     }
 }
 
