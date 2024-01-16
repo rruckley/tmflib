@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 
 use super::{AgreementRef,ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
 
-use tmflib_derive::{HasId,HasLastUpdate};
+use tmflib_derive::{HasId,HasLastUpdate,HasName};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
@@ -78,7 +78,7 @@ impl From<ProductOffering> for ProductOfferingRelationship {
 }
 
 /// Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier
@@ -161,12 +161,6 @@ pub struct ProductOffering {
     /// Service Level Agreements
     #[serde(skip_serializing_if = "Option::is_none")]
     pub service_level_agreement: Option<SLARef>,
-}
-
-impl HasName for ProductOffering {
-    fn get_name(&self) -> String {
-        self.name.as_ref().unwrap().clone()
-    }
 }
 
 impl ProductOffering {
