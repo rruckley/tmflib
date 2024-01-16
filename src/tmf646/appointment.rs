@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use super::MOD_PATH;
 
 use crate::{HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, TimePeriod};
-use tmflib_derive::HasId;
+use tmflib_derive::{HasId,HasLastUpdate};
 
 const CLASS_PATH : &str = "appointment";
 
@@ -26,7 +26,7 @@ pub enum AppointmentStateType {
 }
 
 /// Appointment booking
-#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasLastUpdate, Serialize)]
 pub struct Appointment {
     id: Option<String>,
     href: Option<String>,
@@ -64,17 +64,6 @@ impl Appointment {
         appointment
     }
 }
-
-impl HasLastUpdate for Appointment {
-    fn set_last_update(&mut self, time : impl Into<String>) {
-        let time1 = time.into();
-        let time2 = time1.clone();
-        self.last_update = Some(time1);
-        self.creation_date = Some(time2);
-    }
-}
-
-impl CreateTMFWithTime<Appointment> for Appointment {}
 
 #[cfg(test)]
 mod test {

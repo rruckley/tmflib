@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use super::MOD_PATH;
 
 use crate::{HasId, HasName, CreateTMF, LIB_PATH, TimePeriod, CreateTMFWithTime, HasLastUpdate};
-use tmflib_derive::HasId;
+use tmflib_derive::{HasId,HasLastUpdate,HasName};
 
 const CLASS_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
@@ -101,7 +101,7 @@ pub struct BundledProductSpecification {
 }
 
 /// Product Specification
-#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasLastUpdate, HasName, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecification {
     /// Id
@@ -165,20 +165,6 @@ impl ProductSpecification {
     ) -> ProductSpecification {
         self.product_spec_characteristic.as_mut().unwrap().push(characteristic);
         self
-    }
-}
-
-impl HasName for ProductSpecification {
-    fn get_name(&self) -> String {
-        self.name.as_ref().unwrap().clone()
-    }
-}
-
-impl CreateTMFWithTime<ProductSpecification> for ProductSpecification {}
-
-impl HasLastUpdate for ProductSpecification {
-    fn set_last_update(&mut self, time : impl Into<String>) {
-        self.last_update = Some(time.into());
     }
 }
 
