@@ -16,4 +16,6 @@
 
 const MOD_PATH : &str = "serviceCatalogManagement/v4";
 
+pub mod service_specification;
 pub mod service_candidate;
+pub mod characteristic_specification;
