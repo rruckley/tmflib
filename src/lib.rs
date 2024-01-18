@@ -142,6 +142,8 @@ pub mod tmf641;
 pub mod tmf646;
 /// Quote
 pub mod tmf648;
+/// Agreement
+pub mod tmf651;
 /// Service Test
 pub mod tmf653;
 /// Shopping Cart
