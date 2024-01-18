@@ -7,6 +7,7 @@ use super::quote_price::QuotePrice;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
 use crate::{LIB_PATH, HasId, CreateTMF,TimePeriod};
+use crate::tmf651::agreement::AgreementRef;
 use tmflib_derive::HasId;
 
 const CLASS_PATH: &str = "quote";
@@ -77,7 +78,9 @@ pub struct Quote {
 
     // External entities
     //
-
+    /// Associated agreement for this quote
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub agreement: Option<Vec<AgreementRef>>,
     /// Notes for Quote
     #[serde(skip_serializing_if = "Option::is_none")]
     pub note: Option<Vec<Note>>,
