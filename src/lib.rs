@@ -50,7 +50,7 @@ pub trait HasId {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
         Uuid::new_v4().simple().to_string()
     }
-    /// Generate and store a new ID
+    /// Generate and store a new ID. This will also regenerated the HREF field via [`generate_href()`]
     fn generate_id(&mut self);
     /// Generate a new HTML reference.
     /// # Details
