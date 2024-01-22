@@ -3,6 +3,8 @@
 //!
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
+use crate::HasValidity;
+use tmflib_derive::HasValidity;
 
 use crate::TimePeriod;
 
@@ -31,7 +33,7 @@ pub struct AttachmentSize {
 }
 
 /// Attachment Reference or Value
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AttachmentRefOrValue {
     /// Unique Id

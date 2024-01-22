@@ -29,15 +29,18 @@ use serde::{Deserialize, Serialize};
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmf-api";
 
+/// Type alias for TimeStamps
+pub type TimeStamp = String;
+
 /// Standard TMF TimePeriod structure
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimePeriod {
     /// Start of time period
-    pub start_date_time: String,
+    pub start_date_time: TimeStamp,
     /// End of time period
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub end_date_time: Option<String>,
+    pub end_date_time: Option<TimeStamp>,
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
@@ -47,7 +50,7 @@ pub trait HasId {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
         Uuid::new_v4().simple().to_string()
     }
-    /// Generate and store a new ID
+    /// Generate and store a new ID. This will also regenerated the HREF field via [`generate_href()`]
     fn generate_id(&mut self);
     /// Generate a new HTML reference.
     /// # Details
@@ -106,6 +109,22 @@ pub trait CreateTMFWithTime<T : Default + HasId + HasLastUpdate> {
     }
 }
 
+/// Trait for classes with a valid_for object covering validity periods.
+pub trait HasValidity {
+    /// Set the validity by passing in a [`TimePeriod`]
+    fn set_validity(&mut self, validity : TimePeriod);
+    /// Get the current validity, might not be set
+    fn get_validity(&self) -> Option<TimePeriod>;
+    /// Get the start of the validity period, might not be set
+    fn get_validity_start(&self) -> Option<TimeStamp>;
+    /// Get the end of the validity period, might not be set
+    fn get_validity_end(&self) -> Option<TimeStamp>;
+    /// Set only the start of the validity period, returns updated [`TimePeriod`]
+    fn set_validity_start(&mut self, start : TimeStamp) -> TimePeriod;
+    /// Set only the end of the validty period, returns updated [`TimePeriod`]
+    fn set_validity_end(&mut self, end : TimeStamp) -> TimePeriod;
+}
+
 /// Does an object have a name field?
 pub trait HasName : HasId {
     /// Return name of object
@@ -142,6 +161,8 @@ pub mod tmf641;
 pub mod tmf646;
 /// Quote
 pub mod tmf648;
+/// Agreement
+pub mod tmf651;
 /// Service Test
 pub mod tmf653;
 /// Shopping Cart

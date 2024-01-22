@@ -2,8 +2,8 @@
 
 use serde::{Deserialize,Serialize};
 
-use crate::{HasId,CreateTMF,TimePeriod,LIB_PATH};
-use tmflib_derive::HasId;
+use crate::{HasId,CreateTMF,HasValidity, TimePeriod,LIB_PATH};
+use tmflib_derive::{HasId,HasValidity};
 use crate::common::related_party::RelatedParty;
 use super::MOD_PATH;
 
@@ -30,17 +30,27 @@ pub enum ExecutionStateType {
 }
 
 /// Service Test
-#[derive(Clone,Debug,Default,Deserialize, HasId, Serialize)]
+#[derive(Clone,Debug,Default,Deserialize, HasId, HasValidity, Serialize)]
 pub struct ServiceTest {
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     end_date_time: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     href: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     mode: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     start_date_time: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     state: Option<ExecutionStateType>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     related_party: Option<Vec<RelatedParty>>,
 }
 

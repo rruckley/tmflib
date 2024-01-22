@@ -3,9 +3,9 @@
 use serde::{Deserialize,Serialize};
 
 use super::MOD_PATH;
-use crate::{HasId,HasName, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, TimePeriod};
+use crate::{HasId,HasName, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, HasValidity, TimePeriod};
 use crate::common::money::Money;
-use tmflib_derive::{HasId,HasLastUpdate,HasName};
+use tmflib_derive::{HasId,HasLastUpdate,HasName, HasValidity};
 
 const CLASS_PATH : &str = "productOfferingPrice";
 const PRICE_VERS : &str = "1.0";
@@ -60,7 +60,7 @@ impl From<ProductOfferingPrice> for ProductOfferingPriceRef {
 }
 
 /// Pricing linked to a Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOfferingPrice {
     /// Unique Id

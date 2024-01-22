@@ -1,6 +1,6 @@
 //! Category Module
 
-use crate::{CreateTMF, TimePeriod};
+use crate::{CreateTMF,HasValidity, TimePeriod};
 use crate::tmf620::product_offering::ProductOfferingRef;
 
 use serde::{Deserialize, Serialize};
@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use super::LIB_PATH;
 use super::MOD_PATH;
 use crate::{HasId,HasName,HasLastUpdate};
-use tmflib_derive::{HasId,HasLastUpdate,HasName};
+use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
 use crate::CreateTMFWithTime;
 
@@ -16,7 +16,7 @@ const CLASS_PATH: &str = "category";
 const CAT_VERS: &str = "1.0";
 
 /// Category Resource
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Category {
     // Scalar fields
