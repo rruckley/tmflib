@@ -1,10 +1,10 @@
 //! Related Party Module
 //! # Description
-//! This object provides a link to any of the party objects, specifically:
-//! - Customer
-//! - Party Role
-//! - Individual
-//! - Organization
+//! This object provides a reference object to any of the party objects, specifically:
+//! - [`Customer`]
+//! - [`PartyRole`]
+//! - [`Individual`]
+//! - [`Organization`]
 
 use std::convert::From;
 use serde::{Deserialize,Serialize};
@@ -71,7 +71,7 @@ impl From<&PartyRole> for RelatedParty {
             id: value.id.as_ref().unwrap().clone(), 
             href: value.href.as_ref().unwrap().clone(), 
             name: None, 
-            role: Some(value.name.clone())
+            role: value.name.clone()
         }
     }
 }
