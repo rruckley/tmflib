@@ -10,6 +10,6 @@ pub struct AgreementItem {
 pub struct AgreementItemRef {
     id: String,
     href: String,
-    agreementItemId: String,
+    agreement_item_id: String,
     name : String,
 }
