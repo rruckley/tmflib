@@ -8,7 +8,7 @@ use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
 
-use crate::{CreateTMF, CreateTMFWithTime,HasLastUpdate, HasId, HasName, TimePeriod};
+use crate::{CreateTMF, CreateTMFWithTime,HasLastUpdate, HasId, HasName, HasValidity, TimePeriod};
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
 use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 
 use super::{AgreementRef,ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
 
-use tmflib_derive::{HasId,HasLastUpdate,HasName};
+use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
@@ -78,7 +78,7 @@ impl From<ProductOffering> for ProductOfferingRelationship {
 }
 
 /// Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier
