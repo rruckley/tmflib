@@ -1,11 +1,11 @@
 //! Catalogue Module
 //!
 //!
-use crate::{HasId, CreateTMF, HasName, CreateTMFWithTime,HasLastUpdate, TimePeriod};
+use crate::{HasId, CreateTMF, HasName, CreateTMFWithTime,HasLastUpdate, HasValidity, TimePeriod};
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
-use tmflib_derive::{HasLastUpdate,HasId,HasName};
+use tmflib_derive::{HasLastUpdate,HasId,HasName,HasValidity};
 
 use chrono::naive::NaiveDateTime;
 use chrono::Utc;
@@ -20,7 +20,7 @@ const CLASS_PATH: &str = "catalog";
 const CAT_VERS: &str = "1.0";
 
 /// Catalogue
-#[derive(Clone, Default, Debug, Deserialize,HasLastUpdate, HasId, HasName, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize,HasLastUpdate, HasId, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Catalog {
     /// Non-optional fields

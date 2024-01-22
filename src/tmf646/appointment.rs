@@ -4,8 +4,8 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, TimePeriod};
-use tmflib_derive::{HasId,HasLastUpdate};
+use crate::{HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, HasValidity, TimePeriod};
+use tmflib_derive::{HasId,HasLastUpdate, HasValidity};
 
 const CLASS_PATH : &str = "appointment";
 
@@ -26,16 +26,24 @@ pub enum AppointmentStateType {
 }
 
 /// Appointment booking
-#[derive(Clone, Debug, Default, Deserialize, HasId, HasLastUpdate, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasLastUpdate, HasValidity, Serialize)]
 pub struct Appointment {
+    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     href: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     category: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     creation_date: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     external_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     last_update: Option<String>,
     status: AppointmentStateType,
+    #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
 }
 

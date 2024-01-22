@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasName, CreateTMF, LIB_PATH, TimePeriod, CreateTMFWithTime, HasLastUpdate};
-use tmflib_derive::{HasId,HasLastUpdate,HasName};
+use crate::{HasId, HasName, CreateTMF, LIB_PATH,HasValidity, TimePeriod, CreateTMFWithTime, HasLastUpdate};
+use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 use crate::tmf633::service_specification::ServiceSpecification;
 
 const CLASS_PATH: &str = "productSpecification";
@@ -15,7 +15,7 @@ const CHAR_VALUE_MIN_CARD : u16 = 0;
 const CHAR_VALUE_MAX_CARD : u16 = 1;
 
 /// Product Specification Characteristic
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, HasValidity)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristic {
     configurable: bool,
@@ -237,16 +237,23 @@ impl From<&str> for ValueEnum {
 /// This object contains values used by a specification characteristic.
 /// # Example
 /// If the Product Offering is "Internet", then the Specification might be "Bandwidht" and the Value might be "100Mb"
-#[derive(Clone, Debug ,Default , Deserialize, Serialize)]
+#[derive(Clone, Debug ,Default , Deserialize, Serialize, HasValidity)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristicValue {
     is_default: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
     range_interval: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     regex: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     unit_of_measure: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     value_from: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     value_to: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     value_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
     value: ValueEnum,
 }
@@ -264,16 +271,20 @@ impl ProductSpecificationCharacteristicValue {
 }
 
 /// Product Specification Characteristic Value Use
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, HasValidity)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristicValueUse {
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
     max_cardinality: u16,
     min_cardinality: u16,
     name: String,
     value_type: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     product_spec_characteristic_value : Option<Vec<ProductSpecificationCharacteristicValue>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     product_specification : Option<ProductSpecificationRef>,
 }
 

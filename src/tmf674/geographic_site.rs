@@ -3,8 +3,8 @@
 use serde::{Deserialize,Serialize};
 use std::convert::From;
 
-use crate::{HasName,HasId,CreateTMF,TimePeriod};
-use tmflib_derive::HasId;
+use crate::{HasName,HasId,CreateTMF,HasValidity, TimePeriod};
+use tmflib_derive::{HasId, HasValidity};
 use crate::tmf673::geographic_address::GeographicAddress;
 use crate::LIB_PATH;
 use super::MOD_PATH;
@@ -35,13 +35,13 @@ impl From<GeographicAddress> for PlaceRefOrValue {
 
 
 /// Relationship to other sites
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, HasValidity)]
 pub struct GeographicSiteRelationship {
     id : String,
     href : String,
     relationship_type : String,
     role : String,
-    valid_for: TimePeriod,
+    valid_for: Option<TimePeriod>,
 }
 
 /// Definition of start and finish hours

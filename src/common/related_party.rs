@@ -35,7 +35,7 @@ impl From<&Customer> for RelatedParty {
         RelatedParty { 
             id: cust.id.as_ref().unwrap().clone(), 
             href: cust.href.as_ref().unwrap().clone(), 
-            name: Some(cust.name.clone()),
+            name: cust.name.clone(),
             role: None,
         }    
     }
@@ -100,7 +100,7 @@ mod test {
         let org = Organization::new(String::from("ACustomer"));
         let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
-        assert_eq!(cust.name, party.name.unwrap());
+        assert_eq!(cust.name, party.name);
     }
     #[test]
     fn test_related_party_from_customer_role() {

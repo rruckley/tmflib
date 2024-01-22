@@ -47,7 +47,7 @@ impl From<ProductOffering> for ProductOfferingRef {
 pub struct ProductOfferingTerm {}
 
 /// Product Offering Relationship
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, HasValidity)]
 pub struct ProductOfferingRelationship {
     id: Option<String>,
     href: Option<String>,

@@ -1,14 +1,14 @@
 //! Agreement Specification Module
 
 use serde::{Deserialize,Serialize};
-use crate::{LIB_PATH,HasId,HasLastUpdate,HasName,CreateTMF,CreateTMFWithTime,TimePeriod};
-use tmflib_derive::{HasId,HasLastUpdate,HasName};
+use crate::{LIB_PATH,HasId,HasLastUpdate,HasName,CreateTMF,CreateTMFWithTime,HasValidity,TimePeriod};
+use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
 use super::MOD_PATH;
 const CLASS_PATH : &str = "specification";
 
 /// Agreement Specification
-#[derive(Clone,Debug,Default,Deserialize,HasId,HasName,HasLastUpdate,Serialize)]
+#[derive(Clone,Debug,Default,Deserialize,HasId,HasName,HasLastUpdate,HasValidity,Serialize)]
 pub struct AgreementSpecification {
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
