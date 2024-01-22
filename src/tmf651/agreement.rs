@@ -13,10 +13,13 @@ const CLASS_PATH : &str = "agreement";
 #[derive(Clone,Default,Debug, Deserialize, HasId, HasName, Serialize)]
 pub struct Agreement {
     /// Period of this agreement
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub agreement_period : Option<TimePeriod>,
     /// Type of this agreement
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub agreement_type: Option<String>,
     /// Date for completion of agreement
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub completion_date: Option<TimePeriod>,
     /// Detailed description
     pub description: String,
@@ -25,19 +28,27 @@ pub struct Agreement {
     /// Start date
     pub initial_date: String,
     /// Unique Id
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id : Option<String>,
     /// URI for Agreement
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Name of Agreement
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /// Statement of Intent
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub statement_of_intent: Option<String>,
     /// Agreement Version
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
     /// Engaged Party for this Agreement
     pub engaged_party: Vec<RelatedParty>,
     /// Linked agreements
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub associated_agreement: Option<Vec<AgreementRef>>,
+    /// Agreement Specifications
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub agreement_specification: Option<AgreementSpecificationRef>,
 }
 
