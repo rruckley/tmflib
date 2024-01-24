@@ -2,8 +2,12 @@
 //!
 use serde::{Deserialize, Serialize};
 
-use crate::{CreateTMF, HasId, HasName, LIB_PATH, DateTime};
-use tmflib_derive::{HasId,HasName};
+use crate::tmf651::agreement::AgreementRef;
+use crate::tmf666::billing_account::BillingAccountRef;
+use crate::{CreateTMF, HasId, HasName, LIB_PATH, DateTime,HasValidity, TimePeriod};
+use tmflib_derive::{HasId, HasName, HasValidity};
+use crate::common::related_place::RelatedPlaceRefOrValue;
+use crate::tmf620::product_offering::ProductOfferingRef;
 
 use super::MOD_PATH;
 
@@ -47,6 +51,17 @@ pub struct Product {
     #[serde(skip_serializing_if = "Option::is_none")]
     termination_date: Option<DateTime>,
     status: ProductStatusType,
+    // References
+    #[serde(skip_serializing_if = "Option::is_none")]
+    agreement: Option<Vec<AgreementRef>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    place: Option<Vec<RelatedPlaceRefOrValue>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    product_offering: Option<ProductOfferingRef>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    billing_account: Option<BillingAccountRef>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    product_term: Option<Vec<ProductTerm>>,
 }
 
 impl Product {
@@ -57,4 +72,17 @@ impl Product {
         product.name = Some(name.into());
         product
     }
+}
+
+/// Product Term
+#[derive(Clone,Debug,Default,Deserialize, HasValidity, Serialize)]
+pub struct ProductTerm {
+    /// Term Description
+    description: Option<String>,
+    /// Term Name
+    name: Option<String>,
+    /// Term duration in days
+    duration: u16,
+    /// Validity period
+    valid_for: Option<TimePeriod>,
 }
