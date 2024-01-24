@@ -2,7 +2,7 @@
 
 use serde::{Deserialize,Serialize};
 
-use crate::{HasId,CreateTMF,HasValidity, TimePeriod,LIB_PATH};
+use crate::{HasId,CreateTMF,HasValidity, TimePeriod,LIB_PATH, DateTime};
 use tmflib_derive::{HasId,HasValidity};
 use crate::common::related_party::RelatedParty;
 use super::MOD_PATH;
@@ -35,7 +35,7 @@ pub struct ServiceTest {
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    end_date_time: Option<String>,
+    end_date_time: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
     href: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -45,7 +45,7 @@ pub struct ServiceTest {
     #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    start_date_time: Option<String>,
+    start_date_time: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
     state: Option<ExecutionStateType>,
     #[serde(skip_serializing_if = "Option::is_none")]

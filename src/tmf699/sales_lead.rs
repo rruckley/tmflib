@@ -4,14 +4,14 @@ use crate::common::contact::ContactMedium;
 use crate::common::money::Money;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
-use crate::TimePeriod;
+
 use crate::tmf620::{ChannelRef,MarketSegmentRef};
 use crate::tmf620::category::CategoryRef;
 use crate::tmf620::product_offering::ProductOfferingRef;
 use crate::tmf620::product_specification::ProductSpecificationRef;
 
 use super::MOD_PATH;
-use crate::{HasId,CreateTMF,HasValidity,LIB_PATH};
+use crate::{HasId,CreateTMF,HasValidity,LIB_PATH, TimePeriod, DateTime};
 use tmflib_derive::{HasId,HasValidity};
 
 use serde::{Deserialize,Serialize};
@@ -58,14 +58,17 @@ pub struct SalesLead {
     id: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     href: Option<String>,
-    //creationDate
+    #[serde(skip_serializing_if = "Option::is_none")]
+    creation_date: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
     name: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     rating : Option<String>,
-    // ReferredDate
-    // statusChangeDate
+    #[serde(skip_serializing_if = "Option::is_none")]
+    referred_date: Option<DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    status_change_date: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
     status_change_reason: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]

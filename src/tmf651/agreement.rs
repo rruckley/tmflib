@@ -1,7 +1,7 @@
 //! Agreement Module
 
 use serde::{Deserialize,Serialize};
-use crate::{LIB_PATH,HasId,HasName,CreateTMF,TimePeriod};
+use crate::{LIB_PATH,HasId,HasName,CreateTMF,TimePeriod, DateTime};
 use tmflib_derive::{HasId,HasName};
 use crate::common::related_party::RelatedParty;
 use super::agreement_specification::AgreementSpecificationRef;
@@ -26,7 +26,7 @@ pub struct Agreement {
     /// Id of document
     pub document_number: u16,
     /// Start date
-    pub initial_date: String,
+    pub initial_date: Option<DateTime>,
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id : Option<String>,

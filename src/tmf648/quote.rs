@@ -6,7 +6,7 @@ use super::MOD_PATH;
 use super::quote_price::QuotePrice;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
-use crate::{LIB_PATH, HasId, CreateTMF, HasValidity, TimePeriod};
+use crate::{LIB_PATH, HasId, CreateTMF, HasValidity, TimePeriod, DateTime};
 use crate::tmf651::agreement::AgreementRef;
 use tmflib_derive::{HasId,HasValidity};
 
@@ -50,13 +50,13 @@ pub struct Quote {
     pub description: Option<String>,
     /// Effective Quote Completion Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub effective_quote_completion_date: Option<String>,
+    pub effective_quote_completion_date: Option<DateTime>,
     /// Expected Fulfillment Start Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub expected_fulfillment_start_date: Option<String>,
+    pub expected_fulfillment_start_date: Option<DateTime>,
     /// Expected Quote Completion Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub expected_quote_completion_date: Option<String>,
+    pub expected_quote_completion_date: Option<DateTime>,
     /// External reference
     #[serde(skip_serializing_if = "Option::is_none")]
     external_id: Option<String>,
@@ -65,7 +65,7 @@ pub struct Quote {
     pub instant_sync_quote: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     /// Requested Completion Date
-    pub requested_quote_completion_date: Option<String>,
+    pub requested_quote_completion_date: Option<DateTime>,
     /// Current quote version
     #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
@@ -90,10 +90,10 @@ pub struct Quote {
 
     /// Order Submission Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub order_date: Option<String>,
+    pub order_date: Option<DateTime>,
     /// Requested Start Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub start_date: Option<String>,
+    pub start_date: Option<DateTime>,
     /// Total Quote Pricing
     #[serde(skip_serializing_if = "Option::is_none")]
     pub quote_total_price : Option<Vec<QuotePrice>>,

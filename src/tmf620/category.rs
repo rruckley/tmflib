@@ -1,6 +1,6 @@
 //! Category Module
 
-use crate::{CreateTMF,HasValidity, TimePeriod};
+use crate::{CreateTMF,HasValidity, TimePeriod, DateTime};
 use crate::tmf620::product_offering::ProductOfferingRef;
 
 use serde::{Deserialize, Serialize};
@@ -34,7 +34,7 @@ pub struct Category {
     pub is_root: Option<bool>,
     /// When was this object last updated?
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub last_update: Option<String>,
+    pub last_update: Option<DateTime>,
     /// What is the status of this object?
     #[serde(skip_serializing_if = "Option::is_none")]
     pub lifecycle_status: Option<String>,

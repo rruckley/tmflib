@@ -5,6 +5,7 @@ use chrono::naive::NaiveDateTime;
 use chrono::Utc;
 use uuid::Uuid;
 use std::convert::From;
+use crate::DateTime;
 
 /// Notes object for journaling against many TMF objects
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -12,7 +13,7 @@ use std::convert::From;
 pub struct Note {
     id: String,
     author: Option<String>,
-    date: Option<String>,
+    date: Option<DateTime>,
     text: Option<String>,
 }
 

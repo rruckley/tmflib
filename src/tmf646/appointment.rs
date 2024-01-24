@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, HasValidity, TimePeriod};
+use crate::{HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, HasValidity, TimePeriod, DateTime};
 use tmflib_derive::{HasId,HasLastUpdate, HasValidity};
 
 const CLASS_PATH : &str = "appointment";
@@ -35,13 +35,13 @@ pub struct Appointment {
     #[serde(skip_serializing_if = "Option::is_none")]
     category: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    creation_date: Option<String>,
+    creation_date: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     external_id: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    last_update: Option<String>,
+    last_update: Option<DateTime>,
     status: AppointmentStateType,
     #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,

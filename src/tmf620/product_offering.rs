@@ -8,7 +8,7 @@ use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
 
-use crate::{CreateTMF, CreateTMFWithTime,HasLastUpdate, HasId, HasName, HasValidity, TimePeriod};
+use crate::{CreateTMF, CreateTMFWithTime,HasLastUpdate, HasId, HasName, HasValidity, TimePeriod, DateTime};
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
 use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
@@ -99,7 +99,7 @@ pub struct ProductOffering {
     pub is_sellable: Option<bool>,
     /// When was this last updated?
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub last_update: Option<String>,
+    pub last_update: Option<DateTime>,
     /// Current status
     #[serde(skip_serializing_if = "Option::is_none")]
     pub lifecycle_status: Option<String>,

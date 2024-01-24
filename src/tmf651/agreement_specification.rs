@@ -1,7 +1,7 @@
 //! Agreement Specification Module
 
 use serde::{Deserialize,Serialize};
-use crate::{LIB_PATH,HasId,HasLastUpdate,HasName,CreateTMF,CreateTMFWithTime,HasValidity,TimePeriod};
+use crate::{LIB_PATH,HasId,HasLastUpdate,HasName,CreateTMF,CreateTMFWithTime,HasValidity,TimePeriod, DateTime};
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
 use super::MOD_PATH;
@@ -19,7 +19,7 @@ pub struct AgreementSpecification {
     #[serde(skip_serializing_if = "Option::is_none")]
     is_bundle: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    last_update: Option<String>,
+    last_update: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
     lifecycle_status: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
