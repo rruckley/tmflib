@@ -9,6 +9,10 @@ use crate::common::related_party::RelatedParty;
 use crate::{LIB_PATH, HasId, CreateTMF, HasValidity, TimePeriod, DateTime};
 use crate::tmf651::agreement::AgreementRef;
 use tmflib_derive::{HasId,HasValidity};
+#[cfg(feature = "leptos")]
+use tmflib_derive::Component;
+#[cfg(feature = "leptos")]
+use leptos::*;
 
 const CLASS_PATH: &str = "quote";
 const QUOTE_VERS: &str = "1.0";
@@ -34,6 +38,7 @@ pub enum QuoteStateType {
 
 /// Product Quote
 #[derive(Clone, Default, Debug, Deserialize, HasId, HasValidity, Serialize)]
+#[cfg_attr(feature = "leptos",derive(Component))]
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
     /// Unique Id
