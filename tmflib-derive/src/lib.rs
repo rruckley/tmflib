@@ -165,7 +165,7 @@ pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
 pub fn tmfcomponent_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let name = input.ident;
-    let _fields = match input.data {
+    let fields = match input.data {
         Data::Struct(s) => {
             s.fields
                 .into_iter()
@@ -173,11 +173,17 @@ pub fn tmfcomponent_derive(input: TokenStream) -> TokenStream {
             },
         _ => panic!("Component only supports Struct"),
     };
+    let id = fields.iter().find(|s| *s == "id");
+    let href = fields.iter().find(|s| *s == "href");
+    let mut basic : Option<String> = None;
+    if id.is_some() && href.is_some() {
+        basic = "<NamedComponent item=item />".to_string().into();
+    }
     let out = quote! {
         impl TMFComponent<#name> for #name {
             fn to_component(item : #name) -> impl IntoView {
                 view! {
-
+                    #basic
                 }
             }
         }    
