@@ -157,3 +157,30 @@ pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
     };
     out.into()   
 }
+
+/// Generate a Leptos view (or component) by generating a view with each
+/// field corresponding to a component of the same name.
+#[cfg(feature = "component")]
+#[proc_macro_derive(Component)]
+pub fn component_derive(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let name = input.ident;
+    let _fields = match input.data {
+        Data::Struct(s) => {
+            s.fields
+                .into_iter()
+                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
+            },
+        _ => panic!("Component only supports Struct"),
+    };
+    let out = quote! {
+        impl Component for #name {
+            fn to_component() -> impl IntoView {
+                view! {
+
+                }
+            }
+        }    
+    };
+    out.into()
+}
