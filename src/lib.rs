@@ -26,6 +26,9 @@ use chrono::Utc;
 use uuid::Uuid;
 use serde::{Deserialize, Serialize};
 
+#[cfg(feature = "leptos")]
+use leptos::*;
+
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmf-api";
 
@@ -135,6 +138,13 @@ pub trait HasName : HasId {
     fn find(&self, pattern : &str) -> bool {
         self.get_name().contains(pattern.trim())
     }
+}
+
+/// Generate a set of Leptos components matching this schema
+#[cfg(feature = "leptos")]
+pub trait Component {
+    /// Generate a component passing in the data struct
+    fn to_component() -> impl IntoView;
 }
 
 /// Common Modules
