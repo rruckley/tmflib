@@ -7,7 +7,7 @@ description = "Derive macro for the tmflib::HasId trait"
 
 
 [features]
-component = []
+tmfcomponent = []
 
 [lib]
 proc-macro = true

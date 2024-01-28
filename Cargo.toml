@@ -7,7 +7,7 @@ description = "Interface library for processing TMF payloads"
 repository = "https://github.com/rruckley/tmflib"
 
 [features]
-leptos = ["tmflib-derive/component"]
+leptos = ["tmflib-derive/tmfcomponent"]
 default = ["leptos"]
 
 [dependencies]
