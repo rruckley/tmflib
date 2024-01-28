@@ -174,8 +174,8 @@ pub fn tmfcomponent_derive(input: TokenStream) -> TokenStream {
         _ => panic!("Component only supports Struct"),
     };
     let out = quote! {
-        impl TMFComponent for #name {
-            fn to_component() -> impl IntoView {
+        impl TMFComponent<#name> for #name {
+            fn to_component(item : #name) -> impl IntoView {
                 view! {
 
                 }

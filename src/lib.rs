@@ -142,9 +142,9 @@ pub trait HasName : HasId {
 
 /// Generate a set of Leptos components matching this schema
 #[cfg(feature = "leptos")]
-pub trait TMFComponent {
+pub trait TMFComponent<T> {
     /// Generate a component passing in the data struct
-    fn to_component() -> impl IntoView;
+    fn to_component(item : T) -> impl IntoView;
 }
 
 /// Common Modules
