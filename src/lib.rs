@@ -33,6 +33,8 @@ pub const LIB_PATH: &str = "tmf-api";
 pub type TimeStamp = String;
 /// Type alias for DateTime
 pub type DateTime = String;
+/// Type alias for Uri
+pub type Uri = String;
 
 /// Standard TMF TimePeriod structure
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -183,5 +185,7 @@ pub mod tmf679;
 pub mod tmf699;
 /// Shipping Order [Pre-Prod]
 pub mod tmf700;
+/// Incident Management
+pub mod tmf724;
 /// Product Configuration
 pub mod tmf760;
