@@ -29,6 +29,8 @@ use serde::{Deserialize, Serialize};
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmf-api";
 
+/// Standard cardinality type for library
+pub type Cardinality = u16;
 /// Type alias for TimeStamps
 pub type TimeStamp = String;
 /// Type alias for DateTime

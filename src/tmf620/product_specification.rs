@@ -7,12 +7,14 @@ use super::MOD_PATH;
 
 use crate::{HasId, HasName, CreateTMF, LIB_PATH,HasValidity, TimePeriod, CreateTMFWithTime, HasLastUpdate};
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
+
 use crate::tmf633::service_specification::ServiceSpecification;
+use crate::tmf633::characteristic_specification::CharacteristicSpecification;
 
 const CLASS_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
-const CHAR_VALUE_MIN_CARD : u16 = 0;
-const CHAR_VALUE_MAX_CARD : u16 = 1;
+const CHAR_VALUE_MIN_CARD : Cardinality = 0;
+const CHAR_VALUE_MAX_CARD : Cardinality = 1;
 
 /// Product Specification Characteristic
 #[derive(Clone, Debug, Default, Deserialize, Serialize, HasValidity)]
@@ -24,8 +26,8 @@ pub struct ProductSpecificationCharacteristic {
     #[serde(skip_serializing_if = "Option::is_none")]
     extensible: Option<bool>,
     is_unique: bool,
-    max_cardinality: u16,
-    min_cardinality: u16,
+    max_cardinality: Cardinality,
+    min_cardinality: Cardinality,
     name: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     regex: Option<String>,
@@ -79,7 +81,7 @@ impl ProductSpecificationCharacteristic {
     /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"))
     ///     .cardinality(0,1);
     /// ```
-    pub fn cardinality(mut self, min: u16, max: u16) -> ProductSpecificationCharacteristic {
+    pub fn cardinality(mut self, min: Cardinality, max: Cardinality) -> ProductSpecificationCharacteristic {
         // Quick check to make sure min < max
         if min > max {
             // Not sure if we should just ignore this ?
@@ -88,6 +90,21 @@ impl ProductSpecificationCharacteristic {
         self.min_cardinality = min;
         self.max_cardinality = max;
         self
+    }
+}
+
+// Conversion from Service CharacteristicSpecification into Product Spec.
+impl From<CharacteristicSpecification> for ProductSpecificationCharacteristic {
+    fn from(value: CharacteristicSpecification) -> Self {
+        let mut psc = ProductSpecificationCharacteristic::default();
+        psc.name = value.name.as_ref().unwrap().clone();
+        psc.min_cardinality = value.min_cardinality.unwrap_or_default();
+        psc.max_cardinality = value.max_cardinality.unwrap_or(1);
+        psc.configurable = value.configurable.unwrap_or_default();
+        psc.is_unique = value.is_unique.unwrap_or_default();
+        psc.description = value.description.clone();
+        psc.valid_for = value.valid_for.clone();
+        psc
     }
 }
 
@@ -193,10 +210,32 @@ impl From<ProductSpecification> for ProductSpecificationRef {
     }
 }
 
+// Convert a service specification into a peroduct specification
+// used as part of the import process.
 impl From<ServiceSpecification> for ProductSpecification {
     fn from(value: ServiceSpecification) -> Self {
-        let mut ps = ProductSpecification::create();
-        ps.name = Some(value.get_name());
+        let mut ps = ProductSpecification::new(format!("{} [Converted from Service Spec]",value.get_name()));
+        if value.description.is_some() {
+            ps.description = Some(value.description.as_ref().unwrap().clone());
+        }
+        ps.is_bundle = value.is_bundle.clone();
+        if value.last_update.is_some() {
+            ps.set_last_update(value.last_update.unwrap());
+        }
+        if value.spec_characteristics.is_some() {
+            // We have characteristics that require conversion
+            let mut out : Vec<ProductSpecificationCharacteristic> = Vec::new();
+            value.spec_characteristics.unwrap().into_iter().for_each(|cs| {
+                let psc = ProductSpecificationCharacteristic::from(cs.clone());
+                out.push(psc);
+            });
+            ps.product_spec_characteristic = Some(out);
+        }
+        if value.version.is_some() {
+            // If source has a version defined take that 
+            ps.version = value.version.clone();
+        }
+        ps.lifecycle_status = value.lifecycle_status.clone();
         ps
     }
 }
