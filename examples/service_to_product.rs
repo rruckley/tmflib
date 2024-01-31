@@ -3,7 +3,6 @@
 use tmflib::tmf633::service_specification::ServiceSpecification;
 use tmflib::tmf633::characteristic_specification::CharacteristicSpecification;
 use tmflib::tmf620::product_specification::ProductSpecification;
-use tmflib::CreateTMF;
 
 fn main() {
     let mut ss = ServiceSpecification::new("Access");
