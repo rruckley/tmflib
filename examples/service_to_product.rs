@@ -27,6 +27,7 @@ fn main() {
     so.note.as_mut().unwrap().push(Note::new("This is a Note."));
     let ind = Individual::new("John Q. Citizen");
     so.related_party.as_mut().unwrap().push(RelatedParty::from(&ind));
+    so.category = Some("Fixed Product".to_string());
     
     so.external_id = Some("PON1234983".to_string());
     let po = ProductOrder::from(so);
