@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use super::HasId;
 use tmflib_derive::HasId;
+use crate::tmf641::service_order::ServiceOrder;
 use crate::common::related_party::RelatedParty;
 use crate::{CreateTMF, CreateTMFWithTime,HasLastUpdate};
 
@@ -64,5 +65,13 @@ impl ProductOrder {
     /// ```
     pub fn add_party(&mut self, party: RelatedParty) {
         self.related_party.push(party);
+    }
+}
+
+impl From<ServiceOrder> for ProductOrder {
+    fn from(value: ServiceOrder) -> Self {
+        let mut po = ProductOrder::new();
+        
+        po    
     }
 }
