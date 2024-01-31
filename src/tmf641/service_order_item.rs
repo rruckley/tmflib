@@ -3,6 +3,7 @@
 use serde::{Deserialize,Serialize};
 
 use crate::tmf646::appointment::AppointmentRef;
+use crate::tmf633::service_specification::ServiceSpecificationRef;
 
 /// Service Order Item Status
 #[derive(Clone,Default,Debug,Deserialize,Serialize)]
@@ -32,15 +33,33 @@ pub enum ServiceOrderItemStateType {
     Partial,
 }
 
+/// Link to Service via reference or value
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct ServiceRefOrValue {
+    category: String,
+    description: String,
+    end_date: String,
+    has_started: String,
+    service_specification: Option<ServiceSpecificationRef>,
+}
+
 /// Service Order Item
 #[derive(Clone,Default,Debug,Deserialize,Serialize)]
 pub struct ServiceOrderItem {
-    id : String,
-    quantity: u16,
-    state: ServiceOrderItemStateType,
-    appointment : Option<AppointmentRef>,
-    service_order_item: Option<Vec<ServiceOrderItem>>,
-    service_order_item_relationship: Option<Vec<ServiceOrderItemRelationship>>,
+    /// Unique Id
+    pub id : String,
+    /// Quantity
+    pub quantity: u16,
+    /// Status
+    pub state: ServiceOrderItemStateType,
+    /// Appointment
+    pub appointment : Option<AppointmentRef>,
+    /// Service Order Line Items
+    pub service_order_item: Option<Vec<ServiceOrderItem>>,
+    /// Service Order Line Item Relationships
+    pub service_order_item_relationship: Option<Vec<ServiceOrderItemRelationship>>,
+    /// Service
+    service : ServiceRefOrValue,
 }
 
 /// Reference to and external Service Order Item
