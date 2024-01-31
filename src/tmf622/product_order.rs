@@ -115,6 +115,7 @@ impl From<ServiceOrder> for ProductOrder {
         po.expected_completion_date = value.expected_completion_date.clone();
         po.external_id = value.external_id.clone();
         po.related_party = value.related_party.clone();
+        po.order_date = value.order_date.clone();
         po  
     }
 }
