@@ -71,7 +71,7 @@ impl ProductOrder {
 impl From<ServiceOrder> for ProductOrder {
     fn from(value: ServiceOrder) -> Self {
         let mut po = ProductOrder::new();
-        
+        po.order_date = value.order_date.clone();
         po    
     }
 }
