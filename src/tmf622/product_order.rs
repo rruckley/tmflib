@@ -76,7 +76,9 @@ impl CreateTMFWithTime<ProductOrder> for ProductOrder {}
 impl ProductOrder {
     /// Create a new product order via trait
     pub fn new() -> ProductOrder {
-        ProductOrder::create_with_time()
+        let mut po = ProductOrder::create_with_time();
+        po.related_party = Some(vec![]);
+        po
     }
 
     /// Add an ProductOrderItem into the ProductOrder

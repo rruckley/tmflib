@@ -81,6 +81,7 @@ impl From<&PartyRole> for RelatedParty {
 mod test {
     use crate::tmf629::customer::Customer;
     use crate::tmf632::organization::Organization;
+    use crate::HasId;
     use super::RelatedParty;
     #[test]
     fn test_related_party_from_customer_id() {
@@ -108,7 +109,7 @@ mod test {
         let org = Organization::new(String::from("ACustomer"));
         let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
-        assert_eq!(party.role.is_none(), true);
+        assert_eq!(party.role.unwrap(), Customer::get_class());
     }
 }
 
