@@ -5,8 +5,10 @@ use super::quote_item::QuoteItem;
 use super::MOD_PATH;
 use super::quote_price::QuotePrice;
 use crate::common::note::Note;
-use crate::{LIB_PATH, HasId, CreateTMF};
-use tmflib_derive::HasId;
+use crate::common::related_party::RelatedParty;
+use crate::{LIB_PATH, HasId, CreateTMF, HasValidity, TimePeriod, DateTime};
+use crate::tmf651::agreement::AgreementRef;
+use tmflib_derive::{HasId,HasValidity};
 
 const CLASS_PATH: &str = "quote";
 const QUOTE_VERS: &str = "1.0";
@@ -31,42 +33,73 @@ pub enum QuoteStateType {
 }
 
 /// Product Quote
-#[derive(Clone, Default, Debug, Deserialize, HasId, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    /// HTML Reference to quote
+    /// URI Reference to quote
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
+    /// Quote Category
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub category : Option<String>,
     /// Quote description
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+    /// Effective Quote Completion Date
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub effective_quote_completion_date: Option<DateTime>,
+    /// Expected Fulfillment Start Date
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expected_fulfillment_start_date: Option<DateTime>,
+    /// Expected Quote Completion Date
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expected_quote_completion_date: Option<DateTime>,
     /// External reference
     #[serde(skip_serializing_if = "Option::is_none")]
     external_id: Option<String>,
-    /// Notes for Quote
     #[serde(skip_serializing_if = "Option::is_none")]
-    note: Option<Vec<Note>>,
-    /// Quote status
+    /// Instanct Sync?
+    pub instant_sync_quote: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub state: Option<QuoteStateType>,
-    /// Vector of quote items
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub quote_item: Option<Vec<QuoteItem>>,
+    /// Requested Completion Date
+    pub requested_quote_completion_date: Option<DateTime>,
     /// Current quote version
     #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
+    /// Quote status
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub state: Option<QuoteStateType>,
+    /// Validity Period
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub valid_for: Option<TimePeriod>,
+
+    // External entities
+    //
+    /// Associated agreement for this quote
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub agreement: Option<Vec<AgreementRef>>,
+    /// Notes for Quote
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub note: Option<Vec<Note>>,
+    /// Vector of quote items
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quote_item: Option<Vec<QuoteItem>>,
+
     /// Order Submission Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub order_date: Option<String>,
+    pub order_date: Option<DateTime>,
     /// Requested Start Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub start_date: Option<String>,
+    pub start_date: Option<DateTime>,
     /// Total Quote Pricing
     #[serde(skip_serializing_if = "Option::is_none")]
     pub quote_total_price : Option<Vec<QuotePrice>>,
+    /// Related Parties for this Quote
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub related_party : Option<Vec<RelatedParty>>,
 }
 
 impl Quote {

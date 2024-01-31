@@ -99,3 +99,61 @@ pub fn hasname_derive(input: TokenStream) -> TokenStream {
     };
     out.into()
 }
+
+#[proc_macro_derive(HasValidity)]
+pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let fields = match input.data {
+        Data::Struct(s) => {
+            s.fields
+                .into_iter()
+                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
+            },
+        _ => panic!("HasValidity only supports Struct"),
+    };
+    let name = input.ident;
+    // Ensure id field is present
+    let _name = fields.iter().find(|s| *s == "valid_for").expect("No valid_for object present");
+    let out = quote! {
+        impl HasValidity for #name {
+            fn get_validity(&self) -> Option<TimePeriod> {
+                self.valid_for.clone()
+            }
+            fn get_validity_end(&self) -> Option<crate::TimeStamp> {
+                match self.valid_for.as_ref() {
+                    Some(v) => v.end_date_time.clone(),
+                    None => None,
+                }        
+            }
+            fn get_validity_start(&self) -> Option<crate::TimeStamp> {
+                match self.valid_for.as_ref() {
+                    Some(v) => Some(v.start_date_time.clone()),
+                    None => None,
+                }
+            }
+            fn set_validity(&mut self, validity : TimePeriod) {
+                self.valid_for = Some(validity);
+            }
+            fn set_validity_end(&mut self, end : crate::TimeStamp) -> TimePeriod {
+                let mut validity = match self.get_validity() {
+                    Some(v) => v,
+                    None => TimePeriod::default(),
+                };
+                validity.end_date_time = Some(end);
+                self.set_validity(validity.clone());
+                validity
+            }
+            fn set_validity_start(&mut self, start : crate::TimeStamp) -> TimePeriod {
+                let mut validity = match self.get_validity() {
+                    Some(v) => v,
+                    None => TimePeriod::default(),
+                };
+                validity.start_date_time = start;
+                self.set_validity(validity.clone());
+                validity
+            }
+    
+        }
+    };
+    out.into()   
+}

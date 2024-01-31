@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 // URL Path components
 use crate::LIB_PATH;
 use super::MOD_PATH;
-use crate::{HasId,CreateTMF};
+use crate::{HasId,CreateTMF,DateTime};
 use tmflib_derive::HasId;
 use crate::common::note::Note;
 use super::service_order_item::ServiceOrderItem;
@@ -14,7 +14,7 @@ const CLASS_PATH: &str = "serviceOrder";
 #[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ServiceOrder {
-    cancellation_date: String,
+    cancellation_date: DateTime,
     id: Option<String>,
     href: Option<String>,
     description: Option<String>,

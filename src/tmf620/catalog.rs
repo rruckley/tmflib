@@ -1,11 +1,11 @@
 //! Catalogue Module
 //!
 //!
-use crate::{HasId, CreateTMF, HasName, CreateTMFWithTime,HasLastUpdate, TimePeriod};
+use crate::{HasId, CreateTMF, HasName, CreateTMFWithTime,HasLastUpdate, HasValidity, TimePeriod, DateTime};
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
-use tmflib_derive::{HasLastUpdate,HasId,HasName};
+use tmflib_derive::{HasLastUpdate,HasId,HasName,HasValidity};
 
 use chrono::naive::NaiveDateTime;
 use chrono::Utc;
@@ -20,12 +20,14 @@ const CLASS_PATH: &str = "catalog";
 const CAT_VERS: &str = "1.0";
 
 /// Catalogue
-#[derive(Clone, Default, Debug, Deserialize,HasLastUpdate, HasId, HasName, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize,HasLastUpdate, HasId, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Catalog {
     /// Non-optional fields
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HTML reference to this object
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Optional fields
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -33,7 +35,7 @@ pub struct Catalog {
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    last_update: Option<String>,
+    last_update: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
     lifecycle_status: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]

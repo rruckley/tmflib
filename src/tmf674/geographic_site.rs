@@ -3,8 +3,8 @@
 use serde::{Deserialize,Serialize};
 use std::convert::From;
 
-use crate::{HasName,HasId,CreateTMF,TimePeriod};
-use tmflib_derive::HasId;
+use crate::{HasName,HasId,CreateTMF,HasValidity, TimePeriod};
+use tmflib_derive::{HasId, HasValidity};
 use crate::tmf673::geographic_address::GeographicAddress;
 use crate::LIB_PATH;
 use super::MOD_PATH;
@@ -26,22 +26,22 @@ pub struct PlaceRefOrValue {
 impl From<GeographicAddress> for PlaceRefOrValue {
     fn from(value: GeographicAddress) -> Self {
         PlaceRefOrValue { 
-            id: value.id.as_ref().unwrap().clone(), 
-            href: value.href.as_ref().unwrap().clone(), 
-            name: value.name.clone() 
+            id: value.get_id(), 
+            href: value.get_href(), 
+            name: value.get_name() 
         }
     }
 }
 
 
 /// Relationship to other sites
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, HasValidity)]
 pub struct GeographicSiteRelationship {
     id : String,
     href : String,
     relationship_type : String,
     role : String,
-    valid_for: TimePeriod,
+    valid_for: Option<TimePeriod>,
 }
 
 /// Definition of start and finish hours
@@ -77,6 +77,7 @@ impl CalendarPeriod {
         }
     }
 }
+
 /// Geographic Site
 #[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -86,9 +87,9 @@ pub struct GeographicSite {
     pub id: Option<String>,
     /// HREF
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub href: Option<String>,
+    pub href: Option<String>,#[serde(skip_serializing_if = "Option::is_none")]
     /// Site Code
-    #[serde(skip_serializing_if = "Option::is_none")]
+    
     pub code : Option<String>,
     /// Site Description
     #[serde(skip_serializing_if = "Option::is_none")]

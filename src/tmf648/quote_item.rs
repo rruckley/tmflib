@@ -6,6 +6,7 @@ use uuid::Uuid;
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
+use crate::common::related_place::RelatedPlaceRefOrValue;
 use crate::tmf620::product_specification::ProductSpecificationRef;
 
 use super::quote_price::QuotePrice;
@@ -62,6 +63,12 @@ pub struct ProductRefOrValue {
     /// Product Specification (TMF620)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_specification : Option<ProductSpecificationRef>,
+    /// Site data for this Quote Item
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub place : Option<Vec<RelatedPlaceRefOrValue>>,
+    /// Related Parties for this Quote Item
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub related_party: Option<Vec<RelatedParty>>,
 }
 
 
