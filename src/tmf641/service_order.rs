@@ -7,6 +7,7 @@ use crate::{HasId,CreateTMF,DateTime};
 use tmflib_derive::HasId;
 use crate::common::note::Note;
 use super::service_order_item::ServiceOrderItem;
+use crate::common::related_party::RelatedParty;
 
 const CLASS_PATH: &str = "serviceOrder";
 
@@ -43,7 +44,7 @@ pub enum ServiceOrderStateType {
 #[serde(rename_all = "camelCase")]
 pub struct ServiceOrder {
     /// Cancellation Date
-    pub cancellation_date: DateTime,
+    pub cancellation_date: Option<DateTime>,
     /// Cancellation Reason
     #[serde(skip_serializing_if = "Option::is_none")]
     pub cancellation_reason: Option<String>,
@@ -94,11 +95,17 @@ pub struct ServiceOrder {
     /// Service Order Items
     #[serde(skip_serializing_if = "Option::is_none")]
     pub servce_order_item: Option<Vec<ServiceOrderItem>>,
+    /// Related Parties
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub related_party : Option<Vec<RelatedParty>>,
 }
 
 impl ServiceOrder {
     /// Create a new service order object
     pub fn new() -> ServiceOrder {
-        ServiceOrder::create()
+        let mut so = ServiceOrder::create();
+        so.note = Some(vec![]);
+        so.related_party = Some(vec![]);
+        so
     }
 }
