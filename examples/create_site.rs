@@ -4,9 +4,9 @@
 
 use tmflib::tmf673::geographic_address::GeographicAddress;
 #[cfg(feature = "v4")]
-use tmflib::tmf674::geographic_site_v4::{GeographicSite, PlaceRefOrValue};
+use tmflib::tmf674::geographic_site_v4::{GeographicSite, PlaceRefOrValue,CalendarPeriod};
 #[cfg(feature = "v5")]
-use tmflib::tmf674::geographic_site_v5::{GeographicSite, PlaceRefOrValue};
+use tmflib::tmf674::geographic_site_v5::{GeographicSite, PlaceRefOrValue,CalendarPeriod};
 
 
 fn main() {
