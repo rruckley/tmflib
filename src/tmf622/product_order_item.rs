@@ -7,6 +7,8 @@ use std::convert::From;
 use crate::tmf620::product_offering::{ProductOffering,ProductOfferingRef};
 #[cfg(feature = "v5")]
 use crate::tmf620::product_offering_v5::{ProductOffering,ProductOfferingRef};
+use crate::tmf641::service_order_item::ServiceOrderItem;
+
 
 /// Action Type for Order Items
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
