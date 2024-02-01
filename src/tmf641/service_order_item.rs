@@ -36,11 +36,16 @@ pub enum ServiceOrderItemStateType {
 /// Link to Service via reference or value
 #[derive(Clone,Default,Debug,Deserialize,Serialize)]
 pub struct ServiceRefOrValue {
-    category: String,
-    description: String,
-    end_date: String,
-    has_started: String,
-    service_specification: Option<ServiceSpecificationRef>,
+    /// Category
+    pub category: Option<String>,
+    /// Description
+    pub description: Option<String>,
+    /// End Date
+    pub end_date: Option<String>,
+    /// Has Started
+    pub has_started: Option<String>,
+    /// Specification
+    pub service_specification: Option<ServiceSpecificationRef>,
 }
 
 /// Service Order Item
@@ -59,9 +64,8 @@ pub struct ServiceOrderItem {
     /// Service Order Line Item Relationships
     pub service_order_item_relationship: Option<Vec<ServiceOrderItemRelationship>>,
     /// Service
-    service : ServiceRefOrValue,
+    pub service : ServiceRefOrValue,
 }
-
 /// Reference to and external Service Order Item
 #[derive(Clone,Default,Debug,Deserialize,Serialize)]
 pub struct ServiceOrderItemRelationship {
