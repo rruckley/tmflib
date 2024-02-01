@@ -39,3 +39,16 @@ impl From<ProductOffering> for ProductOrderItem {
         ProductOrderItem { quantity: 1, product_offering: Some(offer_ref), ..Default::default() }
     }
 }
+
+impl From<ServiceOrderItem> for ProductOrderItem {
+    fn from(value: ServiceOrderItem) -> Self {
+        let mut poi = ProductOrderItem::default();
+        let po = ProductOffering::new("Generated Offer");
+        
+        // Setting the specification here gets lost in the conversion into a Offer reference.
+        //po.product_specification = psref;
+        poi.quantity = value.quantity;
+        poi.product_offering = Some(ProductOfferingRef::from(po));
+        poi
+    }
+}
