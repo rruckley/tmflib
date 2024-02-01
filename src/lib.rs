@@ -39,25 +39,32 @@ use serde::{Deserialize, Serialize};
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmf-api";
 
+/// Standard cardinality type for library
+pub type Cardinality = u16;
+/// Type alias for TimeStamps
+pub type TimeStamp = String;
+/// Type alias for DateTime
+pub type DateTime = String;
+
 /// Standard TMF TimePeriod structure
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimePeriod {
     /// Start of time period
-    pub start_date_time: String,
+    pub start_date_time: TimeStamp,
     /// End of time period
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub end_date_time: Option<String>,
+    pub end_date_time: Option<TimeStamp>,
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId {
-    /// Get a new UUID in simple format
+    /// Get a new UUID in simple format (no seperators)
     fn get_uuid() -> String {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
         Uuid::new_v4().simple().to_string()
     }
-    /// Generate and store a new ID
+    /// Generate and store a new ID. This will also regenerated the HREF field via generate_href()
     fn generate_id(&mut self);
     /// Generate a new HTML reference.
     /// # Details
@@ -69,6 +76,8 @@ pub trait HasId {
     fn get_href(&self) -> String;
     /// Get the class of this object
     fn get_class() -> String;
+    /// Get Class HREF
+    fn get_class_href() -> String;
 }
 
 /// Trait to create TMF structs that have the HasId trait
@@ -99,7 +108,7 @@ pub trait HasLastUpdate {
     }
 
     /// Store a timestamp into last_update field (if available)
-    fn set_last_update(&mut self, time : String);
+    fn set_last_update(&mut self, time : impl Into<String>);
 }
 
 /// Trait to create a TMF struct including a timestamp field
@@ -112,6 +121,22 @@ pub trait CreateTMFWithTime<T : Default + HasId + HasLastUpdate> {
         item.set_last_update(T::get_timestamp());
         item
     }
+}
+
+/// Trait for classes with a valid_for object covering validity periods.
+pub trait HasValidity {
+    /// Set the validity by passing in a [`TimePeriod`]
+    fn set_validity(&mut self, validity : TimePeriod);
+    /// Get the current validity, might not be set
+    fn get_validity(&self) -> Option<TimePeriod>;
+    /// Get the start of the validity period, might not be set
+    fn get_validity_start(&self) -> Option<TimeStamp>;
+    /// Get the end of the validity period, might not be set
+    fn get_validity_end(&self) -> Option<TimeStamp>;
+    /// Set only the start of the validity period, returns updated [`TimePeriod`]
+    fn set_validity_start(&mut self, start : TimeStamp) -> TimePeriod;
+    /// Set only the end of the validty period, returns updated [`TimePeriod`]
+    fn set_validity_end(&mut self, end : TimeStamp) -> TimePeriod;
 }
 
 /// Does an object have a name field?
@@ -150,6 +175,8 @@ pub mod tmf641;
 pub mod tmf646;
 /// Quote
 pub mod tmf648;
+/// Agreement
+pub mod tmf651;
 /// Service Test
 pub mod tmf653;
 /// Shopping Cart
@@ -164,6 +191,8 @@ pub mod tmf673;
 pub mod tmf674;
 /// Product Offering Qualification
 pub mod tmf679;
+/// Sales Management
+pub mod tmf699;
 /// Shipping Order [Pre-Prod]
 pub mod tmf700;
 /// Product Configuration

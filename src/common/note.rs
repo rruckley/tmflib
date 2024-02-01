@@ -5,6 +5,7 @@ use chrono::naive::NaiveDateTime;
 use chrono::Utc;
 use uuid::Uuid;
 use std::convert::From;
+use crate::DateTime;
 
 /// Notes object for journaling against many TMF objects
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -12,13 +13,13 @@ use std::convert::From;
 pub struct Note {
     id: String,
     author: Option<String>,
-    date: Option<String>,
+    date: Option<DateTime>,
     text: Option<String>,
 }
 
 impl Note {
     /// Create a new note, without author
-    pub fn new(text : String) -> Note {
+    pub fn new(text : impl Into<String>) -> Note {
         let id = Uuid::new_v4().simple().to_string();
         let now = Utc::now();
         let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
@@ -26,7 +27,7 @@ impl Note {
             id, 
             author: None, 
             date: Some(time.to_string()), 
-            text : Some(text),
+            text : Some(text.into()),
         }
     }
     /// Set author for note with builder pattern

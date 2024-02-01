@@ -1,30 +1,30 @@
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
 // URL Path components
-use super::LIB_PATH;
+use crate::LIB_PATH;
 use super::MOD_PATH;
+use crate::{HasId,CreateTMF,DateTime};
+use tmflib_derive::HasId;
+use crate::common::note::Note;
+use super::service_order_item::ServiceOrderItem;
 
-const SO_PATH: &str = "order";
+const CLASS_PATH: &str = "serviceOrder";
 
 /// Service Order Object
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ServiceOrder {
-    id: String,
-    href: String,
+    cancellation_date: DateTime,
+    id: Option<String>,
+    href: Option<String>,
     description: Option<String>,
+    note: Option<Vec<Note>>,
+    servce_order_item: Option<Vec<ServiceOrderItem>>,
 }
 
 impl ServiceOrder {
     /// Create a new service order object
     pub fn new() -> ServiceOrder {
-        let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, SO_PATH, id);
-        ServiceOrder {
-            id,
-            href,
-            description: None,
-        }
+        ServiceOrder::create()
     }
 }

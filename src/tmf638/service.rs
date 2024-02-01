@@ -1,14 +1,14 @@
 //! Service Module
 
-use uuid::Uuid;
 use serde::{Deserialize,Serialize};
 
 use super::MOD_PATH;
-use super::LIB_PATH;
+use crate::LIB_PATH;
 
+use crate::{HasId,CreateTMF};
+use tmflib_derive::HasId;
 
-
-const SERVICE_PATH : &str = "service";
+const CLASS_PATH : &str = "service";
 
 #[derive(Clone,Debug,Default,Deserialize,PartialEq,Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -23,7 +23,7 @@ enum ServiceStateType {
 }
 
 /// Service record from the Service Inventory
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone,Debug,Default,Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Service {
     id: Option<String>,
@@ -34,15 +34,10 @@ pub struct Service {
 
 impl Service {
     /// Create a new service object for the inventory
-    pub fn new(name : String) -> Service {
-        let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,SERVICE_PATH,id);
-        Service {
-            id:Some(id), 
-            href: Some(href), 
-            name,
-            state : ServiceStateType::Inactive,
-        }
+    pub fn new(name : impl Into<String>) -> Service {
+        let mut service = Service::create();
+        service.name = name.into();
+        service
     }
 }
 

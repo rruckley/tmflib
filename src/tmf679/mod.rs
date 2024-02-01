@@ -14,7 +14,8 @@
 
 //! TMF679 Product Qualification Management Module
 
-const MOD_PATH : &str = "tmf679/v4";
+/// Common path for TMF679
+pub const MOD_PATH : &str = "productOfferingQualificationManagement/v4";
 
 pub mod product_qualification;
 pub mod product_offering_qualification_item;

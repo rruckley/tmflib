@@ -3,9 +3,11 @@
 use serde::{Deserialize,Serialize};
 
 use super::MOD_PATH;
-use crate::{HasId,HasName, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, TimePeriod};
+use crate::{HasId,HasName, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, HasValidity, TimePeriod};
 use crate::common::money::Money;
-const PRICE_PATH : &str = "productOfferingPrice";
+use tmflib_derive::{HasId,HasLastUpdate,HasName, HasValidity};
+
+const CLASS_PATH : &str = "productOfferingPrice";
 const PRICE_VERS : &str = "1.0";
 
 /// Constraints
@@ -58,7 +60,7 @@ impl From<ProductOfferingPrice> for ProductOfferingPriceRef {
 }
 
 /// Pricing linked to a Product Offering
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOfferingPrice {
     /// Unique Id
@@ -103,46 +105,10 @@ pub struct ProductOfferingPrice {
 
 impl ProductOfferingPrice {
     /// Create a new Price Offering Price object
-    pub fn new(name :  String) -> ProductOfferingPrice {
+    pub fn new(name :  impl Into<String>) -> ProductOfferingPrice {
         let mut pop = ProductOfferingPrice::create_with_time();
         pop.version = Some(PRICE_VERS.to_string());
-        pop.name = Some(name);
+        pop.name = Some(name.into());
         pop
-    }
-}
-impl CreateTMF<ProductOfferingPrice> for ProductOfferingPrice {}
-impl CreateTMFWithTime<ProductOfferingPrice> for ProductOfferingPrice {}
-
-impl HasId for ProductOfferingPrice {
-    fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,PRICE_PATH,self.get_id());
-        self.href = Some(href);
-    }
-    fn generate_id(&mut self) {
-        let id = ProductOfferingPrice::get_uuid();
-        self.id = Some(id);
-        self.generate_href();
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-
-    fn get_class() -> String {
-        PRICE_PATH.to_owned()
-    }
-}
-
-impl HasName for ProductOfferingPrice {
-    fn get_name(&self) -> String {
-        self.name.as_ref().unwrap().clone()
-    }
-}
-
-impl HasLastUpdate for ProductOfferingPrice {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
     }
 }

@@ -4,9 +4,10 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH};
+use crate::{HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, HasValidity, TimePeriod, DateTime};
+use tmflib_derive::{HasId,HasLastUpdate, HasValidity};
 
-const APP_PATH : &str = "appointment";
+const CLASS_PATH : &str = "appointment";
 
 /// Appointment booking status
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -25,13 +26,43 @@ pub enum AppointmentStateType {
 }
 
 /// Appointment booking
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasLastUpdate, HasValidity, Serialize)]
 pub struct Appointment {
+    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     href: Option<String>,
-    creation_date: Option<String>,
-    last_update: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    category: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    creation_date: Option<DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    external_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    last_update: Option<DateTime>,
     status: AppointmentStateType,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    valid_for: Option<TimePeriod>,
+}
+
+/// Reference to an appointment
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct AppointmentRef {
+    description: String,
+    href: String,
+    id: String,
+}
+
+impl From<Appointment> for AppointmentRef {
+    fn from(value: Appointment) -> Self {
+        AppointmentRef {
+            description: value.get_href(),
+            href: value.href.unwrap().clone(),
+            id: value.id.unwrap().clone(),
+        }
+    }
 }
 
 impl Appointment {
@@ -41,38 +72,6 @@ impl Appointment {
         appointment
     }
 }
-
-impl HasId for Appointment {
-    fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,APP_PATH,self.get_id());
-        self.href = Some(href);       
-    }
-    fn generate_id(&mut self) {
-        let id = Appointment::get_uuid();
-        self.id = Some(id);  
-        self.generate_href();
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()    
-    }
-    fn get_class() -> String {
-        APP_PATH.to_owned()
-    }
-}
-
-impl CreateTMF<Appointment> for Appointment {}
-
-impl HasLastUpdate for Appointment {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time.clone());
-        self.creation_date = Some(time);
-    }
-}
-
-impl CreateTMFWithTime<Appointment> for Appointment {}
 
 #[cfg(test)]
 mod test {

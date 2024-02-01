@@ -18,7 +18,8 @@ fn main() {
     .state("NSW");
 
     let site = GeographicSite::new(String::from("Home"))
-        .place(PlaceRefOrValue::from(address));
+        .place(PlaceRefOrValue::from(address))
+        .calendar(CalendarPeriod::business_hours());
 
     dbg!(site);
 }

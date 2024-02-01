@@ -1,10 +1,11 @@
 //! Catalogue Module
 //!
 //!
-use crate::{HasId, HasName, CreateTMFWithTime,HasLastUpdate, TimePeriod};
+use crate::{HasId, CreateTMF, HasName, CreateTMFWithTime,HasLastUpdate, HasValidity, TimePeriod, DateTime};
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
+use tmflib_derive::{HasLastUpdate,HasId,HasName,HasValidity};
 
 use chrono::naive::NaiveDateTime;
 use chrono::Utc;
@@ -15,16 +16,18 @@ use uuid::Uuid;
 use super::LIB_PATH;
 use super::MOD_PATH;
 
-const CAT_PATH: &str = "catalog";
+const CLASS_PATH: &str = "catalog";
 const CAT_VERS: &str = "1.0";
 
 /// Catalogue
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize,HasLastUpdate, HasId, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Catalog {
     /// Non-optional fields
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HTML reference to this object
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Optional fields
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -32,7 +35,7 @@ pub struct Catalog {
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    last_update: Option<String>,
+    last_update: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
     lifecycle_status: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -49,27 +52,11 @@ pub struct Catalog {
     related_party: Option<Vec<RelatedParty>>,
 }
 
-impl HasLastUpdate for Catalog {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
-    }
-}
-
-impl HasName for Catalog {
-    fn get_name(&self) -> String {
-        self.name.clone().unwrap_or("NoName".to_string())
-    }
-}
-
-impl CreateTMFWithTime<Catalog> for Catalog {
-
-}
-
 impl Catalog {
     /// Create a new instance of catalog struct
-    pub fn new(name : &str) -> Catalog {
+    pub fn new(name : impl Into<String>) -> Catalog {
         let mut cat = Catalog::create_with_time();
-        cat.name = Some(name.to_owned());
+        cat.name = Some(name.into());
         cat.version = Some(CAT_VERS.to_string());
         cat.category = Some(vec![]);
         cat.related_party = Some(vec![]);
@@ -90,33 +77,6 @@ impl Catalog {
     /// Add party to a catalog
     pub fn add_party(&mut self, party : RelatedParty) {
         self.related_party.as_mut().unwrap().push(party);
-    }
-}
-
-impl HasId for Catalog {
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()
-    }
-
-    fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CAT_PATH,self.get_id());
-        self.href = Some(href);    
-    }
-
-    fn generate_id(&mut self) {
-        // No return type for now
-
-        let id = Catalog::get_uuid();
-        self.id = Some(id);
-        self.generate_href();
-    }
-
-    fn get_class() -> String {
-        CAT_PATH.to_owned()
     }
 }
 
@@ -175,7 +135,7 @@ pub struct CatalogBatchEvent {}
 #[cfg(test)]
 mod tests {
 
-    use crate::tmf620::catalog::{CAT_VERS,CAT_PATH};
+    use crate::tmf620::catalog::{CAT_VERS,CLASS_PATH};
 
     use super::Catalog;
     use crate::HasId;
@@ -197,6 +157,6 @@ mod tests {
     #[test]
     fn test_cat_class() {
 
-        assert_eq!(Catalog::get_class(),CAT_PATH.to_owned());
+        assert_eq!(Catalog::get_class(),CLASS_PATH.to_owned());
     }
 }

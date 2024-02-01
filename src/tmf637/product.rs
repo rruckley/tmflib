@@ -2,13 +2,16 @@
 //!
 use serde::{Deserialize, Serialize};
 
-use crate::CreateTMF;
-use crate::HasId;
+use crate::tmf651::agreement::AgreementRef;
+use crate::tmf666::billing_account::BillingAccountRef;
+use crate::{CreateTMF, HasId, HasName, LIB_PATH, DateTime,HasValidity, TimePeriod};
+use tmflib_derive::{HasId, HasName, HasValidity};
+use crate::common::related_place::RelatedPlaceRefOrValue;
+use crate::tmf620::product_offering::ProductOfferingRef;
 
-use super::LIB_PATH;
 use super::MOD_PATH;
 
-const PROD_PATH: &str = "product";
+const CLASS_PATH: &str = "product";
 
 #[derive(Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -25,44 +28,61 @@ enum ProductStatusType {
 }
 
 /// Product record from the Product Inventory
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize, HasId, HasName, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Product {
+    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     href: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
-    name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    is_bundle: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    is_customer_visible: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    order_date: Option<DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    product_serial_number: Option<String>,
+    start_date: Option<DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    termination_date: Option<DateTime>,
     status: ProductStatusType,
+    // References
+    #[serde(skip_serializing_if = "Option::is_none")]
+    agreement: Option<Vec<AgreementRef>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    place: Option<Vec<RelatedPlaceRefOrValue>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    product_offering: Option<ProductOfferingRef>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    billing_account: Option<BillingAccountRef>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    product_term: Option<Vec<ProductTerm>>,
 }
-
-impl HasId for Product {
-    fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, PROD_PATH, self.get_id());
-        self.href = Some(href);    
-    }
-    fn generate_id(&mut self) {
-        let id = Product::get_uuid();
-        self.id = Some(id);
-        self.generate_href();
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()    
-    }
-    fn get_class() -> String {
-        PROD_PATH.to_owned()
-    }
-}
-impl CreateTMF<Product> for Product {}
 
 impl Product {
     /// Create a new product object
-    pub fn new(name: String) -> Product {
+    pub fn new(name: impl Into<String>) -> Product {
         let mut product = Product::create();
         product.status = ProductStatusType::Created;
-        product.name = name;
+        product.name = Some(name.into());
         product
     }
+}
+
+/// Product Term
+#[derive(Clone,Debug,Default,Deserialize, HasValidity, Serialize)]
+pub struct ProductTerm {
+    /// Term Description
+    description: Option<String>,
+    /// Term Name
+    name: Option<String>,
+    /// Term duration in days
+    duration: u16,
+    /// Validity period
+    valid_for: Option<TimePeriod>,
 }

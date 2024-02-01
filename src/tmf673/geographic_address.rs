@@ -1,39 +1,75 @@
 //! Geographic Address Module
 
 use serde::{Deserialize,Serialize};
-use uuid::Uuid;
 
-use crate::CreateTMF;
-use crate::HasId;
+use crate::{CreateTMF, HasId, HasName};
+use tmflib_derive::{HasId,HasName};
 use crate::LIB_PATH;
-
 use super::MOD_PATH;
 
-const GEO_PATH : &str = "address";
+const CLASS_PATH : &str = "geographicAddress";
 
 
+/// Geographic Sub Address
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasName, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct GeographicSubAddress {
+    /// Building Name
+    pub building_name: Option<String>,
+    /// URI for SubAddress
+    pub href: Option<String>,
+    /// ID for Sub Address
+    pub id: Option<String>,
+    /// Level within building
+    pub level_number: Option<String>,
+    /// Level Type
+    pub level_type: Option<String>,
+    /// Name of Sub-Address
+    pub name: Option<String>,
+    /// Private Address Name
+    pub private_street_name: Option<String>,
+    /// Private Address Number
+    pub private_street_number: Option<String>,
+    /// Sub Address Type
+    pub sub_address_type: Option<String>,
+    /// Sub Unit Number
+    pub sub_unit_number: Option<String>,
+    /// Sub Unit
+    pub sub_unit: Option<String>,
+}
 /// Geographic Address 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId,HasName, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GeographicAddress {
     /// Unique Id
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HTML Reference to this object
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Name of this Address 
-    pub name : String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     locality: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     street_name : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     street_nr: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     state_or_province: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     street_type: Option<String>,
+    // Reference Types
+    #[serde(skip_serializing_if = "Option::is_none")]
+    geographic_sub_address: Option<Vec<GeographicSubAddress>>,
 }
 
 impl GeographicAddress {
     /// Create a new Geographic Address
-    pub fn new(name : String) -> GeographicAddress {
+    pub fn new(name : impl Into<String>) -> GeographicAddress {
         let mut address = GeographicAddress::create();
-        address.name = name;
+        address.name = Some(name.into());
         address
     }
 
@@ -66,26 +102,3 @@ impl GeographicAddress {
         self
     }
 }
-
-impl HasId for GeographicAddress {
-    fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,GEO_PATH,self.get_id());
-        self.href = Some(href);
-    }
-    fn generate_id(&mut self) {
-        let id = Uuid::new_v4().as_simple().to_string();
-        self.id = Some(id);
-        self.generate_href();    
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()    
-    }
-    fn get_class() -> String {
-        GEO_PATH.to_owned()
-    }
-}
-
-impl CreateTMF<GeographicAddress> for GeographicAddress {}

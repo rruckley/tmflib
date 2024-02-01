@@ -5,15 +5,19 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasName, CreateTMF, LIB_PATH, TimePeriod, CreateTMFWithTime, HasLastUpdate};
+use crate::{HasId, HasName, CreateTMF, LIB_PATH,HasValidity, TimePeriod, CreateTMFWithTime, HasLastUpdate,Cardinality};
+use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
-const SPEC_PATH: &str = "productSpecification";
+use crate::tmf633::service_specification::ServiceSpecification;
+use crate::tmf633::characteristic_specification::CharacteristicSpecification;
+
+const CLASS_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
-const CHAR_VALUE_MIN_CARD : u16 = 0;
-const CHAR_VALUE_MAX_CARD : u16 = 1;
+const CHAR_VALUE_MIN_CARD : Cardinality = 0;
+const CHAR_VALUE_MAX_CARD : Cardinality = 1;
 
 /// Product Specification Characteristic
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, HasValidity)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristic {
     configurable: bool,
@@ -22,8 +26,8 @@ pub struct ProductSpecificationCharacteristic {
     #[serde(skip_serializing_if = "Option::is_none")]
     extensible: Option<bool>,
     is_unique: bool,
-    max_cardinality: u16,
-    min_cardinality: u16,
+    max_cardinality: Cardinality,
+    min_cardinality: Cardinality,
     name: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     regex: Option<String>,
@@ -41,12 +45,12 @@ impl ProductSpecificationCharacteristic {
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristic;
     /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"));
     /// ```
-    pub fn new(name: String) -> ProductSpecificationCharacteristic {
+    pub fn new(name: impl Into<String>) -> ProductSpecificationCharacteristic {
         ProductSpecificationCharacteristic {
             configurable: true,
             max_cardinality: CHAR_VALUE_MAX_CARD,
             min_cardinality: CHAR_VALUE_MIN_CARD,
-            name,
+            name : name.into(),
             ..Default::default()
         }
     }
@@ -77,7 +81,7 @@ impl ProductSpecificationCharacteristic {
     /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"))
     ///     .cardinality(0,1);
     /// ```
-    pub fn cardinality(mut self, min: u16, max: u16) -> ProductSpecificationCharacteristic {
+    pub fn cardinality(mut self, min: Cardinality, max: Cardinality) -> ProductSpecificationCharacteristic {
         // Quick check to make sure min < max
         if min > max {
             // Not sure if we should just ignore this ?
@@ -86,6 +90,21 @@ impl ProductSpecificationCharacteristic {
         self.min_cardinality = min;
         self.max_cardinality = max;
         self
+    }
+}
+
+// Conversion from Service CharacteristicSpecification into Product Spec.
+impl From<CharacteristicSpecification> for ProductSpecificationCharacteristic {
+    fn from(value: CharacteristicSpecification) -> Self {
+        let mut psc = ProductSpecificationCharacteristic::default();
+        psc.name = value.name.as_ref().unwrap().clone();
+        psc.min_cardinality = value.min_cardinality.unwrap_or_default();
+        psc.max_cardinality = value.max_cardinality.unwrap_or(1);
+        psc.configurable = value.configurable.unwrap_or_default();
+        psc.is_unique = value.is_unique.unwrap_or_default();
+        psc.description = value.description.clone();
+        psc.valid_for = value.valid_for.clone();
+        psc
     }
 }
 
@@ -100,7 +119,7 @@ pub struct BundledProductSpecification {
 }
 
 /// Product Specification
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasLastUpdate, HasName, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecification {
     /// Id
@@ -143,9 +162,9 @@ pub struct ProductSpecification {
 
 impl ProductSpecification {
     /// Create new instance of Product Specification
-    pub fn new(name: String) -> ProductSpecification {       
+    pub fn new(name: impl Into<String>) -> ProductSpecification {       
         let mut prod_spec = ProductSpecification::create_with_time();
-        prod_spec.name = Some(name);
+        prod_spec.name = Some(name.into());
         prod_spec.version = Some(SPEC_VERS.to_string());
 
         prod_spec.product_spec_characteristic= Some(vec![]);
@@ -164,42 +183,6 @@ impl ProductSpecification {
     ) -> ProductSpecification {
         self.product_spec_characteristic.as_mut().unwrap().push(characteristic);
         self
-    }
-}
-
-impl HasName for ProductSpecification {
-    fn get_name(&self) -> String {
-        self.name.as_ref().unwrap().clone()
-    }
-}
-
-impl CreateTMF<ProductSpecification> for ProductSpecification {}
-impl CreateTMFWithTime<ProductSpecification> for ProductSpecification {}
-
-impl HasLastUpdate for ProductSpecification {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
-    }
-}
-
-impl HasId for ProductSpecification {
-    fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, SPEC_PATH, self.get_id());
-        self.href = Some(href);    
-    }
-    fn generate_id(&mut self) {
-        let id = ProductSpecification::get_uuid();
-        self.id = Some(id);
-        self.generate_href();    
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-    fn get_class() -> String {
-        SPEC_PATH.to_owned()
     }
 }
 
@@ -224,6 +207,36 @@ impl From<ProductSpecification> for ProductSpecificationRef {
             name: ps.name,
             version: ps.version,
         }
+    }
+}
+
+// Convert a service specification into a peroduct specification
+// used as part of the import process.
+impl From<ServiceSpecification> for ProductSpecification {
+    fn from(value: ServiceSpecification) -> Self {
+        let mut ps = ProductSpecification::new(format!("{} [Converted from Service Spec]",value.get_name()));
+        if value.description.is_some() {
+            ps.description = Some(value.description.as_ref().unwrap().clone());
+        }
+        ps.is_bundle = value.is_bundle.clone();
+        if value.last_update.is_some() {
+            ps.set_last_update(value.last_update.unwrap());
+        }
+        if value.spec_characteristics.is_some() {
+            // We have characteristics that require conversion
+            let mut out : Vec<ProductSpecificationCharacteristic> = Vec::new();
+            value.spec_characteristics.unwrap().into_iter().for_each(|cs| {
+                let psc = ProductSpecificationCharacteristic::from(cs.clone());
+                out.push(psc);
+            });
+            ps.product_spec_characteristic = Some(out);
+        }
+        if value.version.is_some() {
+            // If source has a version defined take that 
+            ps.version = value.version.clone();
+        }
+        ps.lifecycle_status = value.lifecycle_status.clone();
+        ps
     }
 }
 
@@ -263,16 +276,23 @@ impl From<&str> for ValueEnum {
 /// This object contains values used by a specification characteristic.
 /// # Example
 /// If the Product Offering is "Internet", then the Specification might be "Bandwidht" and the Value might be "100Mb"
-#[derive(Clone, Debug ,Default , Deserialize, Serialize)]
+#[derive(Clone, Debug ,Default , Deserialize, Serialize, HasValidity)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristicValue {
     is_default: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
     range_interval: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     regex: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     unit_of_measure: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     value_from: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     value_to: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     value_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
     value: ValueEnum,
 }
@@ -290,27 +310,31 @@ impl ProductSpecificationCharacteristicValue {
 }
 
 /// Product Specification Characteristic Value Use
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, HasValidity)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristicValueUse {
+    #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
     max_cardinality: u16,
     min_cardinality: u16,
     name: String,
     value_type: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     product_spec_characteristic_value : Option<Vec<ProductSpecificationCharacteristicValue>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     product_specification : Option<ProductSpecificationRef>,
 }
 
 impl ProductSpecificationCharacteristicValueUse {
     /// Create a new instance of ProductSpecificationCharacteristicValueUse
-    pub fn new(name : String) -> ProductSpecificationCharacteristicValueUse {
+    pub fn new(name : impl Into<String>) -> ProductSpecificationCharacteristicValueUse {
         ProductSpecificationCharacteristicValueUse { 
             description: None, 
             max_cardinality: 1, 
             min_cardinality: 0, 
-            name, 
+            name : name.into(), 
             value_type: String::from("String"), 
             valid_for: None,
             product_spec_characteristic_value : None,

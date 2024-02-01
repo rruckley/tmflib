@@ -1,10 +1,10 @@
 //! Related Party Module
 //! # Description
-//! This object provides a link to any of the party objects, specifically:
-//! - Customer
-//! - Party Role
-//! - Individual
-//! - Organization
+//! This object provides a reference object to any of the party objects, specifically:
+//! - [`Customer`]
+//! - [`PartyRole`]
+//! - [`Individual`]
+//! - [`Organization`]
 
 use std::convert::From;
 use serde::{Deserialize,Serialize};
@@ -35,7 +35,7 @@ impl From<&Customer> for RelatedParty {
         RelatedParty { 
             id: cust.id.as_ref().unwrap().clone(), 
             href: cust.href.as_ref().unwrap().clone(), 
-            name: Some(cust.name.clone()),
+            name: cust.name.clone(),
             role: None,
         }    
     }
@@ -71,7 +71,7 @@ impl From<&PartyRole> for RelatedParty {
             id: value.id.as_ref().unwrap().clone(), 
             href: value.href.as_ref().unwrap().clone(), 
             name: None, 
-            role: Some(value.name.clone())
+            role: value.name.clone()
         }
     }
 }
@@ -100,7 +100,7 @@ mod test {
         let org = Organization::new(String::from("ACustomer"));
         let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
-        assert_eq!(cust.name, party.name.unwrap());
+        assert_eq!(cust.name, party.name);
     }
     #[test]
     fn test_related_party_from_customer_role() {

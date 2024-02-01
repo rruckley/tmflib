@@ -1,15 +1,15 @@
 //! Resource Module
 
 use serde::{Deserialize,Serialize};
-use uuid::Uuid;
 
 use crate::common::related_party::RelatedParty;
 use crate::common::attachment::AttachmentRefOrValue;
 use super::MOD_PATH;
 use super::characteristic::Characteristic;
 use crate::{HasId, CreateTMF, LIB_PATH};
+use tmflib_derive::HasId;
 
-const RESOURCE_PATH : &str = "resource";
+const CLASS_PATH : &str = "resource";
 const RESOURCE_VERS : &str = "1.0";
 
 /// Resource Usage Status
@@ -65,7 +65,7 @@ pub enum ResourceStatusType {
 }
 
 /// TMF Resource 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Resource {
     administrative_state: ResourceAdministrativeStateType,
@@ -81,13 +81,11 @@ pub struct Resource {
     usage_state: ResourceUsageStateType,
 }
 
-impl CreateTMF<Resource> for Resource {}
-
 impl Resource {
     /// Create a new Resource Inventory record
-    pub fn new(name : &str) -> Resource {
+    pub fn new(name : impl Into<String>) -> Resource {
         let mut resource = Resource::create();
-        resource.name = name.to_owned();
+        resource.name = name.into();
         resource.resource_version = Some(RESOURCE_VERS.to_owned());
         resource    
     }
@@ -95,26 +93,5 @@ impl Resource {
     /// Add related party to this resource
     pub fn add_party(&mut self, party: RelatedParty) {
         self.related_party.push(party);
-    }
-}
-
-impl HasId for Resource {
-    fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,RESOURCE_PATH,self.get_id());
-        self.href = Some(href);       
-    }
-    fn generate_id(&mut self) {
-        let id = Uuid::new_v4().simple().to_string();
-        self.id = Some(id);
-        self.generate_href();  
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-    fn get_class() -> String {
-        RESOURCE_PATH.to_owned()
     }
 }

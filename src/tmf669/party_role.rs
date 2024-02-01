@@ -2,21 +2,22 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId,CreateTMF,LIB_PATH, common::related_party::RelatedParty};
+use crate::{HasId,HasName, CreateTMF,LIB_PATH, common::related_party::RelatedParty};
+use tmflib_derive::{HasId,HasName};
 
 use super::MOD_PATH;
 
-const ROLE_PATH : &str = "role";
+const CLASS_PATH : &str = "partyRole";
 
 /// Party Role
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasName, Serialize)]
 pub struct PartyRole {
     /// Id of the Party Role
    pub id: Option<String>,
    /// HTML link
    pub href: Option<String>,
    /// Name of Role
-   pub name: String,
+   pub name: Option<String>,
    /// Entity that is associated with this role
    engaged_party: Option<RelatedParty>,
    /// Other related parties
@@ -25,9 +26,9 @@ pub struct PartyRole {
 
 impl PartyRole {
     /// Create new PartyRole with given name
-    pub fn new(name : &str) -> PartyRole {
+    pub fn new(name : impl Into<String>) -> PartyRole {
         let mut role = PartyRole::create();
-        role.name = name.to_owned();
+        role.name = Some(name.into());
         role
     }
 
@@ -42,26 +43,3 @@ impl PartyRole {
         self.related_party.push(party);
     }
 }
-
-impl HasId for PartyRole {
-    fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,ROLE_PATH,self.get_id());
-        self.href = Some(href);
-    }
-    fn generate_id(&mut self) {
-        let id = PartyRole::get_uuid();
-        self.id = Some(id);
-        self.generate_href();    
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()       
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-    fn get_class() -> String {
-        ROLE_PATH.to_owned()
-    }
-}
-
-impl CreateTMF<PartyRole> for PartyRole {}

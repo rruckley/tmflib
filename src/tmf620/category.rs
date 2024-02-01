@@ -1,6 +1,5 @@
 //! Category Module
 
-use crate::{CreateTMF,HasLastUpdate, TimePeriod};
 #[cfg(feature = "v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
 #[cfg(feature = "v5")]
@@ -10,15 +9,16 @@ use serde::{Deserialize, Serialize};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
-use crate::{HasId,HasName};
+use crate::{HasId,HasName,HasLastUpdate,DateTime,TimePeriod,CreateTMF};
+use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
 use crate::CreateTMFWithTime;
 
-const CAT_PATH: &str = "category";
+const CLASS_PATH: &str = "category";
 const CAT_VERS: &str = "1.0";
 
 /// Category Resource
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Category {
     // Scalar fields
@@ -36,7 +36,7 @@ pub struct Category {
     pub is_root: Option<bool>,
     /// When was this object last updated?
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub last_update: Option<String>,
+    pub last_update: Option<DateTime>,
     /// What is the status of this object?
     #[serde(skip_serializing_if = "Option::is_none")]
     pub lifecycle_status: Option<String>,
@@ -60,20 +60,6 @@ pub struct Category {
     pub product_offering: Option<Vec<ProductOfferingRef>>,
 }
 
-impl HasLastUpdate for Category {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
-    }
-}
-
-impl HasName for Category {
-    fn get_name(&self) -> String {
-        self.name.as_ref().unwrap().clone()
-    }
-}
-
-impl CreateTMFWithTime<Category> for Category {}
-
 impl Category {
     /// Create a new instance of the Category struct
     /// # Examples
@@ -81,10 +67,10 @@ impl Category {
     /// # use tmflib::tmf620::category::Category;
     /// let cat = Category::new(String::from("MyCategory"));
     /// ```
-    pub fn new(name: String) -> Category {
+    pub fn new(name: impl Into<String>) -> Category {
         let mut cat = Category::create_with_time();
         cat.version = Some(CAT_VERS.to_string());
-        cat.name = Some(name);
+        cat.name = Some(name.into());
         cat.is_root = Some(false);
         cat
     }
@@ -142,40 +128,11 @@ impl Category {
     }
 }
 
-impl CreateTMF<Category> for Category {}
-
-impl HasId for Category {
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-    }
-
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()
-    }
-
-    fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,CAT_PATH,self.get_id());
-        self.href = Some(href);    
-    }
-
-    fn generate_id(&mut self) {
-        // No return type for now
-        // Using simple format as SurrealDB doesn't like dashes in standard format.
-        let id = Category::get_uuid();
-        self.id = Some(id);
-        self.generate_href();
-    }
-
-    fn get_class() -> String {
-        CAT_PATH.to_owned()
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::Category;
     use super::CAT_VERS;
-    use super::CAT_PATH;
+    use super::CLASS_PATH;
     use crate::HasId;
     #[test]
     fn cat_test_name() {
@@ -205,7 +162,7 @@ mod tests {
     #[test]
     fn cat_test_class() {
         
-        assert_eq!(Category::get_class(),CAT_PATH);
+        assert_eq!(Category::get_class(),CLASS_PATH);
     }
 }
 
