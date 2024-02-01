@@ -1,0 +1,20 @@
+//! Create Cost Example
+
+use tmflib::tmf7xx::cost_model::CostModel;
+use tmflib::common::money::Money;
+
+fn main() {
+    let mut cost = CostModel::new("ParentCost")
+        .cost(Money{unit: "Dollars".to_string(),value: 237.5});
+    let child_cost_1 = CostModel::new("ChildCost")
+        .cost(Money{unit: "Dollars".to_string(),value: 101.0});
+    let child_cost_2 = CostModel::new("Second Child")
+        .cost(Money{unit: "Dollars".to_string(),value : 125.99});
+
+    cost.add_child(child_cost_1);
+    cost.add_child(child_cost_2);
+
+    dbg!(&cost);
+
+    println!("Total cost: {}",cost.total_cost())
+}

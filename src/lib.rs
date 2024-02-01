@@ -25,6 +25,7 @@ use chrono::naive::NaiveDateTime;
 use chrono::Utc;
 use uuid::Uuid;
 use serde::{Deserialize, Serialize};
+use std::default::Default;
 
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmf-api";
@@ -37,7 +38,7 @@ pub type TimeStamp = String;
 pub type DateTime = String;
 
 /// Standard TMF TimePeriod structure
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimePeriod {
     /// Start of time period
@@ -45,6 +46,14 @@ pub struct TimePeriod {
     /// End of time period
     #[serde(skip_serializing_if = "Option::is_none")]
     pub end_date_time: Option<TimeStamp>,
+}
+
+impl Default for TimePeriod {
+    fn default() -> Self {
+        let now = Utc::now();
+        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        TimePeriod { start_date_time: time.to_string(), end_date_time: None }
+    }
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
@@ -187,3 +196,6 @@ pub mod tmf699;
 pub mod tmf700;
 /// Product Configuration
 pub mod tmf760;
+/// Cost Management
+#[cfg(feature = "tmf7xx-v5")]
+pub mod tmf7xx;
