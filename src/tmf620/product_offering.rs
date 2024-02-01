@@ -36,9 +36,10 @@ impl From<ProductOffering> for ProductOfferingRef {
     /// Convert from ProductOffering into ProductOfferingRef
     fn from(po : ProductOffering) -> ProductOfferingRef {
         ProductOfferingRef { 
-            id: po.id.unwrap().clone(), 
-            href: po.href.unwrap().clone(), 
-            name: po.name.as_ref().unwrap().clone() }
+            id: po.id.unwrap_or("MISSING".to_string()).clone(), 
+            href: po.href.unwrap_or("MISSING".to_string()).clone(), 
+            name: po.name.unwrap_or("MISSING".to_string()).clone() 
+        }
     }
 }
 

@@ -8,7 +8,7 @@ use super::MOD_PATH;
 use crate::{HasId, HasName, CreateTMF, LIB_PATH,HasValidity, TimePeriod, CreateTMFWithTime, HasLastUpdate,Cardinality};
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
-use crate::tmf633::service_specification::ServiceSpecification;
+use crate::tmf633::service_specification::{ServiceSpecification,ServiceSpecificationRef};
 use crate::tmf633::characteristic_specification::CharacteristicSpecification;
 
 const CLASS_PATH: &str = "productSpecification";
@@ -210,22 +210,35 @@ impl From<ProductSpecification> for ProductSpecificationRef {
     }
 }
 
+impl From<&ServiceSpecificationRef> for ProductSpecificationRef {
+    fn from(value: &ServiceSpecificationRef) -> Self {
+        // we cannot simply copy across the href but we can reuse the id
+        
+        let mut ps = ProductSpecification::default();
+        ps.id = Some(value.id.clone());
+        ps.generate_href();
+        ps.name = Some(value.name.clone());
+
+        ProductSpecificationRef::from(ps)
+    }
+}
+
 // Convert a service specification into a peroduct specification
 // used as part of the import process.
-impl From<ServiceSpecification> for ProductSpecification {
-    fn from(value: ServiceSpecification) -> Self {
+impl From<&ServiceSpecification> for ProductSpecification {
+    fn from(value: &ServiceSpecification) -> Self {
         let mut ps = ProductSpecification::new(format!("{} [Converted from Service Spec]",value.get_name()));
         if value.description.is_some() {
             ps.description = Some(value.description.as_ref().unwrap().clone());
         }
         ps.is_bundle = value.is_bundle.clone();
         if value.last_update.is_some() {
-            ps.set_last_update(value.last_update.unwrap());
+            ps.set_last_update(value.last_update.as_ref().unwrap());
         }
         if value.spec_characteristics.is_some() {
             // We have characteristics that require conversion
             let mut out : Vec<ProductSpecificationCharacteristic> = Vec::new();
-            value.spec_characteristics.unwrap().into_iter().for_each(|cs| {
+            value.spec_characteristics.as_ref().unwrap().into_iter().for_each(|cs| {
                 let psc = ProductSpecificationCharacteristic::from(cs.clone());
                 out.push(psc);
             });

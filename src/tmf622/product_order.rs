@@ -49,7 +49,7 @@ pub struct ProductOrder {
     pub external_id : Option<String>,
     /// Order Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub order_date: Option<String>,
+    pub order_date: Option<DateTime>,
     /// Product Order Items
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_order_item: Option<Vec<ProductOrderItem>>,
@@ -108,16 +108,35 @@ impl ProductOrder {
 impl From<ServiceOrder> for ProductOrder {
     fn from(value: ServiceOrder) -> Self {
         let mut po = ProductOrder::new();
-        po.order_date = value.order_date.clone();
-        po.description = value.description.clone();
-        po.order_date = value.order_date.clone();
+        
+        po.cancellation_reason = value.cancellation_reason.clone();
         po.category = value.category.clone();
-        po.cancellation_date = value.cancellation_date.clone();
-        po.note = value.note.clone();
-        po.expected_completion_date = value.expected_completion_date.clone();
+        po.description = value.description.clone();
         po.external_id = value.external_id.clone();
+        po.note = value.note.clone();
         po.related_party = value.related_party.clone();
+        
+        // Dates
+        po.completion_date = value.completion_date.clone();
         po.order_date = value.order_date.clone();
+        po.cancellation_date = value.cancellation_date.clone();
+        po.expected_completion_date = value.expected_completion_date.clone();
+        
+        // Iterate through service order items
+        let items = match value.servce_order_item {
+            Some(i) => {
+                let mut out = vec![];
+                i.into_iter().for_each(|i| {
+                    // Conert i into ProductOrderItem
+                    let poi = ProductOrderItem::from(i);
+                    out.push(poi);
+                });
+                Some(out)
+            },
+            None => None,
+        };
+        po.product_order_item = items;
+
         po  
     }
 }
