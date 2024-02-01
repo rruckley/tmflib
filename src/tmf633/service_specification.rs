@@ -67,3 +67,27 @@ impl ServiceSpecification {
         self.spec_characteristics.as_mut().unwrap().push(characteristic);
     }
 }
+
+/// Reference to Service Specification
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct ServiceSpecificationRef {
+    /// Unique Id
+    pub id : String,
+    /// Uri 
+    pub href : String,
+    /// Name
+    pub name: String,
+    /// Version
+    pub version: Option<String>,
+}
+
+impl From<ServiceSpecification> for ServiceSpecificationRef {
+    fn from(value: ServiceSpecification) -> Self {
+        ServiceSpecificationRef {
+            id : value.get_id(),
+            href: value.get_href(),
+            name: value.get_name(),
+            version: value.version.clone(),
+        }
+    }
+}
