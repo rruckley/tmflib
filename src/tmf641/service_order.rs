@@ -53,13 +53,13 @@ pub struct ServiceOrder {
     pub category : Option<String>,
     /// Completion Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub completion_date: Option<String>,
+    pub completion_date: Option<DateTime>,
     /// Description
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     /// Expected Completion Date
-    pub expected_completion_date: Option<String>,
+    pub expected_completion_date: Option<DateTime>,
     /// External Id
     pub external_id : Option<String>,
     /// Unique Id
@@ -73,19 +73,19 @@ pub struct ServiceOrder {
     pub notification_contact: Option<String>,
     /// Order Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub order_date: Option<String>,
+    pub order_date: Option<DateTime>,
     /// Order Priority
     #[serde(skip_serializing_if = "Option::is_none")]
     pub priority: Option<String>,
     /// Requested Completion Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub requested_completion_date: Option<String>,
+    pub requested_completion_date: Option<DateTime>,
     /// Requested Start Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub requested_start_date: Option<String>,
+    pub requested_start_date: Option<DateTime>,
     /// Start Date
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub start_date: Option<String>,
+    pub start_date: Option<DateTime>,
     /// Order Status
     #[serde(skip_serializing_if = "Option::is_none")]
     pub state: Option<ServiceOrderStateType>,
@@ -106,6 +106,7 @@ impl ServiceOrder {
         let mut so = ServiceOrder::create();
         so.note = Some(vec![]);
         so.related_party = Some(vec![]);
+        so.servce_order_item = Some(vec![]);
         so
     }
 }
