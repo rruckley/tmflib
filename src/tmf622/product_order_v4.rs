@@ -89,7 +89,7 @@ impl ProductOrder {
     /// Add a RelatedParty into the ProductOrder
     /// # Example
     /// ```
-    /// # use tmflib::tmf622::product_order::ProductOrder;
+    /// # use tmflib::tmf622::product_order_v4::ProductOrder;
     /// use tmflib::common::related_party::RelatedParty;
     /// use tmflib::tmf629::customer::Customer;
     /// use tmflib::tmf632::organization::Organization;

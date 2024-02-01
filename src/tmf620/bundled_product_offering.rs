@@ -1,7 +1,10 @@
 //! Bundled Product Offering Module
 
 const BUNDLE_PATH: &str = "bundle";
+#[cfg(feature = "v4")]
 use super::product_offering::ProductOffering;
+#[cfg(feature = "v5")]
+use super::product_offering_v5::ProductOffering;
 use super::LIB_PATH;
 use super::MOD_PATH;
 

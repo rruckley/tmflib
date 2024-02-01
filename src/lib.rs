@@ -14,10 +14,20 @@
 
 //! TMF Library
 //! # Description
-//! This library covers objects required to interact with various TMF defined APIs. 
-//! It does not define how to interact with those APIs nor provide a REST interface (at this stage)
+//! This library covers structures required to interact with various TMForum APIs.
+//! It does not define amy persistence nor provide a REST interface (at this stage)
 //! but simply provides definitions of all the schema and some helpful functions to create compliant objects
 //! that can then be seriliased into or from JSON as required.
+//! 
+//! # Crate Features
+//! 
+//! ### API Version Features
+//! 
+//! By default this crate will compile v4 versions of APIs. 
+//! * **v4**
+//! This is the default version compiled
+//! * **v5**
+//! This flag can optionally be enabled to compile v5 APIs where available
 
 #![warn(missing_docs)]
 

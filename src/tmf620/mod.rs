@@ -19,12 +19,19 @@
 use super::LIB_PATH;
 use serde::{Deserialize, Serialize};
 
+#[cfg(feature = "tmf620-v4")]
 const MOD_PATH: &str = "productCatalogManagement/v4";
+#[cfg(feature = "tmf620-v5")]
+const MOD_PATH: &str = "productCatalogManagement/v5";
 
 pub mod bundled_product_offering;
 pub mod catalog;
 pub mod category;
+
+#[cfg(feature = "v4")]
 pub mod product_offering;
+#[cfg(feature = "v5")]
+pub mod product_offering_v5;
 pub mod product_offering_price;
 pub mod product_specification;
 
