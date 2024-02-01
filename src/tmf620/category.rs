@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
-use crate::{HasId,HasName,HasLastUpdate,DateTime,TimePeriod,CreateTMF};
+use crate::{HasId,HasName,HasLastUpdate,DateTime,HasValidity,TimePeriod,CreateTMF};
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
 use crate::CreateTMFWithTime;
