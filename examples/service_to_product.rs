@@ -3,7 +3,10 @@
 use tmflib::tmf633::service_specification::{ServiceSpecification, ServiceSpecificationRef};
 use tmflib::tmf633::characteristic_specification::CharacteristicSpecification;
 use tmflib::tmf641::service_order::ServiceOrder;
-use tmflib::tmf622::product_order::ProductOrder;
+#[cfg(feature = "tmf622-v4")]
+use tmflib::tmf622::product_order_v4::ProductOrder;
+#[cfg(feature = "tmf622-v5")]
+use tmflib::tmf622::product_order_v5::ProductOrder;
 use tmflib::tmf632::individual::Individual;
 use tmflib::common::note::Note;
 use tmflib::common::related_party::RelatedParty;
