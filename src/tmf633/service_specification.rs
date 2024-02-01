@@ -71,10 +71,14 @@ impl ServiceSpecification {
 /// Reference to Service Specification
 #[derive(Clone,Default,Debug,Deserialize,Serialize)]
 pub struct ServiceSpecificationRef {
-    id : String,
-    href : String,
-    name: String,
-    version: Option<String>,
+    /// Unique Id
+    pub id : String,
+    /// Uri 
+    pub href : String,
+    /// Name
+    pub name: String,
+    /// Version
+    pub version: Option<String>,
 }
 
 impl From<ServiceSpecification> for ServiceSpecificationRef {
