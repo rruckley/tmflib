@@ -7,7 +7,10 @@ use crate::common::related_party::RelatedParty;
 
 use crate::tmf620::{ChannelRef,MarketSegmentRef};
 use crate::tmf620::category::CategoryRef;
+#[cfg(feature = "tmf620-v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
+#[cfg(feature = "tmf620-v5")]
+use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf620::product_specification::ProductSpecificationRef;
 
 use super::MOD_PATH;
