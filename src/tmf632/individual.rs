@@ -15,17 +15,56 @@ const CLASS_PATH : &str = "individual";
 #[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Individual {
-    /// Methods for contacting this individual
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub contact_medium: Option<Vec<ContactMedium>>,
     /// Unique id for this individual
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HTML reference for this individual object
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub aristocratic_title: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub birth_date: Option<DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    country_of_birth: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    death_date: Option<DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    family_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    family_name_prefix: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    formatted_name: Option<String>,
     /// Full name of the individual
-    pub full_name: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub full_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub gender: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub generation: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub given_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub legal_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub location: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub marital_status: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub middle_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub nationality: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub place_of_birth: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub preferred_given_name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
+
+    /// Methods for contacting this individual
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub contact_medium: Option<Vec<ContactMedium>>,
+  
     /// Parties related to this individual, e.g. company / organization
     #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
@@ -35,7 +74,11 @@ impl Individual {
     /// Create a new instance of indiviudal object
     pub fn new(name : impl Into<String>) -> Individual {
         let mut ind = Individual::create();
-        ind.full_name = name.into();
+        // Try to split name into two parts
+        // If it splits, take 1st as given name, second as family name
+        let name = name.to_string();
+        //let (given,family) = name.as_ref().split
+        ind.full_name = Some(name.into());
         // Need this as default would be None
         ind.related_party = Some(vec![]);
         ind.contact_medium = Some(vec![]);
