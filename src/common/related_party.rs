@@ -69,7 +69,7 @@ impl From<&Individual> for RelatedParty {
         RelatedParty { 
             id: value.id.as_ref().unwrap().clone(), 
             href: value.href.as_ref().unwrap().clone(), 
-            name: Some(value.full_name.clone()), 
+            name: value.full_name.clone(), 
             role: Some(Individual::get_class()),
         }
     }
