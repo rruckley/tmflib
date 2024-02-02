@@ -11,9 +11,9 @@ use serde::{Deserialize,Serialize};
 
 use crate::tmf629::customer::Customer;
 use crate::tmf632::individual::Individual;
-use crate::tmf632::organization::Organization;
+use crate::tmf632::organization::{Organization,OrganizationRef};
 use crate::tmf669::party_role::PartyRole;
-use crate::HasId;
+use crate::{HasId,HasName};
 
 /// Reference to a Customer (TMF629) , Organisation or Individual (TMF632)
 #[derive(Clone, Debug, Default, Deserialize, Serialize )]
@@ -45,10 +45,21 @@ impl From<&Customer> for RelatedParty {
 impl From<Organization> for RelatedParty {
     fn from(org : Organization) -> Self {
         RelatedParty { 
-            id: org.id.as_ref().unwrap().clone(), 
-            href: org.href.as_ref().unwrap().clone(), 
-            name: Some(org.name.clone()), 
+            id: org.get_id(), 
+            href: org.get_href(), 
+            name: Some(org.get_name()), 
             role: Some(Organization::get_class()),
+        }
+    }
+}
+
+impl From<OrganizationRef> for RelatedParty {
+    fn from(value: OrganizationRef) -> Self {
+        RelatedParty {
+            id: value.id.clone(), 
+            href: value.href.clone(), 
+            name: Some(value.name.clone()), 
+            role: Some(Organization::get_class()),    
         }
     }
 }
