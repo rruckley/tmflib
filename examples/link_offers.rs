@@ -7,9 +7,9 @@ use tmflib::tmf620::product_offering::ProductOffering;
 use tmflib::tmf620::product_offering_v5::ProductOffering;
 
 fn main() {
-    let offer = ProductOffering::new(String::from("OriginalProduct"));
+    let offer = ProductOffering::new("OriginalProduct");
 
-    let mut new_offer = ProductOffering::new(String::from("NewProduct"));
+    let mut new_offer = ProductOffering::new("NewProduct");
 
     new_offer.link_po(offer, "ParentChild", "Child");
 

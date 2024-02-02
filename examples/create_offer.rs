@@ -16,7 +16,7 @@ fn main() {
     .description(String::from("This is a mandatory characteristic."));
 
 
-let spec = ProductSpecification::new(String::from("MySpecification"))
+let spec = ProductSpecification::new("MySpecification")
     .with_charateristic(char1)
     .with_charateristic(char2);
 

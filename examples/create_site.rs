@@ -10,14 +10,14 @@ use tmflib::tmf674::geographic_site_v5::{GeographicSite, PlaceRefOrValue,Calenda
 
 
 fn main() {
-    let address = GeographicAddress::new(String::from("HQ"))
+    let address = GeographicAddress::new("HQ")
     .number("17")
     .street("Lumeah")
     .street_type("Ave")
     .suburb("Elanora Heights")
     .state("NSW");
 
-    let site = GeographicSite::new(String::from("Home"))
+    let site = GeographicSite::new("Home")
         .place(PlaceRefOrValue::from(address))
         .calendar(CalendarPeriod::business_hours());
 

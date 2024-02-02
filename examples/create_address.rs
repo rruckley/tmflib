@@ -4,7 +4,7 @@
 use tmflib::tmf673::geographic_address::GeographicAddress;
 
 fn main() {
-    let address = GeographicAddress::new(String::from("Site 1"))
+    let address = GeographicAddress::new("Site 1")
         .number("5")
         .street("Roseland")
         .street_type("Avenue")
