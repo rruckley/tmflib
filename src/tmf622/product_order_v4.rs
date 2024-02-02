@@ -2,13 +2,12 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::HasId;
 use tmflib_derive::HasId;
 use crate::tmf641::service_order::ServiceOrder;
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
 use crate::tmf651::agreement::AgreementRef;
-use crate::{CreateTMF, CreateTMFWithTime,HasLastUpdate,DateTime};
+use crate::{HasId, CreateTMF, CreateTMFWithTime,HasLastUpdate,DateTime};
 
 // URL Path components
 use super::LIB_PATH;

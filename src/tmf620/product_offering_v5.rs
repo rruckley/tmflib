@@ -8,7 +8,8 @@ use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
 
-use crate::{CreateTMFWithTime,HasLastUpdate, HasId, HasName, TimePeriod};
+use crate::{CreateTMFWithTime,HasLastUpdate, HasId, HasName, CreateTMF, TimePeriod};
+use tmflib_derive::{HasId,HasName,HasLastUpdate};
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
 use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
@@ -20,7 +21,7 @@ use super::LIB_PATH;
 use super::MOD_PATH;
 
 const PO_VERS_INIT: &str = "1.0";
-const PO_PATH: &str = "productOffering";
+const CLASS_PATH: &str = "productOffering";
 
 /// Product Offering Reference
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -76,7 +77,7 @@ impl From<ProductOffering> for ProductOfferingRelationship {
 }
 
 /// Product Offering
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasName,HasLastUpdate, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier
@@ -159,42 +160,6 @@ pub struct ProductOffering {
     pub service_level_agreement: Option<SLARef>,
 }
 
-impl HasName for ProductOffering {
-    fn get_name(&self) -> String {
-        self.name.as_ref().unwrap().clone()
-    }
-}
-
-impl HasId for ProductOffering {
-    fn generate_href(&mut self) {
-        let href = format!("/{}/{}/{}/{}",LIB_PATH,MOD_PATH,PO_PATH,self.get_id());
-        self.href = Some(href);
-    }
-    fn generate_id(&mut self) {
-        let id = ProductOffering::get_uuid();
-        self.id = Some(id);
-        // Since ID has just changed, update href also
-        self.generate_href(); 
-    }
-    fn get_href(&self) -> String {
-        self.href.as_ref().unwrap().clone()    
-    }
-    fn get_id(&self) -> String {
-        self.id.as_ref().unwrap().clone()
-        
-    }
-    fn get_class() -> String {
-        PO_PATH.to_owned()
-    }
-}
-
-impl HasLastUpdate for ProductOffering {
-    fn set_last_update(&mut self, time : String) {
-        self.last_update = Some(time);
-    }
-}
-impl CreateTMFWithTime<ProductOffering> for ProductOffering {}
-
 impl ProductOffering {
     /// Create a new instance of ProductOffering object
     /// # Examples
@@ -202,9 +167,9 @@ impl ProductOffering {
     /// # use tmflib::tmf620::product_offering_v5::ProductOffering;
     /// let po = ProductOffering::new(String::from("MyOffer"));
     /// ```
-    pub fn new(name: String) -> ProductOffering {
+    pub fn new(name: impl Into<String>) -> ProductOffering {
         let mut offer = ProductOffering::create_with_time();
-        offer.name = Some(name);
+        offer.name = Some(name.into());
         offer.version = Some(PO_VERS_INIT.to_string());
         offer.product_offering_relationship = Some(vec![]);
         offer.prod_spec_char_value_use = Some(vec![]);
