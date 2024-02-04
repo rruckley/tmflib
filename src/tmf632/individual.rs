@@ -91,7 +91,7 @@ impl Individual {
         // If it splits, take 1st as given name, second as family name
         let name : String = name.into();
         let name_str = name.as_str();
-        let name_parts = name_str.split(" ");
+        let name_parts = name_str.split(' ');
         match name_parts.clone().count() {
             1 => {
                 // Only a single name
@@ -122,7 +122,7 @@ impl Individual {
             }
         }
         //let (given,family) = name.as_ref().split
-        ind.full_name = Some(name.into());
+        ind.full_name = Some(name);
         ind.legal_name = ind.full_name.clone();
         // Need this as default would be None
         ind.related_party = Some(vec![]);

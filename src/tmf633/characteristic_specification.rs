@@ -43,12 +43,13 @@ pub struct CharacteristicSpecification {
 impl CharacteristicSpecification {
     /// Constructor
     pub fn new(name : impl Into<String>) -> CharacteristicSpecification {
-        let mut cs = CharacteristicSpecification::default();
-        cs.name = Some(name.into());
-        cs.max_cardinality = Some(1);
-        cs.value_type = Some("String".to_string());
-        cs.is_unique = Some(false);
-        cs
+        CharacteristicSpecification {
+            name : Some(name.into()),
+            max_cardinality: Some(1),
+            value_type: Some("String".into()),
+            is_unique : Some(false),
+            ..Default::default()
+        }
     }
     /// Set maximum cardinality
     pub fn cardinality(mut self, min_card : Cardinality, max_card : Cardinality) -> CharacteristicSpecification {

@@ -68,8 +68,9 @@ impl From<Appointment> for AppointmentRef {
 impl Appointment {
     /// Create new appointment record
     pub fn new() -> Appointment {
-        let appointment = Appointment::create_with_time();
-        appointment
+        //let appointment = 
+        Appointment::create_with_time()
+        //appointment
     }
 }
 

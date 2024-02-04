@@ -106,7 +106,7 @@ impl Customer {
     pub fn get_characteristic(&self, characteristic : &str) -> Option<Characteristic> {
     match self.characteristic.clone() {
         Some(c) => {
-            c.into_iter().filter(|x| x.name == characteristic).next()
+            c.into_iter().find(|x| x.name == characteristic)
         },
         None => None,
     }
