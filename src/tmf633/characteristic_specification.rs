@@ -4,7 +4,6 @@ use serde::{Deserialize,Serialize};
 
 use crate::{Cardinality, TimePeriod};
 
-
 /// Service Specification Characteristics
 #[derive(Clone,Default,Debug,Deserialize,Serialize)]
 pub struct CharacteristicSpecification {

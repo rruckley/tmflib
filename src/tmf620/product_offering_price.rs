@@ -54,7 +54,6 @@ impl From<ProductOfferingPrice> for ProductOfferingPriceRef {
             id: pop.id.clone(), 
             href: pop.href.clone(), 
             name: pop.name.as_ref().unwrap().clone(),
-        ..Default::default()
         }
     }
 }

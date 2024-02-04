@@ -96,15 +96,16 @@ impl ProductSpecificationCharacteristic {
 // Conversion from Service CharacteristicSpecification into Product Spec.
 impl From<CharacteristicSpecification> for ProductSpecificationCharacteristic {
     fn from(value: CharacteristicSpecification) -> Self {
-        let mut psc = ProductSpecificationCharacteristic::default();
-        psc.name = value.name.as_ref().unwrap().clone();
-        psc.min_cardinality = value.min_cardinality.unwrap_or_default();
-        psc.max_cardinality = value.max_cardinality.unwrap_or(1);
-        psc.configurable = value.configurable.unwrap_or_default();
-        psc.is_unique = value.is_unique.unwrap_or_default();
-        psc.description = value.description.clone();
-        psc.valid_for = value.valid_for.clone();
-        psc
+        ProductSpecificationCharacteristic {
+            name : value.name.unwrap_or_default(),
+            min_cardinality : value.min_cardinality.unwrap_or_default(),
+            max_cardinality: value.max_cardinality.unwrap_or_default(),
+            configurable: value.configurable.unwrap_or_default(),
+            is_unique: value.is_unique.unwrap_or_default(),
+            description: value.description.clone(),
+            valid_for: value.valid_for.clone(),
+            ..Default::default()
+        }
     }
 }
 
@@ -212,12 +213,13 @@ impl From<ProductSpecification> for ProductSpecificationRef {
 
 impl From<&ServiceSpecificationRef> for ProductSpecificationRef {
     fn from(value: &ServiceSpecificationRef) -> Self {
-        // we cannot simply copy across the href but we can reuse the id
-        
-        let mut ps = ProductSpecification::default();
-        ps.id = Some(value.id.clone());
+        // we cannot simply copy across the href but we can reuse the id        
+        let mut ps = ProductSpecification {
+            id : Some(value.id.clone()),
+            name: Some(value.name.clone()),
+            ..Default::default()
+        };
         ps.generate_href();
-        ps.name = Some(value.name.clone());
 
         ProductSpecificationRef::from(ps)
     }
@@ -231,14 +233,14 @@ impl From<&ServiceSpecification> for ProductSpecification {
         if value.description.is_some() {
             ps.description = Some(value.description.as_ref().unwrap().clone());
         }
-        ps.is_bundle = value.is_bundle.clone();
+        ps.is_bundle = value.is_bundle;
         if value.last_update.is_some() {
             ps.set_last_update(value.last_update.as_ref().unwrap());
         }
         if value.spec_characteristics.is_some() {
             // We have characteristics that require conversion
             let mut out : Vec<ProductSpecificationCharacteristic> = Vec::new();
-            value.spec_characteristics.as_ref().unwrap().into_iter().for_each(|cs| {
+            value.spec_characteristics.as_ref().unwrap().iter().for_each(|cs| {
                 let psc = ProductSpecificationCharacteristic::from(cs.clone());
                 out.push(psc);
             });

@@ -78,10 +78,7 @@ impl Category {
     /// Is this a root category
     pub fn root(&self) -> bool {
         // Extract is_root in a safe manner
-        match self.is_root {
-            Some(b) => b,
-            None => false,
-        }
+        self.is_root.unwrap_or(false)
     }
 
     /// Set the description of this category
