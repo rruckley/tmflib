@@ -105,6 +105,7 @@ pub struct GeographicSite {
     /// Relationships to other sides, e.g. floor , building,tenant
     #[serde(skip_serializing_if = "Option::is_none")]
     pub site_relationship: Option<Vec<GeographicSiteRelationship>>,
+    /// Calendar where this site is available, e.g. opening hours
     #[serde(skip_serializing_if = "Option::is_none")]
     pub calendar : Option<Vec<CalendarPeriod>>,
     /// Customer / other parties related to this site
