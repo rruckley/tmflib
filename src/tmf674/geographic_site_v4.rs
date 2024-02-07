@@ -6,6 +6,7 @@ use std::convert::From;
 use crate::{HasName,HasId,CreateTMF,HasValidity, TimePeriod};
 use tmflib_derive::{HasId, HasValidity};
 use crate::tmf673::geographic_address::GeographicAddress;
+use crate::common::related_party::RelatedParty;
 use crate::LIB_PATH;
 use super::MOD_PATH;
 const CLASS_PATH: &str = "geographicSite";
@@ -105,7 +106,10 @@ pub struct GeographicSite {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub site_relationship: Option<Vec<GeographicSiteRelationship>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    calendar : Option<Vec<CalendarPeriod>>,
+    pub calendar : Option<Vec<CalendarPeriod>>,
+    /// Customer / other parties related to this site
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub related_party: Option<Vec<RelatedParty>>,
 }
 
 impl GeographicSite {
