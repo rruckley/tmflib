@@ -5,6 +5,10 @@ edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Derive macro for the tmflib::HasId trait"
 
+
+[features]
+tmfcomponent = []
+
 [lib]
 proc-macro = true
 

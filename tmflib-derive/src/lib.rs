@@ -157,3 +157,55 @@ pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
     };
     out.into()   
 }
+
+/// Generate a Leptos view (or component) by generating a view with each
+/// field corresponding to a component of the same name.
+#[cfg(feature = "tmfcomponent")]
+#[proc_macro_derive(TMFComponent)]
+pub fn tmfcomponent_derive(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let name = input.ident;
+    let mut component : Option<String> = None;
+    match input.data {
+        Data::Struct(s) => {
+            let fields = s.fields
+                .into_iter()
+                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>();
+            let id = fields.iter().find(|s| *s == "id");
+            let href = fields.iter().find(|s| *s == "href");
+            if id.is_some() && href.is_some() {
+                component = "fn to_component(item : #name) -> impl IntoView {
+                    view! {
+                        #component
+                    }
+                }".to_string().into();
+            }
+            fields
+            },
+        Data::Enum(s) => {
+            let fields : Vec<String> = s.variants
+                .into_iter()
+                .map(|f| f.ident.to_string()).collect();
+            // Generate an Option list based on Enum
+            // Flatten out the fields into a string
+            let flatten = fields.join(",");
+            let vec = format!("vec![{}]",flatten);
+            component = format!("
+                {}
+                view! {{
+                    <Enum item=data/>
+                }}
+            ",vec).into();
+            fields
+        },
+        _ => panic!("Component only supports Struct or Enum"),
+    };
+    let out = quote! {
+        impl TMFComponent<#name> for #name {
+            fn to_component(item : #name) -> impl  IntoView {
+            #component
+            }  
+        }    
+    };
+    out.into()
+}

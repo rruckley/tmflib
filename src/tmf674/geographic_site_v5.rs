@@ -5,6 +5,7 @@ use serde::{Deserialize,Serialize};
 use crate::{LIB_PATH, CreateTMF, HasName, HasId};
 use tmflib_derive::{HasId,HasName};
 use crate::tmf673::geographic_address::GeographicAddress;
+use crate::common::related_party::RelatedParty;
 use super::MOD_PATH;
 const CLASS_PATH: &str = "geographicSite";
 const DEFAULT_TZ : &str = "AEST";
@@ -82,6 +83,9 @@ pub struct GeographicSite {
     /// Calendar Period
     #[serde(skip_serializing_if = "Option::is_none")]
     pub calendar : Option<Vec<CalendarPeriod>>,
+    /// Customer / other parties related to this site
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub related_party: Option<Vec<RelatedParty>>,
 }
 
 impl GeographicSite {
