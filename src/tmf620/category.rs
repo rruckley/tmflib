@@ -1,13 +1,15 @@
 //! Category Module
 
-use crate::{CreateTMF,HasValidity, TimePeriod, DateTime};
+#[cfg(feature = "v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
+#[cfg(feature = "v5")]
+use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
 use serde::{Deserialize, Serialize};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
-use crate::{HasId,HasName,HasLastUpdate};
+use crate::{HasId,HasName,HasLastUpdate,DateTime,HasValidity,TimePeriod,CreateTMF};
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
 use crate::CreateTMFWithTime;
@@ -76,10 +78,7 @@ impl Category {
     /// Is this a root category
     pub fn root(&self) -> bool {
         // Extract is_root in a safe manner
-        match self.is_root {
-            Some(b) => b,
-            None => false,
-        }
+        self.is_root.unwrap_or(false)
     }
 
     /// Set the description of this category

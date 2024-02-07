@@ -1,9 +1,15 @@
 //! Create Product Order Example
 use tmflib::common::contact::ContactMedium;
 use tmflib::common::related_party::RelatedParty;
-use tmflib::tmf622::product_order::ProductOrder;
+#[cfg(feature = "tmf622-v4")]
+use tmflib::tmf622::product_order_v4::ProductOrder;
+#[cfg(feature = "tmf622-v5")]
+use tmflib::tmf622::product_order_v5::ProductOrder;
 use tmflib::tmf622::product_order_item::ProductOrderItem;
+#[cfg(feature = "tmf620-v4")]
 use tmflib::tmf620::product_offering::ProductOffering;
+#[cfg(feature = "tmf620-v5")]
+use tmflib::tmf620::product_offering_v5::ProductOffering;
 use tmflib::tmf629::customer::Customer;
 use tmflib::tmf632::individual::Individual;
 use tmflib::tmf632::organization::Organization;

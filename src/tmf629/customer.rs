@@ -46,7 +46,7 @@ impl Customer {
     /// Create new customer object
     pub fn new(org: Organization) -> Customer {
         let mut cust = Customer::create();
-        cust.name = Some(org.name.clone());
+        cust.name = Some(org.get_name());
         // Not sure on including the name here but the id is only generated on create(), so a name change would
         // not impact the generated code. Ideally as we're throwing away a lot of the resulting hash to get the
         // code, it might help avoid collisions if we add some more entropy?
@@ -106,7 +106,7 @@ impl Customer {
     pub fn get_characteristic(&self, characteristic : &str) -> Option<Characteristic> {
     match self.characteristic.clone() {
         Some(c) => {
-            c.into_iter().filter(|x| x.name == characteristic).next()
+            c.into_iter().find(|x| x.name == characteristic)
         },
         None => None,
     }

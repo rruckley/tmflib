@@ -14,10 +14,20 @@
 
 //! TMF Library
 //! # Description
-//! This library covers objects required to interact with various TMF defined APIs. 
-//! It does not define how to interact with those APIs nor provide a REST interface (at this stage)
+//! This library covers structures required to interact with various TMForum APIs.
+//! It does not define amy persistence nor provide a REST interface (at this stage)
 //! but simply provides definitions of all the schema and some helpful functions to create compliant objects
 //! that can then be seriliased into or from JSON as required.
+//! 
+//! # Crate Features
+//! 
+//! ### API Version Features
+//! 
+//! By default this crate will compile v4 versions of APIs. 
+//! * **v4**
+//! This is the default version compiled
+//! * **v5**
+//! This flag can optionally be enabled to compile v5 APIs where available
 
 #![warn(missing_docs)]
 
@@ -32,10 +42,14 @@ use leptos::*;
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmf-api";
 
+/// Standard cardinality type for library
+pub type Cardinality = u16;
 /// Type alias for TimeStamps
 pub type TimeStamp = String;
 /// Type alias for DateTime
 pub type DateTime = String;
+/// Type alias for Uri
+pub type Uri = String;
 
 /// Standard TMF TimePeriod structure
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -50,12 +64,12 @@ pub struct TimePeriod {
 
 /// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId {
-    /// Get a new UUID in simple format
+    /// Get a new UUID in simple format (no seperators)
     fn get_uuid() -> String {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
         Uuid::new_v4().simple().to_string()
     }
-    /// Generate and store a new ID. This will also regenerated the HREF field via [`generate_href()`]
+    /// Generate and store a new ID. This will also regenerated the HREF field via generate_href()
     fn generate_id(&mut self);
     /// Generate a new HTML reference.
     /// # Details
@@ -193,5 +207,7 @@ pub mod tmf679;
 pub mod tmf699;
 /// Shipping Order [Pre-Prod]
 pub mod tmf700;
+/// Incident Management
+pub mod tmf724;
 /// Product Configuration
 pub mod tmf760;

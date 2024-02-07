@@ -8,15 +8,14 @@ use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
 
-use crate::{CreateTMF, CreateTMFWithTime,HasLastUpdate, HasId, HasName, HasValidity, TimePeriod, DateTime};
+use crate::{CreateTMFWithTime,HasLastUpdate, HasId, HasName, CreateTMF, TimePeriod};
+use tmflib_derive::{HasId,HasName,HasLastUpdate};
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
 use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
 use serde::{Deserialize, Serialize};
 
 use super::{AgreementRef,ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
-
-use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
 use super::LIB_PATH;
 use super::MOD_PATH;
@@ -36,10 +35,9 @@ impl From<ProductOffering> for ProductOfferingRef {
     /// Convert from ProductOffering into ProductOfferingRef
     fn from(po : ProductOffering) -> ProductOfferingRef {
         ProductOfferingRef { 
-            id: po.id.unwrap_or("MISSING".to_string()).clone(), 
-            href: po.href.unwrap_or("MISSING".to_string()).clone(), 
-            name: po.name.unwrap_or("MISSING".to_string()).clone() 
-        }
+            id: po.id.unwrap().clone(), 
+            href: po.href.unwrap().clone(), 
+            name: po.name.as_ref().unwrap().clone() }
     }
 }
 
@@ -48,7 +46,7 @@ impl From<ProductOffering> for ProductOfferingRef {
 pub struct ProductOfferingTerm {}
 
 /// Product Offering Relationship
-#[derive(Clone, Debug, Deserialize, Serialize, HasValidity)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ProductOfferingRelationship {
     id: Option<String>,
     href: Option<String>,
@@ -79,13 +77,12 @@ impl From<ProductOffering> for ProductOfferingRelationship {
 }
 
 /// Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasName,HasLastUpdate, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-
     /// HREF for API use
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
@@ -100,7 +97,7 @@ pub struct ProductOffering {
     pub is_sellable: Option<bool>,
     /// When was this last updated?
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub last_update: Option<DateTime>,
+    pub last_update: Option<String>,
     /// Current status
     #[serde(skip_serializing_if = "Option::is_none")]
     pub lifecycle_status: Option<String>,
@@ -116,7 +113,6 @@ pub struct ProductOffering {
     /// Validity Period
     #[serde(skip_serializing_if = "Option::is_none")]
     pub valid_for: Option<TimePeriod>,
-
     /// Associated agreements
     #[serde(skip_serializing_if = "Option::is_none")]
     pub agreement: Option<Vec<AgreementRef>>,
@@ -168,7 +164,7 @@ impl ProductOffering {
     /// Create a new instance of ProductOffering object
     /// # Examples
     /// ```
-    /// # use tmflib::tmf620::product_offering::ProductOffering;
+    /// # use tmflib::tmf620::product_offering_v5::ProductOffering;
     /// let po = ProductOffering::new(String::from("MyOffer"));
     /// ```
     pub fn new(name: impl Into<String>) -> ProductOffering {
@@ -189,7 +185,7 @@ impl ProductOffering {
     /// Added category refernce to ProductOffering
     /// # Examples
     /// ```
-    /// # use tmflib::tmf620::product_offering::ProductOffering;
+    /// # use tmflib::tmf620::product_offering_v5::ProductOffering;
     /// # use tmflib::tmf620::category::{Category,CategoryRef};
     /// let po = ProductOffering::new(String::from("MyOffer"));
     /// let cat= Category::new(String::from("MyCategory"));

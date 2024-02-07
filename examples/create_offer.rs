@@ -1,6 +1,10 @@
 //! Create a product template
 //! 
+
+#[cfg(feature = "tmf620-v4")]
 use tmflib::tmf620::product_offering::ProductOffering;
+#[cfg(feature = "tmf620-v5")]
+use tmflib::tmf620::product_offering_v5::ProductOffering;
 use tmflib::tmf620::category::{Category,CategoryRef};
 use tmflib::tmf620::product_specification::{ProductSpecification,ProductSpecificationCharacteristic, ProductSpecificationCharacteristicValueUse};
 
@@ -12,7 +16,7 @@ fn main() {
     .description(String::from("This is a mandatory characteristic."));
 
 
-let spec = ProductSpecification::new(String::from("MySpecification"))
+let spec = ProductSpecification::new("MySpecification")
     .with_charateristic(char1)
     .with_charateristic(char2);
 

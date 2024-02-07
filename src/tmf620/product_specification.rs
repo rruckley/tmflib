@@ -5,14 +5,16 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasName, CreateTMF, LIB_PATH,HasValidity, TimePeriod, CreateTMFWithTime, HasLastUpdate};
+use crate::{HasId, HasName, CreateTMF, LIB_PATH,HasValidity, TimePeriod, CreateTMFWithTime, HasLastUpdate,Cardinality};
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
-use crate::tmf633::service_specification::ServiceSpecification;
+
+use crate::tmf633::service_specification::{ServiceSpecification,ServiceSpecificationRef};
+use crate::tmf633::characteristic_specification::CharacteristicSpecification;
 
 const CLASS_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
-const CHAR_VALUE_MIN_CARD : u16 = 0;
-const CHAR_VALUE_MAX_CARD : u16 = 1;
+const CHAR_VALUE_MIN_CARD : Cardinality = 0;
+const CHAR_VALUE_MAX_CARD : Cardinality = 1;
 
 /// Product Specification Characteristic
 #[derive(Clone, Debug, Default, Deserialize, Serialize, HasValidity)]
@@ -24,8 +26,8 @@ pub struct ProductSpecificationCharacteristic {
     #[serde(skip_serializing_if = "Option::is_none")]
     extensible: Option<bool>,
     is_unique: bool,
-    max_cardinality: u16,
-    min_cardinality: u16,
+    max_cardinality: Cardinality,
+    min_cardinality: Cardinality,
     name: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     regex: Option<String>,
@@ -79,7 +81,7 @@ impl ProductSpecificationCharacteristic {
     /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"))
     ///     .cardinality(0,1);
     /// ```
-    pub fn cardinality(mut self, min: u16, max: u16) -> ProductSpecificationCharacteristic {
+    pub fn cardinality(mut self, min: Cardinality, max: Cardinality) -> ProductSpecificationCharacteristic {
         // Quick check to make sure min < max
         if min > max {
             // Not sure if we should just ignore this ?
@@ -88,6 +90,22 @@ impl ProductSpecificationCharacteristic {
         self.min_cardinality = min;
         self.max_cardinality = max;
         self
+    }
+}
+
+// Conversion from Service CharacteristicSpecification into Product Spec.
+impl From<CharacteristicSpecification> for ProductSpecificationCharacteristic {
+    fn from(value: CharacteristicSpecification) -> Self {
+        ProductSpecificationCharacteristic {
+            name : value.name.unwrap_or_default(),
+            min_cardinality : value.min_cardinality.unwrap_or_default(),
+            max_cardinality: value.max_cardinality.unwrap_or_default(),
+            configurable: value.configurable.unwrap_or_default(),
+            is_unique: value.is_unique.unwrap_or_default(),
+            description: value.description.clone(),
+            valid_for: value.valid_for.clone(),
+            ..Default::default()
+        }
     }
 }
 
@@ -193,10 +211,46 @@ impl From<ProductSpecification> for ProductSpecificationRef {
     }
 }
 
-impl From<ServiceSpecification> for ProductSpecification {
-    fn from(value: ServiceSpecification) -> Self {
-        let mut ps = ProductSpecification::create();
-        ps.name = Some(value.get_name());
+impl From<&ServiceSpecificationRef> for ProductSpecificationRef {
+    fn from(value: &ServiceSpecificationRef) -> Self {
+        // we cannot simply copy across the href but we can reuse the id        
+        let mut ps = ProductSpecification {
+            id : Some(value.id.clone()),
+            name: Some(value.name.clone()),
+            ..Default::default()
+        };
+        ps.generate_href();
+
+        ProductSpecificationRef::from(ps)
+    }
+}
+
+// Convert a service specification into a peroduct specification
+// used as part of the import process.
+impl From<&ServiceSpecification> for ProductSpecification {
+    fn from(value: &ServiceSpecification) -> Self {
+        let mut ps = ProductSpecification::new(format!("{} [Converted from Service Spec]",value.get_name()));
+        if value.description.is_some() {
+            ps.description = Some(value.description.as_ref().unwrap().clone());
+        }
+        ps.is_bundle = value.is_bundle;
+        if value.last_update.is_some() {
+            ps.set_last_update(value.last_update.as_ref().unwrap());
+        }
+        if value.spec_characteristics.is_some() {
+            // We have characteristics that require conversion
+            let mut out : Vec<ProductSpecificationCharacteristic> = Vec::new();
+            value.spec_characteristics.as_ref().unwrap().iter().for_each(|cs| {
+                let psc = ProductSpecificationCharacteristic::from(cs.clone());
+                out.push(psc);
+            });
+            ps.product_spec_characteristic = Some(out);
+        }
+        if value.version.is_some() {
+            // If source has a version defined take that 
+            ps.version = value.version.clone();
+        }
+        ps.lifecycle_status = value.lifecycle_status.clone();
         ps
     }
 }

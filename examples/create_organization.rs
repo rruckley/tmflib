@@ -7,9 +7,9 @@ fn main() {
     // Two methods to create an org object
 
     // 1) use native constructor new()
-    let org1 = Organization::new(String::from("My Organization"));
+    let org1 = Organization::new("My Organization");
     // 2) Use conversion from a String.
-    let org2 : Organization = String::from("My Organisation").into();
+    let org2 : Organization = String::from("Organisation from String").into();
 
     dbg!(org1);
     dbg!(org2);

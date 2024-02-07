@@ -3,8 +3,11 @@
 
 use serde::{Deserialize, Serialize};
 use std::convert::From;
-use crate::tmf674::geographic_site::GeographicSite;
-use crate::HasId;
+#[cfg(feature = "v4")]
+use crate::tmf674::geographic_site_v4::GeographicSite;
+#[cfg(feature = "v5")]
+use crate::tmf674::geographic_site_v5::GeographicSite;
+use crate::{HasId,HasName};
 
 /// Reference to a place (TMF673, TMF674, TMF674)
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -22,9 +25,9 @@ impl From<GeographicSite> for RelatedPlaceRefOrValue {
     fn from(value: GeographicSite) -> Self {
         RelatedPlaceRefOrValue { 
             referred_type: GeographicSite::get_class(), 
-            name: value.name.clone(), 
-            href: value.href.as_ref().unwrap().clone(), 
-            id: value.id.as_ref().unwrap().clone(), 
+            name: value.get_name(), 
+            href: value.get_href(), 
+            id: value.get_id(), 
             base_type: Some(String::from("GeographicSite")), 
             schema_location: None, 
             r#type: None 

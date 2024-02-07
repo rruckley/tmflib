@@ -15,8 +15,14 @@
 //! TMF622 Product Order Management
 
 use super::LIB_PATH;
-use super::HasId;
+
 const MOD_PATH: &str = "productOrderingManagement/v4";
 
-pub mod product_order;
+#[cfg(feature = "tmf622-v4")]
+pub mod product_order_v4;
+#[cfg(feature = "tmf622-v5")]
+pub mod product_order_v5;
+
 pub mod product_order_item;
+#[cfg(feature = "tmf622-v5")]
+pub mod milestone;

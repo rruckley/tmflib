@@ -4,7 +4,7 @@ use tmflib::tmf629::customer::Customer;
 use tmflib::tmf632::organization::Organization;
 
 fn main() {
-    let org = Organization::new(String::from("ACustomer"));
+    let org = Organization::new("ACustomer");
     let customer = Customer::new(org);
 
     dbg!(&customer);

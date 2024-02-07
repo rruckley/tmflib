@@ -20,7 +20,7 @@ pub struct Agreement {
     pub agreement_type: Option<String>,
     /// Date for completion of agreement
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub completion_date: Option<TimePeriod>,
+    pub completion_date: Option<DateTime>,
     /// Detailed description
     pub description: String,
     /// Id of document

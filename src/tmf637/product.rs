@@ -7,7 +7,10 @@ use crate::tmf666::billing_account::BillingAccountRef;
 use crate::{CreateTMF, HasId, HasName, LIB_PATH, DateTime,HasValidity, TimePeriod};
 use tmflib_derive::{HasId, HasName, HasValidity};
 use crate::common::related_place::RelatedPlaceRefOrValue;
+#[cfg(feature = "tmf620-v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
+#[cfg(feature = "tmf620-v5")]
+use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
 use super::MOD_PATH;
 
