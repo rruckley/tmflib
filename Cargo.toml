@@ -8,7 +8,7 @@ repository = "https://github.com/rruckley/tmflib"
 
 [features]
 leptos = ["tmflib-derive/tmfcomponent"]
-default = ["leptos"]
+default = ["leptos","v4"]
 tmf620-v4 = []
 tmf620-v5 = []
 tmf622-v4 = []
