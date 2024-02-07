@@ -82,6 +82,9 @@ pub struct GeographicSite {
     /// Calendar Period
     #[serde(skip_serializing_if = "Option::is_none")]
     pub calendar : Option<Vec<CalendarPeriod>>,
+    /// Customer / other parties related to this site
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub related_party: Option<Vec<RelatedParty>>,
 }
 
 impl GeographicSite {
