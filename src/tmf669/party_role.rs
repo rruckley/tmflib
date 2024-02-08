@@ -3,7 +3,6 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{HasId,HasName, CreateTMF,LIB_PATH, common::related_party::RelatedParty};
-use crate::tmf632::individual::Individual;
 use tmflib_derive::{HasId,HasName};
 
 use super::MOD_PATH;
@@ -33,11 +32,11 @@ impl PartyRole {
     /// let individual = Individual::new("John Smith");
     /// let role = PartyRole::new("Account Manager",&individual);
     /// ```
-    pub fn new(name : impl Into<String>,individual : &Individual) -> PartyRole {
+    pub fn new(name : impl Into<String>,party : RelatedParty) -> PartyRole {
         
         let mut role = PartyRole::create();
         role.name = Some(name.into());
-        role.engaged_party = Some(RelatedParty::from(individual));
+        role.engaged_party = Some(party);
         role
     }
 
