@@ -28,9 +28,10 @@ impl PartyRole {
     /// Create new PartyRole based on a given [Individual].
     /// ```
     /// # use tmflib::tmf669::party_role::PartyRole;
+    /// use tmflib::common::related_party::RelatedParty;
     /// use tmflib::tmf632::individual::Individual;
     /// let individual = Individual::new("John Smith");
-    /// let role = PartyRole::new("Account Manager",&individual);
+    /// let role = PartyRole::new("Account Manager",RelatedParty::from(&individual));
     /// ```
     pub fn new(name : impl Into<String>,party : RelatedParty) -> PartyRole {
         
