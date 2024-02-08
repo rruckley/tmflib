@@ -15,9 +15,7 @@ fn main() {
     let individual = Individual::new("John Smith");
     let organisation = Organization::new("A Customer".to_string());
     let customer = Customer::new(organisation);
-    let mut role = PartyRole::new("Account Manager")
-        .engaged_party(RelatedParty::from(&individual));
+    let mut role = PartyRole::new("Account Manager",&individual);
     role.add_party(RelatedParty::from(&customer));
-
     dbg!(role);
 }
