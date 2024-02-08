@@ -43,7 +43,13 @@ pub struct Customer {
 }
 
 impl Customer {
-    /// Create new customer object
+    /// Create new customer object against an [Organization] (legal entity)
+    /// ```
+    /// # use tmflib::tmf629::customer::Customer;
+    /// # use tmflib::tmf632::organization::Organization;
+    /// let org = Organization::new("Legal Entity");
+    /// let cust = Customer::new(org);
+    /// ```
     pub fn new(org: Organization) -> Customer {
         let mut cust = Customer::create();
         cust.name = Some(org.get_name());
