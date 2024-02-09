@@ -50,16 +50,16 @@ impl Price {
 
     /// Set the tax inclusive price
     pub fn set_inc_price(&mut self, inc_price : f32, currency_code : Option<&str>) {
-        self.tax_included_amount.value = inc_price;
-        self.duty_free_amount.value = inc_price / (1.0 + self.tax_rate);
+        self.tax_included_amount.set_value(inc_price);
+        self.duty_free_amount.set_value(inc_price / (1.0 + self.tax_rate));
         let currency_code = currency_code.unwrap_or(AUS_CURRENCY);
         let _result = self.set_currency(currency_code);
     }
 
     /// Set the tax exclusive price
     pub fn set_ex_price(&mut self, ex_price : f32, currency_code : Option<&str>) {
-        self.duty_free_amount.value = ex_price;
-        self.tax_included_amount.value = ex_price * (1.0+self.tax_rate);
+        self.duty_free_amount.set_value(ex_price);
+        self.tax_included_amount.set_value(ex_price * (1.0+self.tax_rate));
         let currency_code = currency_code.unwrap_or(AUS_CURRENCY);
         let _result = self.set_currency(currency_code);
     }
@@ -99,14 +99,14 @@ impl QuotePrice {
     /// Return the price inclusive of Tax
     pub fn inc_tax(&self) -> f32 {
         match self.price.as_ref() {
-            Some(p) => p.tax_included_amount.value,
+            Some(p) => p.tax_included_amount.value(),
             None => 0.0,
         }
     }
     /// Return the price exclusive of Tax
     pub fn ex_tax(&self) -> f32 {
         match self.price.as_ref() {
-            Some(p) => p.duty_free_amount.value,
+            Some(p) => p.duty_free_amount.value(),
             None => 0.0,
         }
     }
@@ -131,13 +131,13 @@ mod test {
     #[test]
     fn test_price_inc() {
         let price = Price::new_inc(100.0);
-        assert_eq!(price.duty_free_amount.value,100.0/(1.0+price.tax_rate));
+        assert_eq!(price.duty_free_amount.value(),100.0/(1.0+price.tax_rate));
     }
 
     #[test]
     fn test_price_ex() {
         let price = Price::new_ex(100.0);
-        assert_eq!(price.tax_included_amount.value,100.0*(1.0+price.tax_rate));
+        assert_eq!(price.tax_included_amount.value(),100.0*(1.0+price.tax_rate));
     }
 
     #[test]

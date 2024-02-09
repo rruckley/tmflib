@@ -174,11 +174,9 @@ pub fn tmfcomponent_derive(input: TokenStream) -> TokenStream {
             let id = fields.iter().find(|s| *s == "id");
             let href = fields.iter().find(|s| *s == "href");
             if id.is_some() && href.is_some() {
-                component = "fn to_component(item : #name) -> impl IntoView {
-                    view! {
-                        #component
-                    }
-                }".to_string().into();
+                component = "view! {
+                        <NamedComponent item=item />
+                    }".to_string().into();
             }
             fields
             },
@@ -188,8 +186,8 @@ pub fn tmfcomponent_derive(input: TokenStream) -> TokenStream {
                 .map(|f| f.ident.to_string()).collect();
             // Generate an Option list based on Enum
             // Flatten out the fields into a string
-            let flatten = fields.join(",");
-            let vec = format!("vec![{}]",flatten);
+            let flatten = fields.join(r#","#);
+            let vec = format!("let data = vec![{}];",flatten);
             component = format!("
                 {}
                 view! {{

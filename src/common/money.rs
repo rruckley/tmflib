@@ -9,7 +9,7 @@ pub struct Money {
    /// ISO4217 currency code
    pub unit : String,
    /// Value
-   pub value : f32, 
+   pub value : Option<f32>, 
 }
 
 impl Money {
@@ -21,9 +21,8 @@ impl Money {
     /// 
     /// let mut money = Money::default();
     /// money.currency("AUD");
-    /// money.value = 100.0;
+    /// money.set_value(100.0);
     /// ```
-    
     #[cfg(not(target_arch = "wasm32"))]
     pub fn currency(&mut self, currency_code : &str) -> Result<String,String> {
         let c = rust_iso4217::from_code(currency_code);
@@ -34,6 +33,16 @@ impl Money {
             },
             None => Err("Currency Code not found".into())
         }
+    }
+
+    /// Return value or default if not set
+    pub fn value(&self) -> f32 {
+        self.value.unwrap_or_default()
+    }
+
+    /// Set value
+    pub fn set_value(&mut self, value : f32) {
+        self.value = Some(value);
     }
 
     #[cfg(target_arch = "wasm32")]
@@ -66,5 +75,11 @@ mod test {
         let mut money = Money::default();
         let result = money.currency("INVALID");
         assert_eq!(result.is_err(),true);
+    }
+
+    #[test]
+    fn test_default_currency() {
+        let money = Money::default();
+        assert_eq!(money.value(),0.0);
     }
 }
