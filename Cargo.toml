@@ -5,6 +5,8 @@ edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Interface library for processing TMF payloads"
 repository = "https://github.com/rruckley/tmflib"
+readme = "README.md"
+license = "LGPL-3.0-or-later"
 
 [features]
 leptos = ["tmflib-derive/tmfcomponent"]
