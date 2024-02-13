@@ -16,7 +16,7 @@ use crate::tmf669::party_role::PartyRole;
 use crate::{HasId,HasName};
 
 /// Reference to a Customer (TMF629) , Organisation or Individual (TMF632)
-#[derive(Clone, Debug, Default, Deserialize, Serialize )]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize )]
 #[serde(rename_all = "camelCase")]
 pub struct RelatedParty {
     /// Unique Id of the referenced party

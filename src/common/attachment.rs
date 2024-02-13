@@ -2,16 +2,15 @@
 //!
 //!
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
-use crate::HasValidity;
-use tmflib_derive::HasValidity;
+use crate::{HasId, HasValidity, CreateTMF};
+use tmflib_derive::{HasId,HasValidity};
 
 use crate::TimePeriod;
 
 use super::MOD_PATH;
 use crate::LIB_PATH;
 
-const ATTACH_PATH: &str = "attachment";
+const CLASS_PATH: &str = "attachment";
 
 /// Attachment Type
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -33,7 +32,7 @@ pub struct AttachmentSize {
 }
 
 /// Attachment Reference or Value
-#[derive(Clone, Default, Debug, Deserialize, HasValidity, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AttachmentRefOrValue {
     /// Unique Id
@@ -68,18 +67,6 @@ pub struct AttachmentRefOrValue {
 impl AttachmentRefOrValue {
     /// Create a new attachment object
     pub fn new() -> AttachmentRefOrValue {
-        let id = Uuid::new_v4().to_string();
-        let href = format!("/{}/{}/{}/{}", LIB_PATH, MOD_PATH, ATTACH_PATH, id);
-        AttachmentRefOrValue {
-            id: Some(id),
-            href: Some(href),
-            attachment_type: None,
-            content: None,
-            description: None,
-            mime_type: None,
-            url: None,
-            size: None,
-            valid_for: None,
-        }
+        AttachmentRefOrValue::create()
     }
 }

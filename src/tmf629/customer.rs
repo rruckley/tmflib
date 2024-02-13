@@ -56,24 +56,11 @@ impl Customer {
         // Not sure on including the name here but the id is only generated on create(), so a name change would
         // not impact the generated code. Ideally as we're throwing away a lot of the resulting hash to get the
         // code, it might help avoid collisions if we add some more entropy?
-        let hash_input = format!("{}:{}",cust.get_id(),cust.get_name());
-        let sha = digest(hash_input);
-        let sha_slice = sha.as_str()[..CUST_ID_SIZE].to_string().to_ascii_uppercase();
-        let code = Characteristic {
-            name: String::from("code"),
-            value_type: String::from("string"),
-            value: sha_slice,
-        };
-        let hash = Characteristic {
-            name: String::from("hash"),
-            value_type: String::from("string"),
-            value: sha,
-        };
+        cust.generate_code(None);
         cust.engaged_party = Some(RelatedParty::from(org));
         
         cust.status = Some(CUST_STATUS.to_string());
         cust.contact_medium = Some(vec![]);
-        cust.characteristic= Some(vec![code, hash]);
         cust
     }
 
@@ -88,7 +75,7 @@ impl Customer {
         let offset = offset.unwrap_or(0);
         let hash_input = format!("{}:{}:{}", self.id.as_ref().unwrap(), self.get_name(),offset);
         let sha = digest(hash_input);
-        let sha_slice = sha.as_str()[..4].to_string().to_ascii_uppercase();
+        let sha_slice = sha.as_str()[..CUST_ID_SIZE].to_string().to_ascii_uppercase();
         let code = Characteristic {
             name: String::from("code"),
             value_type: String::from("string"),
@@ -137,13 +124,40 @@ impl From<&Organization> for Customer {
 mod test {
     use super::*;
 
+    const CUSTOMER : &str = "ACustomer";
+
     #[test]
     fn test_customer_new_name() {
-        let org = Organization::new(String::from("ACustomer"));
+        let org = Organization::new(CUSTOMER);
         let customer = Customer::new(org);
 
-        assert_eq!(customer.name, Some(String::from("ACustomer")));
+        assert_eq!(customer.name, Some(CUSTOMER.into()));
         assert_eq!(customer.id.is_some(),true);
         assert_eq!(customer.href.is_some(),true);
+    }
+
+    #[test]
+    fn test_customer_new_org() {
+        let org1 = Organization::new(CUSTOMER);
+        let org2 = org1.clone();
+        let customer = Customer::new(org1);
+
+        assert_eq!(customer.engaged_party,Some(RelatedParty::from(org2)));    
+    }
+
+    #[test]
+    fn test_customer_new_code() {
+        let org1 = Organization::new(CUSTOMER);
+        let customer = Customer::new(org1);
+
+        assert!(customer.get_characteristic("code").is_some());
+    }
+
+    #[test]
+    fn test_customer_from_org() {
+        let org1 = Organization::new(CUSTOMER);
+        let customer = Customer::from(&org1);
+
+        assert_eq!(org1.name,customer.name);
     }
 }
