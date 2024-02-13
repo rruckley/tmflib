@@ -13,7 +13,7 @@ use crate::common::contact::ContactMedium;
 const CLASS_PATH : &str = "organization";
 
 /// Organization Status
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum OrganizationStateType {
     /// Initialized
@@ -97,6 +97,7 @@ impl Organization {
     pub fn new(name : impl Into<String>) -> Organization {
         let mut org = Organization::create();
         org.name = Some(name.into());
+        org.status = Some(OrganizationStateType::default());
         org.related_party = Some(vec![]);
         org
     }
@@ -106,5 +107,24 @@ impl From<String> for Organization {
     fn from(value: String) -> Self {
         // Generate an Organization from a given string, treating String as name
         Organization::new(value)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_org_new_name() {
+        let org = Organization::new("AnOrganization");
+
+        assert_eq!(org.name,Some("AnOrganization".into()));
+    }
+
+    #[test]
+    fn test_org_new_state() {
+        let org = Organization::new("AnOrganization");
+
+        assert_eq!(org.status,Some(OrganizationStateType::default()));
     }
 }

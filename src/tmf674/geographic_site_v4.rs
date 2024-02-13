@@ -5,7 +5,7 @@ use std::convert::From;
 
 use crate::{HasName,HasId,CreateTMF,HasValidity, TimePeriod};
 use crate::common::related_party::RelatedParty;
-use tmflib_derive::{HasId, HasValidity};
+use tmflib_derive::{HasId, HasValidity, HasName};
 use crate::tmf673::geographic_address::GeographicAddress;
 use crate::LIB_PATH;
 use super::MOD_PATH;
@@ -16,7 +16,7 @@ const DEFAULT_TZ : &str = "AEST";
 /// # Uses
 /// Link to a place
 /// Provide a place locally within the payload
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PlaceRefOrValue {
     id: String,
@@ -80,7 +80,7 @@ impl CalendarPeriod {
 }
 
 /// Geographic Site
-#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasName, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GeographicSite {
     /// Id
@@ -96,7 +96,7 @@ pub struct GeographicSite {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description : Option<String>,
     /// Site Name
-    pub name: String,
+    pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     place: Option<PlaceRefOrValue>,
     /// Site Status
@@ -116,7 +116,7 @@ impl GeographicSite {
     /// Create a new Geographic Site with a name
     pub fn new(name : impl Into<String>) -> GeographicSite {
         let mut site = GeographicSite::create();
-        site.name = name.into();
+        site.name = Some(name.into());
         site.calendar = Some(vec![]);
         site
     }
@@ -139,9 +139,29 @@ impl GeographicSite {
     }
 }
 
-impl HasName for GeographicSite {
-    fn get_name(&self) -> String {
-        self.name.clone()
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::tmf673::geographic_address::GeographicAddress;
+
+    const SITE : &str = "ASites";
+    const ADDRESS : &str = "AnAddress";
+
+    #[test]
+    fn test_site_new_name() {
+        let site = GeographicSite::new(SITE);
+
+        assert_eq!(site.name,Some(SITE.into()));
+    }
+
+    #[test]
+    fn test_site_new_place() {
+        let place = GeographicAddress::new(ADDRESS);
+        let place2 = place.clone();
+        let site = GeographicSite::new(SITE)
+            .place(place.into());
+
+        assert_eq!(site.place,Some(place2.into()));
     }
 }
 

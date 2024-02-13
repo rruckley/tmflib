@@ -67,6 +67,15 @@ pub struct GeographicAddress {
 
 impl GeographicAddress {
     /// Create a new Geographic Address
+    /// ```
+    /// use tmflib::tmf673::geographic_address::GeographicAddress;
+    ///     let address = GeographicAddress::new("Site 1")
+    /// .number("5")
+    /// .street("Roseland")
+    /// .street_type("Avenue")
+    /// .suburb("Northshore")
+    /// .state("NSW");
+    ///```
     pub fn new(name : impl Into<String>) -> GeographicAddress {
         let mut address = GeographicAddress::create();
         address.name = Some(name.into());
@@ -100,5 +109,64 @@ impl GeographicAddress {
     pub fn state(mut self, state : &str) -> GeographicAddress {
         self.state_or_province = Some(state.to_string());
         self
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const NUMBER : &str = "14";
+    const STREET : &str = "Mayfair";
+    const STREET_TYPE : &str = "Parade";
+    const SUBURB : &str = "Bayview";
+    const STATE : &str = "Victoria";
+    
+
+    #[test]
+    fn test_address_new_name() {
+        let address = GeographicAddress::new("AnAddress");
+
+        assert_eq!(address.name,Some("AnAddress".into()));
+    }
+
+    #[test]
+    fn test_address_new_number() {
+        let address = GeographicAddress::new("AnAddress")
+            .number(NUMBER);
+
+        assert_eq!(address.street_nr,Some(NUMBER.into()));
+    }
+
+    #[test]
+    fn test_address_new_street() {
+        let address = GeographicAddress::new("AnAddress")
+            .street(STREET);
+
+        assert_eq!(address.street_name,Some(STREET.into()));
+    }
+
+    #[test]
+    fn test_address_new_streettype() {
+        let address = GeographicAddress::new("AnAddress")
+            .street_type(STREET_TYPE);
+
+        assert_eq!(address.street_type,Some(STREET_TYPE.into()));
+    }
+
+    #[test]
+    fn test_address_new_suburb() {
+        let address = GeographicAddress::new("AnAddress")
+            .suburb(SUBURB);
+
+        assert_eq!(address.locality,Some(SUBURB.into()));
+    }
+
+    #[test]
+    fn test_address_new_state() {
+        let address = GeographicAddress::new("AnAddress")
+            .state(STATE);
+
+        assert_eq!(address.state_or_province,Some(STATE.into()));
     }
 }
