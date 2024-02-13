@@ -7,6 +7,7 @@ description = "Interface library for processing TMF payloads"
 repository = "https://github.com/rruckley/tmflib"
 readme = "README.md"
 license = "LGPL-3.0-or-later"
+keywords = ["TMForum","TMF"]
 
 [features]
 leptos = ["tmflib-derive/tmfcomponent"]
