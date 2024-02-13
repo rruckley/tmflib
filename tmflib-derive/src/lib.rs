@@ -1,6 +1,6 @@
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input,Data,DeriveInput};
+use syn::{parse_macro_input,Data,DeriveInput, Field};
 
 #[proc_macro_derive(HasId)]
 pub fn hasid_derive(input: TokenStream) -> TokenStream {
@@ -158,6 +158,26 @@ pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
     out.into()   
 }
 
+fn type_from_field(f : Field) -> Option<String> {    
+    let r#type = f.ty;
+    match r#type {
+        syn::Type::Verbatim(x) => {
+            // Extract type name from TokenStream
+            Some(x.to_string())
+        },
+        _ => None
+    }
+}
+
+fn component_from_field(f : Field) -> String {
+    match type_from_field(f) {
+        Some(s) => {
+            format!("<TMF{} />\n",s)
+        },
+        None => String::default(),
+    }
+}
+
 /// Generate a Leptos view (or component) by generating a view with each
 /// field corresponding to a component of the same name.
 #[cfg(feature = "tmfcomponent")]
@@ -165,43 +185,23 @@ pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
 pub fn tmfcomponent_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let name = input.ident;
-    let mut component : Option<String> = None;
-    match input.data {
+    let components = match input.data {
         Data::Struct(s) => {
-            let fields = s.fields
-                .into_iter()
-                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>();
-            let id = fields.iter().find(|s| *s == "id");
-            let href = fields.iter().find(|s| *s == "href");
-            if id.is_some() && href.is_some() {
-                component = "view! {
-                        <NamedComponent item=item />
-                    }".to_string().into();
+            let fields = s.fields;
+            let mut out = String::default();
+            for f in fields {
+                out.push_str(component_from_field(f).as_str());
             }
-            fields
-            },
-        Data::Enum(s) => {
-            let fields : Vec<String> = s.variants
-                .into_iter()
-                .map(|f| f.ident.to_string()).collect();
-            // Generate an Option list based on Enum
-            // Flatten out the fields into a string
-            let flatten = fields.join(r#","#);
-            let vec = format!("let data = vec![{}];",flatten);
-            component = format!("
-                {}
-                view! {{
-                    <Enum item=data/>
-                }}
-            ",vec).into();
-            fields
+            out
         },
         _ => panic!("Component only supports Struct or Enum"),
     };
     let out = quote! {
         impl TMFComponent<#name> for #name {
             fn to_component(item : #name) -> impl  IntoView {
-            #component
+                view! {
+                    #components
+                }
             }  
         }    
     };
