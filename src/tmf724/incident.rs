@@ -8,7 +8,7 @@ use super::MOD_PATH;
 const CLASS_PATH : &str = "incident";
 
 /// Incident Priority
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum PriorityType {
     /// Critical
@@ -23,7 +23,7 @@ pub enum PriorityType {
 }
 
 /// Incident Urgency 
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum UrgencyType {
     /// Critical
@@ -38,7 +38,7 @@ pub enum UrgencyType {
 }
 
 /// Incident Acknowledge State
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum IncidentAckStateType {
     /// Acknowledged
@@ -49,7 +49,7 @@ pub enum IncidentAckStateType {
 }
 
 /// Incident Status
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum IncidentStateType {
     /// Raised
@@ -62,7 +62,7 @@ pub enum IncidentStateType {
 }
 
 /// Incident Impact
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize,PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum ImpactType {
     /// Extensive [Highest]
@@ -182,17 +182,86 @@ pub struct Incident {
 
     // Referenced types
     /// Extensions
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub extension_info: Option<Vec<Characteristic>>,
     /// Events
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub event_id: Option<Vec<ResourceEntity>>,
     /// Root Event
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub root_event_id: Option<Vec<ResourceEntity>>,
     /// Source Object
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub source_object: Option<Vec<ResourceEntity>>,
     /// Root Cause(s)
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub root_cause: Option<Vec<RootCause>>,
     /// Affected Entities
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub affected_entity: Option<Vec<EntityRef>>,
     /// External Identifiers
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub external_identifier: Option<Vec<ExternalIdentifier>>,
+}
+
+impl Incident {
+    /// Create a new incident
+    pub fn new(name : impl Into<String>) -> Incident {
+        Incident {
+            name: Some(name.into()),
+            impact: Some(ImpactType::Moderate),
+            priority: Some(PriorityType::Medium),
+            urgency: Some(UrgencyType::Medium),
+            ack_state: Some(IncidentAckStateType::Unacknowledged),
+            state: Some(IncidentStateType::Raised),
+            ..Default::default()
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_incident_new_name() {
+        let incident = Incident::new("AnIncident");
+
+        assert_eq!(incident.name,Some("AnIncident".to_string()));
+    }
+
+    #[test]
+    fn test_incident_new_priority() {
+        let incident = Incident::new("AnIncident");
+
+        assert_eq!(incident.priority,Some(PriorityType::Medium));
+    }
+
+    #[test]
+    fn test_incident_new_impact() {
+        let incident = Incident::new("AnIncident");
+        
+        assert_eq!(incident.impact,Some(ImpactType::Moderate));
+    }
+
+    #[test]
+    fn test_incident_new_urgency() {
+        let incident = Incident::new("AnIncident");
+
+        assert_eq!(incident.urgency,Some(UrgencyType::Medium));
+    }
+
+    #[test]
+    fn test_incident_new_state() {
+        let incident = Incident::new("AnIncident");
+        
+        assert_eq!(incident.state,Some(IncidentStateType::Raised));
+    }
+
+    #[test]
+    fn test_incident_new_ack() {
+        let incident = Incident::new("AnIncident");
+
+        assert_eq!(incident.ack_state, Some(IncidentAckStateType::Unacknowledged));
+    }
 }
