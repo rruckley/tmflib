@@ -100,6 +100,36 @@ pub fn hasname_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+#[proc_macro_derive(HasNote)]
+pub fn hasnote_derive(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let fields = match input.data {
+        Data::Struct(s) => {
+            s.fields
+                .into_iter()
+                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
+            },
+        _ => panic!("HasId only supports Struct"),
+    };
+    let name = input.ident;
+    // Ensure id field is present
+    let _name = fields.iter().find(|s| *s == "note").expect("No note field present");
+    let out = quote! {
+        impl HasNote for #name {
+            fn get_note(&self, idx : usize) -> Option<Note> {
+                None
+            }
+            fn add_note(&mut self, note: Note) {
+
+            }
+            fn remove_note(&mut self, idx : usize) -> Result<Note,String> {
+                Err("Not implemented".into())
+            }
+        }
+    };
+    out.into()
+}
+
 #[proc_macro_derive(HasValidity)]
 pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
