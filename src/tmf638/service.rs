@@ -74,6 +74,7 @@ impl Service {
     pub fn new(name : impl Into<String>) -> Service {
         let mut service = Service::create();
         service.name = Some(name.into());
+        service.is_bundle = Some(false);
         service
     }
 }
@@ -83,12 +84,14 @@ mod test {
     use crate::tmf638::service::ServiceStateType;
     use crate::HasName;
 
+    const SERVICE: &str = "AService";
+
     use super::Service;
     #[test]
     fn test_service_create_name() {
-        let service = Service::new(String::from("AService"));
+        let service = Service::new(SERVICE);
 
-        assert_eq!(service.get_name(),String::from("AService"));
+        assert_eq!(service.get_name(),SERVICE.to_string());
     }
 
     #[test]
@@ -96,5 +99,12 @@ mod test {
         let service = Service::default();
 
         assert_eq!(service.state , ServiceStateType::Inactive);
+    }
+
+    #[test]
+    fn test_service_new_bundle() {
+        let service = Service::new(SERVICE);
+
+        assert_eq!(service.is_bundle,Some(false));
     }
 }
