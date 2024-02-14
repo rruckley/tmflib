@@ -81,3 +81,27 @@ impl From<Agreement> for AgreementRef {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const AGREEMENT : &str = "AnAgreement";
+
+    #[test]
+    fn test_agreement_new_name() {
+        let agreement = Agreement::new(AGREEMENT);
+
+        assert_eq!(agreement.name,Some(AGREEMENT.into()));
+    }
+
+    #[test]
+    fn test_agreement_ref_from() {
+        let agreement = Agreement::new(AGREEMENT);
+        let agreement_ref = AgreementRef::from(agreement.clone());
+
+        assert_eq!(agreement.id,Some(agreement_ref.id));
+        assert_eq!(agreement.name,Some(agreement_ref.name));
+        assert_eq!(agreement.href,Some(agreement_ref.href)); 
+    }
+}

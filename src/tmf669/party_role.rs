@@ -52,3 +52,24 @@ impl PartyRole {
         self.related_party.push(party);
     }
 }
+
+#[cfg(test)]
+mod test {
+    use crate::tmf632::individual::Individual;
+    use crate::common::related_party::RelatedParty;
+
+    use super::*;
+
+    const ROLE : &str = "APartyRole";
+    const IND : &str = "AnIndividual";
+
+    #[test]
+    fn test_party_role_new_name() {
+        let ind = Individual::new(IND);
+        let role = PartyRole::new(ROLE,RelatedParty::from(&ind));
+
+        assert_eq!(role.name,Some(ROLE.into()));
+        assert_eq!(role.engaged_party.is_some(),true);
+        assert_eq!(role.engaged_party.as_ref().unwrap().name,Some(ind.get_name()));
+    }
+}

@@ -62,3 +62,17 @@ impl ServiceTest {
         st
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const TEST : &str = "ATest";
+
+    #[test]
+    fn test_service_test_new_name() {
+        let test = ServiceTest::new(TEST);
+
+        assert_eq!(test.name,Some(TEST.into()));
+    }
+}
