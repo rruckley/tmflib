@@ -5,8 +5,8 @@ use serde::{Deserialize,Serialize};
 use super::MOD_PATH;
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
-use crate::{CreateTMF, DateTime, HasId, HasName, TimePeriod, LIB_PATH};
-use tmflib_derive::{HasId, HasName};
+use crate::{CreateTMF, DateTime, HasId, HasName, TimePeriod, HasNote, LIB_PATH};
+use tmflib_derive::{HasId, HasName, HasNote};
 
 const CLASS_PATH : &str = "service";
 
@@ -45,7 +45,7 @@ pub struct FeatureRelationship {
 }
 
 /// Service record from the Service Inventory
-#[derive(Clone,Debug,Default,Deserialize, HasId, HasName, Serialize)]
+#[derive(Clone,Debug,Default,Deserialize, HasId, HasName, HasNote, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Service {
     category: Option<String>,

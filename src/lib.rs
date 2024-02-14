@@ -156,7 +156,7 @@ pub trait HasName : HasId {
 /// Trait for classes with notes
 pub trait HasNote : HasId {
     /// Get a specific note if it exists
-    fn get_note(&self, idx : usize) -> Option<Note>;
+    fn get_note(&self, idx : usize) -> Option<&Note>;
     /// Add a new note
     fn add_note(&mut self, note : Note);
     ///
@@ -166,7 +166,7 @@ pub trait HasNote : HasId {
 /// Trait for classes with Related Parties
 pub trait HasRelatedParty : HasId {
     /// Get a specific party by index
-    fn get_party(&self, idx : usize ) -> Option<RelatedParty>;
+    fn get_party(&self, idx : usize ) -> Option<&RelatedParty>;
     /// Add a new party
     fn add_party(&mut self, party : RelatedParty);
     /// Remote a party

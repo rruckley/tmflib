@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
 use crate::tmf620::AgreementRef;
-use crate::{CreateTMFWithTime, CreateTMF, HasId, HasLastUpdate, DateTime};
-use tmflib_derive::HasId;
+use crate::{CreateTMFWithTime, CreateTMF, HasId, HasLastUpdate, HasNote, HasRelatedParty, DateTime};
+use tmflib_derive::{HasId,HasNote,HasRelatedParty};
 use crate::tmf641::service_order::ServiceOrder;
 
 // URL Path components
@@ -19,7 +19,7 @@ use super::milestone::Milestone;
 const CLASS_PATH: &str = "order";
 
 /// ProductOrder
-#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasNote, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
