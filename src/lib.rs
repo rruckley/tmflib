@@ -49,7 +49,7 @@ pub type DateTime = String;
 pub type Uri = String;
 
 /// Standard TMF TimePeriod structure
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimePeriod {
     /// Start of time period

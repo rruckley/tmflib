@@ -16,7 +16,7 @@ use super::MOD_PATH;
 
 const CLASS_PATH: &str = "product";
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 enum ProductStatusType {
     #[default]
@@ -71,7 +71,6 @@ impl Product {
     /// Create a new product object
     pub fn new(name: impl Into<String>) -> Product {
         let mut product = Product::create();
-        product.status = ProductStatusType::Created;
         product.name = Some(name.into());
         product
     }
@@ -88,4 +87,25 @@ pub struct ProductTerm {
     duration: u16,
     /// Validity period
     valid_for: Option<TimePeriod>,
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const PRODUCT : &str = "AProduct";
+
+    #[test]
+    fn test_product_new_name() {
+        let product = Product::new(PRODUCT);
+
+        assert_eq!(product.name,Some(PRODUCT.into()));
+    }
+
+    #[test]
+    fn test_product_new_status() {
+        let product = Product::new(PRODUCT);
+
+        assert_eq!(product.status,ProductStatusType::Created);
+    }
 }
