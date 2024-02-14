@@ -8,7 +8,7 @@ use std::convert::From;
 use crate::DateTime;
 
 /// Notes object for journaling against many TMF objects
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Note {
     id: String,

@@ -47,3 +47,17 @@ impl From<BillingAccount> for BillingAccountRef {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const ACCOUNT : &str = "BillingAccount";
+
+    #[test]
+    fn test_billing_account_new_name() {
+        let account = BillingAccount::new(ACCOUNT);
+
+        assert_eq!(account.name,Some(ACCOUNT.into()));
+    }
+}

@@ -25,7 +25,7 @@ const PO_VERS_INIT: &str = "1.0";
 const CLASS_PATH: &str = "productOffering";
 
 /// Product Offering Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ProductOfferingRef {
     id: String,
     href: String,
@@ -241,6 +241,6 @@ mod test {
     fn test_po_new_version() {
         let po = ProductOffering::new(String::from("MyOffer"));
 
-        assert_eq!(po.version, Some(PO_VERS_INIT.to_string()));
+        assert_eq!(po.version, Some(PO_VERS_INIT.into()));
     }
 }

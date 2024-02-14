@@ -11,7 +11,7 @@ use std::convert::From;
 use uuid::Uuid;
 
 /// Shopping Cart Item
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct CartItem {
     id: Option<String>,
     note : Vec<Note>,

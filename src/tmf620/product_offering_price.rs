@@ -111,3 +111,24 @@ impl ProductOfferingPrice {
         pop
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const POP : &str = "APrice";
+
+    #[test]
+    fn test_price_new_name() {
+        let pop = ProductOfferingPrice::new(POP);
+
+        assert_eq!(pop.name,Some(POP.into()));
+    }
+
+    #[test]
+    fn test_price_new_version() {
+        let pop = ProductOfferingPrice::new(POP);
+
+        assert_eq!(pop.version,Some(PRICE_VERS.into()));    
+    }
+}
