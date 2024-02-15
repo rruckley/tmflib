@@ -1,5 +1,5 @@
 
-// Copyright 2023-2023 Ryan Ruckley.
+// Copyright 2023-2024 Ryan Ruckley.
 //
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
