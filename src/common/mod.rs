@@ -24,3 +24,4 @@ pub mod event;
 pub mod money;
 pub mod related_party;
 pub mod related_place;
+pub mod tax_item;
