@@ -25,7 +25,7 @@ pub enum CustomerBillRunType {
 }
 
 /// Customer Bill Status
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone,Debug,Default,Deserialize,PartialEq, Serialize)]
 pub enum CustomerBillStateType {
     /// New Bill
     #[default]
@@ -65,7 +65,9 @@ pub struct CustomerBill {
     payment_due_date: DateTime,
     remaining_amount: Money,
     run_type: CustomerBillRunType,
-    state: CustomerBillStateType,
+    /// Customer Bill Status
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub state: Option<CustomerBillStateType>,
     tax_excluded_amount: Money,
     tax_included_amount: Money,
 
@@ -82,4 +84,25 @@ pub struct CustomerBill {
     /// Tax Items
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tax_item: Option<Vec<TaxItem>>,
+}
+
+impl CustomerBill {
+    /// Create a new customer bill
+    pub fn new() -> CustomerBill {
+        let mut bill = CustomerBill::create();
+        bill.state = Some(CustomerBillStateType::default());
+        bill
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_customer_bill_new_state() {
+        let bill = CustomerBill::new();
+
+        assert_eq!(bill.state,Some(CustomerBillStateType::default()));
+    }
 }
