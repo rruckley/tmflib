@@ -191,6 +191,8 @@ pub mod tmf669;
 pub mod tmf673;
 /// Geographic Site
 pub mod tmf674;
+/// Customer Bill Management
+pub mod tmf678;
 /// Product Offering Qualification
 pub mod tmf679;
 /// Sales Management
