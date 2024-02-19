@@ -3,10 +3,22 @@
 
 extern crate openapi;
 
+use std::env;
+use std::fs;
+use std::path::Path;
+
 fn main() {
+    let out_dir = env::var_os("OUT_DIR").unwrap();
+    let dest_path = Path::new(&out_dir).join("sample.rs");
+    fs::write(
+        &dest_path,
+        "
+        pub fn message() -> &'static str {
+            \"Geeks for TMF!\"
+        }
+        "
+    ).unwrap();
     // Generate output for each Swagger / OAS file found
-    match openapi::from_path("open_api//home/rruckley/build/tmflib/open_api/TMF723-Policy_Management-v5.0.0.oas.yaml") {
-        Ok(spec)     => println!("spec: {:?}", spec),
-        Err(err) => println!("error: {}",err),
-    }
+
+    println!("cargo:rerun-if-changed=build.rs");
 }
