@@ -5,30 +5,85 @@ use std::env;
 use std::fs;
 use std::path::Path;
 use openapiv3::Schema;
+use openapiv3::Type;
+use openapiv3::SchemaKind;
 use quote::quote;
 use openapiv3::OpenAPI;
 use serde_json;
-use proc_macro2::{Ident,Span};
+//use proc_macro2::{Ident,Span};
 use convert_case::{Case,Casing};
 
-fn generate_schema_mod(name : String, _schema : Option<Schema>) -> String {
-    let ident = Ident::new(name.as_str(), Span::call_site());
-    let schema_struct = quote! {
-        pub struct #ident {
-
+fn type_to_string(t : Type) -> String {
+    match t {
+        Type::Boolean(b) => "bool".to_string(),
+        Type::Integer(i) => "i32".to_string(),
+        Type::String(s) => "String".to_string(),
+        Type::Number(f) => "f64".to_string(),
+        _ => {
+            // Default to String
+            "String".to_string()
         }
-    };
-    let schema_impl = quote! {
-        impl #ident {
+    }
+}
 
-        }
-    };
-    let mod_out = quote!{
-        #schema_struct
+fn schema_to_string(name : String, schema : Schema) -> String {
+    let mut out = String::default();
+    let schema = match schema.schema_kind {
+       SchemaKind::AllOf { all_of } => {
+        // This matches a structure
+        let mut type_list = String::default();
+        all_of.into_iter().for_each(|f| {
+            match f.into_item() {
+                Some(i) => {
+                    let name = i.schema_data.title.unwrap_or("default_name".to_string());
+                    match i.schema_kind {
+                        SchemaKind::Type(t) => {
+                            type_list.push_str(format!("{name}: {},\n",type_to_string(t)).as_str())
+                        },
+                        _ => {
+                            // Not supported
+                        }
+                    }
+                },
+                None => {},
+            }
+        });
+        format!("
+            pub struct {} {{
+                {}
+            }}
+        ",name,type_list)
+       },
+       SchemaKind::OneOf { one_of } => {
+        // This matches an enum
+        format!("
+            pub enum {} {{
 
-        #schema_impl
+            }}
+        ",name)
+       }
+       _ => {
+        String::default()
+       }
     };
-    mod_out.to_string()
+    out.push_str(schema.as_str());
+    out
+}
+
+fn generate_schema_mod(name : String, schema : Option<Schema>) -> String {
+    // Take schema name and schema and generate the Rust code
+    let mut out = String::default();
+
+    // First, determine if we have a struct or an enum
+    match schema {
+        Some(s) => {
+            // We have a schema, we can convert to string
+            out.push_str(schema_to_string(name,s).as_str())
+        },
+        None => {},
+    };
+
+    out
 }
 
 fn main() {
@@ -53,7 +108,7 @@ fn main() {
         mod_list.push_str(format!("mod {};\n",snake_mod).as_str());
         let file_name = format!("{}.rs",snake_mod);
         let schema_path = Path::new(&out_dir).join(mod_dir).join(file_name.as_str());
-        let camel_name = name.to_case(Case::Camel);
+        let camel_name = name.to_case(Case::UpperCamel);
         let out = generate_schema_mod(camel_name,schema.into_item());
         fs::write(&schema_path,out).unwrap();
     }
