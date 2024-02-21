@@ -32,13 +32,15 @@ fn schema_to_string(name : String, schema : Schema) -> String {
        SchemaKind::AllOf { all_of } => {
         // This matches a structure
         let mut type_list = String::default();
+        let mut instance : u16 = 0;
         all_of.into_iter().for_each(|f| {
             match f.into_item() {
                 Some(i) => {
-                    let name = i.schema_data.title.unwrap_or("default_name".to_string());
+                    let name = i.schema_data.title.unwrap_or(format!("default_{}",instance).to_string());
+                    instance += 1;
                     match i.schema_kind {
                         SchemaKind::Type(t) => {
-                            type_list.push_str(format!("{name}: {},\n",type_to_string(t)).as_str())
+                            type_list.push_str(format!("pub {name}: {},\n",type_to_string(t)).as_str())
                         },
                         _ => {
                             // Not supported
@@ -49,17 +51,19 @@ fn schema_to_string(name : String, schema : Schema) -> String {
             }
         });
         format!("
-            pub struct {} {{
-                {}
-            }}
+    #[derive(Debug,Default,Clone)]
+    pub struct {} {{
+        {}
+    }}
         ",name,type_list)
        },
        SchemaKind::OneOf { one_of } => {
         // This matches an enum
         format!("
-            pub enum {} {{
+    #[derive(Debug,Clone)]
+    pub enum {} {{
 
-            }}
+    }}
         ",name)
        }
        _ => {
@@ -105,7 +109,7 @@ fn main() {
         // The output here is the contents for the schema file 'name'
         // We need to write this to the appropriate filename'
         let snake_mod = name.to_case(Case::Snake);
-        mod_list.push_str(format!("mod {};\n",snake_mod).as_str());
+        mod_list.push_str(format!("pub mod {};\n",snake_mod).as_str());
         let file_name = format!("{}.rs",snake_mod);
         let schema_path = Path::new(&out_dir).join(mod_dir).join(file_name.as_str());
         let camel_name = name.to_case(Case::UpperCamel);
