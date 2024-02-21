@@ -1,6 +1,7 @@
 //! Build module to generate new modules from OAS / Swagger files
 //! 
 
+use std::borrow::Borrow;
 use std::env;
 use std::fs;
 use std::path::Path;
@@ -13,17 +14,48 @@ use serde_json;
 //use proc_macro2::{Ident,Span};
 use convert_case::{Case,Casing};
 
-fn type_to_string(t : Type) -> String {
+fn type_to_string3(name: String, t : Type) -> String {
     match t {
-        Type::Boolean(b) => "bool".to_string(),
-        Type::Integer(i) => "i32".to_string(),
-        Type::String(s) => "String".to_string(),
-        Type::Number(f) => "f64".to_string(),
+        Type::String(s) => format!("String"),
+        _ => format!("!"),
+    }
+}
+
+fn type_to_string2(name: String, t : &Schema) -> String {
+    match t.schema_kind.clone() {
+        SchemaKind::Type(t) => type_to_string3(name, t),
+        _ => format!("\t{}: !",name),  
+    }
+}
+fn type_to_string1(name: String, t : Type) -> String {
+    let mut output = String::default();
+    match t {
+        Type::Object(o) => {
+            // Generate a pub struct
+            output.push_str("#[derive(Debug,Default)]\n");
+            output.push_str(format!("pub struct {} {{\n",name).as_str());
+            for (name,item) in o.properties.into_iter() {
+                // Generate properties
+                // Remove @, its problematif for Rust
+                let name = name.replace("@", "");
+                let name = name.replace("type","r#type");
+                let name = name.to_case(Case::Snake);
+                match item.into_item() {
+                    Some(i) => {
+                        let schema = i.as_ref();
+                        output.push_str(format!("\t{}: {},\n",name,type_to_string2(name.clone(),schema)).as_str());
+                    },
+                    None => (),
+                }
+                
+            }
+            output.push_str("}");
+        },
         _ => {
-            // Default to String
-            "String".to_string()
+            
         }
     }
+    output
 }
 
 fn schema_to_string(name : String, schema : Schema) -> String {
@@ -32,15 +64,12 @@ fn schema_to_string(name : String, schema : Schema) -> String {
        SchemaKind::AllOf { all_of } => {
         // This matches a structure
         let mut type_list = String::default();
-        let mut instance : u16 = 0;
         all_of.into_iter().for_each(|f| {
             match f.into_item() {
                 Some(i) => {
-                    let name = i.schema_data.title.unwrap_or(format!("default_{}",instance).to_string());
-                    instance += 1;
                     match i.schema_kind {
                         SchemaKind::Type(t) => {
-                            type_list.push_str(format!("pub {name}: {},\n",type_to_string(t)).as_str())
+                            type_list.push_str(format!("{}\n",type_to_string1(name.clone(),t)).as_str())
                         },
                         _ => {
                             // Not supported
@@ -50,12 +79,7 @@ fn schema_to_string(name : String, schema : Schema) -> String {
                 None => {},
             }
         });
-        format!("
-    #[derive(Debug,Default,Clone)]
-    pub struct {} {{
-        {}
-    }}
-        ",name,type_list)
+        type_list
        },
        SchemaKind::OneOf { one_of } => {
         // This matches an enum
