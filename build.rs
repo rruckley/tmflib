@@ -1,101 +1,78 @@
 //! Build module to generate new modules from OAS / Swagger files
 //! 
 
-use std::borrow::Borrow;
 use std::env;
 use std::fs;
 use std::path::Path;
+use openapiv3::ObjectType;
+use openapiv3::ReferenceOr;
 use openapiv3::Schema;
-use openapiv3::Type;
 use openapiv3::SchemaKind;
+use openapiv3::Type;
+// use openapiv3::SchemaKind;
 use quote::quote;
 use openapiv3::OpenAPI;
 use serde_json;
 //use proc_macro2::{Ident,Span};
 use convert_case::{Case,Casing};
 
-fn type_to_string3(name: String, t : Type) -> String {
-    match t {
-        Type::String(s) => format!("String"),
-        _ => format!("!"),
-    }
+fn schema_description(schema : &Schema) -> String {
+    let d = schema.schema_data.description.as_ref();
+    match d {
+        Some(d) => format!("\n/*\n\t{}\n*/\n",d),
+        None => String::default(),
+    }    
 }
 
-fn type_to_string2(name: String, t : &Schema) -> String {
-    match t.schema_kind.clone() {
-        SchemaKind::Type(t) => type_to_string3(name, t),
-        _ => format!("\t{}: !",name),  
-    }
-}
-fn type_to_string1(name: String, t : Type) -> String {
-    let mut output = String::default();
-    match t {
-        Type::Object(o) => {
-            // Generate a pub struct
-            output.push_str("#[derive(Debug,Default)]\n");
-            output.push_str(format!("pub struct {} {{\n",name).as_str());
-            for (name,item) in o.properties.into_iter() {
-                // Generate properties
-                // Remove @, its problematif for Rust
-                let name = name.replace("@", "");
-                let name = name.replace("type","r#type");
-                let name = name.to_case(Case::Snake);
-                match item.into_item() {
-                    Some(i) => {
-                        let schema = i.as_ref();
-                        output.push_str(format!("\t{}: {},\n",name,type_to_string2(name.clone(),schema)).as_str());
-                    },
-                    None => (),
-                }
-                
-            }
-            output.push_str("}");
+fn property_type(s: ReferenceOr<Box<Schema>>) -> String {
+    match s {
+        ReferenceOr::Item(i) => {
+            String::default()
         },
-        _ => {
-            
+        ReferenceOr::Reference { reference } => {
+            String::default()
         }
     }
-    output
 }
 
-fn schema_to_string(name : String, schema : Schema) -> String {
+fn schema_object_properties(object: ObjectType) -> String {
     let mut out = String::default();
-    let schema = match schema.schema_kind {
-       SchemaKind::AllOf { all_of } => {
-        // This matches a structure
-        let mut type_list = String::default();
-        all_of.into_iter().for_each(|f| {
-            match f.into_item() {
-                Some(i) => {
-                    match i.schema_kind {
-                        SchemaKind::Type(t) => {
-                            type_list.push_str(format!("{}\n",type_to_string1(name.clone(),t)).as_str())
-                        },
-                        _ => {
-                            // Not supported
-                        }
-                    }
-                },
-                None => {},
-            }
-        });
-        type_list
-       },
-       SchemaKind::OneOf { one_of } => {
-        // This matches an enum
-        format!("
-    #[derive(Debug,Clone)]
-    pub enum {} {{
-
-    }}
-        ",name)
-       }
-       _ => {
-        String::default()
-       }
-    };
-    out.push_str(schema.as_str());
+    for (name,schema) in object.properties.into_iter() {
+        let name = name
+            .replace("@", "")
+            .replace("type", "r#type")
+            .to_case(Case::Snake);
+        out.push_str(format!("\t{}: String,\n",name).as_str());
+    }
     out
+}
+
+fn schema_object(name: String, object : ObjectType) -> String {
+    let mut out = String::default();
+    out.push_str(mod_uses().as_str());
+    out.push_str("#[derive(Debug,Default,Deserialize,Serialize)]\n");
+    out.push_str(format!("pub struct {} {{\n",name).as_str());
+    out.push_str(schema_object_properties(object).as_str());
+    out.push_str("}\n");
+    out
+}
+
+fn schema_type(name: String, t : Type) -> String {
+    match t {
+        Type::Object(o) => schema_object(name,o),
+        _ => format!("// Type {} not implemented",name),
+    }
+}
+
+fn schema_kind(name : String, kind : SchemaKind) -> String {
+    match kind {
+        SchemaKind::Type(t) => schema_type(name,t),
+        _ => format!("// Kind {} not implemented\n",name)
+    }
+}
+
+fn mod_uses() -> String {
+    format!("use serde::{{Deserialize,Serialize}};\n\n")
 }
 
 fn generate_schema_mod(name : String, schema : Option<Schema>) -> String {
@@ -106,9 +83,14 @@ fn generate_schema_mod(name : String, schema : Option<Schema>) -> String {
     match schema {
         Some(s) => {
             // We have a schema, we can convert to string
-            out.push_str(schema_to_string(name,s).as_str())
+            out.push_str(format!("//! Generated Module: {}\n",name).as_str());
+            
+            out.push_str(schema_description(&s).as_str());
+            out.push_str(schema_kind(name.clone(),s.schema_kind.clone()).as_str());
         },
-        None => {},
+        None => {
+            out.push_str("//! Empty Module\n")
+        },
     };
 
     out
