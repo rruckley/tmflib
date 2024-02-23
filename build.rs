@@ -235,7 +235,8 @@ fn mod_uses(uses : Option<Vec<String>>) -> String {
     match uses {
         Some(u) => {
             for uses in u.into_iter() {
-                out.push_str(format!("use crate::{};",uses).as_str());
+                let snake = uses.to_case(Case::Snake);
+                out.push_str(format!("use crate::tmf723::{}::{};\n",snake,uses).as_str());
             }    
         },
         None => (),
