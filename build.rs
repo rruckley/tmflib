@@ -95,33 +95,37 @@ fn property_type(t : Type) -> String {
     }
 }
 
-fn property_schema_any(any : AnySchema) -> String {
+fn property_schema_any(any : AnySchema) -> StringWithUse {
     let mut out = String::default();
+    let mut out2 = StringWithUse::default();
     for (name, ref_or) in any.properties.into_iter() {
         let name = name
             .replace("@", "")
             .replace("type", "r#type")
             .to_case(Case::Snake);
-        out.push_str(format!("\n\t{}: {},",name,property_ref(ref_or).string).as_str());
+        let mut props = property_ref(ref_or);
+        out.push_str(format!("\n\t{}: {},",name,props.string).as_str());
+        out2.merge(&mut props);
     }
-    out
+    out2.string = out;
+    out2
 }
 
-fn property_schema(schema : &Schema) -> String {
+fn property_schema(schema : &Schema) -> StringWithUse {
     match schema.clone().schema_kind {
-        SchemaKind::Type(t) => property_type(t),
-        SchemaKind::AllOf { all_of } => format!("\n// Property Schema AllOf not implemented\n"),
-        SchemaKind::AnyOf { any_of } => format!("\n// Property Schema AnyOf not implemented\n"),
-        SchemaKind::OneOf { one_of } => format!("\n// Property Schema OneOf not implemented\n"),
+        SchemaKind::Type(t) => property_type(t).into(),
+        SchemaKind::AllOf { all_of } => format!("\n// Property Schema AllOf not implemented\n").into(),
+        SchemaKind::AnyOf { any_of } => format!("\n// Property Schema AnyOf not implemented\n").into(),
+        SchemaKind::OneOf { one_of } => format!("\n// Property Schema OneOf not implemented\n").into(),
         SchemaKind::Any(any) => property_schema_any(any),
-        SchemaKind::Not { not } => format!("\n// Property Schema Not not implemented\n"),
+        SchemaKind::Not { not } => format!("\n// Property Schema Not not implemented\n").into(),
     }
 }
 
 fn property_ref(s: ReferenceOr<Box<Schema>>) -> StringWithUse {
     match s {
         ReferenceOr::Item(i) => {
-            property_schema(i.as_ref()).into()
+            property_schema(i.as_ref())
         },
         ReferenceOr::Reference { reference } => {
             let (_,split_ref) = reference.rsplit_once("/").unwrap();
@@ -156,6 +160,7 @@ fn schema_object(name: String, object : ObjectType) -> String {
     let mut out = StringWithUse::default();
     let props = schema_object_properties(object);
     out.string.push_str(mod_uses(props.uses).as_str());
+    out.string.push_str("\n// schema_object()\n");
     out.string.push_str("#[derive(Debug,Default,Deserialize,Serialize)]\n");
     out.string.push_str(format!("pub struct {} {{\n",name).as_str());
     out.string.push_str(props.string.as_str());
@@ -189,14 +194,16 @@ fn schema_allof(name : String, all_of : Vec<ReferenceOr<Schema>>) -> String {
             ReferenceOr::Item(i) => {
                property_schema(&i) 
             },
+            // This reference needs to pull the schema properties in, not just link
+            // Need to have a hash of all schemas to pull in
             ReferenceOr::Reference { reference } => {
                 let (_,split_ref) = reference.rsplit_once("/").unwrap();
                 // Need to pull in referenced object
                 // This reference needs to go into a 'use' statement
                 uses.push_str(reference_to_uses(split_ref.to_string()).as_str());
-                format!("\n\t//{}: {},\n",name,split_ref)
+                format!("\n\t//{}: {},\n",name,split_ref).into()
             }
-        }.as_str());
+        }.string.as_str());
     }
     out.push_str("\n}\n");
     // Generate final output, uses, then struct
