@@ -18,18 +18,55 @@ use serde_json;
 //use proc_macro2::{Ident,Span};
 use convert_case::{Case,Casing};
 
+#[derive(Default,Debug,Clone)]
+struct CommonEntry {
+    name : String,
+    use_path : String,
+}
+
+impl From<(&str,&str)> for CommonEntry {
+    fn from(value: (&str,&str)) -> Self {
+        let (name,use_path) = value;
+        CommonEntry {
+            name : name.to_string(),
+            use_path : use_path.to_string(),
+        }
+    }
+}
+
+#[derive(Default)]
+struct CommonClasses {
+    classes : Vec<CommonEntry>,
+}
+
+impl From<Vec<(&str,&str)>> for CommonClasses {
+    fn from(value: Vec<(&str,&str)>) -> Self {
+        let mut out = CommonClasses::default();
+        for value in value.iter() {
+            let entry = CommonEntry::from(*value);
+            out.classes.push(entry);
+        }
+        out
+    }
+}
+
 #[derive(Default,Debug)]
 struct StringWithUse {
     pub string : String,
     pub uses : Option<Vec<String>>,
+    pub generic : Option<String>,
 }
 
 impl StringWithUse {
-    pub fn with_ref(mut self, reference : String) -> StringWithUse {
+    pub fn with_ref(mut self, reference : impl Into<String>) -> StringWithUse {
         if self.uses.is_none() {
             self.uses = Some(vec![]);
         };
-        self.uses.as_mut().unwrap().push(reference);
+        self.uses.as_mut().unwrap().push(reference.into());
+        self
+    }
+    pub fn with_generic(mut self, generic : impl Into<String>) -> StringWithUse {
+        self.generic = Some(generic.into());
         self
     }
     // Merge one SWU into another
@@ -39,6 +76,8 @@ impl StringWithUse {
             self.uses = Some(vec![]);
         };
         self.string.push_str(swu.string.as_str());
+        // Simple copy through the genric value
+        self.generic = swu.generic.clone();
         if swu.uses.is_some() {
             let new_uses = swu.uses.as_mut().unwrap();
             self.uses.as_mut().unwrap().append(new_uses);    
@@ -51,6 +90,7 @@ impl From<String> for StringWithUse {
         StringWithUse {
             string : value,
             uses : None,
+            generic : None,
         }
     }
 }
@@ -158,7 +198,11 @@ fn property_ref(s: ReferenceOr<Box<Schema>>) -> StringWithUse {
 
 fn schema_object_properties(object: ObjectType) -> StringWithUse {
     if object.properties.is_empty() {
-        return StringWithUse::default()
+        let mut out = StringWithUse::default()
+            .with_generic("T")
+            .with_ref("super::GenericType");
+        out.string = format!("GenericType<T>");
+        return format!("GenericType<T>").into()
     }
     let mut out = String::default();
     let mut out2 = StringWithUse::default();
@@ -187,10 +231,16 @@ fn schema_object(name: String, object : ObjectType) -> String {
     out.into()
 }
 
+fn schema_array(name: String, array : ArrayType) -> String {
+    let mut out = String::default();
+    out.push_str(property_ref(array.items.unwrap()).string.as_str());
+    format!("\t{}:\nVec<{}>\n",name,out)
+}
+
 fn schema_type(name: String, t : Type) -> String {
     match t {
         Type::Object(o) => schema_object(name,o).into(),
-        Type::Array(_a) => format!("// Schema Type Array not implemented\n"),
+        Type::Array(a) => schema_array(name, a),
         Type::Boolean(_b) => format!("// Schema Type bool not implemented\n"),
         Type::Integer(_i) => format!("// Schema Type Integer not implemented\n"),
         Type::Number(_n) => format!("// Schema Type Number not implemented\n"),
@@ -199,16 +249,23 @@ fn schema_type(name: String, t : Type) -> String {
 }
 
 fn reference_to_uses(reference : String) -> String {
-    let snake = reference.to_case(Case::Snake);
-    format!("use crate::tmf723::{}::{};\n",snake,reference)
+    match reference.as_str() {
+        "TimePeriod" => format!("use crate::TimePeriod;\n"),
+        "RelatedParty"=> format!("use crate::common::related_party::RelatedParty;\n"),
+        "Note" => format!("use crate::common::note::Note;\n"),
+        _ => {
+            // Default case, generate use path from Camel name.
+            let snake = reference.to_case(Case::Snake);
+            format!("use crate::tmf723::{}::{};\n",snake,reference)
+        }
+    }
 }
 
 fn schema_allof(name : String, all_of : Vec<ReferenceOr<Schema>>) -> String {
     let mut out = String::default();
     let mut uses = StringWithUse::default();
     out.push_str("// Schema AllOf\n");
-    out.push_str("#[derive(Debug,Default,Deserialize,Serialize)]\n");
-    out.push_str(format!("pub struct {} {{\n",name).as_str());
+    
 
     for r in all_of {
         out.push_str(match r {
@@ -223,13 +280,17 @@ fn schema_allof(name : String, all_of : Vec<ReferenceOr<Schema>>) -> String {
                 let (_,split_ref) = reference.rsplit_once("/").unwrap();
                 // Need to pull in referenced schema
                 //uses.push_str(reference_to_uses(split_ref.to_string()).as_str());
-                format!("\t//{}: {},\n",name,split_ref).into()
+                format!("\t//{}:\t{},\n",name,split_ref).into()
             }
         }.as_str());
     }
     out.push_str("\n}\n");
+    let struct_def = match uses.generic {
+        Some(g) => format!("\n#[derive(Debug,Default,Deserialize,Serialize)]\npub struct {}<{}> {{\n",name,g),
+        None => format!("\n#[derive(Debug,Default,Deserialize,Serialize)]\npub struct {} {{\n",name),
+    }; 
     // Generate final output, uses, then struct
-    format!("\n// Uses\n{}\n{}",mod_uses(uses.uses),out)
+    format!("\n// Uses\n{}\n{}\n{}",mod_uses(uses.uses),struct_def,out)
 }
 
 fn schema_anyof(name: String, _any_of : Vec<ReferenceOr<Schema>>) -> String {
@@ -277,7 +338,21 @@ fn schema_not(name : String, _not: Box<ReferenceOr<Schema>>) -> String {
     format!("// Kind Not not implemented for {}\n",name) 
 }
 
-fn schema_oneof(name : String, _oneof : Vec<ReferenceOr<Schema>>) -> String {
+fn schema_oneof(name : String, oneof : Vec<ReferenceOr<Schema>>) -> String {
+    let mut out = String::default();
+    out.push_str("// Generated Enum\n");
+    for e in oneof.into_iter() {
+        match e {
+            ReferenceOr::Item(_i) => {
+                out.push_str("// OneOf Reference")
+
+            },
+            ReferenceOr::Reference { reference } => {
+                // Not sure how to manage a reference inside an enum
+            }       
+        }
+    }
+    out.push_str(format!("pub enum {} {{\n }}\n",name).as_str());
     format!("// Kind OneOf not implemented for {}\n",name)
 }
 
@@ -361,7 +436,7 @@ fn main() {
     }
     // Now we have a list of modules to include, we can create tmf723/mod.rs
     let mod_rs_path = Path::new(&out_dir).join(mod_dir).join("mod.rs");
-    let mod_rs_contents = format!("{}",mod_list).to_string();
+    let mod_rs_contents = format!("pub struct GenericType<T : Sized> {{ }}\n\n{}",mod_list).to_string();
     let _ = fs::write(&mod_rs_path,mod_rs_contents);
     let auto_lib_contents = quote!{
         mod tmf723;
