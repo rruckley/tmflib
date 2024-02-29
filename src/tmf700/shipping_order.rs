@@ -2,6 +2,7 @@
 //! 
 
 
+use super::shipping_instruction::ShippingInstruction;
 use super::shipping_order_item::ShippingOrderItem;
 use crate::common::note::Note;
 use super::MOD_PATH;
@@ -12,6 +13,7 @@ use serde::{Deserialize,Serialize};
 
 const CLASS_PATH : &str = "shippingOrder";
 
+/// Related Shipping Order
 #[derive(Clone,Default,Debug,Deserialize,Serialize)]
 pub struct RelatedShippingOrder {
     href: String,
@@ -56,10 +58,21 @@ impl ShippingOrder {
     pub fn new() -> ShippingOrder {
         ShippingOrder::create()
     }
+
+    /// Add an order item to this order
+    pub fn add_item(&mut self, item : ShippingOrderItem) {
+        self.shipping_order_item.push(item);
+    }
+
+    /// Add Note
+    pub fn add_note(&mut self, note : Note) {
+        self.note.push(note);
+    }
 }
 
 #[cfg(test)]
 mod test {
+    use super::RelatedShippingOrder;
     use super::ShippingOrder;
     use super::HasId;
     #[test]
@@ -84,5 +97,14 @@ mod test {
         let href = so.get_href();
 
         assert!(href.contains(&id));
+    }
+
+    #[test]
+    fn shipping_order_related() {
+        let so = ShippingOrder::new();
+        let so_rel = RelatedShippingOrder::from(so);
+
+        assert_eq!(so.get_id(),so_rel.id);
+        assert_eq!(so.get_href(),so_rel.href);
     }
 }
