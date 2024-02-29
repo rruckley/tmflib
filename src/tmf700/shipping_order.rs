@@ -2,7 +2,6 @@
 //! 
 
 
-use super::shipping_instruction::ShippingInstruction;
 use super::shipping_order_item::ShippingOrderItem;
 use crate::common::note::Note;
 use super::MOD_PATH;
@@ -22,8 +21,8 @@ pub struct RelatedShippingOrder {
     role: Option<String>,
 }
 
-impl From<ShippingOrder> for RelatedShippingOrder {
-    fn from(value: ShippingOrder) -> Self {
+impl From<&ShippingOrder> for RelatedShippingOrder {
+    fn from(value: &ShippingOrder) -> Self {
         // Generate Ref from SO
         RelatedShippingOrder {
             href: value.get_href(),
@@ -102,7 +101,7 @@ mod test {
     #[test]
     fn shipping_order_related() {
         let so = ShippingOrder::new();
-        let so_rel = RelatedShippingOrder::from(so);
+        let so_rel = RelatedShippingOrder::from(&so);
 
         assert_eq!(so.get_id(),so_rel.id);
         assert_eq!(so.get_href(),so_rel.href);
