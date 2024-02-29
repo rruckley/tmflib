@@ -1,6 +1,9 @@
 //! Shipping Order Module
 //! 
 
+
+use super::shipping_order_item::ShippingOrderItem;
+use crate::common::note::Note;
 use super::MOD_PATH;
 use super::{HasId,CreateTMF,LIB_PATH};
 use tmflib_derive::HasId;
@@ -8,6 +11,26 @@ use tmflib_derive::HasId;
 use serde::{Deserialize,Serialize};
 
 const CLASS_PATH : &str = "shippingOrder";
+
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct RelatedShippingOrder {
+    href: String,
+    id  : String,
+    name: String,
+    role: Option<String>,
+}
+
+impl From<ShippingOrder> for RelatedShippingOrder {
+    fn from(value: ShippingOrder) -> Self {
+        // Generate Ref from SO
+        RelatedShippingOrder {
+            href: value.get_href(),
+            id: value.get_id(),
+            name: String::default(),
+            role: None,
+        }
+    }
+}
 
 /// Order for shipping of tangible goods
 #[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
@@ -19,6 +42,13 @@ pub struct ShippingOrder {
     /// HTML Reference to this object
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
+    // Referenced Types
+    /// Shipping Line Items
+    pub shipping_order_item: Vec<ShippingOrderItem>,
+    /// Notes
+    pub note: Vec<Note>,
+    /// Related Shipping Order
+    pub related_shipping_order: Option<RelatedShippingOrder>,
 }
 
 impl ShippingOrder {
