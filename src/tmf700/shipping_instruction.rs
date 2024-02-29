@@ -53,3 +53,29 @@ impl ShippingInstruction {
         self
     }
 }
+
+impl From<String> for ShippingInstruction {
+    fn from(value: String) -> Self {
+        ShippingInstruction::new(value)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::ShippingInstruction;
+    const INST : &str = "AnInstruction";
+
+    #[test]
+    fn test_instruction_create() {
+        let instruction = ShippingInstruction::new(INST);
+
+        assert_eq!(instruction.label_message.unwrap(),INST.to_string());
+    }
+
+    #[test]
+    fn test_instruction_from_string() {
+        let instruction : ShippingInstruction = INST.to_string().into();
+
+        assert_eq!(instruction.label_message.unwrap(),INST.to_string());
+    }
+}
