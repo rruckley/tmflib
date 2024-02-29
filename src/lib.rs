@@ -193,6 +193,8 @@ pub mod tmf673;
 pub mod tmf674;
 /// Product Offering Qualification
 pub mod tmf679;
+/// Communication Management
+pub mod tmf681;
 /// Sales Management
 pub mod tmf699;
 /// Shipping Order [Pre-Prod]
