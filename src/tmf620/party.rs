@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 /// Related Party
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct RelatedParty {
+pub struct RelatedPartyXXX {
     id: String,
     href: String,
     name: String,
