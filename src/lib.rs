@@ -49,7 +49,7 @@ pub type DateTime = String;
 pub type Uri = String;
 
 /// Standard TMF TimePeriod structure
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimePeriod {
     /// Start of time period
@@ -57,6 +57,17 @@ pub struct TimePeriod {
     /// End of time period
     #[serde(skip_serializing_if = "Option::is_none")]
     pub end_date_time: Option<TimeStamp>,
+}
+
+impl Default for TimePeriod {
+    fn default() -> Self {
+        let now = Utc::now();
+        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        TimePeriod {
+            start_date_time : time.to_string(),
+            end_date_time: None,
+        }    
+    }
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
