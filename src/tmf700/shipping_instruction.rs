@@ -28,10 +28,14 @@ pub struct ShippingInstruction {
     delivery_speed: String,
     delivery_time_slot: TimePeriod,
     /// Uri for instruction
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<Uri>,
     /// Unique Id for instruction
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     insured_value: Option<Money>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     label_message: Option<String>,
     package_type: String,
     receipt_confirmation: String,

@@ -26,6 +26,7 @@ pub enum ShippingOrderItemActionType {
 
 /// Shipping Order Item
 #[derive(Clone,Default,Debug,Deserialize,HasId,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ShippingOrderItem {
     /// Shipping Item Action Type
     pub action: ShippingOrderItemActionType,
