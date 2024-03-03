@@ -20,6 +20,7 @@ pub enum SignatureRequiredByType {
 
 /// Shipping Item Instructions
 #[derive(Clone,Default,Debug,Deserialize,HasId,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ShippingInstruction {
     carrier_id: String,
     carrier_name: String,
