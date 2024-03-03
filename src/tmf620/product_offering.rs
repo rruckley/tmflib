@@ -14,7 +14,8 @@ use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
 use serde::{Deserialize, Serialize};
 
-use super::{AgreementRef,ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
+use super::{ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
+use crate::tmf651::agreement::AgreementRef;
 
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
@@ -230,16 +231,18 @@ mod test {
     use super::ProductOffering;
     use super::PO_VERS_INIT;
 
+    const PO_NAME : &str = "An Offer";
+
     #[test]
     fn test_po_new_name() {
-        let po = ProductOffering::new(String::from("MyOffer"));
+        let po = ProductOffering::new(PO_NAME);
 
-        assert_eq!(po.name, Some(String::from("MyOffer")));
+        assert_eq!(po.name, Some(String::from(PO_NAME)));
     }
 
     #[test]
     fn test_po_new_version() {
-        let po = ProductOffering::new(String::from("MyOffer"));
+        let po = ProductOffering::new(PO_NAME);
 
         assert_eq!(po.version, Some(PO_VERS_INIT.into()));
     }
