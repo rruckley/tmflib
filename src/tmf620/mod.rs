@@ -35,10 +35,6 @@ pub mod product_offering_v5;
 pub mod product_offering_price;
 pub mod product_specification;
 
-/// Agreement Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct AgreementRef {}
-
 /// Channel Reference
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ChannelRef {}
