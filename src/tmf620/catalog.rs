@@ -60,6 +60,7 @@ impl Catalog {
         cat.version = Some(CAT_VERS.to_string());
         cat.category = Some(vec![]);
         cat.related_party = Some(vec![]);
+        cat.valid_for = Some(TimePeriod::default());
         cat
     }
 
