@@ -32,7 +32,7 @@
 #![warn(missing_docs)]
 
 use chrono::naive::NaiveDateTime;
-use chrono::Utc;
+use chrono::{Utc,Days};
 use uuid::Uuid;
 use serde::{Deserialize, Serialize};
 
@@ -57,6 +57,24 @@ pub struct TimePeriod {
     /// End of time period
     #[serde(skip_serializing_if = "Option::is_none")]
     pub end_date_time: Option<TimeStamp>,
+}
+
+impl TimePeriod {
+    /// Create a time period of 30 days
+    pub fn period_30days() -> TimePeriod {
+        TimePeriod::period_days(30)
+    }
+
+    /// Calculate period `days` into the future
+    pub fn period_days(days : u64) -> TimePeriod {
+        let now = Utc::now() + Days::new(days);
+        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        TimePeriod {
+            end_date_time: Some(time.to_string()),
+            ..Default::default()
+        }
+    }
+
 }
 
 impl Default for TimePeriod {
