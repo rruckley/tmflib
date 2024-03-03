@@ -20,6 +20,7 @@ use tmflib_derive::{HasId,HasValidity};
 use serde::{Deserialize,Serialize};
 
 const CLASS_PATH : &str = "salesLead";
+const LEAD_VALID :u64 = 30;
 
 /// Sales Lead Priorities
 #[derive(Clone,Debug,Default,Deserialize,Serialize)]
@@ -108,6 +109,7 @@ impl SalesLead {
         sl.name = name.into();
         sl.status = Some(SalesLeadStateType::default());
         sl.priority = Some(SalesLeadPrioityType::default());
+        sl.valid_for = Some(TimePeriod::period_days(LEAD_VALID));
         sl
     }
 }
