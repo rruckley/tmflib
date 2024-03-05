@@ -25,6 +25,12 @@ struct CommonEntry {
     use_path : String,
 }
 
+#[derive(PartialEq)]
+enum BuildMode {
+    HashOnly,
+    FullBuild,
+}
+
 impl From<(&str,&str)> for CommonEntry {
     fn from(value: (&str,&str)) -> Self {
         let (name,use_path) = value;
@@ -198,13 +204,8 @@ fn property_ref(s: ReferenceOr<Box<Schema>>,schema_vec: &mut Vec<String>) -> Str
     }
 }
 
-
-
-
-
-
-
 fn reference_to_uses(reference : String) -> String {
+    // Pull out common modules
     match reference.as_str() {
         "TimePeriod" => format!("use crate::TimePeriod;\n"),
         "RelatedParty"=> format!("use crate::common::related_party::RelatedParty;\n"),
@@ -217,22 +218,21 @@ fn reference_to_uses(reference : String) -> String {
     }
 }
 
-fn schema_kind(name : String, kind : SchemaKind,schema_hash : &mut HashMap<String,Vec<String>>) -> String {
-    let mut schema_vec : Vec<String> = vec![];
-    let schema_name = name.clone();
+fn schema_kind(name : String, kind : SchemaKind,schema_hash : &mut HashMap<String,Vec<String>>,mode : BuildMode) -> String {
+    // let schema_name = name.clone();
     let out = match kind {
-        SchemaKind::Type(t) => schema_type(name,t,schema_hash),
-        SchemaKind::AllOf { all_of } => schema_allof(name, all_of,schema_hash),
+        SchemaKind::Type(t) => schema_type(name,t,schema_hash,mode),
+        SchemaKind::AllOf { all_of } => schema_allof(name, all_of,schema_hash,mode),
         SchemaKind::AnyOf { any_of } => schema_anyof(name, any_of),
         SchemaKind::Not { not } => schema_not(name,not),
         SchemaKind::OneOf { one_of } => schema_oneof(name, one_of),
-        SchemaKind::Any(any) => schema_any(name, any,&mut schema_vec),
+        SchemaKind::Any(any) => schema_any(name, any,schema_hash,mode),
     };
-    schema_hash.insert(schema_name,schema_vec);
+    //schema_hash.insert(schema_name,schema_vec);
     out
 }
 
-fn schema_type(name: String, t : Type, schema_hash: &mut HashMap<String,Vec<String>>) -> String {
+fn schema_type(name: String, t : Type, schema_hash: &mut HashMap<String,Vec<String>>, mode : BuildMode) -> String {
     let mut schema_vec : Vec<String>= vec![];
     let schema_name = name.clone();
     let mut out = match t {
@@ -244,9 +244,13 @@ fn schema_type(name: String, t : Type, schema_hash: &mut HashMap<String,Vec<Stri
         Type::String(_s) => format!("// Schema Type String not implemented\n"),
     };
     // Store properties for later reuse
-    let vec_size = schema_vec.len();
-    out.push_str(format!("\t// Inserting {} into hash, schema_vec is : {}",schema_name.clone(),vec_size).as_str());
-    schema_hash.insert(schema_name, schema_vec);
+    if mode == BuildMode::HashOnly {
+        let vec_size = schema_vec.len();
+        out.push_str(format!("\t// Inserting {} into hash, schema_vec is : {}",schema_name.clone(),vec_size).as_str());
+        schema_hash.insert(schema_name, schema_vec);
+        let hash_size = schema_hash.len();
+        out.push_str(format!("Hash is now: {}",hash_size).as_str());
+    }
     out
 }
 
@@ -276,7 +280,7 @@ fn schema_object_properties(object: ObjectType,schema_vec: &mut Vec<String>) -> 
         
         let vec_size = schema_vec.len();
         schema_vec.push(line);
-        out.push_str(format!("\t// Added line to vec, now: {}\n",vec_size).as_str());
+        // out.push_str(format!("\t// Added line to vec, now: {}\n",vec_size).as_str());
         out2.merge(&mut prop_ref)
     }
     out2.string = out;
@@ -290,7 +294,7 @@ fn schema_array(name: String, array : ArrayType,schema_vec: &mut Vec<String>) ->
     format!("\t{}:\nVec<{}>\n",name,out)
 }
 
-fn schema_allof(name : String, all_of : Vec<ReferenceOr<Schema>>,schema_hash : &mut HashMap<String,Vec<String>>) -> String {
+fn schema_allof(name : String, all_of : Vec<ReferenceOr<Schema>>,schema_hash : &mut HashMap<String,Vec<String>>,mode: BuildMode) -> String {
     let mut out = String::default();
     let mut uses = StringWithUse::default();
     out.push_str("// Schema AllOf\n");
@@ -314,19 +318,19 @@ fn schema_allof(name : String, all_of : Vec<ReferenceOr<Schema>>,schema_hash : &
                 //uses.push_str(reference_to_uses(split_ref.to_string()).as_str());
                 // Use split_ref to lookup hash to find items
                 match schema_hash.get_key_value(split_ref) {
-                    Some((name,value)) => {
+                    Some((_name,value)) => {
                         // Entry found, add into output
                         let mut out = String::default();
-                        out.push_str(format!("\t//{}:\t{},\n","Found reference in Hash",split_ref).as_str());
+                        out.push_str(format!("\n\t//{}:\t{}","START",split_ref).as_str());
                         // We want to include the referenced fields in our vec
-                        //prop_vec.append(value);
                         if value.is_empty() {
                             out.push_str("\t// Empty SchemaVec\n");
                         }
                         for val in value {
-                            out.push_str("// Entry");
+                            // out.push_str("// Entry");
                             out.push_str(val)
                         }
+                        out.push_str(format!("\n\t//{}:\t{},\n","FINISH",split_ref).as_str());
                         out
                     },
                     None => {
@@ -357,44 +361,28 @@ fn schema_anyof(name: String, _any_of : Vec<ReferenceOr<Schema>>) -> String {
     out    
 }
 
-fn schema_any(name : String, any : AnySchema, schema_vec : &mut Vec<String>) -> String {
+fn schema_any(name : String, any : AnySchema, schema_hash : &mut HashMap<String,Vec<String>>, mode: BuildMode) -> String {
     let mut out = String::default();
     let mut uses = StringWithUse::default();
+    let mut outer_vec : Vec<String> = vec![];
     out.push_str("// Schema Any\n");
     out.push_str("#[derive(Debug,Default,Deserialize,Serialize)]\n");
     out.push_str(format!("pub struct {} {{\n",name).as_str());
     for (name,r) in any.properties {
+        
         out.push_str(match r {
             // We can add the item onto the has here
             ReferenceOr::Item(i) => {
-               let mut props = property_schema(&i,schema_vec);
+                let mut schema_vec : Vec<String> = vec![];
+               let mut props = property_schema(&i,&mut schema_vec);
                uses.merge(&mut props);
                let name = name
                     .replace("@", "")
                     .replace("type", "r#type")
                     .to_case(Case::Snake);
-               format!("\t{}:\tOption<{}>,\n",name,props.string)
-            },
-            // This reference needs to pull the schema properties in, not just link
-            // Need to have a hash of all schemas to pull in
-            ReferenceOr::Reference { reference } => {
-                let (_,split_ref) = reference.rsplit_once("/").unwrap();
-                // Need to pull in referenced schema
-                //uses.push_str(reference_to_uses(split_ref.to_string()).as_str());
-                format!("\t//Pull in this schema:\t{},\n",split_ref).into()
-            }
-        }.as_str());
-    }
-    for ref_or in any.all_of {
-        // We can add the item onto the has here
-     out.push_str(match ref_or {
-            ReferenceOr::Item(i) => {
-                let mut props = property_schema(&i,schema_vec);
-                uses.merge(&mut props);
-                let name = name
-                    .replace("@", "")
-                    .replace("type", "r#type")
-                    .to_case(Case::Snake);
+                if mode == BuildMode::HashOnly {
+                    schema_hash.insert(name.clone(),schema_vec);
+                }
                 format!("\t{}:\tOption<{}>,\n",name,props.string)
             },
             // This reference needs to pull the schema properties in, not just link
@@ -403,11 +391,103 @@ fn schema_any(name : String, any : AnySchema, schema_vec : &mut Vec<String>) -> 
                 let (_,split_ref) = reference.rsplit_once("/").unwrap();
                 // Need to pull in referenced schema
                 //uses.push_str(reference_to_uses(split_ref.to_string()).as_str());
-                format!("\t//Pull in this schema:\t{},\n",split_ref)
+                let mut out = format!("\t//START:\t{},\n",split_ref);
+                let vec = schema_hash.get(split_ref);
+                match vec {
+                    Some(v) => {
+                        for val in v {
+                            // out.push_str("// Entry");
+                            out.push_str(val.as_str());
+                        }
+                    },
+                    None => {
+                        out.push_str("\n// Empty vec for schema_any\n");
+                    }
+                }
+                out.push_str(format!("\t//FINISH:\t{},\n",split_ref).as_str());
+                
+                out
+            }
+        }.as_str());
+    }
+    for ref_or in any.one_of {
+        // We can add the item onto the has here
+     out.push_str(match ref_or {
+            ReferenceOr::Item(i) => {
+                let mut props = property_schema(&i,&mut outer_vec);
+                uses.merge(&mut props);
+                let name = name
+                    .replace("@", "")
+                    .replace("type", "r#type")
+                    .to_case(Case::Snake);
+                //schema_hash.insert(name.clone(),schema_vec);
+                format!("\t{}:\tOption<{}>,\n",name,props.string)
+            },
+            // This reference needs to pull the schema properties in, not just link
+            // Need to have a hash of all schemas to pull in
+            ReferenceOr::Reference { reference } => {
+                let (_,split_ref) = reference.rsplit_once("/").unwrap();
+                // Need to pull in referenced schema
+                //uses.push_str(reference_to_uses(split_ref.to_string()).as_str());
+                let mut out = format!("\t//Pull in this schema:\t{}",split_ref);
+                let vec = schema_hash.get(split_ref);
+                match vec {
+                    Some(v) => {
+                        outer_vec.append(v.clone().as_mut());
+                        for val in v {
+                            // out.push_str("// Entry");
+                            out.push_str(val.as_str());
+                        }
+                    },
+                    None => {
+                        out.push_str("\n\t// Vec was empty");
+                    }
+                }
+                
+                out
             }  
         }.as_str());
     }
-    out.push_str("}\n");
+    for ref_or in any.all_of {
+        // We can add the item onto the has here
+     out.push_str(match ref_or {
+            ReferenceOr::Item(i) => {
+                let mut props = property_schema(&i,&mut outer_vec);
+                uses.merge(&mut props);
+                let name = name
+                    .replace("@", "")
+                    .replace("type", "r#type")
+                    .to_case(Case::Snake);
+                //schema_hash.insert(name.clone(),schema_vec);
+                format!("\t{}:\tOption<{}>,\n",name,props.string)
+            },
+            // This reference needs to pull the schema properties in, not just link
+            // Need to have a hash of all schemas to pull in
+            ReferenceOr::Reference { reference } => {
+                let (_,split_ref) = reference.rsplit_once("/").unwrap();
+                // Need to pull in referenced schema
+                //uses.push_str(reference_to_uses(split_ref.to_string()).as_str());
+                let mut out = format!("\t//Pull in this schema:\t{}",split_ref);
+                let vec = schema_hash.get(split_ref);
+                match vec {
+                    Some(v) => {
+                        outer_vec.append(v.clone().as_mut());
+                        for val in v {
+                            // out.push_str("// Entry");
+                            out.push_str(val.as_str());
+                        }
+                    },
+                    None => {
+                        out.push_str("\n\t// Vec was empty");
+                    }
+                }
+                
+                out
+            }  
+        }.as_str());
+    }
+    schema_hash.insert(name,outer_vec);
+    out.push_str("\n}\n");
     format!("\n// Uses\n{}\n{}",mod_uses(uses.uses),out)
 }
 
@@ -452,7 +532,7 @@ fn mod_uses(uses : Option<Vec<String>>) -> String {
     out
 }
 
-fn generate_schema_mod(name : String, schema : Option<Schema>,schema_hash : &mut HashMap<String,Vec<String>>) -> String {
+fn generate_schema_mod(name : String, schema : Option<Schema>,schema_hash : &mut HashMap<String,Vec<String>>,mode : BuildMode) -> String {
     // Take schema name and schema and generate the Rust code
     let mut out = String::default();
 
@@ -460,10 +540,18 @@ fn generate_schema_mod(name : String, schema : Option<Schema>,schema_hash : &mut
     match schema {
         Some(s) => {
             // We have a schema, we can convert to string
-            out.push_str(format!("//! Generated Module: {}\n",name).as_str());
-            // Insert uses here.
-            out.push_str(schema_description(&s).as_str());
-            out.push_str(schema_kind(name.clone(),s.schema_kind.clone(),schema_hash).as_str());
+            match mode {
+                BuildMode::FullBuild => {
+                    out.push_str(format!("//! Generated Module: {}\n",name).as_str());
+                    out.push_str(schema_description(&s).as_str());
+                    out.push_str(schema_kind(name.clone(),s.schema_kind.clone(),schema_hash,mode).as_str());
+                },
+                BuildMode::HashOnly => {
+                    let _ = schema_kind(name.clone(),s.schema_kind.clone(),schema_hash,mode);
+                }
+            }
+
+            
         },
         None => {
             out.push_str("//! Empty Module\n")
@@ -489,7 +577,12 @@ fn main() {
     let mut schema_hash : HashMap<String,Vec<String>> = HashMap::new();
     // Will throw error if path already exists but we don't care about that situation
     let _ = fs::create_dir(mod_path);
-    for (name,schema) in schemas {
+    for (name,schema) in schemas.iter() {
+        // Initial pass just builds out the Hash
+        let camel_name = name.to_case(Case::UpperCamel);
+        let _ = generate_schema_mod(camel_name,schema.clone().into_item(),&mut schema_hash,BuildMode::HashOnly);    
+    }
+    for (name,schema) in schemas.iter() {
         // The output here is the contents for the schema file 'name'
         // We need to write this to the appropriate filename'
         if name.find("FVO").is_some() || name.find("MVO").is_some() {
@@ -500,7 +593,7 @@ fn main() {
         let file_name = format!("{}.rs",snake_mod);
         let schema_path = Path::new(&out_dir).join(mod_dir).join(file_name.as_str());
         let camel_name = name.to_case(Case::UpperCamel);
-        let out = generate_schema_mod(camel_name,schema.into_item(),&mut schema_hash);
+        let out = generate_schema_mod(camel_name,schema.clone().into_item(),&mut schema_hash,BuildMode::FullBuild);
         fs::write(&schema_path,out).unwrap();
     }
     // Now we have a list of modules to include, we can create tmf723/mod.rs
@@ -508,7 +601,7 @@ fn main() {
     let mod_rs_contents = format!("pub struct GenericType<T : Sized> {{ }}\n\n{}",mod_list).to_string();
     let _ = fs::write(&mod_rs_path,mod_rs_contents);
     let auto_lib_contents = quote!{
-        mod tmf723;
+        pub mod tmf723;
 
     }.to_string();
     let _ = fs::write(&dest_path,auto_lib_contents);
