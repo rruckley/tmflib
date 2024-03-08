@@ -1,9 +1,12 @@
 //! Geographic Site Module
 
+use chrono::{NaiveDateTime, Utc};
 use serde::{Deserialize,Serialize};
+use uuid::Uuid;
 use std::convert::From;
 
-use crate::{HasName,HasId,CreateTMF,HasValidity, TimePeriod};
+use crate::common::event::{Event,EventPayload};
+use crate::{HasName,HasId,CreateTMF,HasValidity, TimePeriod,TMFEvent};
 use crate::common::related_party::RelatedParty;
 use tmflib_derive::{HasId, HasValidity, HasName};
 use crate::tmf673::geographic_address::GeographicAddress;
@@ -136,6 +139,60 @@ impl GeographicSite {
     pub fn calendar(mut self, calendar : CalendarPeriod) -> GeographicSite {
         self.calendar.as_mut().unwrap().push(calendar);
         self
+    }
+}
+
+/// Events for Geographic Site
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub enum GeographicSiteEventType {
+    /// New Site Created
+    GeographicSiteCreateEvent,
+    /// Attribute changed on existing site
+    GeographicSiteAttributeValueChangeEvent,
+    /// Existing site changed state
+    GeographicSiteStatusChangeEvent,
+    /// Existing site deleted
+    GeographicSiteDeleteEvent,
+}
+
+/// Container for the payload that generated the event
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub struct GeographicSiteEvent {
+    /// Struct that this event relates to
+    pub geographic_site: GeographicSite,
+}
+
+impl TMFEvent<GeographicSiteEvent> for GeographicSite {
+    fn event(&self) -> GeographicSiteEvent {
+        GeographicSiteEvent {
+            geographic_site : self.clone(),
+        }
+    }
+}
+
+impl EventPayload<GeographicSiteEvent> for GeographicSiteEvent {
+    type Subject = GeographicSite;
+    type EventType = GeographicSiteEventType;
+
+    fn to_event(&self,event_type : Self::EventType) -> crate::common::event::Event<Self::Subject,Self::EventType> {
+        let now = Utc::now();
+        let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+   
+        Event {
+            correlation_id: None,
+            description: None,
+            domain: Some(GeographicSite::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: Some(self.geographic_site.get_href()),
+            id: Some(self.geographic_site.get_id()),
+            title: Some(self.geographic_site.get_name()),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: None,
+            event_type,
+            event: self.geographic_site.clone(),
+        }
     }
 }
 
