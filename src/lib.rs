@@ -153,7 +153,7 @@ pub trait HasName : HasId {
 
 /// Trait for generating an event
 pub trait TMFEvent<T> : HasId + HasName {
-    /// Geneate contianer for an TMF payload to be used in an event
+    /// Geneate container for an TMF payload to be used in an event
     fn event(&self) -> T;
 }
 
