@@ -6,11 +6,5 @@ use tmflib::common::event::EventPayload;
 fn main() {
     let catalog = Catalog::new("My Catalog");
 
-    let event = catalog.generate_event(CatalogEventType::CatalogCreateEvent);
-
-    //dbg!(event);
-
-    let event_json = serde_json::to_string(&event).unwrap();
-
-    println!("JSON: {}",event_json);
+    dbg!(catalog);
 }
