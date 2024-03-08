@@ -98,13 +98,13 @@ impl TMFEvent<CatalogEvent> for Catalog {
 impl EventPayload<CatalogEvent> for Catalog {
     type Subject = Catalog;
     type EventType = CatalogEventType;
-    fn to_event(&self,event_type : CatalogEventType) -> crate::common::event::Event<Catalog,CatalogEventType> {       
+    fn to_event(&self,event_type : CatalogEventType) -> Event<CatalogEvent,CatalogEventType> {       
         let now = Utc::now();
         let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         Event {
             correlation_id: None,
             description: None,
-            domain: None,
+            domain: Some(Catalog::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
             href: self.href.clone(),
@@ -114,7 +114,7 @@ impl EventPayload<CatalogEvent> for Catalog {
             priority: None,
             time_occurred: None,
             event_type,
-            event: self.clone(),
+            event: self.event(),
         }
     }
 }

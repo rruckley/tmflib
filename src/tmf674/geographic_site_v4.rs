@@ -170,28 +170,28 @@ impl TMFEvent<GeographicSiteEvent> for GeographicSite {
     }
 }
 
-impl EventPayload<GeographicSiteEvent> for GeographicSiteEvent {
+impl EventPayload<GeographicSiteEvent> for GeographicSite {
     type Subject = GeographicSite;
     type EventType = GeographicSiteEventType;
 
-    fn to_event(&self,event_type : Self::EventType) -> crate::common::event::Event<Self::Subject,Self::EventType> {
+    fn to_event(&self,event_type : Self::EventType) -> Event<GeographicSiteEvent,Self::EventType> {
         let now = Utc::now();
         let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
-   
+        
         Event {
             correlation_id: None,
             description: None,
             domain: Some(GeographicSite::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
-            href: Some(self.geographic_site.get_href()),
-            id: Some(self.geographic_site.get_id()),
-            title: Some(self.geographic_site.get_name()),
+            href: Some(self.get_href()),
+            id: Some(self.get_id()),
+            title: Some(self.get_name()),
             event_time: event_time.to_string(),
             priority: None,
             time_occurred: None,
             event_type,
-            event: self.geographic_site.clone(),
+            event: self.event()
         }
     }
 }

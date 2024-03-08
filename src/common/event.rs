@@ -6,7 +6,7 @@ use crate::{HasId,HasName,TMFEvent};
 /// Generic Event structure, will be linked into event specific payloads.
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Event<T : HasId + HasName,U> {
+pub struct Event<T,U> {
     /// Correlation Id
     #[serde(skip_serializing_if = "Option::is_none")]
     pub correlation_id: Option<String>,
@@ -51,5 +51,5 @@ pub trait EventPayload<T> {
     /// Type of event generateds
     type EventType;
     /// Convert the item into an event
-    fn to_event(&self,event_type : Self::EventType) -> Event<Self::Subject,Self::EventType>;
+    fn to_event(&self,event_type : Self::EventType) -> Event<T,Self::EventType>;
 }
