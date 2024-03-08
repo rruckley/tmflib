@@ -8,7 +8,7 @@ fn main() {
 
     let site = GeographicSite::new("Chatswood Branch");
 
-    let event = site.event().to_event(GeographicSiteEventType::GeographicSiteCreateEvent);
+    let event = site.to_event(GeographicSiteEventType::GeographicSiteCreateEvent);
 
     dbg!(event);
 }
