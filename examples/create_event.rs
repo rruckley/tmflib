@@ -1,7 +1,6 @@
 //! Create Event Example
 
 use tmflib::common::event::EventPayload;
-use tmflib::TMFEvent;
 use tmflib::tmf674::geographic_site_v4::{GeographicSite,GeographicSiteEventType};
 
 fn main() {
