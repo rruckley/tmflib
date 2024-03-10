@@ -45,9 +45,8 @@ pub struct CommunicationMessage {
 impl CommunicationMessage {
     /// Create a new basic message
     pub fn new(content : impl Into<String>) -> CommunicationMessage {
-        let message = CommunicationMessage::create()
-            .content(content);
-        message
+        CommunicationMessage::create()
+            .content(content)
     }
 
     /// Create an email style message
