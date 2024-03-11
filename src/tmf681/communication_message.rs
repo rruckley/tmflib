@@ -1,12 +1,54 @@
 //! Communication Message Module
 
-use crate::{DateTime,LIB_PATH,HasId,CreateTMF,Uri};
+use crate::{CreateTMF, DateTime, HasId, HasName, Uri, LIB_PATH};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 use crate::common::attachment::AttachmentRefOrValue;
+use crate::common::related_party::RelatedParty;
+use crate::tmf632::individual::Individual;
 
 use super::MOD_PATH;
 const CLASS_PATH : &str = "message";
+
+/// Recipient of this communication message
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct Receiver {
+    name: String,
+    id: String,
+    email: String,
+    /// Related party for receiver
+    pub party: Option<RelatedParty>,
+}
+
+impl From<&Individual> for Receiver {
+    fn from(value: &Individual) -> Self {
+        Receiver {
+            id: value.get_id(),
+            name: value.get_name(),
+            email: "unknown".into(),
+            party : Some(RelatedParty::from(value)),
+        }
+    }
+}
+
+/// Sending of this communication message
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct Sender {
+    id: String,
+    name: String,
+    /// Related party for sender
+    pub party: Option<RelatedParty>,
+}
+
+impl From<&Individual> for Sender {
+    fn from(value: &Individual) -> Self {
+        Sender {
+            id: value.get_id(),
+            name: value.get_name(),
+            party: Some(RelatedParty::from(value)),
+        }
+    }
+}
 
 /// Message Status
 #[derive(Clone,Default,Debug,Deserialize,Serialize)]
@@ -39,7 +81,12 @@ pub struct CommunicationMessage {
     state: CommunicationMessageStateType,
     subject: Option<String>,
     try_times : u32,
+    // Referenced structures
     attachment : Vec<AttachmentRefOrValue>,
+    /// Reciever(s)
+    pub receiver: Vec<Receiver>,
+    /// Sender
+    pub sender: Option<Sender>,
 }
 
 impl CommunicationMessage {
@@ -77,6 +124,20 @@ impl CommunicationMessage {
     /// Set type of message 
     pub fn message_type(mut self,msg_type : impl Into<String>) -> CommunicationMessage {
         self.message_type = msg_type.into();
+        self
+    }
+
+    /// Set the Sender for this message
+    pub fn from(mut self, sender : &Individual) -> CommunicationMessage {
+        self.sender = Some(Sender::from(sender));
+        self
+    }
+
+    /// Set the receivers for this message
+    pub fn to(mut self, recievers: Vec<&Individual>) -> CommunicationMessage {
+        recievers.into_iter().for_each(|i| {
+            self.receiver.push(Receiver::from(i));
+        });
         self
     }
 }
