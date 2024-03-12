@@ -9,18 +9,24 @@ const EMAIL_TYPE : &str = "email";
 #[derive(Clone, Debug, Default, Deserialize, Hash, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MediumCharacteristic {
-    contact_type: Option<String>,
-    email_address : Option<String>,
-    phone_number: Option<String>,
+    /// Contact Type
+    pub contact_type: Option<String>,
+    /// Contact Email Address
+    pub email_address : Option<String>,
+    /// Contact Phone Number
+    pub phone_number: Option<String>,
 }
 
 /// Contact Medium
 #[derive(Clone, Default, Debug, Deserialize, Hash, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ContactMedium {
-    characteristic: Option<MediumCharacteristic>,
-    medium_type: Option<String>,
-    preferred: bool,
+    /// Characteristic
+    pub characteristic: Option<MediumCharacteristic>,
+    /// Medium Type, e.g. Mobile, Email etc.
+    pub medium_type: Option<String>,
+    /// Is this the preferred medium
+    pub preferred: bool,
 }
 
 impl ContactMedium {
