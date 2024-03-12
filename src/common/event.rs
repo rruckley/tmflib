@@ -1,8 +1,7 @@
 //! Asynchronous Events
 //! 
 use serde::{Deserialize, Serialize};
-use crate::HasId;
-use std::fmt::Display;
+use crate::{HasId,HasName,TMFEvent};
 
 /// Generic Event structure, will be linked into event specific payloads.
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -46,7 +45,11 @@ pub struct Event<T,U> {
 }
 
 /// Trait for types that can generate an event
-pub trait EventPayload<T : HasId,U : Display> {
-    /// Generate a new event payload
-    fn generate_event(&self,event_type : U) -> Event<T,U>;
+pub trait EventPayload<T> {
+    /// Object the event pertains to
+    type Subject : HasId + HasName + TMFEvent<T>;
+    /// Type of event generateds
+    type EventType;
+    /// Convert the item into an event
+    fn to_event(&self,event_type : Self::EventType) -> Event<T,Self::EventType>;
 }

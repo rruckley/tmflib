@@ -1,7 +1,7 @@
 //! Catalogue Module
 //!
 //!
-use crate::{HasId, CreateTMF, HasName, CreateTMFWithTime,HasLastUpdate, HasValidity, TimePeriod, DateTime};
+use crate::{HasId, CreateTMF, HasName, CreateTMFWithTime,HasLastUpdate, HasValidity, TimePeriod, DateTime,TMFEvent};
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
@@ -81,14 +81,31 @@ impl Catalog {
     }
 }
 
-impl EventPayload<Catalog,CatalogEventType> for Catalog {
-    fn generate_event(&self,event_type : CatalogEventType) -> crate::common::event::Event<Catalog,CatalogEventType> {       
+/// Container for the payload that generated the event
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub struct CatalogEvent {
+    /// Struct that this event relates to
+    pub catalog: Catalog,
+}
+
+impl TMFEvent<CatalogEvent> for Catalog {
+    fn event(&self) -> CatalogEvent {
+        CatalogEvent {
+            catalog : self.clone(),
+        }
+    }
+}
+
+impl EventPayload<CatalogEvent> for Catalog {
+    type Subject = Catalog;
+    type EventType = CatalogEventType;
+    fn to_event(&self,event_type : CatalogEventType) -> Event<CatalogEvent,CatalogEventType> {       
         let now = Utc::now();
         let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         Event {
             correlation_id: None,
             description: None,
-            domain: None,
+            domain: Some(Catalog::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
             href: self.href.clone(),
@@ -98,7 +115,7 @@ impl EventPayload<Catalog,CatalogEventType> for Catalog {
             priority: None,
             time_occurred: None,
             event_type,
-            event: self.clone(),
+            event: self.event(),
         }
     }
 }

@@ -202,6 +202,12 @@ pub trait HasRelatedParty : HasId {
     fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String>;
 }
 
+/// Trait for generating an event
+pub trait TMFEvent<T> : HasId + HasName {
+    /// Geneate container for an TMF payload to be used in an event
+    fn event(&self) -> T;
+}
+
 /// Common Modules
 pub mod common;
 /// Product Catalogue
@@ -244,6 +250,8 @@ pub mod tmf673;
 pub mod tmf674;
 /// Product Offering Qualification
 pub mod tmf679;
+/// Communication Management
+pub mod tmf681;
 /// Sales Management
 pub mod tmf699;
 /// Shipping Order [Pre-Prod]
