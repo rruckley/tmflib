@@ -15,7 +15,7 @@ const CLASS_PATH : &str = "message";
 pub struct Receiver {
     name: String,
     id: String,
-    email: String,
+    email: Option<String>,
     /// Related party for receiver
     pub party: Option<RelatedParty>,
 }
@@ -25,7 +25,7 @@ impl From<&Individual> for Receiver {
         Receiver {
             id: value.get_id(),
             name: value.get_name(),
-            email: "unknown".into(),
+            email: value.get_email(),
             party : Some(RelatedParty::from(value)),
         }
     }
