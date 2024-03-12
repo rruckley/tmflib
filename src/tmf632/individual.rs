@@ -1,5 +1,7 @@
 //! Individual Module
 
+use std::ops::Deref;
+
 use serde::{Deserialize, Serialize};
 
 use crate::{HasId, HasName, CreateTMF, DateTime};
@@ -92,9 +94,10 @@ impl Individual {
         let name : String = name.into();
         let name_str = name.as_str();
         let name_parts = name_str.split(' ');
+        // Determine the number of parts the name is given in
         match name_parts.clone().count() {
             1 => {
-                // Only a single name
+                // Only a single name, nothing to do here.
 
             },
             2 => {
@@ -206,6 +209,38 @@ impl Individual {
     pub fn add_contact(&mut self, medium : ContactMedium) {
         self.contact_medium.as_mut().unwrap().push(medium);
     }
+
+    /// Find a particular contact medium matching ``medium``
+    fn find_medium(&self, medium : impl Into<String>) -> Option<Vec<&ContactMedium>> {
+        match &self.contact_medium {
+            None => None,
+            Some(cm) => {
+                let name : String = medium.into();
+                Some(cm.into_iter().filter(|i: &&ContactMedium|  {
+                    i.medium_type.is_some() && i.medium_type.as_ref().unwrap().deref() == name
+                }).collect())
+            }
+        }
+        
+    }
+
+    /// Get Email address from contact medium if present
+    pub fn get_mobile(&self) -> Option<String> {
+        // Optionally get the email address
+        let medium = self.find_medium("mobile")?;
+        let medium = medium.first()?;
+        let characteristic = medium.characteristic.as_ref()?;
+        characteristic.email_address.clone()
+    }
+
+    /// Get Email address from contact medium if present
+    pub fn get_email(&self) -> Option<String> {
+        // Optionally get the email address
+        let medium = self.find_medium("email")?;
+        let medium = medium.first()?;
+        let characteristic = medium.characteristic.as_ref()?;
+        characteristic.email_address.clone()
+    }
 }
 
 impl HasName for Individual {
@@ -258,5 +293,14 @@ mod test {
         assert_eq!(ind.given_name,Some("John".to_string()));
         assert_eq!(ind.middle_name,Some("Bagford".to_string()));
         assert_eq!(ind.family_name,Some("Smith".to_string()));
+    }
+
+    #[test]
+    fn test_individual_get_email() {
+        const EMAIL : &str = "john.bagford.smith@example.com";
+        let ind = Individual::new("John Bagford Smith")
+            .email(EMAIL);
+
+        assert_eq!(ind.get_email(),Some(EMAIL.to_string())) 
     }
 }
