@@ -60,6 +60,7 @@ impl Catalog {
         cat.version = Some(CAT_VERS.to_string());
         cat.category = Some(vec![]);
         cat.related_party = Some(vec![]);
+        cat.valid_for = Some(TimePeriod::default());
         cat
     }
 
@@ -135,6 +136,8 @@ pub struct CatalogBatchEvent {}
 #[cfg(test)]
 mod tests {
 
+    const CAT_NAME : &str = "A Catalog";
+
     use crate::tmf620::catalog::{CAT_VERS,CLASS_PATH};
 
     use super::Catalog;
@@ -142,14 +145,14 @@ mod tests {
 
     #[test]
     fn test_cat_name() {
-        let cat = Catalog::new("MyCatalog");
+        let cat = Catalog::new(CAT_NAME);
 
-        assert_eq!(cat.name, Some(String::from("MyCatalog")));
+        assert_eq!(cat.name, Some(String::from(CAT_NAME)));
     }
 
     #[test]
     fn test_cat_vers() {
-        let cat = Catalog::new("MyCatalog");
+        let cat = Catalog::new(CAT_NAME);
 
         assert_eq!(cat.version, Some(CAT_VERS.to_string()));
     }

@@ -32,7 +32,7 @@
 #![warn(missing_docs)]
 
 use chrono::naive::NaiveDateTime;
-use chrono::Utc;
+use chrono::{Utc,Days};
 use common::related_party::RelatedParty;
 use uuid::Uuid;
 use serde::{Deserialize, Serialize};
@@ -51,7 +51,7 @@ pub type DateTime = String;
 pub type Uri = String;
 
 /// Standard TMF TimePeriod structure
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimePeriod {
     /// Start of time period
@@ -59,6 +59,35 @@ pub struct TimePeriod {
     /// End of time period
     #[serde(skip_serializing_if = "Option::is_none")]
     pub end_date_time: Option<TimeStamp>,
+}
+
+impl TimePeriod {
+    /// Create a time period of 30 days
+    pub fn period_30days() -> TimePeriod {
+        TimePeriod::period_days(30)
+    }
+
+    /// Calculate period `days` into the future
+    pub fn period_days(days : u64) -> TimePeriod {
+        let now = Utc::now() + Days::new(days);
+        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        TimePeriod {
+            end_date_time: Some(time.to_string()),
+            ..Default::default()
+        }
+    }
+
+}
+
+impl Default for TimePeriod {
+    fn default() -> Self {
+        let now = Utc::now();
+        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        TimePeriod {
+            start_date_time : time.to_string(),
+            end_date_time: None,
+        }    
+    }
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
