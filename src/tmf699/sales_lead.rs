@@ -14,12 +14,13 @@ use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf620::product_specification::ProductSpecificationRef;
 
 use super::MOD_PATH;
-use crate::{HasId,CreateTMF,HasValidity,LIB_PATH, TimePeriod, DateTime};
-use tmflib_derive::{HasId,HasValidity};
+use crate::{HasId,CreateTMF,HasValidity,HasNote, LIB_PATH, TimePeriod, DateTime};
+use tmflib_derive::{HasId,HasValidity,HasNote};
 
 use serde::{Deserialize,Serialize};
 
 const CLASS_PATH : &str = "salesLead";
+const LEAD_VALID :u64 = 30;
 
 /// Sales Lead Priorities
 #[derive(Clone,Debug,Default,Deserialize,Serialize)]
@@ -54,7 +55,7 @@ pub enum SalesLeadStateType {
 }
 
 /// Sales Lead - for tracking potential sales.
-#[derive(Clone,Debug,Default,Deserialize, HasId, HasValidity, Serialize)]
+#[derive(Clone,Debug,Default,Deserialize, HasId, HasValidity, HasNote, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SalesLead {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -108,6 +109,7 @@ impl SalesLead {
         sl.name = name.into();
         sl.status = Some(SalesLeadStateType::default());
         sl.priority = Some(SalesLeadPrioityType::default());
+        sl.valid_for = Some(TimePeriod::period_days(LEAD_VALID));
         sl
     }
 }

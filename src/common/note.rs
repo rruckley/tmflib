@@ -39,7 +39,7 @@ impl Note {
 
 impl From<&str> for Note {
     fn from(value: &str) -> Self {
-        Note::new(value.to_string())
+        Note::new(value)
     }
 }
 

@@ -100,6 +100,66 @@ pub fn hasname_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+#[proc_macro_derive(HasNote)]
+pub fn hasnote_derive(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let fields = match input.data {
+        Data::Struct(s) => {
+            s.fields
+                .into_iter()
+                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
+            },
+        _ => panic!("HasId only supports Struct"),
+    };
+    let name = input.ident;
+    // Ensure id field is present
+    let _note = fields.iter().find(|s| *s == "note").expect("No note field present");
+    let out = quote! {
+        impl HasNote for #name {
+            fn add_note(&mut self, note : Note) {
+                self.note.as_mut().unwrap().push(note);    
+            }
+            fn get_note(&self, idx : usize) -> Option<&Note> {
+                self.note.as_ref().unwrap().get(idx)
+            }
+            fn remove_note(&mut self, idx: usize) -> Result<Note,String> {
+                Ok(self.note.as_mut().unwrap().remove(idx))  
+            }
+        }
+    };
+    out.into()
+}
+
+#[proc_macro_derive(HasRelatedParty)]
+pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let fields = match input.data {
+        Data::Struct(s) => {
+            s.fields
+                .into_iter()
+                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
+            },
+        _ => panic!("HasRelatedParty only supports Struct"),
+    };
+    let name = input.ident;
+    // Ensure id field is present
+    let _related_party: &String = fields.iter().find(|s| *s == "related_party").expect("No related_party field present");
+    let out = quote! {   
+        impl HasRelatedParty for #name {
+            fn add_party(&mut self, party : RelatedParty) {
+                self.related_party.as_mut().unwrap().push(party);
+            }
+            fn get_party(&self, idx : usize ) -> Option<&RelatedParty> {
+                self.related_party.as_ref().unwrap().get(idx)    
+            }
+            fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String> {
+                Ok(self.related_party.as_mut().unwrap().remove(idx))  
+            }
+        }
+    };
+    out.into()
+}
+
 #[proc_macro_derive(HasValidity)]
 pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);

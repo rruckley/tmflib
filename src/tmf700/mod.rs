@@ -21,3 +21,5 @@ use super::CreateTMF;
 pub const MOD_PATH : &str = "shippingOrder/v4";
 
 pub mod shipping_order;
+pub mod shipping_order_item;
+pub mod shipping_instruction;

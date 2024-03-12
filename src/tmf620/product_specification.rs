@@ -28,7 +28,8 @@ pub struct ProductSpecificationCharacteristic {
     is_unique: bool,
     max_cardinality: Cardinality,
     min_cardinality: Cardinality,
-    name: String,
+    /// Characteristic Name
+    pub name: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     regex: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -51,6 +52,7 @@ impl ProductSpecificationCharacteristic {
             max_cardinality: CHAR_VALUE_MAX_CARD,
             min_cardinality: CHAR_VALUE_MIN_CARD,
             name : name.into(),
+            valid_for: Some(TimePeriod::default()),
             ..Default::default()
         }
     }
@@ -376,14 +378,14 @@ mod test {
 
     #[test]
     fn test_char_value_use_new() {
-        let value_use = ProductSpecificationCharacteristicValueUse::new(VALUE_NAME.to_string());
+        let value_use = ProductSpecificationCharacteristicValueUse::new(VALUE_NAME);
 
         assert_eq!(value_use.name, VALUE_NAME.to_string());
     }
 
     #[test]
     fn test_char_value_use_new_card() {
-        let value_use = ProductSpecificationCharacteristicValueUse::new(VALUE_NAME.to_string());
+        let value_use = ProductSpecificationCharacteristicValueUse::new(VALUE_NAME);
 
         assert_eq!(value_use.min_cardinality, CHAR_VALUE_MIN_CARD);
         assert_eq!(value_use.max_cardinality, CHAR_VALUE_MAX_CARD);
@@ -391,20 +393,20 @@ mod test {
 
     #[test]
     fn test_char_value_use_new_value() {
-        let value_use = ProductSpecificationCharacteristicValueUse::new(VALUE_NAME.to_string());
+        let value_use = ProductSpecificationCharacteristicValueUse::new(VALUE_NAME);
 
         assert_eq!(value_use.value_type, String::from("String"));
     }
 
     #[test]
     fn test_spec_new() {
-        let spec = ProductSpecification::new(SPEC_NAME.to_string());
+        let spec = ProductSpecification::new(SPEC_NAME);
 
         assert_eq!(spec.name, Some(SPEC_NAME.to_string()));
     }
     #[test]
     fn test_spec_new_vers() {
-        let spec = ProductSpecification::new(SPEC_NAME.to_string());
+        let spec = ProductSpecification::new(SPEC_NAME);
 
         assert_eq!(spec.version, Some(SPEC_VERS.to_string()));
     }

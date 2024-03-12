@@ -32,9 +32,11 @@
 #![warn(missing_docs)]
 
 use chrono::naive::NaiveDateTime;
-use chrono::Utc;
+use chrono::{Utc,Days};
+use common::related_party::RelatedParty;
 use uuid::Uuid;
 use serde::{Deserialize, Serialize};
+use crate::common::note::Note;
 
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmf-api";
@@ -49,7 +51,7 @@ pub type DateTime = String;
 pub type Uri = String;
 
 /// Standard TMF TimePeriod structure
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimePeriod {
     /// Start of time period
@@ -57,6 +59,35 @@ pub struct TimePeriod {
     /// End of time period
     #[serde(skip_serializing_if = "Option::is_none")]
     pub end_date_time: Option<TimeStamp>,
+}
+
+impl TimePeriod {
+    /// Create a time period of 30 days
+    pub fn period_30days() -> TimePeriod {
+        TimePeriod::period_days(30)
+    }
+
+    /// Calculate period `days` into the future
+    pub fn period_days(days : u64) -> TimePeriod {
+        let now = Utc::now() + Days::new(days);
+        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        TimePeriod {
+            end_date_time: Some(time.to_string()),
+            ..Default::default()
+        }
+    }
+
+}
+
+impl Default for TimePeriod {
+    fn default() -> Self {
+        let now = Utc::now();
+        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        TimePeriod {
+            start_date_time : time.to_string(),
+            end_date_time: None,
+        }    
+    }
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
@@ -149,6 +180,26 @@ pub trait HasName : HasId {
     fn find(&self, pattern : &str) -> bool {
         self.get_name().contains(pattern.trim())
     }
+}
+
+/// Trait for classes with notes
+pub trait HasNote : HasId {
+    /// Get a specific note if it exists
+    fn get_note(&self, idx : usize) -> Option<&Note>;
+    /// Add a new note
+    fn add_note(&mut self, note : Note);
+    ///
+    fn remove_note(&mut self, idx: usize) -> Result<Note,String>;
+}
+
+/// Trait for classes with Related Parties
+pub trait HasRelatedParty : HasId {
+    /// Get a specific party by index
+    fn get_party(&self, idx : usize ) -> Option<&RelatedParty>;
+    /// Add a new party
+    fn add_party(&mut self, party : RelatedParty);
+    /// Remote a party
+    fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String>;
 }
 
 /// Trait for generating an event

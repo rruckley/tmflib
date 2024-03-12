@@ -3,8 +3,8 @@ use serde::{Deserialize, Serialize};
 // URL Path components
 use crate::LIB_PATH;
 use super::MOD_PATH;
-use crate::{HasId,CreateTMF,DateTime};
-use tmflib_derive::HasId;
+use crate::{HasId,HasNote, CreateTMF,DateTime};
+use tmflib_derive::{HasId,HasNote};
 use crate::common::note::Note;
 use super::service_order_item::ServiceOrderItem;
 use crate::common::related_party::RelatedParty;
@@ -40,7 +40,7 @@ pub enum ServiceOrderStateType {
 }
 
 /// Service Order Object
-#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasNote, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ServiceOrder {
     /// Cancellation Date
