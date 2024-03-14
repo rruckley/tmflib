@@ -244,6 +244,8 @@ pub mod tmf663;
 pub mod tmf666;
 /// Party Role
 pub mod tmf669;
+/// User Roles and Permissions Management
+pub mod tmf672;
 /// Geographic Address
 pub mod tmf673;
 /// Geographic Site
