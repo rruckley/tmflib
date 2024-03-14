@@ -275,6 +275,7 @@ fn schema_object_properties(object: ObjectType,schema_vec: &mut Vec<String>) -> 
             .replace("type", "r#type")
             .to_case(Case::Snake);
         let mut prop_ref = property_ref(schema,schema_vec);
+        
         let line = format!("\n\t{}: {},",name,prop_ref.string);
         out.push_str(line.as_str());
         
@@ -297,7 +298,7 @@ fn schema_array(name: String, array : ArrayType,schema_vec: &mut Vec<String>) ->
 fn schema_allof(name : String, all_of : Vec<ReferenceOr<Schema>>,schema_hash : &mut HashMap<String,Vec<String>>,mode: BuildMode) -> String {
     let mut out = String::default();
     let mut uses = StringWithUse::default();
-    out.push_str("// Schema AllOf\n");
+    out.push_str("\t// Schema AllOf\n");
     let mut prop_vec : Vec<String> = vec![];
     for r in all_of {
         out.push_str(match r {
