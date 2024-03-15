@@ -1,3 +1,3 @@
 # tmflib
 
-Library to interact with TMForum APIs.
+Rust Library to interact with TMForum APIs.
