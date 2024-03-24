@@ -5,9 +5,12 @@ use tmflib::tmf674::geographic_site_v4::{GeographicSite,GeographicSiteEventType}
 
 fn main() {
 
-    let site = GeographicSite::new("Chatswood Branch");
+    let mut site = GeographicSite::new("Chatswood Branch");
 
-    let event = site.to_event(GeographicSiteEventType::GeographicSiteCreateEvent);
+    site.status = Some("Active".into());
+
+    let event = site.to_event(GeographicSiteEventType::GeographicSiteStatusChangeEvent)
+        .path("status");
 
     dbg!(event);
 }
