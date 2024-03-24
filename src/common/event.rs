@@ -44,6 +44,14 @@ pub struct Event<T,U> {
     pub event: T,
 }
 
+impl<T,U> Event<T,U> {
+    /// Set the field path for a attribute change event
+    pub fn path(mut self, path : impl Into<String>) -> Event<T,U> {
+        self.field_path = Some(path.into());
+        self
+    }
+}
+
 /// Trait for types that can generate an event
 pub trait EventPayload<T> {
     /// Object the event pertains to
