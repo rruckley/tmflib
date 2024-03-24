@@ -189,7 +189,7 @@ impl EventPayload<GeographicSiteEvent> for GeographicSite {
             title: Some(self.get_name()),
             event_time: event_time.to_string(),
             priority: None,
-            time_occurred: None,
+            time_occurred: Some(event_time.to_string()),
             event_type,
             event: self.event()
         }
