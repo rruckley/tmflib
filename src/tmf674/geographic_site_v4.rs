@@ -177,10 +177,10 @@ impl EventPayload<GeographicSiteEvent> for GeographicSite {
     fn to_event(&self,event_type : Self::EventType) -> Event<GeographicSiteEvent,Self::EventType> {
         let now = Utc::now();
         let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
-        
+        let desc = format!("{:?} for {}:{}",event_type,self.get_name(),self.get_id());
         Event {
             correlation_id: None,
-            description: None,
+            description: Some(desc),
             domain: Some(GeographicSite::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
