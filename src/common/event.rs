@@ -48,7 +48,7 @@ pub struct Event<T,U> {
 pub trait EventPayload<T> {
     /// Object the event pertains to
     type Subject : HasId + HasName + TMFEvent<T>;
-    /// Type of event generateds
+    /// Type of event generated
     type EventType;
     /// Convert the item into an event
     fn to_event(&self,event_type : Self::EventType) -> Event<T,Self::EventType>;
