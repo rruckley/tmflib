@@ -2,6 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 use crate::common::note::Note;
+use super::shopping_cart::CartPrice;
 #[cfg(feature = "v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
 #[cfg(feature = "v5")]
@@ -20,6 +21,8 @@ pub struct CartItem {
     pub product_offering: Option<ProductOfferingRef>,
     /// Quantity
     pub quantity: u16,
+    /// Item Price
+    pub item_price: Vec<CartPrice>,
 }
 
 impl CartItem {
@@ -37,6 +40,7 @@ impl From<ProductOfferingRef> for CartItem {
             quantity: 1,
             product_offering: Some(value),
             note: vec![],
+            item_price: vec![],
         }
     }
 }
