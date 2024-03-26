@@ -31,6 +31,8 @@
 
 #![warn(missing_docs)]
 
+include!(concat!(env!("OUT_DIR"), "/auto-lib.rs"));
+
 use chrono::naive::NaiveDateTime;
 use chrono::{Utc,Days};
 use common::related_party::RelatedParty;
