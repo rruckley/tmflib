@@ -216,7 +216,7 @@ impl Individual {
             None => None,
             Some(cm) => {
                 let name : String = medium.into();
-                Some(cm.into_iter().filter(|i: &&ContactMedium|  {
+                Some(cm.iter().filter(|i: &&ContactMedium|  {
                     i.medium_type.is_some() && i.medium_type.as_ref().unwrap().deref() == name
                 }).collect())
             }
