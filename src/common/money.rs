@@ -4,7 +4,7 @@
 use serde::{Deserialize,Serialize};
 
 /// Money sub-resource
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Money {
    /// ISO4217 currency code
    pub unit : String,
