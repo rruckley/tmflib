@@ -16,8 +16,8 @@ use tmflib::tmf632::organization::Organization;
 
 fn main() {
     // This example simple creates in memory structures without reference to any persistence
-    let offer = ProductOffering::new(String::from("Sample Offering"));
-    let org = Organization::new(String::from("ACustomer"));
+    let offer = ProductOffering::new("Sample Offering");
+    let org = Organization::new("ACustomer");
     let customer = Customer::new(org);
     let mut person = Individual::new("John Smith");
     person.add_contact(ContactMedium::email("John.Smith@example.com"));

@@ -11,9 +11,9 @@ use tmflib::tmf679::product_qualification::ProductOfferingQualification;
 
 
 fn main() {
-    let org = Organization::new(String::from("ACustomer"));
+    let org = Organization::new("ACustomer");
     let customer = Customer::new(org);
-    let offering = ProductOffering::new(String::from("MyOffer"));
+    let offering = ProductOffering::new("MyOffer");
     let mut poq = ProductOfferingQualification::new(Some(ProductOfferingRef::from(offering)));
     poq.add_party(RelatedParty::from(&customer));
 

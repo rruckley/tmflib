@@ -13,7 +13,7 @@ use tmflib::tmf663::cart_item::CartItem;
 
 fn main() {
     let mut cart = ShoppingCart::new();
-    let offer = ProductOffering::new(String::from("MyProductOffer"));
+    let offer = ProductOffering::new("MyProductOffer");
     let por = ProductOfferingRef::from(offer);
     let individual = Individual::new("John Smith")
         .email("john.smith@example.com")

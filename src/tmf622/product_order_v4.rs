@@ -77,6 +77,7 @@ impl ProductOrder {
     pub fn new() -> ProductOrder {
         let mut po = ProductOrder::create_with_time();
         po.related_party = Some(vec![]);
+        po.product_order_item = Some(vec![]);
         po
     }
 
