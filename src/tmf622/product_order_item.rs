@@ -59,11 +59,10 @@ impl From<ServiceOrderItem> for ProductOrderItem {
 impl From<CartItem> for ProductOrderItem {
     fn from(value: CartItem) -> Self {
         // Convert a Cart item into a product order item
-        let item = ProductOrderItem {
+        ProductOrderItem {
             product_offering: value.product_offering,
             quantity: value.quantity,
             ..Default::default()
-        };
-        item
+        }
     }
 }
