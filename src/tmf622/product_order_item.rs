@@ -8,6 +8,7 @@ use crate::tmf620::product_offering::{ProductOffering,ProductOfferingRef};
 #[cfg(feature = "v5")]
 use crate::tmf620::product_offering_v5::{ProductOffering,ProductOfferingRef};
 use crate::tmf641::service_order_item::ServiceOrderItem;
+use crate::tmf663::cart_item::CartItem;
 
 
 /// Action Type for Order Items
@@ -52,5 +53,17 @@ impl From<ServiceOrderItem> for ProductOrderItem {
         poi.quantity = value.quantity;
         poi.product_offering = Some(ProductOfferingRef::from(po));
         poi
+    }
+}
+
+impl From<CartItem> for ProductOrderItem {
+    fn from(value: CartItem) -> Self {
+        // Convert a Cart item into a product order item
+        let item = ProductOrderItem {
+            product_offering: value.product_offering,
+            quantity: value.quantity,
+            ..Default::default()
+        };
+        item
     }
 }
