@@ -28,10 +28,10 @@ pub struct ShoppingCart {
     pub href: Option<String>,
     /// Cart Items
     #[serde(skip_serializing_if = "Option::is_none")]
-    cart_item : Option<Vec<CartItem>>,
+    pub cart_item : Option<Vec<CartItem>>,
     /// Related Party
     #[serde(skip_serializing_if = "Option::is_none")]
-    related_party: Option<Vec<RelatedParty>>,
+    pub related_party: Option<Vec<RelatedParty>>,
 }
 
 impl ShoppingCart {
