@@ -37,6 +37,8 @@ fn main() {
         // Issue here is related_party can point to multiple schema. 
         // How do we determine which one to hydrate to? via Role?
         // That implies we need role passed in.
+        // This step could use tmf_client to pull an object from the back end.
+        // Can the role match be pushed into tmf_client?
         Some(h.clone())
     });
 
