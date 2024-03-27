@@ -208,6 +208,26 @@ pub trait TMFEvent<T> : HasId + HasName {
     fn event(&self) -> T;
 }
 
+/// Referenced Id
+pub trait HasRefId {
+    /// Get referenced id
+    fn get_id(&self) -> String;
+}
+
+/// Referenced HRef
+pub trait HasRefHRef : HasRefId {
+    /// Get Referenced Href
+    fn get_href(&self) -> String;
+}
+
+/// Is the object a reference object?
+pub trait IsRef : HasRefHRef {
+    /// Hydrate this reference into a full payload by pulling down the payload indicated by href field.
+    fn hydrate<T : FnOnce(String) -> Option<String>>(&self, func : T) -> Option<String> {
+        func(self.get_href())    
+    }
+}
+
 /// Common Modules
 pub mod common;
 /// Product Catalogue
