@@ -2,8 +2,9 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId,CreateTMF,LIB_PATH};
-use tmflib_derive::HasId;
+use crate::common::money::Money;
+use crate::{HasId,CreateTMF,LIB_PATH,HasValidity,TimePeriod};
+use tmflib_derive::{HasId,HasValidity};
 use crate::common::contact::ContactMedium;
 use crate::common::related_party::RelatedParty;
 
@@ -12,9 +13,29 @@ use super::MOD_PATH;
 use super::cart_item::CartItem;
 
 const CLASS_PATH : &str = "shoppingCart";
+const CART_DEFAULT_VALID : u8 = 7;
+
+/// Cart pricing
+#[derive(Clone, Debug, Default, Deserialize,PartialEq, Serialize)]
+pub struct CartPrice {
+    description: String,
+    name: String,
+    price_type: String,
+    recurring_charge_period: String,
+    unit_of_measure: String,
+}
+
+/// Pricing for Shopping Cart
+#[derive(Clone, Debug, Default, Deserialize,PartialEq, Serialize)]
+pub struct Price {
+    percentage: f32,
+    tax_rate: f32,
+    duty_free_amount: Money,
+    tax_included_amount: Money,
+}
 
 /// Shopping Cart
-#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId,HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShoppingCart {
     /// Contact Medium
@@ -26,12 +47,18 @@ pub struct ShoppingCart {
     /// HTTP Reference
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
+    /// Validity Period
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub valid_for: Option<TimePeriod>,
+    // Referenced objects
+    /// Cart Price (Total)
+    cart_total_price : Vec<CartPrice>,
     /// Cart Items
     #[serde(skip_serializing_if = "Option::is_none")]
-    cart_item : Option<Vec<CartItem>>,
+    pub cart_item : Option<Vec<CartItem>>,
     /// Related Party
     #[serde(skip_serializing_if = "Option::is_none")]
-    related_party: Option<Vec<RelatedParty>>,
+    pub related_party: Option<Vec<RelatedParty>>,
 }
 
 impl ShoppingCart {
@@ -40,9 +67,12 @@ impl ShoppingCart {
         let mut cart = ShoppingCart::create();
         cart.cart_item = Some(vec![]);
         cart.related_party = Some(vec![]);
+        cart.valid_for = Some(TimePeriod::period_days(CART_DEFAULT_VALID.into()));
+        cart.cart_total_price = vec![];
         cart
     }
     /// Add item to shopping cart
+    /// This function will calculate a total price and add it if not present
     pub fn add_item(&mut self, item : CartItem) {
         self.cart_item.as_mut().unwrap().push(item);
     }
@@ -87,5 +117,12 @@ mod test {
         assert_eq!(cart.cart_item.as_ref().unwrap().len(),1);
         assert_eq!(cart.cart_item.as_ref().unwrap().first(),Some(&item2));
 
+    }
+
+    #[test]
+    fn test_cart_valid_for() {
+        let cart = ShoppingCart::new();
+
+        assert_eq!(cart.valid_for.is_some(),true);
     }
 }

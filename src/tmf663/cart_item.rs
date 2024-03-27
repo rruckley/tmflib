@@ -2,6 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 use crate::common::note::Note;
+use super::shopping_cart::CartPrice;
 #[cfg(feature = "v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
 #[cfg(feature = "v5")]
@@ -14,8 +15,14 @@ use uuid::Uuid;
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub struct CartItem {
     id: Option<String>,
-    note : Vec<Note>,
-    product_offering: Option<ProductOfferingRef>,
+    /// Notes for this Cart Item
+    pub note : Vec<Note>,
+    /// Product Offering in cart
+    pub product_offering: Option<ProductOfferingRef>,
+    /// Quantity
+    pub quantity: u16,
+    /// Item Price
+    pub item_price: Vec<CartPrice>,
 }
 
 impl CartItem {
@@ -30,8 +37,10 @@ impl From<ProductOfferingRef> for CartItem {
         let id = Uuid::new_v4().simple().to_string();
         CartItem { 
             id: Some(id), 
+            quantity: 1,
             product_offering: Some(value),
             note: vec![],
+            item_price: vec![],
         }
     }
 }
