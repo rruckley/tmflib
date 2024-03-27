@@ -1,4 +1,4 @@
-// Copyright 2023-2023 Ryan Ruckley.
+// Copyright 2023-2024 Ryan Ruckley.
 //
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -250,6 +250,8 @@ pub mod tmf672;
 pub mod tmf673;
 /// Geographic Site
 pub mod tmf674;
+/// Customer Bill Management
+pub mod tmf678;
 /// Product Offering Qualification
 pub mod tmf679;
 /// Communication Management

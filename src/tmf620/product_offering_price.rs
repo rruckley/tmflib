@@ -5,6 +5,7 @@ use serde::{Deserialize,Serialize};
 use super::MOD_PATH;
 use crate::{HasId,HasName, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, HasValidity, TimePeriod};
 use crate::common::money::Money;
+use crate::common::tax_item::TaxItem;
 use tmflib_derive::{HasId,HasLastUpdate,HasName, HasValidity};
 
 const CLASS_PATH : &str = "productOfferingPrice";
@@ -25,14 +26,7 @@ pub struct ConstraintRef {
     version: Option<String>,
 }
 
-/// Tax Details
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct TaxItem {
-    tax_category: String,
-    tax_rate: f32,
-    tax_amount: Money,
-}
+
 
 /// Product Offering Price Reference
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
