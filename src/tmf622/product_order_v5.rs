@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
-use crate::tmf620::AgreementRef;
+use crate::tmf651::agreement::AgreementRef;
 use crate::{CreateTMFWithTime, CreateTMF, HasId, HasLastUpdate, HasNote, HasRelatedParty, DateTime};
 use tmflib_derive::{HasId,HasNote,HasRelatedParty};
 use crate::tmf641::service_order::ServiceOrder;

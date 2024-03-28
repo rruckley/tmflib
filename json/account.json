@@ -1,0 +1,12 @@
+{
+    "description" : "A Sample account",
+    "relatedParty": [
+        {
+            "id" : "CUST123",
+            "href" : "/tmf-api/customerManagement/customer/CUST123",
+            "name" : "Sample Customer",
+            "pmsIndicator" : "SomePMSValue",
+            "UID" : "12389"
+        }
+    ]
+}
