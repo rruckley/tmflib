@@ -14,8 +14,18 @@ use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf620::product_specification::ProductSpecificationRef;
 
 use super::MOD_PATH;
-use crate::{HasId,CreateTMF,HasValidity,HasNote, LIB_PATH, TimePeriod, DateTime};
-use tmflib_derive::{HasId,HasValidity,HasNote};
+use crate::{
+    HasId,
+    CreateTMF,
+    HasValidity,
+    HasNote,
+    HasName, 
+    LIB_PATH, 
+    TimePeriod, 
+    DateTime,
+    Uri
+};
+use tmflib_derive::{HasId,HasValidity,HasNote,HasName};
 
 use serde::{Deserialize,Serialize};
 
@@ -55,7 +65,7 @@ pub enum SalesLeadStateType {
 }
 
 /// Sales Lead - for tracking potential sales.
-#[derive(Clone,Debug,Default,Deserialize, HasId, HasValidity, HasNote, Serialize)]
+#[derive(Clone,Debug,Default,Deserialize, HasId, HasValidity, HasNote, HasName, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SalesLead {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -66,7 +76,7 @@ pub struct SalesLead {
     creation_date: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
-    name: String,
+    name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     rating : Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -106,11 +116,30 @@ impl SalesLead {
     /// Create a new sales lead under a given names
     pub fn new(name : impl Into<String>) -> SalesLead {
         let mut sl = SalesLead::create();
-        sl.name = name.into();
+        sl.name = Some(name.into());
         sl.status = Some(SalesLeadStateType::default());
         sl.priority = Some(SalesLeadPrioityType::default());
         sl.valid_for = Some(TimePeriod::period_days(LEAD_VALID));
         sl
+    }
+}
+
+/// Sales Lead Reference
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SalesLeadRef {
+    href : Uri,
+    id: String,
+    name : String,
+}
+
+impl From<SalesLead> for SalesLeadRef {
+    fn from(value: SalesLead) -> Self {
+        SalesLeadRef {
+            href : value.get_href(),
+            id: value.get_id(),
+            name: value.get_name(),
+        }
     }
 }
 
@@ -147,6 +176,6 @@ mod test {
     fn sales_lead_create_name() {
         let sl = SalesLead::new(SL_NAME);
 
-        assert_eq!(sl.name,SL_NAME);
+        assert_eq!(sl.name.unwrap(),SL_NAME.to_string());
     }
 }
