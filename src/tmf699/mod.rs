@@ -14,6 +14,16 @@
 
 //! TMF699 Sales Management
 
+#[cfg(feature = "tmf699-v4")]
 const MOD_PATH : &str = "tmf699/v4";
+#[cfg(feature = "tmf699-v5")]
+const MOD_PATH : &str = "tmf699/v5";
 
-pub mod sales_lead;
+#[cfg(feature = "tmf699-v4")]
+pub mod sales_lead_v4;
+#[cfg(feature = "tmf674-v5")]
+pub mod sales_lead_v5;
+#[cfg(feature = "tmf674-v5")]
+pub mod sales_opportunity_v5;
+#[cfg(feature = "tmf674-v5")]
+pub mod sales_opportunity_item_v5;
