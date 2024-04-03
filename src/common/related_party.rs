@@ -161,7 +161,7 @@ mod test {
         let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
 
-        let out = party.hydrate(|h| {
+        let out = party.hydrate_ref(|h| {
             Some(h.clone())
         });
 
