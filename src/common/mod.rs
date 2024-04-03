@@ -1,4 +1,4 @@
-// Copyright 2023-2023 Ryan Ruckley.
+// Copyright 2023-2024 Ryan Ruckley.
 //
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -24,3 +24,4 @@ pub mod event;
 pub mod money;
 pub mod related_party;
 pub mod related_place;
+pub mod tax_item;
