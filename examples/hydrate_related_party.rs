@@ -32,7 +32,7 @@ fn main() {
 
     // Now we wish to fake hydrating a related party
     let party = order.related_party.unwrap().iter().next().unwrap().clone();
-    let full_party = party.hydrate(|h| {
+    let full_party = party.hydrate_ref(|h| {
         // Hydrate party via href
         // Issue here is related_party can point to multiple schema. 
         // How do we determine which one to hydrate to? via Role?
