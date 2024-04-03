@@ -1,7 +1,7 @@
 //! Catalogue Module
 //!
 //!
-use crate::{HasId, CreateTMF, HasName, CreateTMFWithTime,HasLastUpdate, HasValidity, TimePeriod, DateTime,TMFEvent};
+use crate::{CreateTMF, CreateTMFWithTime, DateTime, HasId, HasLastUpdate, HasName, HasValidity, TMFEvent, TimePeriod};
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
