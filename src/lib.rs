@@ -223,9 +223,15 @@ pub trait HasRefHRef : HasRefId {
 /// Is the object a reference object?
 pub trait IsRef : HasRefHRef {
     /// Hydrate this reference into a full payload by pulling down the payload indicated by href field.
-    fn hydrate<T : FnOnce(String) -> Option<String>>(&self, func : T) -> Option<String> {
+    fn hydrate_ref<T : FnOnce(String) -> Option<String>>(&self, func : T) -> Option<String> {
         func(self.get_href())    
     }
+}
+
+/// Does the Object contain referenced objects?
+pub trait HasRef : HasId {
+    /// Convert references into objects according to depth and expand directives
+    fn hydrate<T : FnOnce(String) -> Option<String>>(&self, depth : u8, expand : Option<String>, func : T) -> Option<String>;
 }
 
 /// Common Modules
