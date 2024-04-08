@@ -10,6 +10,7 @@ repository = "https://github.com/rruckley/tmflib"
 tmf620-v4 = []
 tmf620-v5 = []
 tmf629-v4 = []
+tmf629-v5 = []
 tmf622-v4 = []
 tmf622-v5 = []
 tmf674-v4 = []
