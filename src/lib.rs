@@ -215,6 +215,7 @@ pub mod tmf620;
 /// Product Order
 pub mod tmf622;
 /// Customer
+#[cfg(any(feature = "tmf629-v4" , feature = "tmf629-v5"))]
 pub mod tmf629;
 /// Party
 pub mod tmf632;
