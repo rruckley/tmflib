@@ -1,16 +1,25 @@
 //! Customer Module
 //!
+use chrono::{NaiveDateTime,Utc};
 use serde::{Deserialize, Serialize};
 use sha256::digest;
 
-use crate::CreateTMF;
 use crate::tmf632::organization::Organization;
 
 use super::characteristic::Characteristic;
 use crate::common::contact::ContactMedium;
 use crate::common::related_party::RelatedParty;
-use crate::{HasId,HasName, HasValidity, TimePeriod};
+use crate::common::event::{Event,EventPayload};
+use crate::{
+    HasId,
+    HasName,
+    HasValidity,
+    TimePeriod,
+    TMFEvent,
+    CreateTMF,
+};
 use tmflib_derive::{HasId,HasName,HasValidity};
+use uuid::Uuid;
 
 use crate::LIB_PATH;
 use super::MOD_PATH;
@@ -117,6 +126,60 @@ impl From<&Organization> for Customer {
         let mut customer = Customer::new(value.to_owned());
         customer.generate_code(None);
         customer
+    }
+}
+
+/// Customer Event Type
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub enum CustomerEventType {
+    /// Customer Created
+    CustomerCreateEvent,
+    /// Customer Attribute Changed
+    CustomerAttributeValueChangeEvent,
+    /// Customer Status Changed
+    CustomerStateChangeEvent,
+    /// Customer Deleted
+    CustomerDeleteEvent,
+}
+
+/// Container for the payload
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub struct CustomerEvent {
+    /// Customer
+    pub customer : Customer,
+}
+
+impl TMFEvent<CustomerEvent> for Customer {
+    fn event(&self) -> CustomerEvent {
+        CustomerEvent {
+            customer : self.clone(),
+        }
+    }
+}
+
+impl EventPayload<CustomerEvent> for Customer {
+    type Subject = Customer;
+    type EventType = CustomerEventType;
+
+    fn to_event(&self,event_type : Self::EventType) -> crate::common::event::Event<CustomerEvent,Self::EventType> {
+        let now = Utc::now();
+        let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
+        let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        Event {
+            correlation_id : None,
+            description: Some(desc),
+            domain: Some(Customer::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: Some(self.get_href()),
+            id: Some(self.get_id()),
+            title: Some(self.get_name()),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: Some(event_time.to_string()),
+            event_type,
+            event: self.event(),
+        }
     }
 }
 
