@@ -97,13 +97,24 @@ impl Customer {
 
     /// Try to find characteristic with given name
     pub fn get_characteristic(&self, characteristic : &str) -> Option<Characteristic> {
-    match self.characteristic.clone() {
-        Some(c) => {
-            c.into_iter().find(|x| x.name == characteristic)
-        },
-        None => None,
+        match &self.characteristic {
+            Some(c) => {
+                let found = c.into_iter().find(|x| x.name == characteristic);
+                found.cloned()
+            },
+            None => None,
+        }
     }
 
+    /// Replace a characteristic returning the old value if found
+    pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
+        match &self.characteristic {
+            Some(c) => {
+                // Characteristics exist
+                c.iter().find(|c| c.name == characteristic.name).replace(&characteristic).cloned()
+            }
+            None => None,
+        }
     }
 
     /// Set the name of the customer
@@ -160,4 +171,26 @@ mod test {
 
         assert_eq!(org1.name,customer.name);
     }
+
+    #[test]
+    fn test_customer_characteristic_replace() {
+        let org1 = Organization::new(CUSTOMER);
+        let mut customer = Customer::from(&org1);
+
+        let code_new = Characteristic {
+            name : "code".into(),
+            value: "ABC".into(),
+            value_type: "String".into()
+        };
+        let code_new_clone = code_new.clone();
+        let code_old = customer.get_characteristic("code");
+        let code_replace = customer.replace_characteristic(code_new);
+        let code_replaced = customer.get_characteristic("code");
+
+        // code_old and code_replace should be the same
+        assert_eq!(code_old.unwrap().value,code_replace.unwrap().value);
+        // code_new and code_replaced should be the same
+        assert_eq!(code_new_clone.value,code_replaced.unwrap().value);
+    }
 }
+
