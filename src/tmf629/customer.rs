@@ -108,10 +108,21 @@ impl Customer {
 
     /// Replace a characteristic returning the old value if found
     pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
-        match &self.characteristic {
+        match self.characteristic.as_mut() {
             Some(c) => {
                 // Characteristics exist
-                c.iter().find(|c| c.name == characteristic.name).replace(&characteristic).cloned()
+                let pos = c.iter().position(|c| c.name == characteristic.name);
+                match pos {
+                    Some(u) => {
+                        // Remove old value and store
+                        let old = c.remove(u);
+                        // Push in new value
+                        c.push(characteristic);
+                        // Return old value
+                        Some(old)
+                    },
+                    None => None,
+                }
             }
             None => None,
         }
