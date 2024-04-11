@@ -147,6 +147,8 @@ mod test {
     use super::*;
 
     const CUSTOMER : &str = "ACustomer";
+    const CUSTOMER_BAD : &str = " ACustomer ";
+    const CUSTOMER_UID : u16 = 174;
 
     #[test]
     fn test_customer_new_name() {
@@ -202,6 +204,31 @@ mod test {
         assert_eq!(code_old.unwrap().value,code_replace.unwrap().value);
         // code_new and code_replaced should be the same
         assert_eq!(code_new_clone.value,code_replaced.unwrap().value);
+    }
+
+    #[test]
+    fn test_customer_code_whitespace() {
+        let mut cust1 = Customer {
+            name : Some(CUSTOMER.into()),
+            id : Some(CUSTOMER_UID.to_string()),
+            ..Default::default()
+        };
+
+        // By directly setting the name, we're avoiding any trim function 
+        let mut cust2 = Customer {
+            name : Some(CUSTOMER_BAD.trim().into()),
+            id : Some(CUSTOMER_UID.to_string()),
+            ..Default::default()
+        };
+
+        cust1.generate_code(None);
+        cust2.generate_code(None);
+
+        let code1 = cust1.get_characteristic("code").unwrap();
+        let code2 = cust2.get_characteristic("code").unwrap();
+
+        // Customer codes should be the same, but the ID is different.
+        assert_eq!(code1.value,code2.value);
     }
 }
 
