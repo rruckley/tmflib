@@ -182,6 +182,8 @@ pub trait HasName : HasId {
     fn find(&self, pattern : &str) -> bool {
         self.get_name().contains(pattern.trim())
     }
+    /// Set the name, trimming any whitespace
+    fn set_name(&mut self, name : impl Into<String>);
 }
 
 /// Trait for classes with notes
