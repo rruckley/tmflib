@@ -111,6 +111,8 @@ pub trait HasId {
     fn get_class() -> String;
     /// Get Class HREF
     fn get_class_href() -> String;
+    /// Set the id
+    fn set_id(&mut self, id : impl Into<String>);
 }
 
 /// Trait to create TMF structs that have the HasId trait
