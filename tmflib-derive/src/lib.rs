@@ -98,6 +98,9 @@ pub fn hasname_derive(input: TokenStream) -> TokenStream {
             fn get_name(&self) -> String {
                 self.name.clone().unwrap_or("NoName".to_string())
             }
+            fn set_name(&mut self, name : impl Into<String>) {
+                self.name = Some(name.into().trim().to_string());
+            }
         }
     };
     out.into()
