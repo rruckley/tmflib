@@ -114,11 +114,10 @@ impl Customer {
                 let pos = c.iter().position(|c| c.name == characteristic.name);
                 match pos {
                     Some(u) => {
-                        // Remove old value and store
-                        let old = c.remove(u);
-                        // Push in new value
-                        c.push(characteristic);
-                        // Return old value
+                        // Clone old value for return
+                        let old = c[u].clone();
+                        // Replace
+                        c[u] = characteristic;
                         Some(old)
                     },
                     None => None,
