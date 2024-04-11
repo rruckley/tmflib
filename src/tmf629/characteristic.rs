@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 /// Customer Characteristics
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Characteristic {
     /// Name of characteristic
     pub name: String,
