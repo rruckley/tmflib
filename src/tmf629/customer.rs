@@ -100,8 +100,7 @@ impl Customer {
     pub fn get_characteristic(&self, characteristic : &str) -> Option<Characteristic> {
         match &self.characteristic {
             Some(c) => {
-                let found = c.into_iter().find(|x| x.name == characteristic);
-                found.cloned()
+                c.iter().find(|x| x.name == characteristic).cloned()
             },
             None => None,
         }
