@@ -91,8 +91,9 @@ impl Customer {
             self.characteristic = Some(vec![]);
         }
 
-        self.characteristic.as_mut().unwrap().push(code);
-        self.characteristic.as_mut().unwrap().push(hash);
+        // Replace characteristics if they exist, to ensure only a single instance of each
+        self.replace_characteristic(code);
+        self.replace_characteristic(hash);
     }
 
     /// Try to find characteristic with given name
@@ -110,7 +111,7 @@ impl Customer {
     pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
         match self.characteristic.as_mut() {
             Some(c) => {
-                // Characteristics exist
+                // Characteristic array exist
                 let pos = c.iter().position(|c| c.name == characteristic.name);
                 match pos {
                     Some(u) => {
@@ -120,10 +121,20 @@ impl Customer {
                         c[u] = characteristic;
                         Some(old)
                     },
-                    None => None,
+                    None => {
+                        // This means the characteristic could not be found, instead we insert it
+                        // Additional we return None to indicate that no old value was found
+                        c.push(characteristic);
+                        None
+                    },
                 }
             }
-            None => None,
+            None => {
+                // Characteristic Vec was not created yet, create it now.
+                self.characteristic = Some(vec![characteristic]);
+                // Return None to show no previous value existed.
+                None
+            },
         }
     }
 
@@ -207,19 +218,17 @@ mod test {
 
     #[test]
     fn test_customer_code_whitespace() {
-        let mut cust1 = Customer {
-            name : Some(CUSTOMER.into()),
-            id : Some(CUSTOMER_UID.to_string()),
-            ..Default::default()
-        };
+        // use default() to avoid id generation via new()
+        let mut cust1 = Customer::default();
+        cust1.set_id(CUSTOMER_UID.to_string());
+        cust1.set_name(CUSTOMER);
 
-        // By directly setting the name, we're avoiding any trim function 
-        let mut cust2 = Customer {
-            name : Some(CUSTOMER_BAD.trim().into()),
-            id : Some(CUSTOMER_UID.to_string()),
-            ..Default::default()
-        };
-
+        // Create second customer using name with whitespace
+        let mut cust2 = Customer::default();
+        cust2.set_id(CUSTOMER_UID.to_string());
+        cust2.set_name(CUSTOMER_BAD);
+        
+        // Generate customer codes
         cust1.generate_code(None);
         cust2.generate_code(None);
 
@@ -228,6 +237,35 @@ mod test {
 
         // Customer codes should be the same, but the ID is different.
         assert_eq!(code1.value,code2.value);
+    }
+
+    #[test]
+    fn test_customer_characteristic_new_missing() {
+        // Test replacing a non-existing characteristic
+        let characteristic = Characteristic::from(("weather","rainy"));
+
+        let org1 = Organization::new(CUSTOMER);
+        let mut customer = Customer::from(&org1);
+
+        customer.replace_characteristic(characteristic);
+
+        let test_char = customer.get_characteristic("weather");
+
+        assert!(test_char.is_some());
+    }
+
+    #[test]
+    fn test_customer_characteristic_default_missing() {
+        // Test replacing a non-existing characteristic, on a default Customer (i.e. no Vec creatd)
+        let characteristic = Characteristic::from(("weather","rainy"));
+
+        let mut customer = Customer::default();
+
+        customer.replace_characteristic(characteristic);
+
+        let test_char = customer.get_characteristic("weather");
+
+        assert!(test_char.is_some());
     }
 }
 
