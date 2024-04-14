@@ -91,19 +91,50 @@ impl Customer {
             self.characteristic = Some(vec![]);
         }
 
-        self.characteristic.as_mut().unwrap().push(code);
-        self.characteristic.as_mut().unwrap().push(hash);
+        // Replace characteristics if they exist, to ensure only a single instance of each
+        self.replace_characteristic(code);
+        self.replace_characteristic(hash);
     }
 
     /// Try to find characteristic with given name
     pub fn get_characteristic(&self, characteristic : &str) -> Option<Characteristic> {
-    match self.characteristic.clone() {
-        Some(c) => {
-            c.into_iter().find(|x| x.name == characteristic)
-        },
-        None => None,
+        match &self.characteristic {
+            Some(c) => {
+                c.iter().find(|x| x.name == characteristic).cloned()
+            },
+            None => None,
+        }
     }
 
+    /// Replace a characteristic returning the old value if found
+    pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
+        match self.characteristic.as_mut() {
+            Some(c) => {
+                // Characteristic array exist
+                let pos = c.iter().position(|c| c.name == characteristic.name);
+                match pos {
+                    Some(u) => {
+                        // Clone old value for return
+                        let old = c[u].clone();
+                        // Replace
+                        c[u] = characteristic;
+                        Some(old)
+                    },
+                    None => {
+                        // This means the characteristic could not be found, instead we insert it
+                        // Additional we return None to indicate that no old value was found
+                        c.push(characteristic);
+                        None
+                    },
+                }
+            }
+            None => {
+                // Characteristic Vec was not created yet, create it now.
+                self.characteristic = Some(vec![characteristic]);
+                // Return None to show no previous value existed.
+                None
+            },
+        }
     }
 
     /// Set the name of the customer
@@ -125,6 +156,8 @@ mod test {
     use super::*;
 
     const CUSTOMER : &str = "ACustomer";
+    const CUSTOMER_BAD : &str = " ACustomer ";
+    const CUSTOMER_UID : u16 = 174;
 
     #[test]
     fn test_customer_new_name() {
@@ -160,4 +193,78 @@ mod test {
 
         assert_eq!(org1.name,customer.name);
     }
+
+    #[test]
+    fn test_customer_characteristic_replace() {
+        let org1 = Organization::new(CUSTOMER);
+        let mut customer = Customer::from(&org1);
+
+        let code_new = Characteristic {
+            name : "code".into(),
+            value: "ABC".into(),
+            value_type: "String".into()
+        };
+        let code_new_clone = code_new.clone();
+        let code_old = customer.get_characteristic("code");
+        let code_replace = customer.replace_characteristic(code_new);
+        let code_replaced = customer.get_characteristic("code");
+
+        // code_old and code_replace should be the same
+        assert_eq!(code_old.unwrap().value,code_replace.unwrap().value);
+        // code_new and code_replaced should be the same
+        assert_eq!(code_new_clone.value,code_replaced.unwrap().value);
+    }
+
+    #[test]
+    fn test_customer_code_whitespace() {
+        // use default() to avoid id generation via new()
+        let mut cust1 = Customer::default();
+        cust1.set_id(CUSTOMER_UID.to_string());
+        cust1.set_name(CUSTOMER);
+
+        // Create second customer using name with whitespace
+        let mut cust2 = Customer::default();
+        cust2.set_id(CUSTOMER_UID.to_string());
+        cust2.set_name(CUSTOMER_BAD);
+        
+        // Generate customer codes
+        cust1.generate_code(None);
+        cust2.generate_code(None);
+
+        let code1 = cust1.get_characteristic("code").unwrap();
+        let code2 = cust2.get_characteristic("code").unwrap();
+
+        // Customer codes should be the same, but the ID is different.
+        assert_eq!(code1.value,code2.value);
+    }
+
+    #[test]
+    fn test_customer_characteristic_new_missing() {
+        // Test replacing a non-existing characteristic
+        let characteristic = Characteristic::from(("weather","rainy"));
+
+        let org1 = Organization::new(CUSTOMER);
+        let mut customer = Customer::from(&org1);
+
+        customer.replace_characteristic(characteristic);
+
+        let test_char = customer.get_characteristic("weather");
+
+        assert!(test_char.is_some());
+    }
+
+    #[test]
+    fn test_customer_characteristic_default_missing() {
+        // Test replacing a non-existing characteristic, on a default Customer (i.e. no Vec creatd)
+        let characteristic = Characteristic::from(("weather","rainy"));
+
+        let mut customer = Customer::default();
+
+        customer.replace_characteristic(characteristic);
+
+        let test_char = customer.get_characteristic("weather");
+
+        assert!(test_char.is_some());
+    }
 }
+
