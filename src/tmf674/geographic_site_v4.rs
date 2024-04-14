@@ -151,10 +151,8 @@ impl GeographicSite {
     pub fn generate_code(&mut self, offset : Option<u32>) {
         let hash_input = format!("{}:{}:{}",self.get_id(),self.get_name(),offset.unwrap_or_default());
         let sha = digest(hash_input);
-        println!("Hash: {sha}");
         let hex = decode(sha);
         let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
-        println!("Base32: {base32}");
         let sha_slice = base32.as_str()[..CODE_LENGTH].to_string().to_ascii_uppercase();
         self.code = Some(format!("{}{}",CODE_PREFIX,sha_slice));
     }
