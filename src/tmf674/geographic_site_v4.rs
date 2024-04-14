@@ -1,9 +1,12 @@
 //! Geographic Site Module
 
 use chrono::{NaiveDateTime, Utc};
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use std::convert::From;
+use sha256::digest;
+use hex::decode;
+use base32::encode;
 
 use crate::common::event::{Event,EventPayload};
 use crate::{HasName,HasId,CreateTMF,HasValidity, TimePeriod,TMFEvent};
@@ -14,8 +17,11 @@ use crate::LIB_PATH;
 use super::MOD_PATH;
 const CLASS_PATH: &str = "geographicSite";
 const DEFAULT_TZ : &str = "AEST";
+const CODE_PREFIX : &str = "S-";
+const CODE_LENGTH : usize = 6;
 
-/// Refernce to a place
+
+/// Reference to a place
 /// # Uses
 /// Link to a place
 /// Provide a place locally within the payload
@@ -93,7 +99,6 @@ pub struct GeographicSite {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,#[serde(skip_serializing_if = "Option::is_none")]
     /// Site Code
-    
     pub code : Option<String>,
     /// Site Description
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -121,6 +126,7 @@ impl GeographicSite {
         let mut site = GeographicSite::create();
         site.name = Some(name.into());
         site.calendar = Some(vec![]);
+        site.generate_code(None);
         site
     }
     /// Set the place on this Site
@@ -139,6 +145,18 @@ impl GeographicSite {
     pub fn calendar(mut self, calendar : CalendarPeriod) -> GeographicSite {
         self.calendar.as_mut().unwrap().push(calendar);
         self
+    }
+
+    /// Generate a new site code based on available fields
+    pub fn generate_code(&mut self, offset : Option<u32>) {
+        let hash_input = format!("{}:{}:{}",self.get_id(),self.get_name(),offset.unwrap_or_default());
+        let sha = digest(hash_input);
+        println!("Hash: {sha}");
+        let hex = decode(sha);
+        let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
+        println!("Base32: {base32}");
+        let sha_slice = base32.as_str()[..CODE_LENGTH].to_string().to_ascii_uppercase();
+        self.code = Some(format!("{}{}",CODE_PREFIX,sha_slice));
     }
 }
 
@@ -179,7 +197,7 @@ impl EventPayload<GeographicSiteEvent> for GeographicSite {
         let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
         Event {
-            correlation_id: None,
+            correlation_id: self.code.clone(),
             description: Some(desc),
             domain: Some(GeographicSite::get_class()),
             event_id: Uuid::new_v4().to_string(),

@@ -2,6 +2,8 @@
 //!
 use serde::{Deserialize, Serialize};
 use sha256::digest;
+use hex::decode;
+use base32::encode;
 
 use crate::CreateTMF;
 use crate::tmf632::organization::Organization;
@@ -75,7 +77,10 @@ impl Customer {
         let offset = offset.unwrap_or(0);
         let hash_input = format!("{}:{}:{}", self.id.as_ref().unwrap(), self.get_name(),offset);
         let sha = digest(hash_input);
-        let sha_slice = sha.as_str()[..CUST_ID_SIZE].to_string().to_ascii_uppercase();
+        // Convert to Base32 encoding to improve density
+        let hex = decode(sha);
+        let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
+        let sha_slice = base32.as_str()[..CUST_ID_SIZE].to_string().to_ascii_uppercase();
         let code = Characteristic {
             name: String::from("code"),
             value_type: String::from("string"),
@@ -84,7 +89,7 @@ impl Customer {
         let hash = Characteristic {
             name: String::from("hash"),
             value_type: String::from("string"),
-            value: sha,
+            value: base32,
         };
         // Create vec if it doesn't exist
         if self.characteristic.is_none() {
