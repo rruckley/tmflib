@@ -196,8 +196,10 @@ impl EventPayload<CustomerEvent> for Customer {
         let now = Utc::now();
         let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
         let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let code = self.get_characteristic("code");
+        let code = code.and_then(|f| Some(f.value) );
         Event {
-            correlation_id : None,
+            correlation_id : code,
             description: Some(desc),
             domain: Some(Customer::get_class()),
             event_id: Uuid::new_v4().to_string(),
