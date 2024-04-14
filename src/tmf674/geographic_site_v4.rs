@@ -1,10 +1,12 @@
 //! Geographic Site Module
 
 use chrono::{NaiveDateTime, Utc};
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use std::convert::From;
 use sha256::digest;
+use hex::decode;
+use base32::encode;
 
 use crate::common::event::{Event,EventPayload};
 use crate::{HasName,HasId,CreateTMF,HasValidity, TimePeriod,TMFEvent};
@@ -15,8 +17,8 @@ use crate::LIB_PATH;
 use super::MOD_PATH;
 const CLASS_PATH: &str = "geographicSite";
 const DEFAULT_TZ : &str = "AEST";
-const CODE_PREFIX : &str = "S";
-const CODE_LENGTH : usize = 9;
+const CODE_PREFIX : &str = "S-";
+const CODE_LENGTH : usize = 6;
 
 
 /// Reference to a place
@@ -150,7 +152,10 @@ impl GeographicSite {
         let hash_input = format!("{}:{}:{}",self.get_id(),self.get_name(),offset.unwrap_or_default());
         let sha = digest(hash_input);
         println!("Hash: {sha}");
-        let sha_slice = sha.as_str()[..CODE_LENGTH].to_string().to_ascii_uppercase();
+        let hex = decode(sha);
+        let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
+        println!("Base32: {base32}");
+        let sha_slice = base32.as_str()[..CODE_LENGTH].to_string().to_ascii_uppercase();
         self.code = Some(format!("{}{}",CODE_PREFIX,sha_slice));
     }
 }
