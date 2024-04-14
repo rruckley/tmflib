@@ -91,42 +91,7 @@ impl Individual {
         let mut ind = Individual::create();
         // Try to split name into two parts
         // If it splits, take 1st as given name, second as family name
-        let name : String = name.into();
-        let name_str = name.as_str();
-        let name_parts = name_str.split(' ');
-        // Determine the number of parts the name is given in
-        match name_parts.clone().count() {
-            1 => {
-                // Only a single name, nothing to do here.
-
-            },
-            2 => {
-                // two parts
-                let parts_vec : Vec<&str> = name_parts.collect();
-                let first_name = parts_vec[0];
-                let last_name = parts_vec[1];
-                ind.given_name = Some(first_name.to_string());
-                ind.preferred_given_name = ind.given_name.clone();
-                ind.family_name = Some(last_name.to_string());
-            },
-            3 => {
-                // three parts
-                let parts_vec : Vec<&str> = name_parts.collect();
-                let first_name = parts_vec[0];
-                let middle_name = parts_vec[1];
-                let last_name = parts_vec[2];
-                ind.given_name = Some(first_name.to_string());
-                ind.preferred_given_name = ind.given_name.clone();
-                ind.family_name = Some(last_name.to_string());
-                ind.middle_name = Some(middle_name.to_string());
-            }
-            _ => {
-
-            }
-        }
-        //let (given,family) = name.as_ref().split
-        ind.full_name = Some(name);
-        ind.legal_name = ind.full_name.clone();
+        ind.set_name(name);
         // Need this as default would be None
         ind.related_party = Some(vec![]);
         ind.contact_medium = Some(vec![]);
@@ -246,6 +211,44 @@ impl Individual {
 impl HasName for Individual {
     fn get_name(&self) -> String {
         self.full_name.as_ref().unwrap().clone()
+    }
+    fn set_name(&mut self, name : impl Into<String>) {
+        let name : String = name.into();
+        let name_str = name.as_str();
+        let name_parts = name_str.split(' ');
+        // Determine the number of parts the name is given in
+        match name_parts.clone().count() {
+            1 => {
+                // Only a single name, nothing to do here.
+
+            },
+            2 => {
+                // two parts
+                let parts_vec : Vec<&str> = name_parts.collect();
+                let first_name = parts_vec[0];
+                let last_name = parts_vec[1];
+                self.given_name = Some(first_name.to_string());
+                self.preferred_given_name = self.given_name.clone();
+                self.family_name = Some(last_name.to_string());
+            },
+            3 => {
+                // three parts
+                let parts_vec : Vec<&str> = name_parts.collect();
+                let first_name = parts_vec[0];
+                let middle_name = parts_vec[1];
+                let last_name = parts_vec[2];
+                self.given_name = Some(first_name.to_string());
+                self.preferred_given_name = self.given_name.clone();
+                self.family_name = Some(last_name.to_string());
+                self.middle_name = Some(middle_name.to_string());
+            }
+            _ => {
+
+            }
+        }
+        //let (given,family) = name.as_ref().split
+        self.full_name = Some(name);
+        self.legal_name = self.full_name.clone();
     }
 }
 
