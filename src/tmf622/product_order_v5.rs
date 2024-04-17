@@ -8,6 +8,7 @@ use crate::tmf651::agreement::AgreementRef;
 use crate::{CreateTMFWithTime, CreateTMF, HasId, HasLastUpdate, HasNote, HasRelatedParty, DateTime};
 use tmflib_derive::{HasId,HasNote,HasRelatedParty};
 use crate::tmf641::service_order::ServiceOrder;
+use crate::tmf663::shopping_cart::ShoppingCart;
 
 // URL Path components
 use super::LIB_PATH;
@@ -141,5 +142,27 @@ impl From<ServiceOrder> for ProductOrder {
         po.product_order_item = items;
 
         po  
+    }
+}
+
+impl From<ShoppingCart> for ProductOrder {
+    fn from(value: ShoppingCart) -> Self {
+        // Convert a Shopping cart into a product order.
+        // Each CartItem converts into an order item using a conversion function.
+        let mut order = ProductOrder::new();
+        order.description = Some("Order from Cart".into());
+        // Bring across the cart items
+        if value.cart_item.is_some() {
+            value.cart_item.unwrap().into_iter().for_each(|i| {
+                order.product_order_item.as_mut().unwrap().push(ProductOrderItem::from(i));
+            });
+        }
+        // Bring across the related parties
+        if value.related_party.is_some() {
+            value.related_party.unwrap().into_iter().for_each(|rp| {
+                order.related_party.as_mut().unwrap().push(rp.clone());
+            });
+        }
+        order
     }
 }
