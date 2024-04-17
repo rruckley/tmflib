@@ -1,9 +1,4 @@
 //! Customer Bill Management v5
-
-
-use super::MOD_PATH;
-
-//! Customer Bill Management V4
 //! 
 
 use super::MOD_PATH;
@@ -63,7 +58,7 @@ pub struct CustomerBill {
     payment_due_date: DateTime,
     remaining_amount: Money,
     run_type: CustomerBillRunType,
-    state: CustomerBillStateType,
+    state: Option<CustomerBillStateType>,
     tax_excluded_amount: Money,
     tax_included_amount: Money,
 
@@ -72,4 +67,13 @@ pub struct CustomerBill {
     pub related_party: Option<Vec<RelatedParty>>,
     /// Invoice / Bill documents
     pub bill_document: Option<Vec<AttachmentRefOrValue>>,
+}
+
+impl CustomerBill {
+    /// Create a new customer bill
+    pub fn new() -> CustomerBill {
+        let mut bill = CustomerBill::create();
+        bill.state = Some(CustomerBillStateType::default());
+        bill
+    }
 }
