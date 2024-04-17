@@ -1,4 +1,4 @@
-// Copyright 2023-2023 Ryan Ruckley.
+// Copyright 2023-2024 Ryan Ruckley.
 //
 // Permission to use, copy, modify, and/or distribute this software for any
 // purpose with or without fee is hereby granted, provided that the above
@@ -111,6 +111,8 @@ pub trait HasId {
     fn get_class() -> String;
     /// Get Class HREF
     fn get_class_href() -> String;
+    /// Set the id
+    fn set_id(&mut self, id : impl Into<String>);
 }
 
 /// Trait to create TMF structs that have the HasId trait
@@ -180,6 +182,8 @@ pub trait HasName : HasId {
     fn find(&self, pattern : &str) -> bool {
         self.get_name().contains(pattern.trim())
     }
+    /// Set the name, trimming any whitespace
+    fn set_name(&mut self, name : impl Into<String>);
 }
 
 /// Trait for classes with notes
@@ -250,6 +254,8 @@ pub mod tmf672;
 pub mod tmf673;
 /// Geographic Site
 pub mod tmf674;
+/// Customer Bill Management
+pub mod tmf678;
 /// Product Offering Qualification
 pub mod tmf679;
 /// Communication Management

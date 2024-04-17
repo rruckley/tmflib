@@ -12,10 +12,12 @@
 // OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 // CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-//! TMF679 Product Qualification Management Module
+//! Customer Bill Management Module
 
-/// Common path for TMF679
-pub const MOD_PATH : &str = "productOfferingQualificationManagement/v4";
+const MOD_PATH : &str = "tmf678/v5";
 
-pub mod product_qualification;
-pub mod product_offering_qualification_item;
+#[cfg(feature = "tmf678-v4")]
+pub mod customer_bill_v4;
+
+#[cfg(feature = "tmf678-v5")]
+pub mod customer_bill_v5;

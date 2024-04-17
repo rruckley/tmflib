@@ -96,7 +96,12 @@ impl Organization {
     /// Create a new organization record with a name
     pub fn new(name : impl Into<String>) -> Organization {
         let mut org = Organization::create();
-        org.name = Some(name.into());
+
+        // Ensure name has been trimmed before settings
+        let name : String = name.into();
+        let name = name.trim();
+        
+        org.name = Some(name.to_string());
         org.status = Some(OrganizationStateType::default());
         org.related_party = Some(vec![]);
         org
