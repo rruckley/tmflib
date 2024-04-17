@@ -2,8 +2,8 @@
 
 use serde::{Deserialize,Serialize};
 
-use crate::{HasId,CreateTMF,HasValidity, TimePeriod,LIB_PATH, DateTime};
-use tmflib_derive::{HasId,HasValidity};
+use crate::{HasId,CreateTMF,HasValidity, TimePeriod,LIB_PATH, DateTime, HasRelatedParty};
+use tmflib_derive::{HasId,HasValidity,HasRelatedParty};
 use crate::common::related_party::RelatedParty;
 use super::MOD_PATH;
 
@@ -30,7 +30,7 @@ pub enum ExecutionStateType {
 }
 
 /// Service Test
-#[derive(Clone,Debug,Default,Deserialize, HasId, HasValidity, Serialize)]
+#[derive(Clone,Debug,Default,Deserialize, HasId, HasValidity, Serialize, HasRelatedParty)]
 pub struct ServiceTest {
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
