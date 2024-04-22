@@ -1,15 +1,18 @@
 //! Individual Module
 
 use std::ops::Deref;
+use chrono::Utc;
+use uuid::Uuid;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasName, CreateTMF, DateTime};
+use crate::{HasId, HasName, CreateTMF,DateTime,TMFEvent};
 use tmflib_derive::HasId;
 use crate::LIB_PATH;
 use super::MOD_PATH;
 use crate::common::related_party::RelatedParty;
 use crate::common::contact::ContactMedium;
+use crate::common::event::{Event, EventPayload};
 
 const CLASS_PATH : &str = "individual";
 
@@ -249,6 +252,61 @@ impl HasName for Individual {
         //let (given,family) = name.as_ref().split
         self.full_name = Some(name);
         self.legal_name = self.full_name.clone();
+    }
+}
+
+/// Individual Event Types
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub enum IndividualEventType {
+    /// Individual Created
+    IndividualCreateEvent,
+    /// Individual Attribute Changed
+    IndividualAttributeValueChangeEvent,
+    /// Individual Status Change
+    IndividualStateChangeEvent,
+    /// Individual Deleted
+    IndividualDeleteEvent,
+}
+
+/// Container for Individual events
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub struct IndividualEvent {
+    /// The impacted individual data
+    pub individual : Individual,    
+}
+
+impl TMFEvent<IndividualEvent> for Individual {
+    fn event(&self) -> IndividualEvent {
+        IndividualEvent {
+            individual : self.clone(),
+        }
+    }
+}
+
+impl EventPayload<IndividualEvent> for Individual {
+    type Subject = Individual;
+    type EventType = IndividualEventType;
+
+    fn to_event(&self,event_type : Self::EventType) -> Event<IndividualEvent,Self::EventType> {
+        let now = Utc::now();
+        let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+
+        Event {
+            correlation_id : None,
+            description: Some(desc),
+            domain: Some(Individual::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: Some(self.get_href()),
+            id: Some(self.get_id()),
+            title: Some(self.get_name()),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: Some(event_time.to_string()),
+            event_type,
+            event: self.event(),
+        }
     }
 }
 

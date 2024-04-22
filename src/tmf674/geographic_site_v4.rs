@@ -1,6 +1,6 @@
 //! Geographic Site Module
 
-use chrono::{NaiveDateTime, Utc};
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use std::convert::From;
@@ -192,7 +192,8 @@ impl EventPayload<GeographicSiteEvent> for GeographicSite {
 
     fn to_event(&self,event_type : Self::EventType) -> Event<GeographicSiteEvent,Self::EventType> {
         let now = Utc::now();
-        let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        //let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
         Event {
             correlation_id: self.code.clone(),
