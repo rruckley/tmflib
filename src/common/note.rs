@@ -1,7 +1,7 @@
 //! Note Module
 
 use serde::{Deserialize, Serialize};
-use chrono::naive::NaiveDateTime;
+//use chrono::DateTime;
 use chrono::Utc;
 use uuid::Uuid;
 use std::convert::From;
@@ -22,7 +22,8 @@ impl Note {
     pub fn new(text : impl Into<String>) -> Note {
         let id = Uuid::new_v4().simple().to_string();
         let now = Utc::now();
-        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        //let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         Note { 
             id, 
             author: None, 
