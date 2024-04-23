@@ -109,7 +109,7 @@ pub struct GeographicSite {
     /// Site Name
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    place: Option<PlaceRefOrValue>,
+    place: Option<Vec<PlaceRefOrValue>>,
     /// Site Status
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status : Option<String>,
@@ -130,11 +130,12 @@ impl GeographicSite {
         site.name = Some(name.into());
         site.calendar = Some(vec![]);
         site.generate_code(None);
+        site.place = Some(vec![]);
         site
     }
     /// Set the place on this Site
     pub fn place(mut self, place : PlaceRefOrValue) -> GeographicSite {
-        self.place = Some(place);
+        self.place.as_mut().unwrap().push(place);
         self    
     }
 
@@ -239,7 +240,8 @@ mod test {
         let site = GeographicSite::new(SITE)
             .place(place.into());
 
-        assert_eq!(site.place,Some(place2.into()));
+        assert_eq!(site.place.unwrap()[0],PlaceRefOrValue::from(place2));
     }
 }
+
 
