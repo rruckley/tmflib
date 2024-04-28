@@ -250,6 +250,8 @@ pub mod tmf653;
 pub mod tmf663;
 /// Account
 pub mod tmf666;
+#[cfg(feature = "tmf667-v4")]
+pub mod tmf667;
 /// Party Role
 pub mod tmf669;
 /// User Roles and Permissions Management
