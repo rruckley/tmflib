@@ -1,14 +1,27 @@
 //! Organization Module
 
 use serde::{Deserialize, Serialize};
+use chrono::{DateTime,Utc};
+use uuid::Uuid;
 
-use crate::common::related_party::RelatedParty;
-use crate::{CreateTMF, HasId, HasName, TimePeriod};
+use crate::{
+    CreateTMF, 
+    HasId, 
+    HasName, 
+    TimePeriod,
+    TMFEvent,
+    LIB_PATH,
+};
 use tmflib_derive::{HasId,HasName};
 
-use crate::LIB_PATH;
+
+use crate::common::{
+    contact::ContactMedium,
+    event::{Event,EventPayload},
+    related_party::RelatedParty,
+};
+
 use super::MOD_PATH;
-use crate::common::contact::ContactMedium;
 
 const CLASS_PATH : &str = "organization";
 
@@ -96,7 +109,12 @@ impl Organization {
     /// Create a new organization record with a name
     pub fn new(name : impl Into<String>) -> Organization {
         let mut org = Organization::create();
-        org.name = Some(name.into());
+
+        // Ensure name has been trimmed before settings
+        let name : String = name.into();
+        let name = name.trim();
+        
+        org.name = Some(name.to_string());
         org.status = Some(OrganizationStateType::default());
         org.related_party = Some(vec![]);
         org
@@ -107,6 +125,61 @@ impl From<String> for Organization {
     fn from(value: String) -> Self {
         // Generate an Organization from a given string, treating String as name
         Organization::new(value)
+    }
+}
+
+/// Organization Event Types
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub enum OrganizationEventType {
+    /// Organization Created
+    OrganizationCreateEvent,
+    /// Organization Attribute Change
+    OrganizationAttributeValueChangeEvent,
+    /// Organization State Change
+    OrganizationStateChangeEvent,
+    /// Organization Deleted
+    OrganizationDeleteEvent,
+}
+
+/// Organization Event
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub struct OrganizationEvent {
+    /// Organization impacted by event
+    pub organization : Organization,
+}
+
+impl TMFEvent<OrganizationEvent> for Organization {
+    fn event(&self) -> OrganizationEvent {
+        OrganizationEvent {
+            organization : self.clone(),
+        }    
+    }    
+}
+
+impl EventPayload<OrganizationEvent> for Organization {
+    type Subject = Organization;
+    type EventType = OrganizationEventType;
+
+    fn to_event(&self,event_type : Self::EventType) -> Event<OrganizationEvent,Self::EventType> {
+        let now = Utc::now();
+        let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
+        //let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let event_time = DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        Event {
+            correlation_id : None,
+            description: Some(desc),
+            domain: Some(Organization::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: Some(self.get_href()),
+            id: Some(self.get_id()),
+            title: Some(self.get_name()),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: Some(event_time.to_string()),
+            event_type,
+            event: self.event(),
+        } 
     }
 }
 

@@ -8,7 +8,10 @@ use tmflib::tmf620::product_offering_v5::{ProductOffering,ProductOfferingRef};
 use tmflib::tmf632::individual::Individual;
 use tmflib::tmf663::shopping_cart::ShoppingCart;
 use tmflib::tmf663::cart_item::CartItem;
+#[cfg(feature = "tmf622-v4")]
 use tmflib::tmf622::product_order_v4::ProductOrder;
+#[cfg(feature = "tmf622-v5")]
+use tmflib::tmf622::product_order_v5::ProductOrder;
 
 fn main() {
     let mut cart = ShoppingCart::new();

@@ -31,7 +31,7 @@
 
 #![warn(missing_docs)]
 
-use chrono::naive::NaiveDateTime;
+//use chrono::naive::NaiveDateTime;
 use chrono::{Utc,Days};
 use common::related_party::RelatedParty;
 use uuid::Uuid;
@@ -70,7 +70,8 @@ impl TimePeriod {
     /// Calculate period `days` into the future
     pub fn period_days(days : u64) -> TimePeriod {
         let now = Utc::now() + Days::new(days);
-        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        //let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         TimePeriod {
             end_date_time: Some(time.to_string()),
             ..Default::default()
@@ -82,7 +83,8 @@ impl TimePeriod {
 impl Default for TimePeriod {
     fn default() -> Self {
         let now = Utc::now();
-        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        //let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         TimePeriod {
             start_date_time : time.to_string(),
             end_date_time: None,
@@ -111,6 +113,8 @@ pub trait HasId {
     fn get_class() -> String;
     /// Get Class HREF
     fn get_class_href() -> String;
+    /// Set the id
+    fn set_id(&mut self, id : impl Into<String>);
 }
 
 /// Trait to create TMF structs that have the HasId trait
@@ -136,7 +140,8 @@ pub trait HasLastUpdate {
     /// Geneate a timestamp for now(), useful for updating last_updated fields
     fn get_timestamp() -> String {
         let now = Utc::now();
-        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        //let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         time.to_string()
     }
 
@@ -180,6 +185,8 @@ pub trait HasName : HasId {
     fn find(&self, pattern : &str) -> bool {
         self.get_name().contains(pattern.trim())
     }
+    /// Set the name, trimming any whitespace
+    fn set_name(&mut self, name : impl Into<String>);
 }
 
 /// Trait for classes with notes
@@ -215,6 +222,7 @@ pub mod tmf620;
 /// Product Order
 pub mod tmf622;
 /// Customer
+#[cfg(any(feature = "tmf629-v4" , feature = "tmf629-v5"))]
 pub mod tmf629;
 /// Party
 pub mod tmf632;

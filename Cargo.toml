@@ -9,22 +9,28 @@ repository = "https://github.com/rruckley/tmflib"
 [features]
 tmf620-v4 = []
 tmf620-v5 = []
+tmf629-v4 = []
+tmf629-v5 = []
 tmf622-v4 = []
 tmf622-v5 = []
 tmf667-v4 = []
+tmf699-v4 = []
+tmf699-v5 = []
 tmf674-v4 = []
 tmf674-v5 = []
 tmf678-v4 = []
 tmf678-v5 = []
 default = ["v4"]
-v4 = ["tmf620-v4","tmf622-v4","tmf674-v4","tmf678-v4","tmf667-v4"]
-v5 = ["tmf620-v5","tmf622-v5","tmf674-v5","tmf678-v5"]
+v4 = ["tmf620-v4","tmf622-v4","tmf629-v4","tmf667-v4","tmf674-v4","tmf678-v4","tmf699-v4"]
+v5 = ["tmf620-v5","tmf622-v5","tmf629-v5","tmf667-v5","tmf674-v5","tmf678-v5","tmf699-v5"]
 
 [dependencies]
-chrono = "0.4.33"
+chrono = "0.4.38"
 rust_iso4217 = "0.1.1"
-serde = { version = "1.0.196", features = ["derive"]}
-serde_json = "1.0.113"
+serde = { version = "1.0.198", features = ["derive"]}
+serde_json = "1.0.116"
 sha256 = { version = "1.5", default-features = false }
-uuid = { version = "1.7.0", features = ["v4"]}
+uuid = { version = "1.8.0", features = ["v4"]}
 tmflib-derive = { path = "tmflib-derive" }
+hex = "0.4.3"
+base32 = "0.4.0"

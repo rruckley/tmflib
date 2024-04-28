@@ -2,9 +2,13 @@
 
 use serde::{Deserialize,Serialize};
 
-use crate::{LIB_PATH, CreateTMF, HasName, HasId};
+use crate::{LIB_PATH, CreateTMF, HasName, HasId,TMFEvent};
 use tmflib_derive::{HasId,HasName};
+use uuid::Uuid;
+use chrono::{NaiveDateTime, Utc};
+use crate::common::event::{Event,EventPayload};
 use crate::tmf673::geographic_address::GeographicAddress;
+use crate::common::related_party::RelatedParty;
 use super::MOD_PATH;
 const CLASS_PATH: &str = "geographicSite";
 const DEFAULT_TZ : &str = "AEST";
@@ -33,6 +37,7 @@ impl From<GeographicAddress> for PlaceRefOrValue {
 
 /// Definition of start and finish hours
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct HourPeriod {
     start_hour : String,
     end_hour : String,
@@ -40,6 +45,7 @@ pub struct HourPeriod {
 
 /// Calendar entry defining periodic status for site, e.g. opening hours
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CalendarPeriod {
     day : Option<String>,
     status : Option<String>,
@@ -79,6 +85,9 @@ pub struct GeographicSite {
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     place: Option<PlaceRefOrValue>,
+    /// Site Status
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub status : Option<String>,
     /// Calendar Period
     #[serde(skip_serializing_if = "Option::is_none")]
     pub calendar : Option<Vec<CalendarPeriod>>,
@@ -103,6 +112,61 @@ impl GeographicSite {
     pub fn calendar(mut self, calendar : CalendarPeriod) -> GeographicSite {
         self.calendar.as_mut().unwrap().push(calendar);
         self
+    }
+}
+
+/// Events for Geographic Site
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub enum GeographicSiteEventType {
+    /// New Site Created
+    GeographicSiteCreateEvent,
+    /// Attribute changed on existing site
+    GeographicSiteAttributeValueChangeEvent,
+    /// Existing site changed state
+    GeographicSiteStatusChangeEvent,
+    /// Existing site deleted
+    GeographicSiteDeleteEvent,
+}
+
+/// Container for the payload that generated the event
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct GeographicSiteEvent {
+    /// Struct that this event relates to
+    pub geographic_site: GeographicSite,
+}
+
+impl TMFEvent<GeographicSiteEvent> for GeographicSite {
+    fn event(&self) -> GeographicSiteEvent {
+        GeographicSiteEvent {
+            geographic_site : self.clone(),
+        }
+    }
+}
+
+impl EventPayload<GeographicSiteEvent> for GeographicSite {
+    type Subject = GeographicSite;
+    type EventType = GeographicSiteEventType;
+
+    fn to_event(&self,event_type : Self::EventType) -> Event<GeographicSiteEvent,Self::EventType> {
+        let now = Utc::now();
+        let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
+        Event {
+            correlation_id: None,
+            description: Some(desc),
+            domain: Some(GeographicSite::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: Some(self.get_href()),
+            id: Some(self.get_id()),
+            title: Some(self.get_name()),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: Some(event_time.to_string()),
+            event_type,
+            event: self.event()
+        }
     }
 }
 
