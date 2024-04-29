@@ -130,6 +130,15 @@ mod test {
         let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
         assert_eq!(party.role.unwrap(), Customer::get_class());
+        
+    }
+    #[test]
+    fn test_related_party_from_customer_referred() {
+        let org = Organization::new(String::from("ACustomer"));
+        let cust = Customer::new(org);
+        let party = RelatedParty::from(&cust);
+
+        assert_eq!(party.refered_type.unwrap(), Customer::get_class());
     }
 }
 
