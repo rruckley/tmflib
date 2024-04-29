@@ -29,6 +29,10 @@ pub struct RelatedParty {
     /// Name referenced role 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<String>,
+    /// Referred Type, what does this reference point to ? 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@referredType")]
+    pub refered_type: Option<String>,
 }
 
 impl From<&Customer> for RelatedParty {
@@ -38,6 +42,7 @@ impl From<&Customer> for RelatedParty {
             href: cust.href.as_ref().unwrap().clone(), 
             name: cust.name.clone(),
             role: Some(Customer::get_class()),
+            refered_type: Some(Customer::get_class())
         }    
     }
 }
@@ -49,6 +54,7 @@ impl From<Organization> for RelatedParty {
             href: org.get_href(), 
             name: Some(org.get_name()), 
             role: Some(Organization::get_class()),
+            refered_type: Some(Organization::get_class())
         }
     }
 }
@@ -60,6 +66,7 @@ impl From<OrganizationRef> for RelatedParty {
             href: value.href.clone(), 
             name: Some(value.name.clone()), 
             role: Some(Organization::get_class()),    
+            refered_type: Some(Organization::get_class())
         }
     }
 }
@@ -71,6 +78,7 @@ impl From<&Individual> for RelatedParty {
             href: value.href.as_ref().unwrap().clone(), 
             name: value.full_name.clone(), 
             role: Some(Individual::get_class()),
+            refered_type: Some(Individual::get_class())
         }
     }
 }
@@ -83,7 +91,8 @@ impl From<&PartyRole> for RelatedParty {
             id: value.id.as_ref().unwrap().clone(), 
             href: value.href.as_ref().unwrap().clone(), 
             name: None, 
-            role: value.name.clone()
+            role: value.name.clone(),
+            refered_type: Some(PartyRole::get_class())
         }
     }
 }
