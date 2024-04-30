@@ -14,9 +14,17 @@
 
 //! TMF632 Party Management Modules
 
+#[cfg(feature = "tmf632-v4")]
 const MOD_PATH : &str = "partyManagement/v4";
+#[cfg(feature = "tmf632-v5")]
+const MOD_PATH : &str = "partyManagement/v5";
 
 #[cfg(feature = "tmf632-v4")]
 pub mod individual_v4;
 #[cfg(feature = "tmf632-v4")]
 pub mod organization_v4;
+
+#[cfg(feature = "tmf632-v5")]
+pub mod individual_v5;
+#[cfg(feature = "tmf632-v5")]
+pub mod organization_v5;
