@@ -9,12 +9,23 @@ use serde::{Deserialize, Serialize};
 use crate::{HasId, HasName, CreateTMF,DateTime,TMFEvent};
 use tmflib_derive::HasId;
 use crate::LIB_PATH;
-use super::MOD_PATH;
+use super::{MOD_PATH,Characteristic};
 use crate::common::related_party::RelatedParty;
 use crate::common::contact::ContactMedium;
 use crate::common::event::{Event, EventPayload};
 
 const CLASS_PATH : &str = "individual";
+
+pub struct LanguageAbility {
+    is_favourite_language : bool,
+    language_code: String,
+    language_name: String,
+    listening_proficiency: String,
+    reading_proficiency: String,
+    speaking_proficiency: String,
+    valid_for: TimePeriod,
+    writing_proficiency: String,
+}
 
 /// An individual
 #[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
@@ -86,6 +97,12 @@ pub struct Individual {
     /// Parties related to this individual, e.g. company / organization
     #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
+
+    /// Language ability of individual
+    #[serde(skip_serializing_if = "Option::is_none")]
+    language_ability : Option<LanguageAbility>,
+    
+    party_characteristic: Option<Vec<Characteristic>>,
 }
 
 impl Individual {
@@ -98,6 +115,7 @@ impl Individual {
         // Need this as default would be None
         ind.related_party = Some(vec![]);
         ind.contact_medium = Some(vec![]);
+        ind.party_characteristic = Some(vec![]);
         ind
     }
 

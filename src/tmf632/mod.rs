@@ -14,6 +14,8 @@
 
 //! TMF632 Party Management Modules
 
+use serde::{Deserialize,Serialize};
+
 #[cfg(feature = "tmf632-v4")]
 const MOD_PATH : &str = "partyManagement/v4";
 #[cfg(feature = "tmf632-v5")]
@@ -28,3 +30,15 @@ pub mod organization_v4;
 pub mod individual_v5;
 #[cfg(feature = "tmf632-v5")]
 pub mod organization_v5;
+
+/// General Party characteristic
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub struct Characteristic {
+    name: String,
+    name_type : String,
+    value: String,
+    base_type: Option<String>,
+    schema_location: Option<String>,
+    #[serde(rename = "@type")]
+    r#type: Option<String>,
+}
