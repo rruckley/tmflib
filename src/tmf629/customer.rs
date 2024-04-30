@@ -6,7 +6,8 @@ use sha256::digest;
 use hex::decode;
 use base32::encode;
 
-use crate::tmf632::organization::Organization;
+#[cfg(feature = "tmf632-v4")]
+use crate::tmf632::organization_v4::Organization;
 
 use super::characteristic::Characteristic;
 use crate::common::contact::ContactMedium;

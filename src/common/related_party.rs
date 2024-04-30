@@ -10,8 +10,10 @@ use std::convert::From;
 use serde::{Deserialize,Serialize};
 
 use crate::tmf629::customer::Customer;
-use crate::tmf632::individual::Individual;
-use crate::tmf632::organization::{Organization,OrganizationRef};
+#[cfg(feature = "tmf632-v4")]
+use crate::tmf632::individual_v4::Individual;
+#[cfg(feature = "tmf632-v4")]
+use crate::tmf632::organization_v4::{Organization,OrganizationRef};
 use crate::tmf669::party_role::PartyRole;
 use crate::{HasId,HasName};
 
@@ -100,7 +102,7 @@ impl From<&PartyRole> for RelatedParty {
 #[cfg(test)]
 mod test {
     use crate::tmf629::customer::Customer;
-    use crate::tmf632::organization::Organization;
+    use crate::tmf632::organization_v4::Organization;
     use crate::HasId;
     use super::RelatedParty;
     #[test]

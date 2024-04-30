@@ -1,7 +1,8 @@
 //! Communication Message Example
 
 use tmflib::tmf681::communication_message::CommunicationMessage;
-use tmflib::tmf632::individual::Individual;
+#[cfg(feature = "tmf632-v4")]
+use tmflib::tmf632::individual_v4::Individual;
 
 
 fn main() {

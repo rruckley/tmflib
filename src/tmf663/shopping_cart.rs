@@ -85,7 +85,8 @@ impl ShoppingCart {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::tmf632::organization::Organization;
+    #[cfg(feature = "tmf632-v4")]
+    use crate::tmf632::organization_v4::Organization;
     use crate::common::related_party::RelatedParty;
 
     const ORG : &str = "AnOrganization";
