@@ -16,5 +16,7 @@
 
 const MOD_PATH : &str = "partyManagement/v4";
 
-pub mod individual;
-pub mod organization;
+#[cfg(feature = "tmf632-v4")]
+pub mod individual_v4;
+#[cfg(feature = "tmf632-v4")]
+pub mod organization_v4;
