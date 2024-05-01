@@ -104,7 +104,7 @@ impl Individual {
     /// Convenience function to add an email contact medium
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v4::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .email("john.smith@example.com");
@@ -118,7 +118,7 @@ impl Individual {
     /// Convenience function to set the title for an individual
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v4::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .title("Mr");
@@ -131,7 +131,7 @@ impl Individual {
     /// Convenience function to set the gender for an individual
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v4::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .gender("Unspecified");
@@ -144,7 +144,7 @@ impl Individual {
     /// Convenience function to set the preferred given name for an individual
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v4::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .gender("Unspecified");
@@ -157,7 +157,7 @@ impl Individual {
     /// Convenience funciton to add a mobile number contact medium
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v4::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .mobile("0411 111 111");
