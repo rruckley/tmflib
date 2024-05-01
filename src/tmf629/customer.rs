@@ -203,7 +203,7 @@ impl EventPayload<CustomerEvent> for Customer {
         //let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         let event_time = DateTime::from_timestamp(now.timestamp(),0).unwrap();
         let code = self.get_characteristic("code");
-        let code = code.and_then(|f| Some(f.value) );
+        let code = code.map(|f| f.value);
         Event {
             correlation_id : code,
             description: Some(desc),
