@@ -1,7 +1,19 @@
 //! Catalogue Module
 //!
 //!
-use crate::{HasId, CreateTMF, HasName, CreateTMFWithTime,HasLastUpdate, HasValidity, TimePeriod, DateTime,TMFEvent};
+use crate::{
+    HasId, 
+    CreateTMF, 
+    HasName, 
+    CreateTMFWithTime,
+    HasLastUpdate, 
+    HasValidity, 
+    TimePeriod, 
+    DateTime,
+    TMFEvent,
+    LIB_PATH,
+    Uri,
+};
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
@@ -13,7 +25,6 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 // URL Path components
-use super::LIB_PATH;
 use super::MOD_PATH;
 
 const CLASS_PATH: &str = "catalog";
@@ -50,6 +61,16 @@ pub struct Catalog {
     /// Related parties for party specific catalogs
     #[serde(skip_serializing_if = "Option::is_none")]
     related_party: Option<Vec<RelatedParty>>,
+    // META
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@baseType")]
+    base_type : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@schemaLocation")]
+    schema_location: Option<Uri>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@type")]
+    r#type : Option<String>,
 }
 
 impl Catalog {

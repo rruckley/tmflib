@@ -13,7 +13,7 @@ use crate::tmf629::customer::Customer;
 use crate::tmf632::individual::Individual;
 use crate::tmf632::organization::{Organization,OrganizationRef};
 use crate::tmf669::party_role::PartyRole;
-use crate::{HasId,HasName};
+use crate::{HasId,HasName,Uri};
 
 /// Reference to a Customer (TMF629) , Organisation or Individual (TMF632)
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize )]
@@ -29,10 +29,24 @@ pub struct RelatedParty {
     /// Name referenced role 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<String>,
-    /// Referred Type, what does this reference point to ? 
+  
+    // META
+    /// Base Type this type is derived from if creating sub-classes
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@baseType")]
+    pub base_type : Option<String>,
+    /// Schema Definition of the sub-class (if required)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@schemaLocation")]
+    pub schema_location: Option<Uri>,
+    /// Name for this Type when sub-classing
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@type")]
+    pub r#type : Option<String>,
+    /// What type is this reference referring to?
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@referredType")]
-    pub referred_type: Option<String>,
+    pub referred_type : Option<String>,
 }
 
 impl From<&Customer> for RelatedParty {
@@ -42,7 +56,10 @@ impl From<&Customer> for RelatedParty {
             href: cust.href.as_ref().unwrap().clone(), 
             name: cust.name.clone(),
             role: Some(Customer::get_class()),
-            referred_type: Some(Customer::get_class())
+            base_type: Some(Customer::get_class()),
+            referred_type: Some(Customer::get_class()),
+            r#type: Some(Customer::get_class()),
+            schema_location: None,
         }    
     }
 }
@@ -54,7 +71,10 @@ impl From<Organization> for RelatedParty {
             href: org.get_href(), 
             name: Some(org.get_name()), 
             role: Some(Organization::get_class()),
-            referred_type: Some(Organization::get_class())
+            referred_type: Some(Organization::get_class()),
+            base_type: Some(Organization::get_class()),
+            r#type : Some(Organization::get_class()),
+            schema_location: None,
         }
     }
 }
@@ -66,7 +86,10 @@ impl From<OrganizationRef> for RelatedParty {
             href: value.href.clone(), 
             name: Some(value.name.clone()), 
             role: Some(Organization::get_class()),    
-            referred_type: Some(Organization::get_class())
+            referred_type: Some(Organization::get_class()),
+            base_type: Some(Organization::get_class()),
+            r#type : Some(Organization::get_class()),
+            schema_location: None,
         }
     }
 }
@@ -78,7 +101,10 @@ impl From<&Individual> for RelatedParty {
             href: value.href.as_ref().unwrap().clone(), 
             name: value.full_name.clone(), 
             role: Some(Individual::get_class()),
-            referred_type: Some(Individual::get_class())
+            referred_type: Some(Individual::get_class()),
+            base_type: Some(Individual::get_class()),
+            r#type : Some(Individual::get_class()),
+            schema_location: None,
         }
     }
 }
@@ -92,7 +118,10 @@ impl From<&PartyRole> for RelatedParty {
             href: value.href.as_ref().unwrap().clone(), 
             name: None, 
             role: value.name.clone(),
-            referred_type: Some(PartyRole::get_class())
+            referred_type: Some(PartyRole::get_class()),
+            base_type: Some(PartyRole::get_class()),
+            r#type : Some(PartyRole::get_class()),
+            schema_location: None,
         }
     }
 }
