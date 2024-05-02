@@ -1,0 +1,37 @@
+//! Create Quote Event
+use tmflib::tmf648::{
+    quote::{Quote,QuoteEventType}, 
+    quote_item::QuoteItem, 
+    quote_price::{Price,QuotePrice}
+};
+use tmflib::common::event::EventPayload;
+
+fn main() {
+    // First create a quote item
+    let mut item = QuoteItem::new();
+    // Create a price for this item
+    let price = Price::new_ex(100.0);
+    // Add price to QuotePrice and set period
+    let quote_price = QuotePrice::new("Subscription").price(price).period("Monthly");
+    // add QuotePrice to item
+    item.price(quote_price);
+    // Create the new Quote
+    let mut quote = Quote::new();
+    // Add the item to the quote
+    let _result = quote.add_quote(item);
+    // Set the external Id
+    let _result = quote.with_external_id(String::from("EXT123"));
+    
+    // Create a total price for the quote
+    let total_price = Price::new_ex(3600.0);
+    
+    // Create QuotePrice object for the total price and set period
+    let quote_total_price = QuotePrice::new("Total Contract").price(total_price).period("Contract");
+    // Add QuotePrice to quote
+    quote.price(quote_total_price);
+    quote.description = Some(String::from("MyFirstQuote"));
+
+    let event = quote.to_event(QuoteEventType::QuoteInformationRequiredEvent);
+
+    dbg!(event);
+}

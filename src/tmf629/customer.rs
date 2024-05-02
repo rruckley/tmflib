@@ -202,7 +202,7 @@ impl EventPayload<CustomerEvent> for Customer {
         let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
         let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         let code = self.get_characteristic("code");
-        let code = code.and_then(|f| Some(f.value) );
+        let code = code.map(|f| f.value);
         Event {
             correlation_id : code,
             description: Some(desc),
