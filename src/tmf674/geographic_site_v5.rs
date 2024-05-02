@@ -5,7 +5,7 @@ use serde::{Deserialize,Serialize};
 use crate::{LIB_PATH, CreateTMF, HasName, HasId,TMFEvent};
 use tmflib_derive::{HasId,HasName};
 use uuid::Uuid;
-use chrono::{NaiveDateTime, Utc};
+use chrono::Utc;
 use crate::common::event::{Event,EventPayload};
 use crate::tmf673::geographic_address::GeographicAddress;
 use crate::common::related_party::RelatedParty;
@@ -147,7 +147,7 @@ impl EventPayload<GeographicSiteEvent> for GeographicSite {
 
     fn to_event(&self,event_type : Self::EventType) -> Event<GeographicSiteEvent,Self::EventType> {
         let now = Utc::now();
-        let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
         Event {
             correlation_id: None,

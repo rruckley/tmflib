@@ -7,7 +7,6 @@ use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
 use tmflib_derive::{HasLastUpdate,HasId,HasName,HasValidity};
 
-use chrono::naive::NaiveDateTime;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -101,7 +100,7 @@ impl EventPayload<CatalogEvent> for Catalog {
     type EventType = CatalogEventType;
     fn to_event(&self,event_type : CatalogEventType) -> Event<CatalogEvent,CatalogEventType> {       
         let now = Utc::now();
-        let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         Event {
             correlation_id: None,
             description: None,

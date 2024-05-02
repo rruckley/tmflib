@@ -1,6 +1,6 @@
 //! Customer Module
 //!
-use chrono::{NaiveDateTime,Utc};
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use sha256::digest;
 use hex::decode;
@@ -200,7 +200,7 @@ impl EventPayload<CustomerEvent> for Customer {
     fn to_event(&self,event_type : Self::EventType) -> crate::common::event::Event<CustomerEvent,Self::EventType> {
         let now = Utc::now();
         let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
-        let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         let code = self.get_characteristic("code");
         let code = code.and_then(|f| Some(f.value) );
         Event {
