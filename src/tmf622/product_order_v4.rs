@@ -20,7 +20,7 @@ use super::MOD_PATH;
 const CLASS_PATH: &str = "productOrder";
 
 /// ProductOrder
-#[derive(Debug, Default, Deserialize, HasId, HasNote, HasRelatedParty, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasNote, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOrder {
     #[serde(skip_serializing_if = "Option::is_none")]

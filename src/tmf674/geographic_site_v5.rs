@@ -37,6 +37,7 @@ impl From<GeographicAddress> for PlaceRefOrValue {
 
 /// Definition of start and finish hours
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct HourPeriod {
     start_hour : String,
     end_hour : String,
@@ -44,6 +45,7 @@ pub struct HourPeriod {
 
 /// Calendar entry defining periodic status for site, e.g. opening hours
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CalendarPeriod {
     day : Option<String>,
     status : Option<String>,
@@ -128,6 +130,7 @@ pub enum GeographicSiteEventType {
 
 /// Container for the payload that generated the event
 #[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct GeographicSiteEvent {
     /// Struct that this event relates to
     pub geographic_site: GeographicSite,

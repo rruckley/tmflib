@@ -1,6 +1,6 @@
 //! Geographic Site Module
 
-use chrono::{NaiveDateTime, Utc};
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use std::convert::From;
@@ -46,6 +46,7 @@ impl From<GeographicAddress> for PlaceRefOrValue {
 
 /// Relationship to other sites
 #[derive(Clone, Debug, Default, Deserialize, Serialize, HasValidity)]
+#[serde(rename_all = "camelCase")]
 pub struct GeographicSiteRelationship {
     id : String,
     href : String,
@@ -56,6 +57,7 @@ pub struct GeographicSiteRelationship {
 
 /// Definition of start and finish hours
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct HourPeriod {
     start_hour : String,
     end_hour : String,
@@ -63,6 +65,7 @@ pub struct HourPeriod {
 
 /// Calendar entry defining periodic status for site, e.g. opening hours
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CalendarPeriod {
     day : Option<String>,
     status : Option<String>,
@@ -106,7 +109,7 @@ pub struct GeographicSite {
     /// Site Name
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    place: Option<PlaceRefOrValue>,
+    place: Option<Vec<PlaceRefOrValue>>,
     /// Site Status
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status : Option<String>,
@@ -127,11 +130,12 @@ impl GeographicSite {
         site.name = Some(name.into());
         site.calendar = Some(vec![]);
         site.generate_code(None);
+        site.place = Some(vec![]);
         site
     }
     /// Set the place on this Site
     pub fn place(mut self, place : PlaceRefOrValue) -> GeographicSite {
-        self.place = Some(place);
+        self.place.as_mut().unwrap().push(place);
         self    
     }
 
@@ -173,6 +177,7 @@ pub enum GeographicSiteEventType {
 
 /// Container for the payload that generated the event
 #[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct GeographicSiteEvent {
     /// Struct that this event relates to
     pub geographic_site: GeographicSite,
@@ -192,7 +197,8 @@ impl EventPayload<GeographicSiteEvent> for GeographicSite {
 
     fn to_event(&self,event_type : Self::EventType) -> Event<GeographicSiteEvent,Self::EventType> {
         let now = Utc::now();
-        let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        //let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
         Event {
             correlation_id: self.code.clone(),
@@ -234,7 +240,8 @@ mod test {
         let site = GeographicSite::new(SITE)
             .place(place.into());
 
-        assert_eq!(site.place,Some(place2.into()));
+        assert_eq!(site.place.unwrap()[0],PlaceRefOrValue::from(place2));
     }
 }
+
 
