@@ -31,7 +31,6 @@
 
 #![warn(missing_docs)]
 
-//use chrono::naive::NaiveDateTime;
 use chrono::{Utc,Days};
 use common::related_party::RelatedParty;
 use uuid::Uuid;
@@ -70,7 +69,6 @@ impl TimePeriod {
     /// Calculate period `days` into the future
     pub fn period_days(days : u64) -> TimePeriod {
         let now = Utc::now() + Days::new(days);
-        //let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         TimePeriod {
             end_date_time: Some(time.to_string()),
@@ -83,7 +81,6 @@ impl TimePeriod {
 impl Default for TimePeriod {
     fn default() -> Self {
         let now = Utc::now();
-        //let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         TimePeriod {
             start_date_time : time.to_string(),
@@ -140,7 +137,6 @@ pub trait HasLastUpdate {
     /// Geneate a timestamp for now(), useful for updating last_updated fields
     fn get_timestamp() -> String {
         let now = Utc::now();
-        //let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
         let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         time.to_string()
     }
