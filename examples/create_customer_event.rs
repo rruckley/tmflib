@@ -2,7 +2,8 @@
 //!
  
 use tmflib::common::event::EventPayload;
-use tmflib::tmf632::organization::Organization;
+#[cfg(feature = "tmf632-v4")]
+use tmflib::tmf632::organization_v4::Organization;
 use tmflib::tmf629::customer::{Customer,CustomerEventType};
 
 fn main() {

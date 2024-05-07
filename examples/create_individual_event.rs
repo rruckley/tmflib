@@ -1,7 +1,8 @@
 //! Create Event rfor Individual
 
-
-use tmflib::{common::event::EventPayload, tmf632::individual::{Individual, IndividualEventType}};
+#[cfg(feature = "tmf632-v4")]
+use tmflib::tmf632::individual_v4::{Individual, IndividualEventType};
+use tmflib::common::event::EventPayload;
 
 fn main() {
 

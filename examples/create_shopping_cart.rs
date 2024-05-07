@@ -6,7 +6,8 @@ use tmflib::common::note::Note;
 use tmflib::tmf620::product_offering::{ProductOffering,ProductOfferingRef};
 #[cfg(feature = "tmf620-v5")]
 use tmflib::tmf620::product_offering_v5::{ProductOffering,ProductOfferingRef};
-use tmflib::tmf632::individual::Individual;
+#[cfg(feature = "tmf632-v4")]
+use tmflib::tmf632::individual_v4::Individual;
 use tmflib::tmf663::shopping_cart::ShoppingCart;
 use tmflib::tmf663::cart_item::CartItem;
 

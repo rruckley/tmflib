@@ -7,7 +7,8 @@ use tmflib::tmf641::service_order::ServiceOrder;
 use tmflib::tmf622::product_order_v4::ProductOrder;
 #[cfg(feature = "tmf622-v5")]
 use tmflib::tmf622::product_order_v5::ProductOrder;
-use tmflib::tmf632::individual::Individual;
+#[cfg(feature = "tmf632-v4")]
+use tmflib::tmf632::individual_v4::Individual;
 use tmflib::common::note::Note;
 use tmflib::common::related_party::RelatedParty;
 use tmflib::tmf641::service_order_item::{ServiceOrderItem,ServiceRefOrValue};
