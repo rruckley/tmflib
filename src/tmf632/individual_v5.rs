@@ -102,6 +102,7 @@ pub struct Individual {
     #[serde(skip_serializing_if = "Option::is_none")]
     language_ability : Option<LanguageAbility>,
     
+    /// Party Characteristics
     party_characteristic: Option<Vec<Characteristic>>,
 }
 
