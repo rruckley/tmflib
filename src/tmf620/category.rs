@@ -7,9 +7,18 @@ use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
 use serde::{Deserialize, Serialize};
 
-use super::LIB_PATH;
 use super::MOD_PATH;
-use crate::{HasId,HasName,HasLastUpdate,DateTime,HasValidity,TimePeriod,CreateTMF};
+use crate::{
+    HasId,
+    HasName,
+    HasLastUpdate,
+    DateTime,
+    HasValidity,
+    TimePeriod,
+    CreateTMF,
+    LIB_PATH,
+    Uri,
+};
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
 use crate::CreateTMFWithTime;
@@ -58,6 +67,17 @@ pub struct Category {
     /// Product Offering
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_offering: Option<Vec<ProductOfferingRef>>,
+    
+    // META
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@baseType")]
+    base_type : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@schemaLocation")]
+    schema_location: Option<Uri>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@type")]
+    r#type : Option<String>,
 }
 
 impl Category {
@@ -170,6 +190,19 @@ pub struct CategoryRef {
     href: Option<String>,
     name: Option<String>,
     version: Option<String>,
+    // META
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@baseType")]
+    base_type : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@schemaLocation")]
+    schema_location: Option<Uri>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@type")]
+    r#type : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@referredType")]
+    referred_type : Option<String>,
 }
 
 impl From<&Category> for CategoryRef {
@@ -179,6 +212,10 @@ impl From<&Category> for CategoryRef {
             href: cat.href.clone(),
             name: cat.name.clone(),
             version: cat.version.clone(),
+            base_type : Some(Category::get_class()),
+            r#type : Some(Category::get_class()),
+            schema_location: None,
+            referred_type: Some(Category::get_class()),
         }
     }
 }
