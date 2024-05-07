@@ -3,18 +3,26 @@
 use std::ops::Deref;
 use chrono::Utc;
 use uuid::Uuid;
+use sha256::digest;
+use hex::decode;
+use base32::encode;
 
 use serde::{Deserialize, Serialize};
 
 use crate::{HasId, HasName, CreateTMF,DateTime,TMFEvent};
 use tmflib_derive::HasId;
 use crate::LIB_PATH;
-use super::MOD_PATH;
+use super::{
+    MOD_PATH,
+    Characteristic
+};
 use crate::common::related_party::RelatedParty;
 use crate::common::contact::ContactMedium;
 use crate::common::event::{Event, EventPayload};
 
 const CLASS_PATH : &str = "individual";
+const CODE_LENGTH : usize = 6;
+const CODE_PREFIX : &str = "I-";
 
 /// An individual
 #[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
@@ -86,6 +94,10 @@ pub struct Individual {
     /// Parties related to this individual, e.g. company / organization
     #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
+
+    /// Party Characteristics
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub party_characteristic: Option<Vec<Characteristic>>,
 }
 
 impl Individual {
@@ -98,6 +110,7 @@ impl Individual {
         // Need this as default would be None
         ind.related_party = Some(vec![]);
         ind.contact_medium = Some(vec![]);
+        ind.generate_code(None);
         ind
     }
 
@@ -208,6 +221,53 @@ impl Individual {
         let medium = medium.first()?;
         let characteristic = medium.characteristic.as_ref()?;
         characteristic.email_address.clone()
+    }
+
+    /// Replace a characteristic returning the old value if found
+    pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
+        match self.party_characteristic.as_mut() {
+            Some(c) => {
+                // Characteristic array exist
+                let pos = c.iter().position(|c| c.name == characteristic.name);
+                match pos {
+                    Some(u) => {
+                        // Clone old value for return
+                        let old = c[u].clone();
+                        // Replace
+                        c[u] = characteristic;
+                        Some(old)
+                    },
+                    None => {
+                        // This means the characteristic could not be found, instead we insert it
+                        // Additional we return None to indicate that no old value was found
+                        c.push(characteristic);
+                        None
+                    },
+                }
+            }
+            None => {
+                // Characteristic Vec was not created yet, create it now.
+                self.party_characteristic = Some(vec![characteristic]);
+                // Return None to show no previous value existed.
+                None
+            },
+        }
+    }
+
+    /// Generate a new site code based on available fields
+    pub fn generate_code(&mut self, offset : Option<u32>) {
+        let hash_input = format!("{}:{}:{}",self.get_id(),self.get_name(),offset.unwrap_or_default());
+        let sha = digest(hash_input);
+        let hex = decode(sha);
+        let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
+        let sha_slice = base32.as_str()[..CODE_LENGTH].to_string().to_ascii_uppercase();
+        let characteristic = Characteristic {
+            name : String::from("code"),
+            name_type : String::from("String"),
+            value : format!("{}{}",CODE_PREFIX,sha_slice),
+            ..Default::default()
+        };
+        self.replace_characteristic(characteristic);
     }
 }
 

@@ -3,19 +3,25 @@
 use std::ops::Deref;
 use chrono::Utc;
 use uuid::Uuid;
+use sha256::digest;
+use hex::decode;
+use base32::encode;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasName, CreateTMF,DateTime,TMFEvent};
+use crate::{HasId, HasName, CreateTMF,DateTime,TMFEvent,TimePeriod,LIB_PATH};
 use tmflib_derive::HasId;
-use crate::LIB_PATH;
 use super::{MOD_PATH,Characteristic};
 use crate::common::related_party::RelatedParty;
 use crate::common::contact::ContactMedium;
 use crate::common::event::{Event, EventPayload};
 
 const CLASS_PATH : &str = "individual";
+const CODE_LENGTH : usize = 6;
+const CODE_PREFIX : &str = "I-";
 
+/// Language ability of an individual
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct LanguageAbility {
     is_favourite_language : bool,
     language_code: String,
@@ -103,6 +109,7 @@ pub struct Individual {
     language_ability : Option<LanguageAbility>,
     
     /// Party Characteristics
+    #[serde(skip_serializing_if = "Option::is_none")]
     party_characteristic: Option<Vec<Characteristic>>,
 }
 
@@ -117,13 +124,14 @@ impl Individual {
         ind.related_party = Some(vec![]);
         ind.contact_medium = Some(vec![]);
         ind.party_characteristic = Some(vec![]);
+        ind.generate_code(None);
         ind
     }
 
     /// Convenience function to add an email contact medium
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v5::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .email("john.smith@example.com");
@@ -137,7 +145,7 @@ impl Individual {
     /// Convenience function to set the title for an individual
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v5::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .title("Mr");
@@ -150,7 +158,7 @@ impl Individual {
     /// Convenience function to set the gender for an individual
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v5::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .gender("Unspecified");
@@ -163,7 +171,7 @@ impl Individual {
     /// Convenience function to set the preferred given name for an individual
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v5::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .gender("Unspecified");
@@ -176,7 +184,7 @@ impl Individual {
     /// Convenience funciton to add a mobile number contact medium
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v5::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .mobile("0411 111 111");
@@ -228,6 +236,53 @@ impl Individual {
         let characteristic = medium.characteristic.as_ref()?;
         characteristic.email_address.clone()
     }
+
+        /// Generate a new site code based on available fields
+        pub fn generate_code(&mut self, offset : Option<u32>) {
+            let hash_input = format!("{}:{}:{}",self.get_id(),self.get_name(),offset.unwrap_or_default());
+            let sha = digest(hash_input);
+            let hex = decode(sha);
+            let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
+            let sha_slice = base32.as_str()[..CODE_LENGTH].to_string().to_ascii_uppercase();
+            let characteristic = Characteristic {
+                name : String::from("code"),
+                name_type : String::from("String"),
+                value : format!("{}{}",CODE_PREFIX,sha_slice),
+                ..Default::default()
+            };
+            self.replace_characteristic(characteristic);
+        }
+    
+        /// Replace a characteristic returning the old value if found
+        pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
+            match self.party_characteristic.as_mut() {
+                Some(c) => {
+                    // Characteristic array exist
+                    let pos = c.iter().position(|c| c.name == characteristic.name);
+                    match pos {
+                        Some(u) => {
+                            // Clone old value for return
+                            let old = c[u].clone();
+                            // Replace
+                            c[u] = characteristic;
+                            Some(old)
+                        },
+                        None => {
+                            // This means the characteristic could not be found, instead we insert it
+                            // Additional we return None to indicate that no old value was found
+                            c.push(characteristic);
+                            None
+                        },
+                    }
+                }
+                None => {
+                    // Characteristic Vec was not created yet, create it now.
+                    self.party_characteristic = Some(vec![characteristic]);
+                    // Return None to show no previous value existed.
+                    None
+                },
+            }
+        }
 }
 
 impl HasName for Individual {
