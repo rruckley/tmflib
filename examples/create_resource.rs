@@ -5,6 +5,8 @@ use tmflib::tmf639::resource::Resource;
 use tmflib::tmf629::customer::Customer;
 #[cfg(feature = "tmf632-v4")]
 use tmflib::tmf632::organization_v4::Organization;
+#[cfg(feature = "tmf632-v5")]
+use tmflib::tmf632::organization_v5::Organization;
 use tmflib::common::related_party::RelatedParty;
 
 fn main() {

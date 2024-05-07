@@ -9,6 +9,8 @@ use tmflib::tmf622::product_order_v4::ProductOrder;
 use tmflib::tmf622::product_order_v5::ProductOrder;
 #[cfg(feature = "tmf632-v4")]
 use tmflib::tmf632::individual_v4::Individual;
+#[cfg(feature = "tmf632-v5")]
+use tmflib::tmf632::individual_v5::Individual;
 use tmflib::common::note::Note;
 use tmflib::common::related_party::RelatedParty;
 use tmflib::tmf641::service_order_item::{ServiceOrderItem,ServiceRefOrValue};

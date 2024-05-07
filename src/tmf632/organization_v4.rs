@@ -3,6 +3,9 @@
 use serde::{Deserialize, Serialize};
 use chrono::{DateTime,Utc};
 use uuid::Uuid;
+use sha256::digest;
+use hex::decode;
+use base32::encode;
 
 use crate::{
     CreateTMF, 
@@ -21,9 +24,14 @@ use crate::common::{
     related_party::RelatedParty,
 };
 
-use super::MOD_PATH;
+use super::{
+    MOD_PATH,
+    Characteristic
+};
 
 const CLASS_PATH : &str = "organization";
+const CODE_LENGTH : usize = 6;
+const CODE_PREFIX : &str = "O-";
 
 /// Organization Status
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -103,6 +111,9 @@ pub struct Organization {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
     
+    /// Party Characteristics
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub party_characteristic: Option<Vec<Characteristic>>,
 }
 
 impl Organization {
@@ -117,7 +128,55 @@ impl Organization {
         org.name = Some(name.to_string());
         org.status = Some(OrganizationStateType::default());
         org.related_party = Some(vec![]);
+        org.generate_code(None);
         org
+    }
+
+    /// Generate a new site code based on available fields
+    pub fn generate_code(&mut self, offset : Option<u32>) {
+        let hash_input = format!("{}:{}:{}",self.get_id(),self.get_name(),offset.unwrap_or_default());
+        let sha = digest(hash_input);
+        let hex = decode(sha);
+        let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
+        let sha_slice = base32.as_str()[..CODE_LENGTH].to_string().to_ascii_uppercase();
+        let characteristic = Characteristic {
+            name : String::from("code"),
+            name_type : String::from("String"),
+            value : format!("{}{}",CODE_PREFIX,sha_slice),
+            ..Default::default()
+        };
+        self.replace_characteristic(characteristic);
+    }
+
+    /// Replace a characteristic returning the old value if found
+    pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
+        match self.party_characteristic.as_mut() {
+            Some(c) => {
+                // Characteristic array exist
+                let pos = c.iter().position(|c| c.name == characteristic.name);
+                match pos {
+                    Some(u) => {
+                        // Clone old value for return
+                        let old = c[u].clone();
+                        // Replace
+                        c[u] = characteristic;
+                        Some(old)
+                    },
+                    None => {
+                        // This means the characteristic could not be found, instead we insert it
+                        // Additional we return None to indicate that no old value was found
+                        c.push(characteristic);
+                        None
+                    },
+                }
+            }
+            None => {
+                // Characteristic Vec was not created yet, create it now.
+                self.party_characteristic = Some(vec![characteristic]);
+                // Return None to show no previous value existed.
+                None
+            },
+        }
     }
 }
 

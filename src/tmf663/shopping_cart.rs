@@ -87,6 +87,8 @@ mod test {
     use super::*;
     #[cfg(feature = "tmf632-v4")]
     use crate::tmf632::organization_v4::Organization;
+    #[cfg(feature = "tmf632-v5")]
+    use crate::tmf632::organization_v5::Organization;
     use crate::common::related_party::RelatedParty;
 
     const ORG : &str = "AnOrganization";

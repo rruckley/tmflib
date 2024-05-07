@@ -96,7 +96,7 @@ impl ProductOrder {
     /// # use tmflib::tmf622::product_order_v5::ProductOrder;
     /// use tmflib::common::related_party::RelatedParty;
     /// use tmflib::tmf629::customer::Customer;
-    /// use tmflib::tmf632::organization::Organization;
+    /// use tmflib::tmf632::organization_v5::Organization;
     /// 
     /// let organization = Organization::new(String::from("My Customer"));
     /// let customer = Customer::new(organization);

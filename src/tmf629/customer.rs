@@ -8,6 +8,8 @@ use base32::encode;
 
 #[cfg(feature = "tmf632-v4")]
 use crate::tmf632::organization_v4::Organization;
+#[cfg(feature = "tmf632-v5")]
+use crate::tmf632::organization_v5::Organization;
 
 use super::characteristic::Characteristic;
 use crate::common::contact::ContactMedium;
