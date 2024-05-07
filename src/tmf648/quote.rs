@@ -1,13 +1,16 @@
 //! Quote Module
 use serde::{Deserialize, Serialize};
+use chrono::Utc;
+use uuid::Uuid;
 
 use super::quote_item::QuoteItem;
 use super::MOD_PATH;
 use super::quote_price::QuotePrice;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
-use crate::{LIB_PATH, HasId, HasNote, HasRelatedParty, CreateTMF, HasValidity, TimePeriod, DateTime};
+use crate::{CreateTMF, DateTime, HasId, HasName, HasNote, HasRelatedParty, HasValidity, TMFEvent, TimePeriod, LIB_PATH};
 use crate::tmf651::agreement::AgreementRef;
+use crate::common::event::{Event, EventPayload};
 use tmflib_derive::{HasId,HasValidity,HasNote,HasRelatedParty};
 
 const CLASS_PATH: &str = "quote";
@@ -139,6 +142,74 @@ impl Quote {
         }
     }
 
+}
+
+impl HasName for Quote {
+    fn find(&self, pattern : &str) -> bool {
+        self.description.as_ref().unwrap() == pattern
+    }
+    fn get_name(&self) -> String {
+        self.description.as_ref().unwrap_or(&String::from("INVALID")).clone()  
+    }
+    fn set_name(&mut self, name : impl Into<String>) {
+        self.description = Some(name.into())    
+    }
+}
+
+/// Container for the Quote
+#[derive(Clone,Debug,Serialize,Deserialize)]
+pub struct QuoteEvent {
+    /// Struct that this event relates to
+    pub quote : Quote,
+}
+
+/// Types of Quote Events
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub enum QuoteEventType {
+    /// Quote created
+    QuoteCreateEvent,
+    /// Quote changed State
+    QuoteStateChangeEvent,
+    /// Quote deleted
+    QuoteDeleteEvent,
+    /// Quote requires further information
+    QuoteInformationRequiredEvent,
+    /// Quote attribute changed values
+    QuoteAttributeValueChangeEvent,
+}
+
+impl TMFEvent<QuoteEvent> for Quote {
+    fn event(&self) -> QuoteEvent {
+        QuoteEvent {
+            quote : self.clone(),
+        }
+    }
+}
+
+impl EventPayload<QuoteEvent> for Quote {
+    type Subject = Quote;
+    type EventType = QuoteEventType;
+    fn to_event(&self,event_type : Self::EventType) -> crate::common::event::Event<QuoteEvent,Self::EventType> {
+        let now = Utc::now();
+        let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+       
+        Event {
+            correlation_id: None,
+            description: Some(desc),
+            domain: Some(Quote::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: Some(self.get_href()),
+            id: Some(self.get_id()),
+            title: Some(self.get_name()),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: Some(event_time.to_string()),
+            event_type,
+            event: self.event(),
+        }    
+    }
 }
 
 #[cfg(test)]
