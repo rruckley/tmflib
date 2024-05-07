@@ -60,7 +60,7 @@ impl Customer {
     /// Create new customer object against an [Organization] (legal entity)
     /// ```
     /// # use tmflib::tmf629::customer::Customer;
-    /// # use tmflib::tmf632::organization_v5::Organization;
+    /// # use tmflib::tmf632::organization_v4::Organization;
     /// let org = Organization::new("Legal Entity");
     /// let cust = Customer::new(org);
     /// ```
