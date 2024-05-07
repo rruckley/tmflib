@@ -29,7 +29,7 @@ impl PartyRole {
     /// ```
     /// # use tmflib::tmf669::party_role::PartyRole;
     /// use tmflib::common::related_party::RelatedParty;
-    /// use tmflib::tmf632::individual_v4::Individual;
+    /// use tmflib::tmf632::individual_v5::Individual;
     /// let individual = Individual::new("John Smith");
     /// let role = PartyRole::new("Account Manager",RelatedParty::from(&individual));
     /// ```
@@ -57,6 +57,8 @@ impl PartyRole {
 mod test {
     #[cfg(feature = "tmf632-v4")]
     use crate::tmf632::individual_v4::Individual;
+    #[cfg(feature = "tmf632-v5")]
+    use crate::tmf632::individual_v5::Individual;
     use crate::common::related_party::RelatedParty;
 
     use super::*;

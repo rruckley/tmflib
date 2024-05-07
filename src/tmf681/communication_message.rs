@@ -7,6 +7,8 @@ use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::related_party::RelatedParty;
 #[cfg(feature = "tmf632-v4")]
 use crate::tmf632::individual_v4::Individual;
+#[cfg(feature = "tmf632-v5")]
+use crate::tmf632::individual_v5::Individual;
 
 use super::MOD_PATH;
 const CLASS_PATH : &str = "message";

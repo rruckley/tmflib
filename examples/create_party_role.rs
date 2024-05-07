@@ -9,8 +9,12 @@ use tmflib::tmf669::party_role::PartyRole;
 use tmflib::tmf629::customer::Customer;
 #[cfg(feature = "tmf632-v4")]
 use tmflib::tmf632::individual_v4::Individual;
+#[cfg(feature = "tmf632-v5")]
+use tmflib::tmf632::individual_v5::Individual;
 #[cfg(feature = "tmf632-v4")]
 use tmflib::tmf632::organization_v4::Organization;
+#[cfg(feature = "tmf632-v5")]
+use tmflib::tmf632::organization_v5::Organization;
 use tmflib::common::related_party::RelatedParty;
 
 fn main() {
