@@ -6,7 +6,6 @@ use sha256::digest;
 use hex::decode;
 use base32::encode;
 
-#[cfg(feature = "tmf632-v4")]
 use crate::tmf632::organization_v4::Organization;
 
 use super::characteristic::Characteristic;
@@ -58,7 +57,7 @@ impl Customer {
     /// Create new customer object against an [Organization] (legal entity)
     /// ```
     /// # use tmflib::tmf629::customer::Customer;
-    /// # use tmflib::tmf632::organization_v4::Organization;
+    /// # use tmflib::tmf632::organization::Organization;
     /// let org = Organization::new("Legal Entity");
     /// let cust = Customer::new(org);
     /// ```
@@ -336,6 +335,18 @@ mod test {
         let test_char = customer.get_characteristic("weather");
 
         assert!(test_char.is_some());
+    }
+    
+    #[bench]
+    fn bench_customer_code_generation(b: &mut Bencher) {
+        b.iter(|| {
+            let cust = Customer::default();
+            cust.set_id("ABC123");
+            cust.set_name("ACustomer");
+            for i in 0..100 {
+                cust.generate_code(Some(i));
+            }
+        })
     }
 }
 
