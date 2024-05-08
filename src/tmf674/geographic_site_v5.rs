@@ -101,6 +101,7 @@ impl GeographicSite {
     pub fn new(name : impl Into<String>) -> GeographicSite {
         let mut site = GeographicSite::create();
         site.name = Some(name.into());
+        site.generate_code(None);
         site
     }
     /// Set the place on this Site
@@ -112,6 +113,16 @@ impl GeographicSite {
     pub fn calendar(mut self, calendar : CalendarPeriod) -> GeographicSite {
         self.calendar.as_mut().unwrap().push(calendar);
         self
+    }
+
+    /// Generate a new site code based on available fields
+    pub fn generate_code(&mut self, offset : Option<u32>) {
+        let hash_input = format!("{}:{}:{}",self.get_name(),self.get_id(),offset.unwrap_or_default());
+        let sha = digest(hash_input);
+        let hex = decode(sha);
+        let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
+        let sha_slice = base32.as_str()[..CODE_LENGTH].to_string().to_ascii_uppercase();
+        self.code = Some(format!("{}{}",CODE_PREFIX,sha_slice));
     }
 }
 

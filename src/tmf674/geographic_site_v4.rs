@@ -153,7 +153,7 @@ impl GeographicSite {
 
     /// Generate a new site code based on available fields
     pub fn generate_code(&mut self, offset : Option<u32>) {
-        let hash_input = format!("{}:{}:{}",self.get_id(),self.get_name(),offset.unwrap_or_default());
+        let hash_input = format!("{}:{}:{}",self.get_name(),self.get_id(),offset.unwrap_or_default());
         let sha = digest(hash_input);
         let hex = decode(sha);
         let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
