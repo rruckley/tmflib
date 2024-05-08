@@ -2,9 +2,6 @@
 //!
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
-use sha256::digest;
-use hex::decode;
-use base32::encode;
 
 #[cfg(feature = "tmf632-v4")]
 use crate::tmf632::organization_v4::Organization;
@@ -22,6 +19,7 @@ use crate::{
     TimePeriod,
     TMFEvent,
     CreateTMF,
+    gen_code,
 };
 use tmflib_derive::{HasId,HasName,HasValidity};
 use uuid::Uuid;
@@ -86,27 +84,19 @@ impl Customer {
         if self.id.is_none() {
             self.generate_id();
         };
-        let offset = offset.unwrap_or(0);
-        let hash_input = format!("{}:{}:{}", self.get_name(),self.id.as_ref().unwrap(),offset);
-        let sha = digest(hash_input);
-        let sha_char = Characteristic {
-            name: String::from("sha"),
-            value_type: String::from("string"),
-            value: sha.clone(),
-        };
-        // Convert to Base32 encoding to improve density
-        let hex = decode(sha);
-        let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
-        let sha_slice = base32.as_str()[..CUST_ID_SIZE].to_string().to_ascii_uppercase();
+        
+        // Generate code
+        let (code,hash) = gen_code(self.get_name(), self.get_id(), offset, None, Some(CUST_ID_SIZE));
+
         let code = Characteristic {
             name: String::from("code"),
             value_type: String::from("string"),
-            value: sha_slice,
+            value: code,
         };
         let hash = Characteristic {
             name: String::from("hash"),
             value_type: String::from("string"),
-            value: base32,
+            value: hash,
         };
         // Create vec if it doesn't exist
         if self.characteristic.is_none() {
@@ -116,7 +106,6 @@ impl Customer {
         // Replace characteristics if they exist, to ensure only a single instance of each
         self.replace_characteristic(code);
         self.replace_characteristic(hash);
-        self.replace_characteristic(sha_char);
     }
 
     /// Try to find characteristic with given name
