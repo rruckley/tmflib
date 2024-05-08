@@ -4,21 +4,25 @@ use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use std::convert::From;
-use sha256::digest;
-use hex::decode;
-use base32::encode;
 
 use crate::common::event::{Event,EventPayload};
-use crate::{HasName,HasId,CreateTMF,HasValidity, TimePeriod,TMFEvent};
+use crate::{
+    HasName,
+    HasId,
+    CreateTMF,
+    HasValidity, 
+    TimePeriod,
+    TMFEvent,
+    gen_code,
+    LIB_PATH,
+};
 use crate::common::related_party::RelatedParty;
 use tmflib_derive::{HasId, HasValidity, HasName};
 use crate::tmf673::geographic_address::GeographicAddress;
-use crate::LIB_PATH;
 use super::MOD_PATH;
 const CLASS_PATH: &str = "geographicSite";
 const DEFAULT_TZ : &str = "AEST";
 const CODE_PREFIX : &str = "S-";
-const CODE_LENGTH : usize = 6;
 
 
 /// Reference to a place
@@ -153,12 +157,8 @@ impl GeographicSite {
 
     /// Generate a new site code based on available fields
     pub fn generate_code(&mut self, offset : Option<u32>) {
-        let hash_input = format!("{}:{}:{}",self.get_name(),self.get_id(),offset.unwrap_or_default());
-        let sha = digest(hash_input);
-        let hex = decode(sha);
-        let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
-        let sha_slice = base32.as_str()[..CODE_LENGTH].to_string().to_ascii_uppercase();
-        self.code = Some(format!("{}{}",CODE_PREFIX,sha_slice));
+        let (code,_hash) = gen_code(self.get_name(), self.get_id(), offset, Some(CODE_PREFIX.to_string()), None);
+        self.code = Some(code);
     }
 }
 

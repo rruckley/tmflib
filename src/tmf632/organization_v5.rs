@@ -14,6 +14,7 @@ use crate::{
     TimePeriod,
     TMFEvent,
     LIB_PATH,
+    gen_code,
 };
 use tmflib_derive::{HasId,HasName};
 
@@ -134,15 +135,11 @@ impl Organization {
 
         /// Generate a new site code based on available fields
         pub fn generate_code(&mut self, offset : Option<u32>) {
-            let hash_input = format!("{}:{}:{}",self.get_id(),self.get_name(),offset.unwrap_or_default());
-            let sha = digest(hash_input);
-            let hex = decode(sha);
-            let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
-            let sha_slice = base32.as_str()[..CODE_LENGTH].to_string().to_ascii_uppercase();
+            let (code,_hash) = gen_code(self.get_name(), self.get_id(), offset, Some(CODE_PREFIX.to_string()), None);
             let characteristic = Characteristic {
                 name : String::from("code"),
                 name_type : String::from("String"),
-                value : format!("{}{}",CODE_PREFIX,sha_slice),
+                value : code,
                 ..Default::default()
             };
             self.replace_characteristic(characteristic);

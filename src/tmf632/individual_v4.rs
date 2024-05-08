@@ -3,13 +3,17 @@
 use std::ops::Deref;
 use chrono::Utc;
 use uuid::Uuid;
-use sha256::digest;
-use hex::decode;
-use base32::encode;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasName, CreateTMF,DateTime,TMFEvent};
+use crate::{
+    HasId, 
+    HasName, 
+    CreateTMF,
+    DateTime,
+    TMFEvent,
+    gen_code,
+};
 use tmflib_derive::HasId;
 use crate::LIB_PATH;
 use super::{
@@ -21,7 +25,6 @@ use crate::common::contact::ContactMedium;
 use crate::common::event::{Event, EventPayload};
 
 const CLASS_PATH : &str = "individual";
-const CODE_LENGTH : usize = 6;
 const CODE_PREFIX : &str = "I-";
 
 /// An individual
@@ -256,18 +259,21 @@ impl Individual {
 
     /// Generate a new site code based on available fields
     pub fn generate_code(&mut self, offset : Option<u32>) {
-        let hash_input = format!("{}:{}:{}",self.get_id(),self.get_name(),offset.unwrap_or_default());
-        let sha = digest(hash_input);
-        let hex = decode(sha);
-        let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
-        let sha_slice = base32.as_str()[..CODE_LENGTH].to_string().to_ascii_uppercase();
-        let characteristic = Characteristic {
+        let (code,hash) = gen_code(self.get_name(), self.get_id(), offset, Some(CODE_PREFIX.to_string()), None);
+        let code_char = Characteristic {
             name : String::from("code"),
             name_type : String::from("String"),
-            value : format!("{}{}",CODE_PREFIX,sha_slice),
+            value : code,
             ..Default::default()
         };
-        self.replace_characteristic(characteristic);
+        let hash_char = Characteristic {
+            name : String::from("hash"),
+            name_type : String::from("String"),
+            value : hash,
+            ..Default::default()
+        };
+        self.replace_characteristic(code_char);
+        self.replace_characteristic(hash_char);
     }
 }
 
