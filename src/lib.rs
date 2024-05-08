@@ -36,9 +36,14 @@ use common::related_party::RelatedParty;
 use uuid::Uuid;
 use serde::{Deserialize, Serialize};
 use crate::common::note::Note;
+use sha256::digest;
+use hex::decode;
+use base32::encode;
 
 /// Primary path for the whole library
 pub const LIB_PATH: &str = "tmf-api";
+/// Default code length
+pub const CODE_DEFAULT_LENGTH : usize = 6;
 
 /// Standard cardinality type for library
 pub type Cardinality = u16;
@@ -87,6 +92,17 @@ impl Default for TimePeriod {
             end_date_time: None,
         }    
     }
+}
+
+/// Generate a cryptographic code for use in API calls.
+/// @Return touple of code and Base32 Hash
+pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Option<String>,length : Option<usize>) -> (String,String) {
+    let hash_input = format!("{}:{}:{}",name,id,offset.unwrap_or_default());
+    let sha = digest(hash_input);
+    let hex = decode(sha);
+    let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
+    let sha_slice = base32.as_str()[..length.unwrap_or(CODE_DEFAULT_LENGTH)].to_string().to_ascii_uppercase();
+    (format!("{}{}",prefix.unwrap_or_default(),sha_slice),base32)
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
