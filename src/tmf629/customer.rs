@@ -87,7 +87,7 @@ impl Customer {
             self.generate_id();
         };
         let offset = offset.unwrap_or(0);
-        let hash_input = format!("{}:{}:{}", self.id.as_ref().unwrap(), self.get_name(),offset);
+        let hash_input = format!("{}:{}:{}", self.get_name(),self.id.as_ref().unwrap(),offset);
         let sha = digest(hash_input);
         let sha_char = Characteristic {
             name: String::from("sha"),
