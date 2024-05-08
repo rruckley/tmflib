@@ -89,6 +89,11 @@ impl Customer {
         let offset = offset.unwrap_or(0);
         let hash_input = format!("{}:{}:{}", self.id.as_ref().unwrap(), self.get_name(),offset);
         let sha = digest(hash_input);
+        let sha_char = Characteristic {
+            name: String::from("sha"),
+            value_type: String::from("string"),
+            value: sha.clone(),
+        };
         // Convert to Base32 encoding to improve density
         let hex = decode(sha);
         let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
@@ -111,6 +116,7 @@ impl Customer {
         // Replace characteristics if they exist, to ensure only a single instance of each
         self.replace_characteristic(code);
         self.replace_characteristic(hash);
+        self.replace_characteristic(sha_char);
     }
 
     /// Try to find characteristic with given name
