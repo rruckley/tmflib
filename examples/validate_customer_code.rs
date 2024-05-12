@@ -12,19 +12,15 @@ fn main() {
 
     let code1 = cust1.get_characteristic("code");
     let hash = cust1.get_characteristic("hash");
-    let sha = cust1.get_characteristic("sha");
 
-    println!("Customer: {} + UID: {}\t generates Code: {}",cust1.get_name(),cust1.get_id(),code1.unwrap().value);
-    println!("Customer: {},\tSHA: {}",cust1.get_name(),sha.unwrap().value);
+    println!("Customer: {} + ID: {} Offset=0\t generates Code: {}",cust1.get_name(),cust1.get_id(),code1.unwrap().value);
     println!("Customer: {},\tBase32: {}",cust1.get_name(),hash.unwrap().value);
 
     cust1.generate_code(Some(1));
 
     let code1 = cust1.get_characteristic("code");
     let hash = cust1.get_characteristic("hash");
-    let sha = cust1.get_characteristic("sha");
 
-    println!("Customer: {} + UID: {}\t generates Code: {}",cust1.get_name(),cust1.get_id(),code1.unwrap().value);
-    println!("Customer: {},\tSHA: {}",cust1.get_name(),sha.unwrap().value);
+    println!("Customer: {} + ID: {} Offset=1\t generates Code: {}",cust1.get_name(),cust1.get_id(),code1.unwrap().value);
     println!("Customer: {},\tBase32: {}",cust1.get_name(),hash.unwrap().value);
 }
