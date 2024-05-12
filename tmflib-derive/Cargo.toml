@@ -4,6 +4,7 @@ version = "0.1.13"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Derive macro for the tmflib::HasId trait"
+license = "MIT OR Apache-2.0"
 
 [lib]
 proc-macro = true

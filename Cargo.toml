@@ -5,6 +5,7 @@ edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Interface library for processing TMF payloads"
 repository = "https://github.com/rruckley/tmflib"
+license = "MIT OR Apache-2.0"
 
 [features]
 tmf620-v4 = []
