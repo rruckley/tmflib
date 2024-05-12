@@ -95,7 +95,7 @@ impl Default for TimePeriod {
 }
 
 /// Generate a cryptographic code for use in API calls.
-/// @Return touple of code and Base32 Hash
+/// @Return tuple of code and Base32 Hash
 pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Option<String>,length : Option<usize>) -> (String,String) {
     let hash_input = format!("{}:{}:{}",name,id,offset.unwrap_or_default());
     let sha = digest(hash_input);
