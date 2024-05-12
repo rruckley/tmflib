@@ -39,7 +39,7 @@ impl ContactMedium {
     /// # Example
     /// ```
     /// use tmflib::common::contact::ContactMedium;
-    /// let medium = ContactMedium::email("john.smith@optus.com.au");
+    /// let medium = ContactMedium::email("john.smith@example.com");
     /// ````
     pub fn email(email: &str) -> ContactMedium {
         let char = MediumCharacteristic {
