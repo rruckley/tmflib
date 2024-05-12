@@ -1,6 +1,6 @@
 [package]
 name = "tmflib-derive"
-version = "0.1.13"
+version = "0.1.14"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Derive macro for the tmflib::HasId trait"
