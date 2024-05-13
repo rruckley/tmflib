@@ -13,7 +13,6 @@
 // limitations under the License.
 
 //! Common Modules
-//! 
 
 const MOD_PATH: &str = "common";
 
