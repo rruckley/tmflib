@@ -12,10 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//! Derive Crate for TMFLib traits.
+
+#![warn(missing_docs)]
+
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input,Data,DeriveInput};
 
+/// Generate code for struct when HasId trait is required. 
+/// NB: This trait requires both id and href fields to be present.
 #[proc_macro_derive(HasId)]
 pub fn hasid_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -68,6 +74,7 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+/// Generate code for [tmflib::HasLastUpdate] trait.
 #[proc_macro_derive(HasLastUpdate)]
 pub fn haslastupdate_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -93,6 +100,7 @@ pub fn haslastupdate_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+/// Generate code for [tmflib::HasName] trait.
 #[proc_macro_derive(HasName)]
 pub fn hasname_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -120,6 +128,7 @@ pub fn hasname_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+/// Generate code for [tmflib::HasNote] trait
 #[proc_macro_derive(HasNote)]
 pub fn hasnote_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -150,6 +159,7 @@ pub fn hasnote_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+/// Generate code for [tmflib::HasRelatedParty] trait.
 #[proc_macro_derive(HasRelatedParty)]
 pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -180,6 +190,7 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+/// Generate code for HasValidity trait.
 #[proc_macro_derive(HasValidity)]
 pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
