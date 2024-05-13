@@ -25,7 +25,7 @@ pub struct PartyRole {
 }
 
 impl PartyRole {
-    /// Create new PartyRole based on a given [Individual].
+    /// Create new PartyRole based on a given [crate::tmf632::individual_v4::Individual].
     /// ```
     /// # use tmflib::tmf669::party_role::PartyRole;
     /// use tmflib::common::related_party::RelatedParty;

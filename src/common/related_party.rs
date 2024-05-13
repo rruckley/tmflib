@@ -116,7 +116,7 @@ impl From<&Individual> for RelatedParty {
 }
 
 /// See: <https://engage.tmforum.org/discussion/role-in-relatedparty?ReturnUrl=%2fcommunities%2fcommunity-home%2fdigestviewer%3fcommunitykey%3dd543b8ba-9d3a-4121-85ce-5b68e6c31ce5>
-/// 
+/// Create a [RelatedParty] reference from a reference to [crate::tmf669::party_role::PartyRole]
 impl From<&PartyRole> for RelatedParty {
     fn from(value: &PartyRole) -> Self {
         RelatedParty { 

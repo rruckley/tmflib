@@ -40,9 +40,9 @@ use sha256::digest;
 use hex::decode;
 use base32::encode;
 
-/// Primary path for the whole library
+/// Primary path for the whole library, All paths generated will start with this.
 pub const LIB_PATH: &str = "tmf-api";
-/// Default code length
+/// Default code length used by [gen_code] if no length is supplied.
 pub const CODE_DEFAULT_LENGTH : usize = 6;
 
 /// Standard cardinality type for library
@@ -95,7 +95,23 @@ impl Default for TimePeriod {
 }
 
 /// Generate a cryptographic code for use in API calls.
-/// @Return tuple of code and Base32 Hash
+/// 
+/// Currently used by:
+/// - [`crate::tmf632::individual_v4::Individual`]
+/// - [`crate::tmf632::organization_v4::Organization`]
+/// - [`crate::tmf629::customer::Customer`]
+/// - [`crate::tmf674::geographic_site_v4::GeographicSite`]
+/// # Returns
+///  Returns tuple of the generated code and the Base32 Hash used to form the code.
+/// # Algorithm
+/// This function takes the supplied inputs (name, id , offset) and generates a cryptographic hash which is then
+/// output as a Base32 hash. Each Base32 digit represents 5 bits of binary data, so 6 digits provides 30 bits of 
+/// data or around 1 Billion possible codes.
+/// # Example
+/// ```
+/// use tmflib::gen_code;
+/// let (code,hash) = gen_code("John Q. Smith".to_string(),"USER123".to_string(),None,Some("U-".to_string()),None);
+/// ```
 pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Option<String>,length : Option<usize>) -> (String,String) {
     let hash_input = format!("{}:{}:{}",name,id,offset.unwrap_or_default());
     let sha = digest(hash_input);

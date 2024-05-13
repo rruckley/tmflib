@@ -15,7 +15,7 @@ pub enum PriorityType {
     Critical,
     /// High
     High,
-    /// Medium [default]
+    /// Medium (Default)
     #[default]
     Medium,
     /// Low
@@ -65,14 +65,14 @@ pub enum IncidentStateType {
 #[derive(Clone, Debug, Default, Deserialize,PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum ImpactType {
-    /// Extensive [Highest]
+    /// Extensive (Highest)
     Extensive,
     /// Significant
     Significant,
-    /// Moderate [default]
+    /// Moderate
     #[default]
     Moderate,
-    /// Minor
+    /// Minor (Lowest)
     Minor,
 }
 
