@@ -77,6 +77,7 @@ impl Customer {
     }
 
     /// Geneate a unique customer code via cryptographic functions
+    /// Uses [crate::gen_code].
     pub fn generate_code(&mut self, offset : Option<u32>) {
         // Generate a new code based on name
 
@@ -118,7 +119,23 @@ impl Customer {
         }
     }
 
-    /// Replace a characteristic returning the old value if found
+    /// Replace a characteristic returning the old value if found. 
+    /// Creates the characteristic array if it doesn't exist.
+    /// Creates the characteristic entry if it doesn't exist.
+    /// Replaces the characteristic entry if it does exist.
+    /// 
+    /// # Returns
+    /// Will return the previous value if it existed.
+    /// This 
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf629::{characteristic::Characteristic,customer::Customer};
+    /// let mut cust = Customer::default();
+    /// let char = Characteristic::from(("Validated","NotYet"));
+    /// let old_char = cust.replace_characteristic(char);
+    /// 
+    /// assert_eq!(old_char.is_none(),true);
+    /// ```
     pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
         match self.characteristic.as_mut() {
             Some(c) => {
