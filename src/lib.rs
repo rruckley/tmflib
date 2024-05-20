@@ -138,11 +138,11 @@ pub trait HasId {
     fn get_id(&self) -> String;
     /// Extract the HREF of this object into a new String
     fn get_href(&self) -> String;
-    /// Get the class of this object
+    /// Get the class of this object. This is also used to form part of the URL via generate_href()
     fn get_class() -> String;
-    /// Get Class HREF
+    /// Get Class HREF, this represents the generate path to the class.
     fn get_class_href() -> String;
-    /// Set the id
+    /// Set the id on the object, also triggers generate_href().
     fn set_id(&mut self, id : impl Into<String>);
 }
 
@@ -177,7 +177,7 @@ pub trait HasLastUpdate {
     fn set_last_update(&mut self, time : impl Into<String>);
 }
 
-/// Trait to create a TMF struct including a timestamp field
+/// Trait to create a TMF struct including initialising a last_update field
 pub trait CreateTMFWithTime<T : Default + HasId + HasLastUpdate> {
     /// Create a new TMF object, also set last_update field to now()
     fn create_with_time() -> T {
