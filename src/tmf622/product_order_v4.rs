@@ -122,7 +122,8 @@ impl From<ServiceOrder> for ProductOrder {
         po.completion_date = value.completion_date.clone();
         po.order_date = value.order_date.clone();
         po.cancellation_date = value.cancellation_date.clone();
-        po.expected_completion_date = value.expected_completion_date.clone();
+        // po.expected_completion_date = value.expected_completion_date.clone();
+        po.expected_completion_date.clone_from(&value.expected_completion_date);
         
         // Iterate through service order items
         let items = match value.servce_order_item {

@@ -116,7 +116,7 @@ pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Optio
     let hash_input = format!("{}:{}:{}",name,id,offset.unwrap_or_default());
     let sha = digest(hash_input);
     let hex = decode(sha);
-    let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
+    let base32 = encode(base32::Alphabet::Rfc4648 { padding: false }, hex.unwrap().as_ref());
     let sha_slice = base32.as_str()[..length.unwrap_or(CODE_DEFAULT_LENGTH)].to_string().to_ascii_uppercase();
     (format!("{}{}",prefix.unwrap_or_default(),sha_slice),base32)
 }
@@ -223,7 +223,7 @@ pub trait HasNote : HasId {
     fn get_note(&self, idx : usize) -> Option<&Note>;
     /// Add a new note
     fn add_note(&mut self, note : Note);
-    ///
+    /// Remove note by index
     fn remove_note(&mut self, idx: usize) -> Result<Note,String>;
 }
 
