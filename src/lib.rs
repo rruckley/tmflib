@@ -246,13 +246,16 @@ pub trait TMFEvent<T> : HasId + HasName {
 /// Common Modules
 pub mod common;
 /// Product Catalogue
+#[cfg(any(feature = "tmf620-v4" , feature = "tmf620-v5"))]
 pub mod tmf620;
 /// Product Order
+#[cfg(any(feature = "tmf622-v4" , feature = "tmf622-v5"))]
 pub mod tmf622;
 /// Customer
 #[cfg(any(feature = "tmf629-v4" , feature = "tmf629-v5"))]
 pub mod tmf629;
 /// Party
+#[cfg(any(feature = "tmf632-v4" , feature = "tmf632-v5"))]
 pub mod tmf632;
 /// Service Catalog
 pub mod tmf633;
@@ -278,7 +281,7 @@ pub mod tmf653;
 pub mod tmf663;
 /// Account
 pub mod tmf666;
-#[cfg(feature = "tmf667-v4")]
+#[cfg(any(feature = "tmf667-v4" , feature = "tmf667-v5"))]
 pub mod tmf667;
 /// Party Role
 pub mod tmf669;
@@ -287,14 +290,17 @@ pub mod tmf672;
 /// Geographic Address
 pub mod tmf673;
 /// Geographic Site
+#[cfg(any(feature = "tmf674-v4" , feature = "tmf674-v5"))]
 pub mod tmf674;
 /// Customer Bill Management
+#[cfg(any(feature = "tmf678-v4" , feature = "tmf678-v5"))]
 pub mod tmf678;
 /// Product Offering Qualification
 pub mod tmf679;
 /// Communication Management
 pub mod tmf681;
 /// Sales Management
+#[cfg(any(feature = "tmf699-v4" , feature = "tmf699-v5"))]
 pub mod tmf699;
 /// Shipping Order [Pre-Prod]
 pub mod tmf700;
