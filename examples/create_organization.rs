@@ -1,6 +1,9 @@
 //! Create Organization Example
 
-use tmflib::tmf632::organization::Organization;
+#[cfg(feature = "tmf632-v4")]
+use tmflib::tmf632::organization_v4::Organization;
+#[cfg(feature = "tmf632-v5")]
+use tmflib::tmf632::organization_v5::Organization;
 
 fn main() {
 

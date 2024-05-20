@@ -1,17 +1,37 @@
 //! Individual Module
 
 use std::ops::Deref;
+use chrono::Utc;
+use uuid::Uuid;
+use sha256::digest;
+use hex::decode;
+use base32::encode;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasName, CreateTMF, DateTime};
+use crate::{HasId, HasName, CreateTMF,DateTime,TMFEvent,TimePeriod,LIB_PATH};
 use tmflib_derive::HasId;
-use crate::LIB_PATH;
-use super::MOD_PATH;
+use super::{MOD_PATH,Characteristic};
 use crate::common::related_party::RelatedParty;
 use crate::common::contact::ContactMedium;
+use crate::common::event::{Event, EventPayload};
 
 const CLASS_PATH : &str = "individual";
+const CODE_LENGTH : usize = 6;
+const CODE_PREFIX : &str = "I-";
+
+/// Language ability of an individual
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct LanguageAbility {
+    is_favourite_language : bool,
+    language_code: String,
+    language_name: String,
+    listening_proficiency: String,
+    reading_proficiency: String,
+    speaking_proficiency: String,
+    valid_for: TimePeriod,
+    writing_proficiency: String,
+}
 
 /// An individual
 #[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
@@ -83,6 +103,14 @@ pub struct Individual {
     /// Parties related to this individual, e.g. company / organization
     #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
+
+    /// Language ability of individual
+    #[serde(skip_serializing_if = "Option::is_none")]
+    language_ability : Option<LanguageAbility>,
+    
+    /// Party Characteristics
+    #[serde(skip_serializing_if = "Option::is_none")]
+    party_characteristic: Option<Vec<Characteristic>>,
 }
 
 impl Individual {
@@ -91,52 +119,19 @@ impl Individual {
         let mut ind = Individual::create();
         // Try to split name into two parts
         // If it splits, take 1st as given name, second as family name
-        let name : String = name.into();
-        let name_str = name.as_str();
-        let name_parts = name_str.split(' ');
-        // Determine the number of parts the name is given in
-        match name_parts.clone().count() {
-            1 => {
-                // Only a single name, nothing to do here.
-
-            },
-            2 => {
-                // two parts
-                let parts_vec : Vec<&str> = name_parts.collect();
-                let first_name = parts_vec[0];
-                let last_name = parts_vec[1];
-                ind.given_name = Some(first_name.to_string());
-                ind.preferred_given_name = ind.given_name.clone();
-                ind.family_name = Some(last_name.to_string());
-            },
-            3 => {
-                // three parts
-                let parts_vec : Vec<&str> = name_parts.collect();
-                let first_name = parts_vec[0];
-                let middle_name = parts_vec[1];
-                let last_name = parts_vec[2];
-                ind.given_name = Some(first_name.to_string());
-                ind.preferred_given_name = ind.given_name.clone();
-                ind.family_name = Some(last_name.to_string());
-                ind.middle_name = Some(middle_name.to_string());
-            }
-            _ => {
-
-            }
-        }
-        //let (given,family) = name.as_ref().split
-        ind.full_name = Some(name);
-        ind.legal_name = ind.full_name.clone();
+        ind.set_name(name);
         // Need this as default would be None
         ind.related_party = Some(vec![]);
         ind.contact_medium = Some(vec![]);
+        ind.party_characteristic = Some(vec![]);
+        ind.generate_code(None);
         ind
     }
 
     /// Convenience function to add an email contact medium
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v5::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .email("john.smith@example.com");
@@ -150,7 +145,7 @@ impl Individual {
     /// Convenience function to set the title for an individual
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v5::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .title("Mr");
@@ -163,7 +158,7 @@ impl Individual {
     /// Convenience function to set the gender for an individual
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v5::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .gender("Unspecified");
@@ -176,7 +171,7 @@ impl Individual {
     /// Convenience function to set the preferred given name for an individual
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v5::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .gender("Unspecified");
@@ -189,7 +184,7 @@ impl Individual {
     /// Convenience funciton to add a mobile number contact medium
     /// # Example
     /// ```
-    /// use tmflib::tmf632::individual::Individual;
+    /// use tmflib::tmf632::individual_v5::Individual;
     /// 
     /// let individual = Individual::new("John Smith")
     ///     .mobile("0411 111 111");
@@ -216,7 +211,7 @@ impl Individual {
             None => None,
             Some(cm) => {
                 let name : String = medium.into();
-                Some(cm.into_iter().filter(|i: &&ContactMedium|  {
+                Some(cm.iter().filter(|i: &&ContactMedium|  {
                     i.medium_type.is_some() && i.medium_type.as_ref().unwrap().deref() == name
                 }).collect())
             }
@@ -241,11 +236,154 @@ impl Individual {
         let characteristic = medium.characteristic.as_ref()?;
         characteristic.email_address.clone()
     }
+
+        /// Generate a new site code based on available fields
+        pub fn generate_code(&mut self, offset : Option<u32>) {
+            let (code,hash) = gen_code(self.get_name(), self.get_id(), offset, Some(CODE_PREFIX.to_string()), None);
+            let code_char = Characteristic {
+                name : String::from("code"),
+                name_type : String::from("String"),
+                value : format!("{}{}",CODE_PREFIX,sha_slice),
+                ..Default::default()
+            };
+            let hash_char = Characteristic {
+                name : String::from("code"),
+                name_type : String::from("String"),
+                value : format!("{}{}",CODE_PREFIX,sha_slice),
+                ..Default::default()
+            };
+            self.replace_characteristic(code_char);
+            self.replace_characteristic(hash_char);
+        }
+    
+        /// Replace a characteristic returning the old value if found
+        pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
+            match self.party_characteristic.as_mut() {
+                Some(c) => {
+                    // Characteristic array exist
+                    let pos = c.iter().position(|c| c.name == characteristic.name);
+                    match pos {
+                        Some(u) => {
+                            // Clone old value for return
+                            let old = c[u].clone();
+                            // Replace
+                            c[u] = characteristic;
+                            Some(old)
+                        },
+                        None => {
+                            // This means the characteristic could not be found, instead we insert it
+                            // Additional we return None to indicate that no old value was found
+                            c.push(characteristic);
+                            None
+                        },
+                    }
+                }
+                None => {
+                    // Characteristic Vec was not created yet, create it now.
+                    self.party_characteristic = Some(vec![characteristic]);
+                    // Return None to show no previous value existed.
+                    None
+                },
+            }
+        }
 }
 
 impl HasName for Individual {
     fn get_name(&self) -> String {
         self.full_name.as_ref().unwrap().clone()
+    }
+    fn set_name(&mut self, name : impl Into<String>) {
+        let name : String = name.into();
+        let name_str = name.as_str();
+        let name_parts = name_str.split(' ');
+        // Determine the number of parts the name is given in
+        match name_parts.clone().count() {
+            1 => {
+                // Only a single name, nothing to do here.
+
+            },
+            2 => {
+                // two parts
+                let parts_vec : Vec<&str> = name_parts.collect();
+                let first_name = parts_vec[0];
+                let last_name = parts_vec[1];
+                self.given_name = Some(first_name.to_string());
+                self.preferred_given_name = self.given_name.clone();
+                self.family_name = Some(last_name.to_string());
+            },
+            3 => {
+                // three parts
+                let parts_vec : Vec<&str> = name_parts.collect();
+                let first_name = parts_vec[0];
+                let middle_name = parts_vec[1];
+                let last_name = parts_vec[2];
+                self.given_name = Some(first_name.to_string());
+                self.preferred_given_name = self.given_name.clone();
+                self.family_name = Some(last_name.to_string());
+                self.middle_name = Some(middle_name.to_string());
+            }
+            _ => {
+
+            }
+        }
+        //let (given,family) = name.as_ref().split
+        self.full_name = Some(name);
+        self.legal_name = self.full_name.clone();
+    }
+}
+
+/// Individual Event Types
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub enum IndividualEventType {
+    /// Individual Created
+    IndividualCreateEvent,
+    /// Individual Attribute Changed
+    IndividualAttributeValueChangeEvent,
+    /// Individual Status Change
+    IndividualStateChangeEvent,
+    /// Individual Deleted
+    IndividualDeleteEvent,
+}
+
+/// Container for Individual events
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub struct IndividualEvent {
+    /// The impacted individual data
+    pub individual : Individual,    
+}
+
+impl TMFEvent<IndividualEvent> for Individual {
+    fn event(&self) -> IndividualEvent {
+        IndividualEvent {
+            individual : self.clone(),
+        }
+    }
+}
+
+impl EventPayload<IndividualEvent> for Individual {
+    type Subject = Individual;
+    type EventType = IndividualEventType;
+
+    fn to_event(&self,event_type : Self::EventType) -> Event<IndividualEvent,Self::EventType> {
+        let now = Utc::now();
+        let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+
+        Event {
+            correlation_id : None,
+            description: Some(desc),
+            domain: Some(Individual::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: Some(self.get_href()),
+            id: Some(self.get_id()),
+            title: Some(self.get_name()),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: Some(event_time.to_string()),
+            event_type,
+            event: self.event(),
+        }
     }
 }
 

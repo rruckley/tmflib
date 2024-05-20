@@ -11,8 +11,14 @@ use tmflib::tmf620::product_offering::ProductOffering;
 #[cfg(feature = "tmf620-v5")]
 use tmflib::tmf620::product_offering_v5::ProductOffering;
 use tmflib::tmf629::customer::Customer;
-use tmflib::tmf632::individual::Individual;
-use tmflib::tmf632::organization::Organization;
+#[cfg(feature = "tmf632-v4")]
+use tmflib::tmf632::individual_v4::Individual;
+#[cfg(feature = "tmf632-v4")]
+use tmflib::tmf632::organization_v4::Organization;
+#[cfg(feature = "tmf632-v5")]
+use tmflib::tmf632::individual_v5::Individual;
+#[cfg(feature = "tmf632-v5")]
+use tmflib::tmf632::organization_v5::Organization;
 
 fn main() {
     // This example simple creates in memory structures without reference to any persistence

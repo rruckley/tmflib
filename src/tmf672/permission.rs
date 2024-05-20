@@ -48,7 +48,10 @@ impl Permission {
 
 #[cfg(test)]
 mod test {
-    use crate::tmf632::individual::Individual;
+    #[cfg(feature = "tmf632-v4")]
+    use crate::tmf632::individual_v4::Individual;
+    #[cfg(feature = "tmf632-v5")]
+    use crate::tmf632::individual_v5::Individual;
     use crate::common::related_party::RelatedParty;
 
     use super::Permission;

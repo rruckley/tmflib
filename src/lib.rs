@@ -1,16 +1,16 @@
-// Copyright 2023-2023 Ryan Ruckley.
-//
-// Permission to use, copy, modify, and/or distribute this software for any
-// purpose with or without fee is hereby granted, provided that the above
-// copyright notice and this permission notice appear in all copies.
-//
-// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHORS DISCLAIM ALL WARRANTIES
-// WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY
-// SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-// WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
-// OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
-// CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+// Copyright [2024] [Ryan Ruckley]
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 //! TMF Library
 //! # Description
@@ -31,15 +31,19 @@
 
 #![warn(missing_docs)]
 
-use chrono::naive::NaiveDateTime;
 use chrono::{Utc,Days};
 use common::related_party::RelatedParty;
 use uuid::Uuid;
 use serde::{Deserialize, Serialize};
 use crate::common::note::Note;
+use sha256::digest;
+use hex::decode;
+use base32::encode;
 
-/// Primary path for the whole library
+/// Primary path for the whole library, All paths generated will start with this.
 pub const LIB_PATH: &str = "tmf-api";
+/// Default code length used by [gen_code] if no length is supplied.
+pub const CODE_DEFAULT_LENGTH : usize = 6;
 
 /// Standard cardinality type for library
 pub type Cardinality = u16;
@@ -70,7 +74,7 @@ impl TimePeriod {
     /// Calculate period `days` into the future
     pub fn period_days(days : u64) -> TimePeriod {
         let now = Utc::now() + Days::new(days);
-        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         TimePeriod {
             end_date_time: Some(time.to_string()),
             ..Default::default()
@@ -82,12 +86,39 @@ impl TimePeriod {
 impl Default for TimePeriod {
     fn default() -> Self {
         let now = Utc::now();
-        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         TimePeriod {
             start_date_time : time.to_string(),
             end_date_time: None,
         }    
     }
+}
+
+/// Generate a cryptographic code for use in API calls.
+/// 
+/// Currently used by:
+/// - [`crate::tmf632::individual_v4::Individual`]
+/// - [`crate::tmf632::organization_v4::Organization`]
+/// - [`crate::tmf629::customer::Customer`]
+/// - [`crate::tmf674::geographic_site_v4::GeographicSite`]
+/// # Returns
+///  Returns tuple of the generated code and the Base32 Hash used to form the code.
+/// # Algorithm
+/// This function takes the supplied inputs (name, id , offset) and generates a cryptographic hash which is then
+/// output as a Base32 hash. Each Base32 digit represents 5 bits of binary data, so 6 digits provides 30 bits of 
+/// data or around 1 Billion possible codes.
+/// # Example
+/// ```
+/// use tmflib::gen_code;
+/// let (code,hash) = gen_code("John Q. Smith".to_string(),"USER123".to_string(),None,Some("U-".to_string()),None);
+/// ```
+pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Option<String>,length : Option<usize>) -> (String,String) {
+    let hash_input = format!("{}:{}:{}",name,id,offset.unwrap_or_default());
+    let sha = digest(hash_input);
+    let hex = decode(sha);
+    let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
+    let sha_slice = base32.as_str()[..length.unwrap_or(CODE_DEFAULT_LENGTH)].to_string().to_ascii_uppercase();
+    (format!("{}{}",prefix.unwrap_or_default(),sha_slice),base32)
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
@@ -107,10 +138,12 @@ pub trait HasId {
     fn get_id(&self) -> String;
     /// Extract the HREF of this object into a new String
     fn get_href(&self) -> String;
-    /// Get the class of this object
+    /// Get the class of this object. This is also used to form part of the URL via generate_href()
     fn get_class() -> String;
-    /// Get Class HREF
+    /// Get Class HREF, this represents the generate path to the class.
     fn get_class_href() -> String;
+    /// Set the id on the object, also triggers generate_href().
+    fn set_id(&mut self, id : impl Into<String>);
 }
 
 /// Trait to create TMF structs that have the HasId trait
@@ -136,7 +169,7 @@ pub trait HasLastUpdate {
     /// Geneate a timestamp for now(), useful for updating last_updated fields
     fn get_timestamp() -> String {
         let now = Utc::now();
-        let time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         time.to_string()
     }
 
@@ -144,7 +177,7 @@ pub trait HasLastUpdate {
     fn set_last_update(&mut self, time : impl Into<String>);
 }
 
-/// Trait to create a TMF struct including a timestamp field
+/// Trait to create a TMF struct including initialising a last_update field
 pub trait CreateTMFWithTime<T : Default + HasId + HasLastUpdate> {
     /// Create a new TMF object, also set last_update field to now()
     fn create_with_time() -> T {
@@ -180,6 +213,8 @@ pub trait HasName : HasId {
     fn find(&self, pattern : &str) -> bool {
         self.get_name().contains(pattern.trim())
     }
+    /// Set the name, trimming any whitespace
+    fn set_name(&mut self, name : impl Into<String>);
 }
 
 /// Trait for classes with notes
@@ -237,12 +272,16 @@ pub trait HasRef : HasId {
 /// Common Modules
 pub mod common;
 /// Product Catalogue
+#[cfg(any(feature = "tmf620-v4" , feature = "tmf620-v5"))]
 pub mod tmf620;
 /// Product Order
+#[cfg(any(feature = "tmf622-v4" , feature = "tmf622-v5"))]
 pub mod tmf622;
 /// Customer
+#[cfg(any(feature = "tmf629-v4" , feature = "tmf629-v5"))]
 pub mod tmf629;
 /// Party
+#[cfg(any(feature = "tmf632-v4" , feature = "tmf632-v5"))]
 pub mod tmf632;
 /// Service Catalog
 pub mod tmf633;
@@ -268,6 +307,8 @@ pub mod tmf653;
 pub mod tmf663;
 /// Account
 pub mod tmf666;
+#[cfg(any(feature = "tmf667-v4" , feature = "tmf667-v5"))]
+pub mod tmf667;
 /// Party Role
 pub mod tmf669;
 /// User Roles and Permissions Management
@@ -275,12 +316,17 @@ pub mod tmf672;
 /// Geographic Address
 pub mod tmf673;
 /// Geographic Site
+#[cfg(any(feature = "tmf674-v4" , feature = "tmf674-v5"))]
 pub mod tmf674;
+/// Customer Bill Management
+#[cfg(any(feature = "tmf678-v4" , feature = "tmf678-v5"))]
+pub mod tmf678;
 /// Product Offering Qualification
 pub mod tmf679;
 /// Communication Management
 pub mod tmf681;
 /// Sales Management
+#[cfg(any(feature = "tmf699-v4" , feature = "tmf699-v5"))]
 pub mod tmf699;
 /// Shipping Order [Pre-Prod]
 pub mod tmf700;

@@ -1,7 +1,10 @@
 //! Create Permission Example
 
 use tmflib::tmf672::permission::Permission;
-use tmflib::tmf632::individual::Individual;
+#[cfg(feature = "tmf632-v4")]
+use tmflib::tmf632::individual_v4::Individual;
+#[cfg(feature = "tmf632-v5")]
+use tmflib::tmf632::individual_v5::Individual;
 use tmflib::common::related_party::RelatedParty;
 
 fn main() {

@@ -8,7 +8,18 @@ use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
 
-use crate::{CreateTMF, CreateTMFWithTime,HasLastUpdate, HasId, HasName, HasValidity, TimePeriod, DateTime};
+use crate::{
+    CreateTMF, 
+    CreateTMFWithTime,
+    HasLastUpdate, 
+    HasId, 
+    HasName, 
+    HasValidity, 
+    TimePeriod, 
+    DateTime,
+    Uri,
+    LIB_PATH,
+};
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
 use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
@@ -19,7 +30,6 @@ use crate::tmf651::agreement::AgreementRef;
 
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
-use super::LIB_PATH;
 use super::MOD_PATH;
 
 const PO_VERS_INIT: &str = "1.0";
@@ -163,6 +173,17 @@ pub struct ProductOffering {
     /// Service Level Agreements
     #[serde(skip_serializing_if = "Option::is_none")]
     pub service_level_agreement: Option<SLARef>,
+
+    // META
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@baseType")]
+    base_type : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@schemaLocation")]
+    schema_location: Option<Uri>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@type")]
+    r#type : Option<String>,
 }
 
 impl ProductOffering {
@@ -178,7 +199,8 @@ impl ProductOffering {
         offer.version = Some(PO_VERS_INIT.to_string());
         offer.product_offering_relationship = Some(vec![]);
         offer.prod_spec_char_value_use = Some(vec![]);
-
+        offer.base_type = Some(ProductOffering::get_class());
+        offer.r#type = Some(ProductOffering::get_class());
         offer
     }
 

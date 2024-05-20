@@ -8,17 +8,19 @@ use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
 use crate::tmf651::agreement::AgreementRef;
 use crate::{CreateTMF, CreateTMFWithTime, DateTime, HasId, HasLastUpdate, HasNote, HasRelatedParty};
+use crate::tmf663::shopping_cart::ShoppingCart;
+use super::product_order_item::ProductOrderItem;
 
 // URL Path components
 use super::LIB_PATH;
 use super::MOD_PATH;
 
-use super::product_order_item::ProductOrderItem;
+
 
 const CLASS_PATH: &str = "productOrder";
 
 /// ProductOrder
-#[derive(Debug, Default, Deserialize, HasId, HasNote, HasRelatedParty, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasNote, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -92,7 +94,7 @@ impl ProductOrder {
     /// # use tmflib::tmf622::product_order_v4::ProductOrder;
     /// use tmflib::common::related_party::RelatedParty;
     /// use tmflib::tmf629::customer::Customer;
-    /// use tmflib::tmf632::organization::Organization;
+    /// use tmflib::tmf632::organization_v4::Organization;
     /// 
     /// let organization = Organization::new(String::from("My Customer"));
     /// let customer = Customer::new(organization);
@@ -138,5 +140,27 @@ impl From<ServiceOrder> for ProductOrder {
         po.product_order_item = items;
 
         po  
+    }
+}
+
+impl From<ShoppingCart> for ProductOrder {
+    fn from(value: ShoppingCart) -> Self {
+        // Convert a Shopping cart into a product order.
+        // Each CartItem converts into an order item using a conversion function.
+        let mut order = ProductOrder::new();
+        order.description = Some("Order from Cart".into());
+        // Bring across the cart items
+        if value.cart_item.is_some() {
+            value.cart_item.unwrap().into_iter().for_each(|i| {
+                order.product_order_item.as_mut().unwrap().push(ProductOrderItem::from(i));
+            });
+        }
+        // Bring across the related parties
+        if value.related_party.is_some() {
+            value.related_party.unwrap().into_iter().for_each(|rp| {
+                order.related_party.as_mut().unwrap().push(rp.clone());
+            });
+        }
+        order
     }
 }

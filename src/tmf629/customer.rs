@@ -1,16 +1,28 @@
 //! Customer Module
 //!
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
-use sha256::digest;
 
-use crate::CreateTMF;
-use crate::tmf632::organization::Organization;
+#[cfg(feature = "tmf632-v4")]
+use crate::tmf632::organization_v4::Organization;
+#[cfg(feature = "tmf632-v5")]
+use crate::tmf632::organization_v5::Organization;
 
 use super::characteristic::Characteristic;
 use crate::common::contact::ContactMedium;
 use crate::common::related_party::RelatedParty;
-use crate::{HasId,HasName, HasValidity, TimePeriod};
+use crate::common::event::{Event,EventPayload};
+use crate::{
+    HasId,
+    HasName,
+    HasValidity,
+    TimePeriod,
+    TMFEvent,
+    CreateTMF,
+    gen_code,
+};
 use tmflib_derive::{HasId,HasName,HasValidity};
+use uuid::Uuid;
 
 use crate::LIB_PATH;
 use super::MOD_PATH;
@@ -46,7 +58,7 @@ impl Customer {
     /// Create new customer object against an [Organization] (legal entity)
     /// ```
     /// # use tmflib::tmf629::customer::Customer;
-    /// # use tmflib::tmf632::organization::Organization;
+    /// # use tmflib::tmf632::organization_v4::Organization;
     /// let org = Organization::new("Legal Entity");
     /// let cust = Customer::new(org);
     /// ```
@@ -65,6 +77,7 @@ impl Customer {
     }
 
     /// Geneate a unique customer code via cryptographic functions
+    /// Uses [crate::gen_code].
     pub fn generate_code(&mut self, offset : Option<u32>) {
         // Generate a new code based on name
 
@@ -72,38 +85,85 @@ impl Customer {
         if self.id.is_none() {
             self.generate_id();
         };
-        let offset = offset.unwrap_or(0);
-        let hash_input = format!("{}:{}:{}", self.id.as_ref().unwrap(), self.get_name(),offset);
-        let sha = digest(hash_input);
-        let sha_slice = sha.as_str()[..CUST_ID_SIZE].to_string().to_ascii_uppercase();
+        
+        // Generate code
+        let (code,hash) = gen_code(self.get_name(), self.get_id(), offset, None, Some(CUST_ID_SIZE));
+
         let code = Characteristic {
             name: String::from("code"),
             value_type: String::from("string"),
-            value: sha_slice,
+            value: code,
         };
         let hash = Characteristic {
             name: String::from("hash"),
             value_type: String::from("string"),
-            value: sha,
+            value: hash,
         };
         // Create vec if it doesn't exist
         if self.characteristic.is_none() {
             self.characteristic = Some(vec![]);
         }
 
-        self.characteristic.as_mut().unwrap().push(code);
-        self.characteristic.as_mut().unwrap().push(hash);
+        // Replace characteristics if they exist, to ensure only a single instance of each
+        self.replace_characteristic(code);
+        self.replace_characteristic(hash);
     }
 
     /// Try to find characteristic with given name
     pub fn get_characteristic(&self, characteristic : &str) -> Option<Characteristic> {
-    match self.characteristic.clone() {
-        Some(c) => {
-            c.into_iter().find(|x| x.name == characteristic)
-        },
-        None => None,
+        match &self.characteristic {
+            Some(c) => {
+                c.iter().find(|x| x.name == characteristic).cloned()
+            },
+            None => None,
+        }
     }
 
+    /// Replace a characteristic returning the old value if found. 
+    /// Creates the characteristic array if it doesn't exist.
+    /// Creates the characteristic entry if it doesn't exist.
+    /// Replaces the characteristic entry if it does exist.
+    /// 
+    /// # Returns
+    /// Will return the previous value if it existed.
+    /// This 
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf629::{characteristic::Characteristic,customer::Customer};
+    /// let mut cust = Customer::default();
+    /// let char = Characteristic::from(("Validated","NotYet"));
+    /// let old_char = cust.replace_characteristic(char);
+    /// 
+    /// assert_eq!(old_char.is_none(),true);
+    /// ```
+    pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
+        match self.characteristic.as_mut() {
+            Some(c) => {
+                // Characteristic array exist
+                let pos = c.iter().position(|c| c.name == characteristic.name);
+                match pos {
+                    Some(u) => {
+                        // Clone old value for return
+                        let old = c[u].clone();
+                        // Replace
+                        c[u] = characteristic;
+                        Some(old)
+                    },
+                    None => {
+                        // This means the characteristic could not be found, instead we insert it
+                        // Additional we return None to indicate that no old value was found
+                        c.push(characteristic);
+                        None
+                    },
+                }
+            }
+            None => {
+                // Characteristic Vec was not created yet, create it now.
+                self.characteristic = Some(vec![characteristic]);
+                // Return None to show no previous value existed.
+                None
+            },
+        }
     }
 
     /// Set the name of the customer
@@ -120,11 +180,69 @@ impl From<&Organization> for Customer {
     }
 }
 
+/// Customer Event Type
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub enum CustomerEventType {
+    /// Customer Created
+    CustomerCreateEvent,
+    /// Customer Attribute Changed
+    CustomerAttributeValueChangeEvent,
+    /// Customer Status Changed
+    CustomerStateChangeEvent,
+    /// Customer Deleted
+    CustomerDeleteEvent,
+}
+
+/// Container for the payload
+#[derive(Clone,Debug,Deserialize,Serialize)]
+pub struct CustomerEvent {
+    /// Customer
+    pub customer : Customer,
+}
+
+impl TMFEvent<CustomerEvent> for Customer {
+    fn event(&self) -> CustomerEvent {
+        CustomerEvent {
+            customer : self.clone(),
+        }
+    }
+}
+
+impl EventPayload<CustomerEvent> for Customer {
+    type Subject = Customer;
+    type EventType = CustomerEventType;
+
+    fn to_event(&self,event_type : Self::EventType) -> crate::common::event::Event<CustomerEvent,Self::EventType> {
+        let now = Utc::now();
+        let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let code = self.get_characteristic("code");
+        let code = code.map(|f| f.value);
+        Event {
+            correlation_id : code,
+            description: Some(desc),
+            domain: Some(Customer::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: Some(self.get_href()),
+            id: Some(self.get_id()),
+            title: Some(self.get_name()),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: Some(event_time.to_string()),
+            event_type,
+            event: self.event(),
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
 
     const CUSTOMER : &str = "ACustomer";
+    const CUSTOMER_BAD : &str = " ACustomer ";
+    const CUSTOMER_UID : u16 = 174;
 
     #[test]
     fn test_customer_new_name() {
@@ -160,4 +278,78 @@ mod test {
 
         assert_eq!(org1.name,customer.name);
     }
+
+    #[test]
+    fn test_customer_characteristic_replace() {
+        let org1 = Organization::new(CUSTOMER);
+        let mut customer = Customer::from(&org1);
+
+        let code_new = Characteristic {
+            name : "code".into(),
+            value: "ABC".into(),
+            value_type: "String".into()
+        };
+        let code_new_clone = code_new.clone();
+        let code_old = customer.get_characteristic("code");
+        let code_replace = customer.replace_characteristic(code_new);
+        let code_replaced = customer.get_characteristic("code");
+
+        // code_old and code_replace should be the same
+        assert_eq!(code_old.unwrap().value,code_replace.unwrap().value);
+        // code_new and code_replaced should be the same
+        assert_eq!(code_new_clone.value,code_replaced.unwrap().value);
+    }
+
+    #[test]
+    fn test_customer_code_whitespace() {
+        // use default() to avoid id generation via new()
+        let mut cust1 = Customer::default();
+        cust1.set_id(CUSTOMER_UID.to_string());
+        cust1.set_name(CUSTOMER);
+
+        // Create second customer using name with whitespace
+        let mut cust2 = Customer::default();
+        cust2.set_id(CUSTOMER_UID.to_string());
+        cust2.set_name(CUSTOMER_BAD);
+        
+        // Generate customer codes
+        cust1.generate_code(None);
+        cust2.generate_code(None);
+
+        let code1 = cust1.get_characteristic("code").unwrap();
+        let code2 = cust2.get_characteristic("code").unwrap();
+
+        // Customer codes should be the same, but the ID is different.
+        assert_eq!(code1.value,code2.value);
+    }
+
+    #[test]
+    fn test_customer_characteristic_new_missing() {
+        // Test replacing a non-existing characteristic
+        let characteristic = Characteristic::from(("weather","rainy"));
+
+        let org1 = Organization::new(CUSTOMER);
+        let mut customer = Customer::from(&org1);
+
+        customer.replace_characteristic(characteristic);
+
+        let test_char = customer.get_characteristic("weather");
+
+        assert!(test_char.is_some());
+    }
+
+    #[test]
+    fn test_customer_characteristic_default_missing() {
+        // Test replacing a non-existing characteristic, on a default Customer (i.e. no Vec creatd)
+        let characteristic = Characteristic::from(("weather","rainy"));
+
+        let mut customer = Customer::default();
+
+        customer.replace_characteristic(characteristic);
+
+        let test_char = customer.get_characteristic("weather");
+
+        assert!(test_char.is_some());
+    }
 }
+

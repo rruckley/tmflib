@@ -1,19 +1,29 @@
 //! Catalogue Module
 //!
 //!
-use crate::{CreateTMF, CreateTMFWithTime, DateTime, HasId, HasLastUpdate, HasName, HasValidity, TMFEvent, TimePeriod};
+use crate::{
+    HasId, 
+    CreateTMF, 
+    HasName, 
+    CreateTMFWithTime,
+    HasLastUpdate, 
+    HasValidity, 
+    TimePeriod, 
+    DateTime,
+    TMFEvent,
+    LIB_PATH,
+    Uri,
+};
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
 use tmflib_derive::{HasLastUpdate,HasId,HasName,HasValidity};
 
-use chrono::naive::NaiveDateTime;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 // URL Path components
-use super::LIB_PATH;
 use super::MOD_PATH;
 
 const CLASS_PATH: &str = "catalog";
@@ -50,6 +60,16 @@ pub struct Catalog {
     /// Related parties for party specific catalogs
     #[serde(skip_serializing_if = "Option::is_none")]
     related_party: Option<Vec<RelatedParty>>,
+    // META
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@baseType")]
+    base_type : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@schemaLocation")]
+    schema_location: Option<Uri>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@type")]
+    r#type : Option<String>,
 }
 
 impl Catalog {
@@ -101,7 +121,7 @@ impl EventPayload<CatalogEvent> for Catalog {
     type EventType = CatalogEventType;
     fn to_event(&self,event_type : CatalogEventType) -> Event<CatalogEvent,CatalogEventType> {       
         let now = Utc::now();
-        let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         Event {
             correlation_id: None,
             description: None,

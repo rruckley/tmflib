@@ -15,7 +15,8 @@ use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
 use serde::{Deserialize, Serialize};
 
-use super::{AgreementRef,ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
+use super::{ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
+use crate::tmf651::agreement::AgreementRef;
 
 use super::LIB_PATH;
 use super::MOD_PATH;
@@ -24,7 +25,7 @@ const PO_VERS_INIT: &str = "1.0";
 const CLASS_PATH: &str = "productOffering";
 
 /// Product Offering Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ProductOfferingRef {
     id: String,
     href: String,

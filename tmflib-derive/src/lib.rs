@@ -1,7 +1,27 @@
+// Copyright [2024] [Ryan Ruckley]
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//! Derive Crate for TMFLib traits.
+
+#![warn(missing_docs)]
+
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input,Data,DeriveInput};
 
+/// Generate code for struct when HasId trait is required. 
+/// NB: This trait requires both id and href fields to be present.
 #[proc_macro_derive(HasId)]
 pub fn hasid_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -44,6 +64,9 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
             fn get_class_href() -> String {
                 format!("/{}/{}/{}",LIB_PATH,MOD_PATH,#name::get_class())
             }
+            fn set_id(&mut self, id : impl Into<String>) {
+                self.id = Some(id.into());
+            }
         }
 
         impl CreateTMF<#name> for #name {}
@@ -51,6 +74,7 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+/// Generate code for [tmflib::HasLastUpdate] trait.
 #[proc_macro_derive(HasLastUpdate)]
 pub fn haslastupdate_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -76,6 +100,7 @@ pub fn haslastupdate_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+/// Generate code for [tmflib::HasName] trait.
 #[proc_macro_derive(HasName)]
 pub fn hasname_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -95,11 +120,15 @@ pub fn hasname_derive(input: TokenStream) -> TokenStream {
             fn get_name(&self) -> String {
                 self.name.clone().unwrap_or("NoName".to_string())
             }
+            fn set_name(&mut self, name : impl Into<String>) {
+                self.name = Some(name.into().trim().to_string());
+            }
         }
     };
     out.into()
 }
 
+/// Generate code for [tmflib::HasNote] trait
 #[proc_macro_derive(HasNote)]
 pub fn hasnote_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -130,6 +159,7 @@ pub fn hasnote_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+/// Generate code for [tmflib::HasRelatedParty] trait.
 #[proc_macro_derive(HasRelatedParty)]
 pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -160,6 +190,7 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+/// Generate code for HasValidity trait.
 #[proc_macro_derive(HasValidity)]
 pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
