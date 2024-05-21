@@ -64,6 +64,9 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
             fn get_class_href() -> String {
                 format!("/{}/{}/{}",LIB_PATH,MOD_PATH,#name::get_class())
             }
+            fn get_mod_path() -> String {
+                format!("/{}/{}",LIB_PATH,MOD_PATH)
+            }
             fn set_id(&mut self, id : impl Into<String>) {
                 self.id = Some(id.into());
             }

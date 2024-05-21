@@ -142,6 +142,8 @@ pub trait HasId {
     fn get_class() -> String;
     /// Get Class HREF, this represents the generate path to the class.
     fn get_class_href() -> String;
+    /// Get the module path
+    fn get_mod_path() -> String;
     /// Set the id on the object, also triggers generate_href().
     fn set_id(&mut self, id : impl Into<String>);
 }
@@ -257,56 +259,33 @@ pub mod tmf629;
 /// Party
 #[cfg(any(feature = "tmf632-v4" , feature = "tmf632-v5"))]
 pub mod tmf632;
-/// Service Catalog
 pub mod tmf633;
-/// Resource Catalog
 pub mod tmf634;
-/// Product Inventory
 pub mod tmf637;
-/// Service Inventory
 pub mod tmf638;
-/// Resource Inventory
 pub mod tmf639;
-/// Service Order
 pub mod tmf641;
-/// Appointment
 pub mod tmf646;
-/// Quote
 pub mod tmf648;
-/// Agreement
 pub mod tmf651;
-/// Service Test
 pub mod tmf653;
-/// Shopping Cart
 pub mod tmf663;
-/// Account
 pub mod tmf666;
 #[cfg(any(feature = "tmf667-v4" , feature = "tmf667-v5"))]
 pub mod tmf667;
-/// Party Role
 pub mod tmf669;
-/// User Roles and Permissions Management
 pub mod tmf672;
-/// Geographic Address
 pub mod tmf673;
-/// Geographic Site
 #[cfg(any(feature = "tmf674-v4" , feature = "tmf674-v5"))]
 pub mod tmf674;
-/// Customer Bill Management
 #[cfg(any(feature = "tmf678-v4" , feature = "tmf678-v5"))]
 pub mod tmf678;
-/// Product Offering Qualification
 pub mod tmf679;
-/// Communication Management
 pub mod tmf681;
-/// Sales Management
 #[cfg(any(feature = "tmf699-v4" , feature = "tmf699-v5"))]
 pub mod tmf699;
-/// Shipping Order [Pre-Prod]
 pub mod tmf700;
-/// Incident Management
 pub mod tmf724;
-/// Product Configuration
 pub mod tmf760;
 
 #[cfg(test)]
