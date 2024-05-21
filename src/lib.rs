@@ -116,7 +116,7 @@ pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Optio
     let hash_input = format!("{}:{}:{}",name,id,offset.unwrap_or_default());
     let sha = digest(hash_input);
     let hex = decode(sha);
-    let base32 = encode(base32::Alphabet::RFC4648 { padding: false }, hex.unwrap().as_ref());
+    let base32 = encode(base32::Alphabet::Rfc4648 { padding: false }, hex.unwrap().as_ref());
     let sha_slice = base32.as_str()[..length.unwrap_or(CODE_DEFAULT_LENGTH)].to_string().to_ascii_uppercase();
     (format!("{}{}",prefix.unwrap_or_default(),sha_slice),base32)
 }
@@ -308,3 +308,18 @@ pub mod tmf700;
 pub mod tmf724;
 /// Product Configuration
 pub mod tmf760;
+
+#[cfg(test)]
+mod test {
+    use super::gen_code;
+    const CODE : &str = "T-DXQR65";
+    const HASH : &str = "DXQR656VE3FIKEZZWJX6C3WC27NSRTJVMYR7ILA5XNDLSJXQPDVQ";
+    #[test]
+    fn test_gen_code() {
+        // Generate a code with a known hash
+        let (code,hash) = gen_code("NAME".into(),"CODE".into(),None,Some("T-".into()),None);
+
+        assert_eq!(code,CODE.to_string());
+        assert_eq!(hash,HASH.to_string());
+    }
+}
