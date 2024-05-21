@@ -242,6 +242,13 @@ mod test {
 
         assert_eq!(site.place.unwrap()[0],PlaceRefOrValue::from(place2));
     }
+
+    #[test]
+    fn test_path() {
+        let path = GeographicSite::get_class_href();
+
+        assert_eq!(path.contains("geographicSiteManagement"),true);
+    }
 }
 
 
