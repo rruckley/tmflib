@@ -3,9 +3,6 @@
 use serde::{Deserialize, Serialize};
 use chrono::{DateTime,Utc};
 use uuid::Uuid;
-use sha256::digest;
-use hex::decode;
-use base32::encode;
 
 use crate::{
     CreateTMF, 
@@ -31,7 +28,6 @@ use super::{
 };
 
 const CLASS_PATH : &str = "organization";
-const CODE_LENGTH : usize = 6;
 const CODE_PREFIX : &str = "O-";
 
 /// Organization Status
