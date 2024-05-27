@@ -5,17 +5,21 @@ use crate::{
     HasId,
     CreateTMF,
     HasNote,
+    HasRelatedParty,
     Uri,
 };
 use super::{work_order_item::WorkOrderItem, MOD_PATH};
-use crate::common::note::Note;
-use tmflib_derive::{HasId,HasNote};
+use crate::common::{
+    note::Note,
+    related_party::RelatedParty,
+};
+use tmflib_derive::{HasId,HasNote,HasRelatedParty};
 use serde::{Deserialize,Serialize};
 
 const CLASS_PATH : &str = "workorder";
 
 /// Work Order States
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone,Debug,Default,Deserialize,PartialEq,Serialize)]
 pub enum WorkOrderStateType {
     #[default]
     /// Acknowledged
@@ -43,7 +47,7 @@ pub enum WorkOrderStateType {
 }
 
 /// Work Order
-#[derive(Clone,Debug,Default,Deserialize,HasId,HasNote,Serialize)]
+#[derive(Clone,Debug,Default,Deserialize,HasId,HasNote,HasRelatedParty,Serialize)]
 pub struct WorkOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@type")]
@@ -67,6 +71,9 @@ pub struct WorkOrder {
     /// Work Order Notes
     #[serde(skip_serializing_if = "Option::is_none")]
     pub note: Option<Vec<Note>>,
+    /// Related parties for party specific catalogs
+    #[serde(skip_serializing_if = "Option::is_none")]
+    related_party: Option<Vec<RelatedParty>>,
 }
 
 impl WorkOrder {
@@ -75,5 +82,18 @@ impl WorkOrder {
         let mut out = WorkOrder::create();
         out.state = Some(WorkOrderStateType::default());
         out
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_work_order_new() {
+        let wo = WorkOrder::new();
+
+        assert_eq!(wo.state.is_some(),true);
+        assert_eq!(wo.state.unwrap(),WorkOrderStateType::default());
     }
 }
