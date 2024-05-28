@@ -13,6 +13,7 @@ use crate::common::{
     note::Note,
     related_party::RelatedParty,
 };
+use crate::tmf646::appointment::AppointmentRef;
 use tmflib_derive::{HasId,HasNote,HasRelatedParty};
 use serde::{Deserialize,Serialize};
 
@@ -66,6 +67,9 @@ pub struct WorkOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub state: Option<WorkOrderStateType>,
     // Referenced structures
+    /// Appointment
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub appointment : Option<AppointmentRef>,
     /// Work Order Items
     pub work_order_item : Vec<WorkOrderItem>,
     /// Work Order Notes
@@ -82,6 +86,11 @@ impl WorkOrder {
         let mut out = WorkOrder::create();
         out.state = Some(WorkOrderStateType::default());
         out
+    }
+
+    /// Add a work order item to this WorkOrder
+    pub fn add_item(&mut self, item : WorkOrderItem) {
+        self.work_order_item.push(item);
     }
 }
 
