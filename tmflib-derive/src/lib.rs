@@ -69,6 +69,8 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
             }
             fn set_id(&mut self, id : impl Into<String>) {
                 self.id = Some(id.into());
+                // Since we have changed the Id, the href will be invalid.
+                self.generate_href();
             }
         }
 
