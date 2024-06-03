@@ -170,6 +170,39 @@ impl Customer {
     pub fn name(&mut self, name : String) {
         self.name = Some(name.clone());
     }
+
+    /// Upgrade the customer to a cryptographic code to replace a sequential Id.
+    /// Will return the newly generated cryptographic code.
+    /// Takes the following steps:
+    /// -   Moves existing ID into characteristic of 'Id'
+    /// -   Generate cryptographic code via [generate_code] 
+    /// -   Replace Id, with newly genreated code.
+    /// -   Returns new code.
+    /// 
+    /// # Returns
+    /// Will return the new code.
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf629::{characteristic::Characteristic,customer::Customer};
+    /// let mut cust = Customer::default();
+    /// let char = cust.upgrade_to_code();
+    /// ```
+    pub fn update_to_code(&mut self,) -> Option<String> {
+        // Step 1, Create new Characteristic for old Id
+        let old_id = Characteristic {
+            name: String::from("Id"),
+            value_type: String::from("string"),
+            value: self.get_id(),
+        };
+        self.replace_characteristic(old_id);
+        // Step 2, generate new code
+        self.generate_code(None);
+        let code = self.get_characteristic("code")?;
+        // Step 3, We can only set the id if code was found
+        self.set_id(code.value.clone());
+        // Step 4, return new code
+        Some(code.value)
+    }
 }
 
 impl From<&Organization> for Customer {
