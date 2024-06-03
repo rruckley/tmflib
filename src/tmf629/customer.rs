@@ -184,10 +184,12 @@ impl Customer {
     /// # Example
     /// ```
     /// # use tmflib::tmf629::{characteristic::Characteristic,customer::Customer};
+    /// # use tmflib::HasId;
     /// let mut cust = Customer::default();
-    /// let char = cust.upgrade_to_code();
+    /// cust.set_id("1");
+    /// let char = cust.upgrade_to_code(None);
     /// ```
-    pub fn update_to_code(&mut self,) -> Option<String> {
+    pub fn upgrade_to_code(&mut self,offset : Option<u32>) -> Option<String> {
         // Step 1, Create new Characteristic for old Id
         let old_id = Characteristic {
             name: String::from("Id"),
@@ -196,7 +198,7 @@ impl Customer {
         };
         self.replace_characteristic(old_id);
         // Step 2, generate new code
-        self.generate_code(None);
+        self.generate_code(offset);
         let code = self.get_characteristic("code")?;
         // Step 3, We can only set the id if code was found
         self.set_id(code.value.clone());
@@ -383,6 +385,20 @@ mod test {
         let test_char = customer.get_characteristic("weather");
 
         assert!(test_char.is_some());
+    }
+
+    #[test]
+    fn test_customer_upgrade_to_code() {
+        let mut customer = Customer::default();
+        customer.set_id("1");
+        let code = customer.upgrade_to_code(None).unwrap();
+
+        let char = customer.get_characteristic("code");
+
+        // Returned value should match "code" characteristic
+        assert_eq!(code,char.unwrap().value);
+        // Simlarly, the id should match the code
+        assert_eq!(code,customer.get_id());
     }
 }
 
