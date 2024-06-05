@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasName, CreateTMF, LIB_PATH,HasValidity, TimePeriod, CreateTMFWithTime, HasLastUpdate,Cardinality};
+use crate::{HasId, HasName, LIB_PATH,HasValidity, TimePeriod, CreateTMFWithTime, HasLastUpdate,Cardinality};
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
 use crate::tmf633::service_specification::{ServiceSpecification,ServiceSpecificationRef};

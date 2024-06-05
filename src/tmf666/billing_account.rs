@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasLastUpdate, HasName, CreateTMF, CreateTMFWithTime, LIB_PATH, DateTime};
+use crate::{HasId, HasLastUpdate, HasName, CreateTMFWithTime, LIB_PATH, DateTime};
 use tmflib_derive::{HasId, HasName, HasLastUpdate};
 
 use super::MOD_PATH;

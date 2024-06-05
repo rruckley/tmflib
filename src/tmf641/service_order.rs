@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 // URL Path components
 use crate::LIB_PATH;
 use super::MOD_PATH;
-use crate::{HasId,HasNote, CreateTMF,DateTime};
+use crate::{HasId,HasNote,DateTime};
 use tmflib_derive::{HasId,HasNote};
 use crate::common::note::Note;
 use super::service_order_item::ServiceOrderItem;

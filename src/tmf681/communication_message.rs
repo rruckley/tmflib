@@ -1,6 +1,6 @@
 //! Communication Message Module
 
-use crate::{CreateTMF, DateTime, HasId, HasName, Uri, LIB_PATH};
+use crate::{ DateTime, HasId, HasName, Uri, LIB_PATH};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 use crate::common::attachment::AttachmentRefOrValue;

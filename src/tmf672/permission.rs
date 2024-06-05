@@ -1,6 +1,6 @@
 //! Permission Module
 
-use crate::{LIB_PATH,HasId,DateTime,TimePeriod,Uri,CreateTMF};
+use crate::{LIB_PATH,HasId,DateTime,TimePeriod,Uri};
 use tmflib_derive::HasId;
 use serde::{Deserialize,Serialize};
 use crate::common::related_party::RelatedParty;

@@ -5,7 +5,7 @@ use serde::{Deserialize,Serialize};
 use super::MOD_PATH;
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
-use crate::{CreateTMF, DateTime, HasId, HasName, TimePeriod, HasNote, LIB_PATH};
+use crate::{DateTime, HasId, HasName, TimePeriod, HasNote, LIB_PATH};
 use tmflib_derive::{HasId, HasName, HasNote};
 
 const CLASS_PATH : &str = "service";

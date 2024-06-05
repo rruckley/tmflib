@@ -15,7 +15,6 @@ use crate::{
     DateTime,
     HasValidity,
     TimePeriod,
-    CreateTMF,
     LIB_PATH,
     Uri,
 };

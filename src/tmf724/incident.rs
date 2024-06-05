@@ -2,7 +2,7 @@
 //! 
 
 use serde::{Deserialize,Serialize};
-use crate::{LIB_PATH,HasId,CreateTMF, HasName, Uri, DateTime};
+use crate::{LIB_PATH,HasId, HasName, Uri, DateTime};
 use tmflib_derive::{HasId,HasName};
 use super::MOD_PATH;
 const CLASS_PATH : &str = "incident";

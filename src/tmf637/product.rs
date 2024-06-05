@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::tmf651::agreement::AgreementRef;
 use crate::tmf666::billing_account::BillingAccountRef;
-use crate::{CreateTMF, HasId, HasName, LIB_PATH, DateTime,HasValidity, TimePeriod};
+use crate::{HasId, HasName, LIB_PATH, DateTime,HasValidity, TimePeriod};
 use tmflib_derive::{HasId, HasName, HasValidity};
 use crate::common::related_place::RelatedPlaceRefOrValue;
 #[cfg(feature = "tmf620-v4")]

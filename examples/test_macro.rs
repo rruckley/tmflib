@@ -2,7 +2,7 @@
 
 
 use tmflib_derive::HasId;
-use tmflib::{CreateTMF, HasId};
+use tmflib::HasId;
 
 // Defined required consts
 const CLASS_PATH : &str = "mytmf";

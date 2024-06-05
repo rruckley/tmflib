@@ -2,7 +2,7 @@
 
 use serde::{Deserialize,Serialize};
 
-use crate::{HasId,CreateTMF,HasValidity, TimePeriod,LIB_PATH, DateTime, HasRelatedParty};
+use crate::{HasId, HasValidity, TimePeriod,LIB_PATH, DateTime, HasRelatedParty};
 use tmflib_derive::{HasId,HasValidity,HasRelatedParty};
 use crate::common::related_party::RelatedParty;
 use super::MOD_PATH;
@@ -10,7 +10,7 @@ use super::MOD_PATH;
 const CLASS_PATH : &str = "serviceTest";
 
 /// Test execution status
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone,Debug,Default,Deserialize,Serialize)] 
 pub enum ExecutionStateType {
     /// Acknowledged
     #[default]

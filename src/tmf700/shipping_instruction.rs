@@ -1,6 +1,6 @@
 //! Shipping Instruction Module
 
-use crate::{TimePeriod,HasId,CreateTMF,Uri,LIB_PATH};
+use crate::{TimePeriod,HasId, Uri,LIB_PATH};
 use crate::common::money::Money;
 use tmflib_derive::HasId;
 use serde::{Deserialize,Serialize};

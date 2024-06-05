@@ -14,7 +14,7 @@ use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf620::product_specification::ProductSpecificationRef;
 
 use super::MOD_PATH;
-use crate::{HasId,CreateTMF,HasValidity,HasNote, LIB_PATH, TimePeriod, DateTime};
+use crate::{HasId,HasValidity,HasNote, LIB_PATH, TimePeriod, DateTime};
 use tmflib_derive::{HasId,HasValidity,HasNote};
 
 use serde::{Deserialize,Serialize};

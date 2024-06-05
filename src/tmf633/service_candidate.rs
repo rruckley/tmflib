@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 
-use crate::{HasId,HasLastUpdate, HasName, CreateTMF, CreateTMFWithTime, LIB_PATH};
+use crate::{HasId,HasLastUpdate, HasName, CreateTMFWithTime, LIB_PATH};
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
 use super::MOD_PATH;
