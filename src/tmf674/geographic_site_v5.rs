@@ -2,7 +2,15 @@
 
 use serde::{Deserialize,Serialize};
 
-use crate::{LIB_PATH, CreateTMF, HasName, HasId,TMFEvent};
+use crate::{
+    LIB_PATH,
+    CODE_DEFAULT_LENGTH,
+    CreateTMF, 
+    HasName, 
+    HasId,
+    TMFEvent,
+    gen_code,
+};
 use tmflib_derive::{HasId,HasName};
 use uuid::Uuid;
 use chrono::Utc;
@@ -83,6 +91,8 @@ pub struct GeographicSite {
     pub href: Option<String>,
     /// Name
     pub name: Option<String>,
+    /// Site Code
+    pub code : Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     place: Option<PlaceRefOrValue>,
     /// Site Status
@@ -117,7 +127,7 @@ impl GeographicSite {
 
     /// Generate a new site code based on available fields
     pub fn generate_code(&mut self, offset : Option<u32>) {
-        let (code,_hash) = gen_code(self.get_name(), self.get_id(), offset, Some(CODE_PREFIX.to_string()), None);
+        let (code,_hash) = gen_code(self.get_name(), self.get_id(), offset, Some(CODE_DEFAULT_LENGTH.to_string()), None);
         self.code = Some(code);
     }
 }

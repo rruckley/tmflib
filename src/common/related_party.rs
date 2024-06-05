@@ -19,7 +19,7 @@ use crate::tmf632::organization_v4::{Organization,OrganizationRef};
 #[cfg(feature = "tmf632-v5")]
 use crate::tmf632::organization_v5::{Organization,OrganizationRef};
 use crate::tmf669::party_role::PartyRole;
-use crate::{HasId,HasName,Uri};
+use crate::{HasId,HasName,HasRefHRef,HasRefId,IsRef,Uri};
 
 /// Reference to a Customer (TMF629) , Organisation or Individual (TMF632)
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize )]
@@ -54,6 +54,20 @@ pub struct RelatedParty {
     #[serde(rename = "@referredType")]
     pub referred_type : Option<String>,
 }
+
+impl HasRefId for RelatedParty {
+    fn get_id(&self) -> String {
+        self.id.clone()
+    }
+}
+
+impl HasRefHRef for RelatedParty {
+    fn get_href(&self) -> String {
+        self.href.clone()
+    }
+}
+
+impl IsRef for RelatedParty {}
 
 impl From<&Customer> for RelatedParty {
     fn from(cust: &Customer) -> Self {
@@ -139,7 +153,7 @@ mod test {
     use crate::tmf632::organization_v4::Organization;
     #[cfg(feature = "tmf632-v5")]
     use crate::tmf632::organization_v5::Organization;
-    use crate::HasId;
+    use crate::{HasId,HasRefId,HasRefHRef,IsRef};
     use super::RelatedParty;
     #[test]
     fn test_related_party_from_customer_id() {
@@ -177,6 +191,38 @@ mod test {
         let party = RelatedParty::from(&cust);
 
         assert_eq!(party.referred_type.unwrap(), Customer::get_class());
+    }
+
+    #[test]
+    fn test_related_party_id() {
+        let org = Organization::new(String::from("ACustomer"));
+        let cust = Customer::new(org);
+        let party = RelatedParty::from(&cust);
+
+        assert_eq!(cust.get_id(),party.get_id()); 
+    }
+
+    #[test]
+    fn test_related_party_href() {
+        let org = Organization::new(String::from("ACustomer"));
+        let cust = Customer::new(org);
+        let party = RelatedParty::from(&cust);
+
+        assert_eq!(cust.get_href(),party.get_href());
+    }
+
+    #[test]
+    fn test_related_party_hydrate() {
+        let org = Organization::new(String::from("ACustomer"));
+        let cust = Customer::new(org);
+        let party = RelatedParty::from(&cust);
+
+        let out = party.hydrate_ref(|h| {
+            Some(h.clone())
+        });
+
+        assert_eq!(party.get_href(),out.unwrap());
+
     }
 }
 

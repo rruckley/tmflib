@@ -225,7 +225,7 @@ pub trait HasNote : HasId {
     fn get_note(&self, idx : usize) -> Option<&Note>;
     /// Add a new note
     fn add_note(&mut self, note : Note);
-    ///
+    /// Remove note by index
     fn remove_note(&mut self, idx: usize) -> Result<Note,String>;
 }
 
@@ -243,6 +243,32 @@ pub trait HasRelatedParty : HasId {
 pub trait TMFEvent<T> : HasId + HasName {
     /// Geneate container for an TMF payload to be used in an event
     fn event(&self) -> T;
+}
+
+/// Referenced Id
+pub trait HasRefId {
+    /// Get referenced id
+    fn get_id(&self) -> String;
+}
+
+/// Referenced HRef
+pub trait HasRefHRef : HasRefId {
+    /// Get Referenced Href
+    fn get_href(&self) -> String;
+}
+
+/// Is the object a reference object?
+pub trait IsRef : HasRefHRef {
+    /// Hydrate this reference into a full payload by pulling down the payload indicated by href field.
+    fn hydrate_ref<T : FnOnce(String) -> Option<String>>(&self, func : T) -> Option<String> {
+        func(self.get_href())    
+    }
+}
+
+/// Does the Object contain referenced objects?
+pub trait HasRef : HasId {
+    /// Convert references into objects according to depth and expand directives
+    fn hydrate<T : FnOnce(String) -> Option<String>>(&self, depth : u8, expand : Option<String>, func : T) -> Option<String>;
 }
 
 /// Common Modules

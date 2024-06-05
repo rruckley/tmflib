@@ -250,9 +250,10 @@ impl From<&ServiceSpecification> for ProductSpecification {
         }
         if value.version.is_some() {
             // If source has a version defined take that 
-            ps.version = value.version.clone();
+            // ps.version = value.version.clone();
+            ps.version.clone_from(&value.version);
         }
-        ps.lifecycle_status = value.lifecycle_status.clone();
+        ps.lifecycle_status.clone_from(&value.lifecycle_status);
         ps
     }
 }
