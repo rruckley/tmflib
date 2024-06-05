@@ -122,7 +122,7 @@ pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Optio
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
-pub trait HasId {
+pub trait HasId : Default {
     /// Get a new UUID in simple format (no seperators)
     fn get_uuid() -> String {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
@@ -146,20 +146,16 @@ pub trait HasId {
     fn get_mod_path() -> String;
     /// Set the id on the object, also triggers generate_href().
     fn set_id(&mut self, id : impl Into<String>);
-}
-
-/// Trait to create TMF structs that have the HasId trait
-pub trait CreateTMF<T : Default + HasId> {
     /// Create a new instance of a TMF object that has id and href fields.
     /// # Example
     /// ```
     /// # use crate::tmflib::tmf629::customer::Customer;
-    /// use crate::tmflib::CreateTMF;
+    /// # use crate::tmflib::HasId;
     /// let offering = Customer::create();
     /// ```` 
-    fn create() -> T {
+    fn create() -> Self {
         // Create default instance
-        let mut item = T::default();
+        let mut item = Self::default();
         // Generate unique id and href
         item.generate_id();
         item
