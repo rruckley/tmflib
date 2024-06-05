@@ -73,8 +73,6 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
                 self.generate_href();
             }
         }
-
-        impl CreateTMF<#name> for #name {}
     };
     out.into()
 }

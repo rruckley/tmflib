@@ -9,7 +9,6 @@ use serde::{Deserialize, Serialize};
 use crate::{
     HasId, 
     HasName, 
-    CreateTMF,
     DateTime,
     TMFEvent,
     gen_code,

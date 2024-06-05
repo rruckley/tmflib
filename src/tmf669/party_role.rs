@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId,HasName, CreateTMF,LIB_PATH, common::related_party::RelatedParty};
+use crate::{HasId,HasName, LIB_PATH, common::related_party::RelatedParty};
 use tmflib_derive::{HasId,HasName};
 
 use super::MOD_PATH;

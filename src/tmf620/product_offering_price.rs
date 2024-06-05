@@ -3,7 +3,7 @@
 use serde::{Deserialize,Serialize};
 
 use super::MOD_PATH;
-use crate::{HasId,HasName, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, HasValidity, TimePeriod};
+use crate::{HasId,HasName, HasLastUpdate, CreateTMFWithTime, LIB_PATH, HasValidity, TimePeriod};
 use crate::common::money::Money;
 use crate::common::tax_item::TaxItem;
 use tmflib_derive::{HasId,HasLastUpdate,HasName, HasValidity};

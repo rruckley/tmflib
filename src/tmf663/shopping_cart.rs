@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::money::Money;
-use crate::{HasId,CreateTMF,LIB_PATH,HasValidity,TimePeriod};
+use crate::{HasId, LIB_PATH,HasValidity,TimePeriod};
 use tmflib_derive::{HasId,HasValidity};
 use crate::common::contact::ContactMedium;
 use crate::common::related_party::RelatedParty;

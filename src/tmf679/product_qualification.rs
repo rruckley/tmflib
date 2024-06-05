@@ -3,7 +3,7 @@
 
 use serde::{Deserialize,Serialize};
 
-use crate::{HasId,CreateTMF,LIB_PATH};
+use crate::{HasId, LIB_PATH};
 use tmflib_derive::HasId;
 
 use super::MOD_PATH;

@@ -6,7 +6,7 @@ use crate::common::related_party::RelatedParty;
 use crate::common::attachment::AttachmentRefOrValue;
 use super::MOD_PATH;
 use super::characteristic::Characteristic;
-use crate::{HasId, CreateTMF, LIB_PATH};
+use crate::{HasId, LIB_PATH};
 use tmflib_derive::HasId;
 
 const CLASS_PATH : &str = "resource";

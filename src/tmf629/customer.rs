@@ -18,7 +18,6 @@ use crate::{
     HasValidity,
     TimePeriod,
     TMFEvent,
-    CreateTMF,
     gen_code,
 };
 use tmflib_derive::{HasId,HasName,HasValidity};

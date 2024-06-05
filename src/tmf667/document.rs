@@ -8,7 +8,6 @@ use crate::{
     LIB_PATH,
     DateTime,
     Uri,
-    CreateTMF,
     CreateTMFWithTime,
 };
 use tmflib_derive::{HasId,HasName,HasLastUpdate,HasRelatedParty};

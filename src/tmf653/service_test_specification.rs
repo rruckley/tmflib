@@ -1,6 +1,6 @@
 //! Service Test Specification Module
 
-use crate::{HasId,HasName, CreateTMF,Uri,LIB_PATH};
+use crate::{HasId,HasName, Uri,LIB_PATH};
 use tmflib_derive::{HasId,HasName};
 
 use serde::{Deserialize,Serialize};

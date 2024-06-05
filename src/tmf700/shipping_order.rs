@@ -5,7 +5,7 @@
 use super::shipping_order_item::ShippingOrderItem;
 use crate::common::note::Note;
 use super::MOD_PATH;
-use super::{HasId,CreateTMF,LIB_PATH};
+use super::{HasId,LIB_PATH};
 use tmflib_derive::HasId;
 
 use serde::{Deserialize,Serialize};

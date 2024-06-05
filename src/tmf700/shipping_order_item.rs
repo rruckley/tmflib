@@ -1,6 +1,6 @@
 //! Shipping Order Item Module
 
-use crate::{LIB_PATH,HasId,CreateTMF,Uri};
+use crate::{LIB_PATH,HasId,Uri};
 use crate::common::related_place::RelatedPlaceRefOrValue;
 use super::shipping_instruction::ShippingInstruction;
 use tmflib_derive::HasId;
