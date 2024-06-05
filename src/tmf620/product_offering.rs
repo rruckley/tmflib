@@ -9,7 +9,6 @@ use crate::tmf620::product_specification::{
 };
 
 use crate::{ 
-    CreateTMFWithTime,
     HasLastUpdate, 
     HasId, 
     HasName, 

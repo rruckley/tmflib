@@ -7,7 +7,7 @@ use crate::tmf641::service_order::ServiceOrder;
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
 use crate::tmf651::agreement::AgreementRef;
-use crate::{CreateTMFWithTime, DateTime, HasId, HasLastUpdate, HasNote, HasRelatedParty};
+use crate::{DateTime, HasId, HasLastUpdate, HasNote, HasRelatedParty};
 use crate::tmf663::shopping_cart::ShoppingCart;
 use super::product_order_item::ProductOrderItem;
 
@@ -71,8 +71,6 @@ impl HasLastUpdate for ProductOrder {
         self.order_date = Some(time.into());
     }
 }
-
-impl CreateTMFWithTime<ProductOrder> for ProductOrder {}
 
 impl ProductOrder {
     /// Create a new product order via trait
