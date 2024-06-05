@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 const CLASS_PATH : &str = "resourceCandidate";
 
 use super::MOD_PATH;
-use crate::{LIB_PATH, HasId, HasLastUpdate, CreateTMFWithTime};
+use crate::{LIB_PATH, HasId, HasLastUpdate};
 use tmflib_derive::HasId;
 
 /// Resource Candidate (Catalog Entry)
@@ -39,8 +39,6 @@ impl HasLastUpdate for ResourceCandidate {
         self.last_update = Some(time.into());
     }
 }
-
-impl CreateTMFWithTime<ResourceCandidate> for ResourceCandidate {}
 
 /// Resource Candidate Reference
 #[derive(Clone, Debug, Deserialize, Serialize)]

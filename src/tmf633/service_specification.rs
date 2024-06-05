@@ -2,7 +2,7 @@
 
 use serde::{Deserialize,Serialize};
 
-use crate::{HasId,HasName,HasLastUpdate, CreateTMFWithTime, TimePeriod};
+use crate::{HasId,HasName,HasLastUpdate, TimePeriod};
 use crate::common::related_party::RelatedParty;
 use tmflib_derive::{HasId,HasName,HasLastUpdate};
 

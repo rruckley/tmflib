@@ -1,7 +1,7 @@
 //! Agreement Specification Module
 
 use serde::{Deserialize,Serialize};
-use crate::{LIB_PATH,HasId,HasLastUpdate,HasName, CreateTMFWithTime,HasValidity,TimePeriod, DateTime};
+use crate::{LIB_PATH,HasId,HasLastUpdate,HasName,HasValidity,TimePeriod, DateTime};
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
 use super::MOD_PATH;
