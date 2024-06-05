@@ -163,7 +163,7 @@ pub trait HasId : Default {
 }
 
 /// Trait indicating a TMF sturct has a last_update or similar timestamp field.
-pub trait HasLastUpdate {
+pub trait HasLastUpdate : HasId {
     /// Geneate a timestamp for now(), useful for updating last_updated fields
     fn get_timestamp() -> String {
         let now = Utc::now();
@@ -173,16 +173,13 @@ pub trait HasLastUpdate {
 
     /// Store a timestamp into last_update field (if available)
     fn set_last_update(&mut self, time : impl Into<String>);
-}
 
-/// Trait to create a TMF struct including initialising a last_update field
-pub trait CreateTMFWithTime<T : Default + HasId + HasLastUpdate> {
     /// Create a new TMF object, also set last_update field to now()
-    fn create_with_time() -> T {
+    fn create_with_time() -> Self {
         // Create default instance
-        let mut item = T::default();
+        let mut item = Self::default();
         item.generate_id();
-        item.set_last_update(T::get_timestamp());
+        item.set_last_update(Self::get_timestamp());
         item
     }
 }
