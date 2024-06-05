@@ -97,8 +97,6 @@ pub fn haslastupdate_derive(input: TokenStream) -> TokenStream {
                 self.last_update = Some(time.into());
             }
         }
-
-        impl CreateTMFWithTime<#name> for #name {}
     };
     out.into()
 }
