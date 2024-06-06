@@ -18,9 +18,10 @@ const MOD_PATH: &str = "common";
 
 pub mod attachment;
 pub mod contact;
-pub mod note;
 pub mod event;
 pub mod money;
+pub mod note;
+pub mod price;
 pub mod related_party;
 pub mod related_place;
 pub mod tax_item;
