@@ -2,9 +2,10 @@
 use tmflib::tmf648::{
     quote::{Quote,QuoteEventType}, 
     quote_item::QuoteItem, 
-    quote_price::{Price,QuotePrice}
+    quote_price::QuotePrice
 };
 use tmflib::common::event::EventPayload;
+use tmflib::common::price::Price;
 
 fn main() {
     // First create a quote item
