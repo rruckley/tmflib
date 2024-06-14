@@ -218,7 +218,7 @@ pub trait HasNote : HasId {
     fn get_note(&self, idx : usize) -> Option<&Note>;
     /// Add a new note
     fn add_note(&mut self, note : Note);
-    ///
+    /// Remove a note by index
     fn remove_note(&mut self, idx: usize) -> Result<Note,String>;
 }
 

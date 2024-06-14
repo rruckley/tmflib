@@ -296,7 +296,7 @@ impl HasName for Individual {
                 let first_name = parts_vec[0];
                 let last_name = parts_vec[1];
                 self.given_name = Some(first_name.to_string());
-                self.preferred_given_name = self.given_name.clone();
+                self.preferred_given_name.clone_from(&self.given_name);
                 self.family_name = Some(last_name.to_string());
             },
             3 => {
@@ -306,7 +306,7 @@ impl HasName for Individual {
                 let middle_name = parts_vec[1];
                 let last_name = parts_vec[2];
                 self.given_name = Some(first_name.to_string());
-                self.preferred_given_name = self.given_name.clone();
+                self.preferred_given_name.clone_from(&self.given_name);
                 self.family_name = Some(last_name.to_string());
                 self.middle_name = Some(middle_name.to_string());
             }
@@ -316,7 +316,7 @@ impl HasName for Individual {
         }
         //let (given,family) = name.as_ref().split
         self.full_name = Some(name);
-        self.legal_name = self.full_name.clone();
+        self.legal_name.clone_from(&self.full_name);
     }
 }
 
