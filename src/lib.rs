@@ -76,11 +76,35 @@ impl TimePeriod {
         let now = Utc::now() + Days::new(days);
         let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         TimePeriod {
-            end_date_time: Some(time.to_string()),
+            end_date_time: Some(time.to_rfc3339()),
             ..Default::default()
         }
     }
-
+    /// Return true if start time of TimePeriod is in the past.
+    pub fn started(&self) -> bool {
+        let now = Utc::now();
+        
+        let start = chrono::DateTime::parse_from_rfc3339(&self.start_date_time).unwrap();
+        // Start is in the past, return true
+        if start < now { 
+            return true
+        }
+        false
+    }
+    /// Return true if the finish time is set and is in the past
+    pub fn finished(&self) -> bool {
+        match &self.end_date_time {
+            Some(f) => {
+                let now = Utc::now();
+                let finish = chrono::DateTime::parse_from_rfc3339(f).unwrap();
+                if finish < now {
+                    return true
+                }
+                false
+            },
+            None => false
+        }
+    }
 }
 
 impl Default for TimePeriod {
@@ -88,9 +112,9 @@ impl Default for TimePeriod {
         let now = Utc::now();
         let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         TimePeriod {
-            start_date_time : time.to_string(),
+            start_date_time : time.to_rfc3339(),
             end_date_time: None,
-        }    
+        }
     }
 }
 
@@ -198,6 +222,11 @@ pub trait HasValidity {
     fn set_validity_start(&mut self, start : TimeStamp) -> TimePeriod;
     /// Set only the end of the validty period, returns updated [`TimePeriod`]
     fn set_validity_end(&mut self, end : TimeStamp) -> TimePeriod;
+    /// Return true as follows:
+    /// - If no end is set and the start is in the past return true.
+    /// - If end is set and start is in the past and end is in the future, return true.
+    /// - Otherwise return false.
+    fn is_valid(&self) -> bool;
 }
 
 /// Does an object have a name field?
