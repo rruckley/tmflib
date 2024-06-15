@@ -31,8 +31,6 @@
 
 #![warn(missing_docs)]
 
-use std::str::FromStr;
-
 use chrono::{Utc,Days};
 use common::related_party::RelatedParty;
 use uuid::Uuid;
@@ -85,7 +83,12 @@ impl TimePeriod {
     /// Return true if start time of TimePeriod is in the past.
     pub fn started(&self) -> bool {
         let now = Utc::now();
-        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        
+        let start = chrono::DateTime::parse_from_rfc3339(&self.start_date_time).unwrap();
+        // Start is in the past, return true
+        if start < now { 
+            return true
+        }
         false
     }
     /// Return true if the finish time is set and is in the past
@@ -93,11 +96,11 @@ impl TimePeriod {
         match &self.end_date_time {
             Some(f) => {
                 let now = Utc::now();
-                let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
-                let dt = chrono::DateTime::parse_from_rfc3339(&self.start_date_time).unwrap();
-        
-                let s= &self.start_date_time.as_str();
-                true
+                let finish = chrono::DateTime::parse_from_rfc3339(f).unwrap();
+                if finish < now {
+                    return true
+                }
+                false
             },
             None => false
         }
