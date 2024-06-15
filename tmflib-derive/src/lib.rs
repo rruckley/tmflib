@@ -245,10 +245,16 @@ pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
                 validity
             }
             fn is_valid(&self) -> bool {
-                if self.validity.started() && !self.validity.finished()  {
-                    true
+                let validity = self.get_validity();
+                match validity {
+                    Some(v) {
+                        if self.validity.started() && !self.validity.finished()  {
+                            return true
+                        }
+                        false
+                    },
+                    None => false
                 }
-                false
             }
         }
     };
