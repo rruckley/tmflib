@@ -244,7 +244,12 @@ pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
                 self.set_validity(validity.clone());
                 validity
             }
-    
+            fn is_valid(&self) -> bool {
+                if self.validity.started() && !self.validity.finished()  {
+                    true
+                }
+                false
+            }
         }
     };
     out.into()   
