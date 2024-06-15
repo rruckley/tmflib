@@ -33,7 +33,7 @@ dependencies = [
 
 [[package]]
 name = "tmflib-derive"
-version = "0.1.22"
+version = "0.1.23"
 dependencies = [
  "proc-macro2",
  "quote",

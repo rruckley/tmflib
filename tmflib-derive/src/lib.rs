@@ -248,7 +248,7 @@ pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
                 let validity = self.get_validity();
                 match validity {
                     Some(v) => {
-                        if validity.started() && !validity.finished()  {
+                        if v.started() && !v.finished()  {
                             return true
                         }
                         false
