@@ -25,10 +25,10 @@ pub struct Characteristic {
 
 impl Characteristic {
     /// Create a new characteristic
-    pub fn new(name: String,value: String) -> Characteristic {
+    pub fn new(name: impl Into<String>,value: impl Into<String>) -> Characteristic {
         Characteristic {
-            name,
-            value,
+            name : name.into(),
+            value : value.into(),
             value_type: "String".to_string(),
             ..Default::default()
         }
