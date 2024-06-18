@@ -1,13 +1,19 @@
 //! Product Order Module
 
 use serde::{Deserialize, Serialize};
-
 use tmflib_derive::{HasId,HasNote,HasRelatedParty};
 use crate::tmf641::service_order::ServiceOrder;
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
 use crate::tmf651::agreement::AgreementRef;
-use crate::{DateTime, HasId, HasLastUpdate, HasNote, HasRelatedParty};
+use crate::{
+    DateTime, 
+    HasId, 
+    HasLastUpdate, 
+    HasNote, 
+    HasRelatedParty,
+    Uri,
+};
 use crate::tmf663::shopping_cart::ShoppingCart;
 use super::product_order_item::ProductOrderItem;
 
@@ -18,6 +24,60 @@ use super::MOD_PATH;
 
 
 const CLASS_PATH: &str = "productOrder";
+
+/// Reference to a Product Order
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct ProductOrderRef {
+    /// Link to Product Order
+    pub href : Uri,
+    /// Unique Id of Product Order
+    pub id : String,
+    /// Name or title of product order
+    pub name : String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@baseType")]
+    base_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@referredType")]
+    referred_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@schemaLocation")]
+    schema_location: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@type")]
+    r#type: Option<String>,
+}
+
+impl From<ProductOrder> for ProductOrderRef {
+    fn from(value: ProductOrder) -> Self {
+        ProductOrderRef {
+            href: value.get_href(),
+            id: value.get_id(),
+            // Should ideally generate a useful name if description is missing
+            name: value.description.as_ref().unwrap().clone(),
+            r#type : Some("ProductOrder".to_string()),
+            ..Default::default()
+        }
+    }
+}
+
+impl From<&ProductOrder> for ProductOrderRef {
+    fn from(value: &ProductOrder) -> Self {
+        let name = match value.description.as_deref() {
+            Some(d) => d,
+            None => {
+                "No Order Description"
+            }
+        };
+        ProductOrderRef {
+            href: value.get_href(),
+            id: value.get_id(),
+            name: name.to_string(),
+            r#type : Some("ProductOrder".to_string()),
+            ..Default::default()
+        }
+    }
+}
 
 /// ProductOrder
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasNote, HasRelatedParty, Serialize)]
