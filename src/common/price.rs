@@ -10,7 +10,7 @@ const AUS_CURRENCY : &str = "AUD";
 /// Common Pricing structure
 #[derive(Clone, Debug, Default, Deserialize,PartialEq, Serialize)]
 pub struct Price {
-    /// 
+    /// Percentage
     pub percentage: f32,
     /// Tax Rate 
     pub tax_rate: f32,

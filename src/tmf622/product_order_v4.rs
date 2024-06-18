@@ -109,18 +109,18 @@ impl From<ServiceOrder> for ProductOrder {
     fn from(value: ServiceOrder) -> Self {
         let mut po = ProductOrder::new();
         
-        po.cancellation_reason = value.cancellation_reason.clone();
-        po.category = value.category.clone();
-        po.description = value.description.clone();
-        po.external_id = value.external_id.clone();
-        po.note = value.note.clone();
-        po.related_party = value.related_party.clone();
+        po.cancellation_reason.clone_from(&value.cancellation_reason);
+        po.category.clone_from(&value.category);
+        po.description.clone_from(&value.description);
+        po.external_id.clone_from(&value.external_id);
+        po.note.clone_from(&value.note);
+        po.related_party.clone_from(&value.related_party);
         
         // Dates
-        po.completion_date = value.completion_date.clone();
-        po.order_date = value.order_date.clone();
-        po.cancellation_date = value.cancellation_date.clone();
-        po.expected_completion_date = value.expected_completion_date.clone();
+        po.completion_date.clone_from(&value.completion_date);
+        po.order_date.clone_from(&value.order_date);
+        po.cancellation_date.clone_from(&value.cancellation_date);
+        po.expected_completion_date.clone_from(&value.expected_completion_date);
         
         // Iterate through service order items
         let items = match value.servce_order_item {
