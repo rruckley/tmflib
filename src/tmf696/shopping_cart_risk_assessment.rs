@@ -8,6 +8,7 @@ use crate::{
 };
 use tmflib_derive::HasId;
 use super::risk_assessment_result::RiskAssessmentResult;
+use super::characteristic::Characteristic;
 
 use super::MOD_PATH;
 
@@ -22,4 +23,6 @@ pub struct ShoppingCartRiskAssessment {
     pub id : Option<String>,
     /// Assessment Results
     pub risk_assessment_result: Option<RiskAssessmentResult>,
+    /// Characteristics
+    pub characteristic: Option<Vec<Characteristic>>,
 }
