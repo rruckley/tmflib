@@ -1,10 +1,11 @@
 //! Agreement Module
 
 use serde::{Deserialize,Serialize};
-use crate::{LIB_PATH,HasId,HasName, TimePeriod, DateTime};
+use crate::{LIB_PATH,HasId,HasName, HasRelatedParty, TimePeriod, DateTime};
 use tmflib_derive::{HasId,HasName};
 use crate::common::related_party::RelatedParty;
 use super::agreement_specification::AgreementSpecificationRef;
+use crate::tmf648::quote::Quote;
 
 use super::MOD_PATH;
 const CLASS_PATH : &str = "agreement";
@@ -22,7 +23,7 @@ pub struct Agreement {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub completion_date: Option<DateTime>,
     /// Detailed description
-    pub description: String,
+    pub description: Option<String>,
     /// Id of document
     pub document_number: u16,
     /// Start date
@@ -79,6 +80,20 @@ impl From<Agreement> for AgreementRef {
             href: value.get_href(),
             name: value.get_name(),
         }
+    }
+}
+
+impl From<&Quote> for Agreement {
+    fn from(value: &Quote) -> Self {
+        let mut agreement = Agreement::new(format!("Agreement from: {}",value.get_name()));
+        agreement.version = value.version.clone();
+        agreement.agreement_period = Some(TimePeriod::period_days(365));
+        agreement.description = value.description.clone();
+        let party = value.get_party(0);
+        if party.is_some() {
+            agreement.engaged_party = vec![party.as_deref().cloned().unwrap()];
+        }
+        agreement
     }
 }
 
