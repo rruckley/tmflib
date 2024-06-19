@@ -14,9 +14,9 @@
 
 //! TMF Library
 //! # Description
-//! This library covers structures required to interact with various TMForum APIs.
-//! It does not define amy persistence nor provide a REST interface (at this stage)
-//! but simply provides definitions of all the schema and some helpful functions to create compliant objects
+//! This library covers data structures required to interact with various TMForum APIs.
+//! It does not define any persistence nor provide a REST interface (at this stage)
+//! but simply provides definitions of all the schema and helpful functions and traits to create and maniuplate compliant objects
 //! that can then be seriliased into or from JSON as required.
 //! 
 //! # Crate Features
@@ -42,7 +42,7 @@ use base32::encode;
 
 /// Primary path for the whole library, All paths generated will start with this.
 pub const LIB_PATH: &str = "tmf-api";
-/// Default code length used by [gen_code] if no length is supplied.
+/// Default code length used by [`gen_code`] if no length is supplied.
 pub const CODE_DEFAULT_LENGTH : usize = 6;
 
 /// Standard cardinality type for library
@@ -135,6 +135,7 @@ impl Default for TimePeriod {
 /// ```
 /// use tmflib::gen_code;
 /// let (code,hash) = gen_code("John Q. Smith".to_string(),"USER123".to_string(),None,Some("U-".to_string()),None);
+/// assert_eq!(code,"U-SP7E6E".to_string());
 /// ```
 pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Option<String>,length : Option<usize>) -> (String,String) {
     let hash_input = format!("{}:{}:{}",name,id,offset.unwrap_or_default());
@@ -304,6 +305,8 @@ pub mod tmf674;
 pub mod tmf678;
 pub mod tmf679;
 pub mod tmf681;
+#[cfg(any(feature = "tmf696-v4" , feature = "tmf696-v5"))]
+pub mod tmf696;
 #[cfg(any(feature = "tmf699-v4" , feature = "tmf699-v5"))]
 pub mod tmf699;
 pub mod tmf700;
