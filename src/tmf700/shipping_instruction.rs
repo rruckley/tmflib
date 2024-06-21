@@ -1,8 +1,15 @@
 //! Shipping Instruction Module
 
-use crate::{TimePeriod,HasId, Uri,LIB_PATH};
+use crate::{
+    TimePeriod,
+    HasId, 
+    Uri,
+    LIB_PATH,
+    HasNote,
+};
 use crate::common::money::Money;
-use tmflib_derive::HasId;
+use crate::common::note::Note;
+use tmflib_derive::{HasId,HasNote};
 use serde::{Deserialize,Serialize};
 
 use super::MOD_PATH;
@@ -19,7 +26,7 @@ pub enum SignatureRequiredByType {
 }
 
 /// Shipping Item Instructions
-#[derive(Clone,Default,Debug,Deserialize,HasId,Serialize)]
+#[derive(Clone,Default,Debug,Deserialize,HasId,HasNote,Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShippingInstruction {
     carrier_id: String,
@@ -44,6 +51,9 @@ pub struct ShippingInstruction {
     signature_required: bool,
     signature_required_by : SignatureRequiredByType,
     warehouse_id : String,
+    // Referenced Struct
+    /// Notes
+    pub note : Option<Vec<Note>>,
 }
 
 impl ShippingInstruction {
