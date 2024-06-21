@@ -14,12 +14,11 @@
 
 //! TMF700 Product Shipping Order Modules
 
-use super::LIB_PATH;
-use super::HasId;
-
 /// Common path for TMF700
 pub const MOD_PATH : &str = "shippingOrder/v4";
 
 pub mod shipping_order;
 pub mod shipping_order_item;
 pub mod shipping_instruction;
+pub mod shipment;
+pub mod shipment_specification;
