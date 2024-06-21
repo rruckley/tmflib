@@ -1,8 +1,11 @@
 //! Create Quote Example
+
+use tmflib::tmf632::organization_v4::Organization;
 use tmflib::tmf648::{quote::Quote, quote_item::QuoteItem, quote_price::QuotePrice};
 use tmflib::common::price::Price;
+use tmflib::common::related_party::RelatedParty;
 use tmflib::tmf651::agreement::Agreement;
-use tmflib::HasName;
+use tmflib::{HasName, HasRelatedParty};
 
 fn main() {
     // Create a quote using various components
@@ -30,6 +33,9 @@ fn main() {
     let quote_total_price = QuotePrice::new("Total Contract").price(total_price).period("Contract");
     // Add QuotePrice to quote
     quote.price(quote_total_price);
+    // Add an organisation
+    let org = Organization::new("A Customer");
+    quote.add_party(RelatedParty::from(&org));
 
     let agreement = Agreement::from(&quote);
 
