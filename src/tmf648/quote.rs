@@ -113,6 +113,8 @@ impl Quote {
         quote.state = Some(QuoteStateType::Accepted);
         quote.quote_item = Some(vec![]);
         quote.quote_total_price = Some(vec![]);
+        // This should really be handled in add_party()
+        quote.related_party = Some(vec![]);
         quote
     }
 
