@@ -3,6 +3,7 @@
 
 use tmflib::tmf700::{shipping_order::ShippingOrder,shipping_order_item::ShippingOrderItem,shipping_instruction::ShippingInstruction};
 use tmflib::common::note::Note;
+use tmflib::HasNote;
 
 fn main() {
     let item = ShippingOrderItem::new()
