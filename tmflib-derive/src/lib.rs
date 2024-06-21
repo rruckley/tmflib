@@ -181,7 +181,14 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
                 self.related_party.as_mut().unwrap().push(party);
             }
             fn get_party(&self, idx : usize ) -> Option<&RelatedParty> {
-                self.related_party.as_ref().unwrap().get(idx)    
+                match self.related_party.as_ref() {
+                    Some(rp) => {
+                        // Simple return results of get()
+                        rp.get(idx)
+                    },
+                    None => None,
+                }
+                  
             }
             fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String> {
                 Ok(self.related_party.as_mut().unwrap().remove(idx))  
