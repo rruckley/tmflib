@@ -3,10 +3,22 @@
 
 
 use super::shipping_order_item::ShippingOrderItem;
-use crate::common::note::Note;
+use crate::{common::note::Note, DateTime};
+#[cfg(feature = "tmf622-v4")]
+use crate::tmf622::product_order_v4::ProductOrderRef;
+#[cfg(feature = "tmf622-v5")]
+use crate::tmf622::product_order_v5::ProductOrderRef;
+
 use super::MOD_PATH;
-use super::{HasId,LIB_PATH};
-use tmflib_derive::HasId;
+use crate::{
+    HasId,
+    HasNote,
+    LIB_PATH
+};
+use tmflib_derive::{
+    HasId,
+    HasNote
+};
 
 use serde::{Deserialize,Serialize};
 
@@ -34,38 +46,51 @@ impl From<&ShippingOrder> for RelatedShippingOrder {
 }
 
 /// Order for shipping of tangible goods
-#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasNote, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShippingOrder {
+    /// Creation Date
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub creation_date: Option<DateTime>,
+    /// Last Update Date
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub last_update_date: Option<DateTime>,
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HTML Reference to this object
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
+    /// Status
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub status : Option<String>,
+    //
     // Referenced Types
+    //
     /// Shipping Line Items
     pub shipping_order_item: Vec<ShippingOrderItem>,
     /// Notes
-    pub note: Vec<Note>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub note: Option<Vec<Note>>,
     /// Related Shipping Order
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub related_shipping_order: Option<RelatedShippingOrder>,
+    /// Product Order Reference
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_order: Option<ProductOrderRef>,
 }
 
 impl ShippingOrder {
     /// Create new ShippingOrder
     pub fn new() -> ShippingOrder {
-        ShippingOrder::create()
+        let mut order = ShippingOrder::create();
+        order.note = Some(vec![]);
+        order
     }
 
     /// Add an order item to this order
     pub fn add_item(&mut self, item : ShippingOrderItem) {
         self.shipping_order_item.push(item);
-    }
-
-    /// Add Note
-    pub fn add_note(&mut self, note : Note) {
-        self.note.push(note);
     }
 }
 
