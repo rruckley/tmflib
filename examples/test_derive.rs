@@ -18,6 +18,9 @@ fn main() {
                 None => None,
             }
         },
-        None => {},
-    }
+        None => {
+            None
+        },
+    };
+    dbg!(rp);
 }
