@@ -118,6 +118,15 @@ impl Default for TimePeriod {
     }
 }
 
+/// Basic Amount / Unit quantity structure
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+pub struct Quantity {
+    /// How much?
+    pub amount : f64,
+    /// What type?
+    pub units : String,
+}
+
 /// Generate a cryptographic code for use in API calls.
 /// 
 /// Currently used by:
