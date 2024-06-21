@@ -85,6 +85,21 @@ impl From<Organization> for RelatedParty {
     }
 }
 
+impl From<&Organization> for RelatedParty {
+    fn from(org: &Organization) -> Self {
+        RelatedParty { 
+            id: org.get_id(), 
+            href: org.get_href(), 
+            name: Some(org.get_name()), 
+            role: Some(Organization::get_class()),
+            referred_type: Some(Organization::get_class()),
+            base_type: Some(Organization::get_class()),
+            r#type : Some(Organization::get_class()),
+            schema_location: None,
+        }    
+    }
+}
+
 impl From<OrganizationRef> for RelatedParty {
     fn from(value: OrganizationRef) -> Self {
         RelatedParty {
