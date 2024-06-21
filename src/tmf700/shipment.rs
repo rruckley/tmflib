@@ -53,6 +53,7 @@ pub struct ShipmentRefOrValue {
     pub state: String,
     weight: Quantity,
     // Referenced structs
+    /// Attachments
     #[serde(skip_serializing_if = "Option::is_none")]
     pub attachment : Option<Vec<AttachmentRefOrValue>>,
     #[serde(skip_serializing_if = "Option::is_none")]
