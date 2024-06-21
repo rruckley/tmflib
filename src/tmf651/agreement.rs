@@ -4,7 +4,7 @@ use serde::{Deserialize,Serialize};
 use crate::{LIB_PATH,HasId,HasName, HasRelatedParty, TimePeriod, DateTime};
 use tmflib_derive::{HasId,HasName};
 use crate::common::related_party::RelatedParty;
-use super::agreement_specification::AgreementSpecificationRef;
+use super::{agreement_item::AgreementItem, agreement_specification::AgreementSpecificationRef};
 use crate::tmf648::quote::Quote;
 
 use super::MOD_PATH;
@@ -51,6 +51,9 @@ pub struct Agreement {
     /// Agreement Specifications
     #[serde(skip_serializing_if = "Option::is_none")]
     pub agreement_specification: Option<AgreementSpecificationRef>,
+    /// Agreement Items
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub agreement_item: Option<Vec<AgreementItem>>,
 }
 
 impl Agreement {
@@ -58,7 +61,13 @@ impl Agreement {
     pub fn new(name : impl Into<String>) -> Agreement {
         let mut agreement = Agreement::create();
         agreement.name = Some(name.into());
+        // Pre-create the agreement item vec
+        agreement.agreement_item = Some(vec![]);
         agreement
+    }
+    /// Add a new item to the list
+    pub fn add_item(&mut self, item : AgreementItem) {
+        //match self
     }
 }
 
@@ -92,6 +101,15 @@ impl From<&Quote> for Agreement {
         let party = value.get_party(0);
         if party.is_some() {
             agreement.engaged_party = vec![party.as_deref().cloned().unwrap()];
+        }
+        // Iterate through 
+        if value.quote_item.is_some() {
+            let items = value.quote_item.as_ref().unwrap();
+            items.iter().for_each(|i| {
+                // Take each QuoteItem and convert to AgreementItem
+                let agreement_item = AgreementItem::from(i);
+                agreement.add_item(agreement_item);
+            })
         }
         agreement
     }
