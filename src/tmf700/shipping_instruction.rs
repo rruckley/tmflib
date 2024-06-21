@@ -49,7 +49,7 @@ pub struct ShippingInstruction {
     receipt_confirmation: String,
     shipping_type: String,
     signature_required: bool,
-    signature_required_by : SignatureRequiredByType,
+    signature_required_by : Option<SignatureRequiredByType>,
     warehouse_id : String,
     // Referenced Struct
     /// Notes
@@ -63,8 +63,24 @@ impl ShippingInstruction {
             .message(instruction)
     }
 
-    fn message(mut self, message : impl Into<String>) -> ShippingInstruction {
+    /// Set the label message for this instructions
+    pub fn message(mut self, message : impl Into<String>) -> ShippingInstruction {
         self.label_message = Some(message.into());
+        self
+    }
+
+    /// Set the signature requirements
+    pub fn signature_required_by(mut self, signature : Option<SignatureRequiredByType>) -> ShippingInstruction {
+        match signature {
+            Some(s) => { 
+                self.signature_required_by = Some(s);
+                self.signature_required = true;
+            },
+            None => {
+                self.signature_required_by = None;
+                self.signature_required = false;
+            },
+        };
         self
     }
 }
