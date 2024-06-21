@@ -1,12 +1,20 @@
 //! Agreement Item Module
 use serde::{Deserialize,Serialize};
-use crate::{HasValidity,TimePeriod};
+use crate::{tmf648::quote_item::QuoteItem, HasValidity, TimePeriod};
+use crate::tmf620::product_offering::ProductOfferingRef;
 use tmflib_derive::HasValidity;
 
 /// Agreement Item
 #[derive(Clone,Default,Debug, Deserialize, Serialize)]
 pub struct AgreementItem {
     term_or_condition: Option<Vec<AgreementTermOrCondition>>,
+    product_offering: Option<Vec<ProductOfferingRef>>,
+}
+
+impl From<&QuoteItem> for AgreementItem {
+    fn from(_value: &QuoteItem) -> Self {
+        AgreementItem::default()
+    }
 }
 
 /// Agreement Item terms and conditions
