@@ -2,7 +2,7 @@
 //! 
 
 
-use super::shipping_order_item::ShippingOrderItem;
+use super::{shipping_instruction::ShippingInstruction, shipping_order_item::ShippingOrderItem};
 use crate::{common::note::Note, DateTime};
 #[cfg(feature = "tmf622-v4")]
 use crate::tmf622::product_order_v4::ProductOrderRef;
@@ -78,6 +78,9 @@ pub struct ShippingOrder {
     /// Product Order Reference
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_order: Option<ProductOrderRef>,
+    /// Shipping Instruction Top Level
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub shipping_instruction : Option<ShippingInstruction>,
 }
 
 impl ShippingOrder {
@@ -86,6 +89,12 @@ impl ShippingOrder {
         let mut order = ShippingOrder::create();
         order.note = Some(vec![]);
         order
+    }
+
+    /// Set shipping instructions for this shipping order
+    pub fn instruction(mut self, instruction : ShippingInstruction) -> ShippingOrder {
+        self.shipping_instruction = Some(instruction);
+        self
     }
 
     /// Add an order item to this order
