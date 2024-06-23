@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF700 Product Shipping Order Modules
+//! TMF700 Shipping Order Modules
 
 /// Common path for TMF700
 pub const MOD_PATH : &str = "shippingOrder/v4";

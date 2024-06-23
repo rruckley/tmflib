@@ -18,5 +18,8 @@ fn main() {
     shipping_order.add_item(item);
     shipping_order.add_note(Note::new("A Note"));
 
+    let original_order = ShippingOrder::new();
+    
+    shipping_order.link_order(&original_order, "Original Order");
     dbg!(shipping_order);
 }
