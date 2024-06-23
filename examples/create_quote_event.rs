@@ -19,7 +19,7 @@ fn main() {
     // Create the new Quote
     let mut quote = Quote::new();
     // Add the item to the quote
-    let _result = quote.add_quote(item);
+    let _result = quote.add_quote_item(item);
     // Set the external Id
     let _result = quote.with_external_id(String::from("EXT123"));
     
