@@ -124,9 +124,17 @@ impl Quote {
     }
 
     /// Add a quote item into a product quote
-    pub fn add_quote(&mut self, item: QuoteItem) -> Result<String, String> {
-        self.quote_item.as_mut().unwrap().push(item);
-        Ok(String::from("Quote Item Added"))
+    pub fn add_quote_item(&mut self, item: QuoteItem) -> Result<String, String> {
+        match self.quote_item.as_mut() {
+            Some(v) => {
+                v.push(item);
+                Ok(String::from("Quote Item Added"))
+            },
+            None => {
+                self.quote_item = Some(vec![item]);
+                Ok(String::from("Vector created and quote Item Added"))
+            }
+        }
     }
 
     /// Add a price entry to this quote
