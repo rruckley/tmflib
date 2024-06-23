@@ -7,6 +7,7 @@ use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
 use crate::common::related_place::RelatedPlaceRefOrValue;
+use crate::tmf620::product_offering::ProductOffering;
 use crate::tmf620::product_specification::ProductSpecificationRef;
 
 use super::quote_price::QuotePrice;
@@ -71,8 +72,6 @@ pub struct ProductRefOrValue {
     pub related_party: Option<Vec<RelatedParty>>,
 }
 
-
-
 /// Quote Item, line item for a product quote
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -119,5 +118,16 @@ impl QuoteItem {
     /// Add QuotePrice to this QuoteItem
     pub fn price(&mut self, price : QuotePrice) {
         self.quote_item_price.as_mut().unwrap().push(price);
+    }
+
+    /// Get the ProductOffering for this QuoteItem
+    pub fn get_offer(&self) -> Option<ProductOffering> {
+        match self.product.as_ref() {
+            Some(p) => {
+                // p.product_specification;
+                None
+            },
+            None => None,
+        }
     }
 }
