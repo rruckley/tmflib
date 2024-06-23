@@ -67,7 +67,14 @@ impl Agreement {
     }
     /// Add a new item to the list
     pub fn add_item(&mut self, item : AgreementItem) {
-        //match self
+        match self.agreement_item.as_mut() {
+            Some(v) => {
+                v.push(item);
+            },
+            None => {
+                self.agreement_item = Some(vec![item]);
+            }
+        }
     }
 }
 
