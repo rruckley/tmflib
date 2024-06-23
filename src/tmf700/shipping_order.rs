@@ -33,6 +33,14 @@ pub struct RelatedShippingOrder {
     role: Option<String>,
 }
 
+impl RelatedShippingOrder {
+    /// Set the role for this RelatedShippingOrder
+    pub fn role(mut self, role : impl Into<String>) -> RelatedShippingOrder {
+        self.role = Some(role.into());
+        self
+    }
+}
+
 impl From<&ShippingOrder> for RelatedShippingOrder {
     fn from(value: &ShippingOrder) -> Self {
         // Generate Ref from SO
@@ -101,8 +109,12 @@ impl ShippingOrder {
     pub fn add_item(&mut self, item : ShippingOrderItem) {
         self.shipping_order_item.push(item);
     }
-}
 
+    /// Add a RelatedShippingOrder to this order
+    pub fn link_order(&mut self, shipping_order: &ShippingOrder, role : impl Into<String>) {
+        self.related_shipping_order = Some(RelatedShippingOrder::from(shipping_order).role(role));  
+    }
+}
 #[cfg(test)]
 mod test {
     use super::RelatedShippingOrder;
@@ -139,5 +151,18 @@ mod test {
 
         assert_eq!(so.get_id(),so_rel.id);
         assert_eq!(so.get_href(),so_rel.href);
+    }
+
+    #[test]
+    fn shiping_order_add_related() {
+        let so_parent = ShippingOrder::new();
+        let mut so_child = ShippingOrder::new();
+
+        so_child.link_order(&so_parent, "Parent");
+        
+        assert_eq!(so_child.related_shipping_order.is_some(),true);
+        let linked_order = so_child.related_shipping_order.unwrap();
+        
+        assert_eq!(so_parent.get_id(),linked_order.id);
     }
 }
