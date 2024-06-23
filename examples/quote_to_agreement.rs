@@ -22,7 +22,7 @@ fn main() {
     let mut quote = Quote::new();
     quote.set_name("My Quote");
     // Add the item to the quote
-    let _result = quote.add_quote(item);
+    let _result = quote.add_quote_item(item);
     // Set the external Id
     let _result = quote.with_external_id(String::from("EXT123"));
     
@@ -36,6 +36,7 @@ fn main() {
     // Add an organisation
     let org = Organization::new("A Customer");
     quote.add_party(RelatedParty::from(&org));
+    
 
     let agreement = Agreement::from(&quote);
 
