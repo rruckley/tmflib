@@ -21,8 +21,11 @@ const CLASS_PATH: &str = "shipment";
 /// Shipment Tracking
 #[derive(Clone,Default,Debug,Deserialize,HasId,HasName,Serialize)]
 pub struct ShipmentTrackingRef {
+    #[serde(skip_serializing_if = "Option::is_none")]
     href: Option<Uri>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 }
 

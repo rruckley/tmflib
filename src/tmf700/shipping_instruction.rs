@@ -93,7 +93,7 @@ impl From<String> for ShippingInstruction {
 
 #[cfg(test)]
 mod test {
-    use super::ShippingInstruction;
+    use super::{ShippingInstruction, SignatureRequiredByType};
     const INST : &str = "AnInstruction";
 
     #[test]
@@ -108,5 +108,13 @@ mod test {
         let instruction : ShippingInstruction = INST.to_string().into();
 
         assert_eq!(instruction.label_message.unwrap(),INST.to_string());
+    }
+
+    #[test]
+    fn test_instruction_signature() {
+        let instruction = ShippingInstruction::new(INST)
+            .signature_required_by(Some(SignatureRequiredByType::Receiver));
+
+        assert_eq!(instruction.signature_required,true);
     }
 }

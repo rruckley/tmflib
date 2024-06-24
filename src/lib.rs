@@ -127,6 +127,32 @@ pub struct Quantity {
     pub units : String,
 }
 
+impl Quantity {
+    /// Create a simple Quantity representing weight in kg
+    /// # Example
+    /// ```
+    /// use tmflib::Quantity;
+    /// let weight = Quantity::kg(10.5);
+    /// assert_eq!(weight.amount,10.5);
+    /// ```
+    pub fn kg(amount : f64) -> Quantity {
+        Quantity {
+            amount,
+            units: "kg".to_string(),
+        }
+    }
+    /// use tmflib::Quantity;
+    /// let weight = Quantity::cartons(3);
+    /// assert_eq!(weight.amount,3.0);
+    /// ```
+    pub fn cartons(amount : f64) -> Quantity {
+        Quantity {
+            amount : amount,
+            units: "cartons".to_string()
+        }
+    }
+}
+
 /// Generate a cryptographic code for use in API calls.
 /// 
 /// Currently used by:
@@ -324,6 +350,8 @@ pub mod tmf760;
 
 #[cfg(test)]
 mod test {
+    use crate::Quantity;
+
     use super::gen_code;
     const CODE : &str = "T-DXQR65";
     const HASH : &str = "DXQR656VE3FIKEZZWJX6C3WC27NSRTJVMYR7ILA5XNDLSJXQPDVQ";
@@ -334,5 +362,13 @@ mod test {
 
         assert_eq!(code,CODE.to_string());
         assert_eq!(hash,HASH.to_string());
+    }
+
+    #[test]
+    fn test_quantity_kg() {
+        let quantity = Quantity::kg(10.5);
+
+        assert_eq!(quantity.amount,10.5);
+        assert_eq!(quantity.units, "kg".to_string());
     }
 }
