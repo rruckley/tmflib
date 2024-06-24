@@ -10,6 +10,7 @@ use crate::{
 };
 use tmflib_derive::{HasId,HasName};
 use crate::common::attachment::AttachmentRefOrValue;
+use crate::common::external_identifier::ExternalIdentifier;
 use serde::{Deserialize,Serialize};
 
 use super::shipment_specification::ShipmentSpecificationRefOrValue;
@@ -60,4 +61,7 @@ pub struct ShipmentRefOrValue {
     shipment_specification: Option<ShipmentSpecificationRefOrValue>,
     #[serde(skip_serializing_if = "Option::is_none")]
     shipment_tracking: Option<ShipmentTrackingRef>,
+    /// Set of external identifiers
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub external_identifier: Option<Vec<ExternalIdentifier>>,
 }
