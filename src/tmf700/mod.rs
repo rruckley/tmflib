@@ -12,10 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF700 Product Shipping Order Modules
-
-use super::LIB_PATH;
-use super::HasId;
+//! TMF700 Shipping Order Modules
 
 /// Common path for TMF700
 pub const MOD_PATH : &str = "shippingOrder/v4";
@@ -23,3 +20,5 @@ pub const MOD_PATH : &str = "shippingOrder/v4";
 pub mod shipping_order;
 pub mod shipping_order_item;
 pub mod shipping_instruction;
+pub mod shipment;
+pub mod shipment_specification;
