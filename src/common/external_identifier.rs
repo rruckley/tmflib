@@ -12,7 +12,9 @@ use super::MOD_PATH;
 #[serde(rename_all = "camelCase")]
 pub struct ExternalIdentifier {
     external_identifier_type: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
     href: Option<Uri>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
     owner: String,
 }
