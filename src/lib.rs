@@ -32,7 +32,8 @@
 #![warn(missing_docs)]
 
 use chrono::{Utc,Days};
-use common::related_party::RelatedParty;
+use common::{attachment::AttachmentRefOrValue, related_party::RelatedParty};
+use tmf667::document::Document;
 use uuid::Uuid;
 use serde::{Deserialize, Serialize};
 use crate::common::note::Note;
@@ -113,6 +114,15 @@ impl Default for TimePeriod {
         let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         TimePeriod {
             start_date_time : time.to_rfc3339(),
+            end_date_time: None,
+        }
+    }
+}
+
+impl From<DateTime> for TimePeriod {
+    fn from(value: TimeStamp) -> Self {
+        TimePeriod {
+            start_date_time : value.clone(),
             end_date_time: None,
         }
     }
@@ -301,6 +311,14 @@ pub trait HasRelatedParty : HasId {
 pub trait TMFEvent<T> : HasId + HasName {
     /// Geneate container for an TMF payload to be used in an event
     fn event(&self) -> T;
+}
+
+/// Struct has Attachments
+pub trait HasAttachment : HasId {
+    /// Link a document in as an attachment
+    fn link_doc(&mut self, document : &Document) -> bool;
+    /// Create local attachment as Base64 encoded data
+    fn add(&mut self, attachment : &AttachmentRefOrValue);
 }
 
 /// Common Modules
