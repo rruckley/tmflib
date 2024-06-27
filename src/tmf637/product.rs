@@ -7,6 +7,7 @@ use crate::tmf666::billing_account::BillingAccountRef;
 use crate::{HasId, HasName, LIB_PATH, DateTime,HasValidity, TimePeriod};
 use tmflib_derive::{HasId, HasName, HasValidity};
 use crate::common::related_place::RelatedPlaceRefOrValue;
+use crate::common::product::ProductStatusType;
 #[cfg(feature = "tmf620-v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
 #[cfg(feature = "tmf620-v5")]
@@ -15,20 +16,6 @@ use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use super::MOD_PATH;
 
 const CLASS_PATH: &str = "product";
-
-#[derive(Debug, Default, Deserialize, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
-enum ProductStatusType {
-    #[default]
-    Created,
-    Cancelled,
-    Active,
-    PendingActive,
-    PendingTerminate,
-    Terminated,
-    Suspended,
-    Aborted,
-}
 
 /// Product record from the Product Inventory
 #[derive(Debug, Default, Deserialize, HasId, HasName, Serialize)]
@@ -92,6 +79,7 @@ pub struct ProductTerm {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::common::product::ProductStatusType;
 
     const PRODUCT : &str = "AProduct";
 

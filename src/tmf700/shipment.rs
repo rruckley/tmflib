@@ -29,6 +29,62 @@ pub struct ShipmentTrackingRef {
     name: Option<String>,
 }
 
+/// Shipment Item Action Type
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub enum ShipmentItemActionType {
+    /// Add new item
+    Add,
+    /// Modify existing item
+    Modify,
+    /// Delete existing item
+    Delete,
+    /// No change to existing item
+    #[default]
+    NoChange,
+}
+/**
+ * Move these two into TMF687 when it gets created
+ */
+/// Product Stock Reference
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct ProductStockRef {
+    id : String,
+    href : Uri,
+    name: String,
+}
+
+/// Reseved Product Stock Reference
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct ReservedProductStockRef {
+    id : String,
+    href : Uri,
+    name: String,
+}
+
+/// Shipment Item - Individual piece of eqiupment to be delivered
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct ShipmentItem {
+    /// Action
+    pub action: ShipmentItemActionType,
+    /// Id
+    id: String,
+    /// Number of items
+    pub quantity: String,
+    /// SKU
+    pub sku : String,
+    /// Weight of item
+    pub weight: Quantity,
+    // Referenced structs
+    /// Product Stock Reference
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_stock_ref : Option<ProductStockRef>,
+    /// Product Reservation Reference
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_reservation_ref: Option<ReservedProductStockRef>,
+}
+
+
+
 /// Shipment
 #[derive(Clone,Default,Debug,Deserialize,HasId,HasName,Serialize)]
 pub struct ShipmentRefOrValue {
@@ -67,4 +123,7 @@ pub struct ShipmentRefOrValue {
     /// Set of external identifiers
     #[serde(skip_serializing_if = "Option::is_none")]
     pub external_identifier: Option<Vec<ExternalIdentifier>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    /// Shipment Item - Individual equipment items
+    pub shipment_item : Option<Vec<ShipmentItem>>,
 }
