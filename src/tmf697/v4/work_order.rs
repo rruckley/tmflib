@@ -3,7 +3,6 @@
 use crate::{
     LIB_PATH,
     HasId,
-    CreateTMF,
     HasNote,
     HasRelatedParty,
     Uri,
