@@ -69,10 +69,10 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
             }
             fn set_id(&mut self, id : impl Into<String>) {
                 self.id = Some(id.into());
+                // Since we have changed the Id, the href will be invalid.
+                self.generate_href();
             }
         }
-
-        impl CreateTMF<#name> for #name {}
     };
     out.into()
 }
@@ -97,8 +97,6 @@ pub fn haslastupdate_derive(input: TokenStream) -> TokenStream {
                 self.last_update = Some(time.into());
             }
         }
-
-        impl CreateTMFWithTime<#name> for #name {}
     };
     out.into()
 }
@@ -183,7 +181,14 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
                 self.related_party.as_mut().unwrap().push(party);
             }
             fn get_party(&self, idx : usize ) -> Option<&RelatedParty> {
-                self.related_party.as_ref().unwrap().get(idx)    
+                match self.related_party.as_ref() {
+                    Some(rp) => {
+                        // Simple return results of get()
+                        rp.get(idx)
+                    },
+                    None => None,
+                }
+                  
             }
             fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String> {
                 Ok(self.related_party.as_mut().unwrap().remove(idx))  
@@ -246,7 +251,18 @@ pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
                 self.set_validity(validity.clone());
                 validity
             }
-    
+            fn is_valid(&self) -> bool {
+                let validity = self.get_validity();
+                match validity {
+                    Some(v) => {
+                        if v.started() && !v.finished()  {
+                            return true
+                        }
+                        false
+                    },
+                    None => false
+                }
+            }
         }
     };
     out.into()   

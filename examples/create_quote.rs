@@ -1,5 +1,6 @@
 //! Create Quote Example
-use tmflib::tmf648::{quote::Quote, quote_item::QuoteItem, quote_price::{Price,QuotePrice}};
+use tmflib::tmf648::{quote::Quote, quote_item::QuoteItem, quote_price::QuotePrice};
+use tmflib::common::price::Price;
 
 fn main() {
     // Create a quote using various components

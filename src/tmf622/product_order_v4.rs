@@ -1,13 +1,19 @@
 //! Product Order Module
 
 use serde::{Deserialize, Serialize};
-
 use tmflib_derive::{HasId,HasNote,HasRelatedParty};
 use crate::tmf641::service_order::ServiceOrder;
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
 use crate::tmf651::agreement::AgreementRef;
-use crate::{CreateTMF, CreateTMFWithTime, DateTime, HasId, HasLastUpdate, HasNote, HasRelatedParty};
+use crate::{
+    DateTime, 
+    HasId, 
+    HasLastUpdate, 
+    HasNote, 
+    HasRelatedParty,
+    Uri,
+};
 use crate::tmf663::shopping_cart::ShoppingCart;
 use super::product_order_item::ProductOrderItem;
 
@@ -18,6 +24,60 @@ use super::MOD_PATH;
 
 
 const CLASS_PATH: &str = "productOrder";
+
+/// Reference to a Product Order
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct ProductOrderRef {
+    /// Link to Product Order
+    pub href : Uri,
+    /// Unique Id of Product Order
+    pub id : String,
+    /// Name or title of product order
+    pub name : String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@baseType")]
+    base_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@referredType")]
+    referred_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@schemaLocation")]
+    schema_location: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@type")]
+    r#type: Option<String>,
+}
+
+impl From<ProductOrder> for ProductOrderRef {
+    fn from(value: ProductOrder) -> Self {
+        ProductOrderRef {
+            href: value.get_href(),
+            id: value.get_id(),
+            // Should ideally generate a useful name if description is missing
+            name: value.description.as_ref().unwrap().clone(),
+            r#type : Some("ProductOrder".to_string()),
+            ..Default::default()
+        }
+    }
+}
+
+impl From<&ProductOrder> for ProductOrderRef {
+    fn from(value: &ProductOrder) -> Self {
+        let name = match value.description.as_deref() {
+            Some(d) => d,
+            None => {
+                "No Order Description"
+            }
+        };
+        ProductOrderRef {
+            href: value.get_href(),
+            id: value.get_id(),
+            name: name.to_string(),
+            r#type : Some("ProductOrder".to_string()),
+            ..Default::default()
+        }
+    }
+}
 
 /// ProductOrder
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasNote, HasRelatedParty, Serialize)]
@@ -72,8 +132,6 @@ impl HasLastUpdate for ProductOrder {
     }
 }
 
-impl CreateTMFWithTime<ProductOrder> for ProductOrder {}
-
 impl ProductOrder {
     /// Create a new product order via trait
     pub fn new() -> ProductOrder {
@@ -111,18 +169,18 @@ impl From<ServiceOrder> for ProductOrder {
     fn from(value: ServiceOrder) -> Self {
         let mut po = ProductOrder::new();
         
-        po.cancellation_reason = value.cancellation_reason.clone();
-        po.category = value.category.clone();
-        po.description = value.description.clone();
-        po.external_id = value.external_id.clone();
-        po.note = value.note.clone();
-        po.related_party = value.related_party.clone();
+        po.cancellation_reason.clone_from(&value.cancellation_reason);
+        po.category.clone_from(&value.category);
+        po.description.clone_from(&value.description);
+        po.external_id.clone_from(&value.external_id);
+        po.note.clone_from(&value.note);
+        po.related_party.clone_from(&value.related_party);
         
         // Dates
-        po.completion_date = value.completion_date.clone();
-        po.order_date = value.order_date.clone();
-        po.cancellation_date = value.cancellation_date.clone();
-        po.expected_completion_date = value.expected_completion_date.clone();
+        po.completion_date.clone_from(&value.completion_date);
+        po.order_date.clone_from(&value.order_date);
+        po.cancellation_date.clone_from(&value.cancellation_date);
+        po.expected_completion_date.clone_from(&value.expected_completion_date);
         
         // Iterate through service order items
         let items = match value.servce_order_item {

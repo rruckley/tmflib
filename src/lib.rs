@@ -14,9 +14,9 @@
 
 //! TMF Library
 //! # Description
-//! This library covers structures required to interact with various TMForum APIs.
-//! It does not define amy persistence nor provide a REST interface (at this stage)
-//! but simply provides definitions of all the schema and some helpful functions to create compliant objects
+//! This library covers data structures required to interact with various TMForum APIs.
+//! It does not define any persistence nor provide a REST interface (at this stage)
+//! but simply provides definitions of all the schema and helpful functions and traits to create and maniuplate compliant objects
 //! that can then be seriliased into or from JSON as required.
 //! 
 //! # Crate Features
@@ -42,7 +42,7 @@ use base32::encode;
 
 /// Primary path for the whole library, All paths generated will start with this.
 pub const LIB_PATH: &str = "tmf-api";
-/// Default code length used by [gen_code] if no length is supplied.
+/// Default code length used by [`gen_code`] if no length is supplied.
 pub const CODE_DEFAULT_LENGTH : usize = 6;
 
 /// Standard cardinality type for library
@@ -76,11 +76,35 @@ impl TimePeriod {
         let now = Utc::now() + Days::new(days);
         let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         TimePeriod {
-            end_date_time: Some(time.to_string()),
+            end_date_time: Some(time.to_rfc3339()),
             ..Default::default()
         }
     }
-
+    /// Return true if start time of TimePeriod is in the past.
+    pub fn started(&self) -> bool {
+        let now = Utc::now();
+        
+        let start = chrono::DateTime::parse_from_rfc3339(&self.start_date_time).unwrap();
+        // Start is in the past, return true
+        if start < now { 
+            return true
+        }
+        false
+    }
+    /// Return true if the finish time is set and is in the past
+    pub fn finished(&self) -> bool {
+        match &self.end_date_time {
+            Some(f) => {
+                let now = Utc::now();
+                let finish = chrono::DateTime::parse_from_rfc3339(f).unwrap();
+                if finish < now {
+                    return true
+                }
+                false
+            },
+            None => false
+        }
+    }
 }
 
 impl Default for TimePeriod {
@@ -88,9 +112,44 @@ impl Default for TimePeriod {
         let now = Utc::now();
         let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         TimePeriod {
-            start_date_time : time.to_string(),
+            start_date_time : time.to_rfc3339(),
             end_date_time: None,
-        }    
+        }
+    }
+}
+
+/// Basic Amount / Unit quantity structure
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+pub struct Quantity {
+    /// How much?
+    pub amount : f64,
+    /// What type?
+    pub units : String,
+}
+
+impl Quantity {
+    /// Create a simple Quantity representing weight in kg
+    /// # Example
+    /// ```
+    /// use tmflib::Quantity;
+    /// let weight = Quantity::kg(10.5);
+    /// assert_eq!(weight.amount,10.5);
+    /// ```
+    pub fn kg(amount : f64) -> Quantity {
+        Quantity {
+            amount,
+            units: "kg".to_string(),
+        }
+    }
+    /// use tmflib::Quantity;
+    /// let weight = Quantity::cartons(3);
+    /// assert_eq!(weight.amount,3.0);
+    /// ```
+    pub fn cartons(amount : f64) -> Quantity {
+        Quantity {
+            amount : amount,
+            units: "cartons".to_string()
+        }
     }
 }
 
@@ -111,6 +170,7 @@ impl Default for TimePeriod {
 /// ```
 /// use tmflib::gen_code;
 /// let (code,hash) = gen_code("John Q. Smith".to_string(),"USER123".to_string(),None,Some("U-".to_string()),None);
+/// assert_eq!(code,"U-SP7E6E".to_string());
 /// ```
 pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Option<String>,length : Option<usize>) -> (String,String) {
     let hash_input = format!("{}:{}:{}",name,id,offset.unwrap_or_default());
@@ -122,7 +182,7 @@ pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Optio
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
-pub trait HasId {
+pub trait HasId : Default {
     /// Get a new UUID in simple format (no seperators)
     fn get_uuid() -> String {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
@@ -146,20 +206,16 @@ pub trait HasId {
     fn get_mod_path() -> String;
     /// Set the id on the object, also triggers generate_href().
     fn set_id(&mut self, id : impl Into<String>);
-}
-
-/// Trait to create TMF structs that have the HasId trait
-pub trait CreateTMF<T : Default + HasId> {
     /// Create a new instance of a TMF object that has id and href fields.
     /// # Example
     /// ```
     /// # use crate::tmflib::tmf629::customer::Customer;
-    /// use crate::tmflib::CreateTMF;
+    /// # use crate::tmflib::HasId;
     /// let offering = Customer::create();
     /// ```` 
-    fn create() -> T {
+    fn create() -> Self {
         // Create default instance
-        let mut item = T::default();
+        let mut item = Self::default();
         // Generate unique id and href
         item.generate_id();
         item
@@ -167,7 +223,7 @@ pub trait CreateTMF<T : Default + HasId> {
 }
 
 /// Trait indicating a TMF sturct has a last_update or similar timestamp field.
-pub trait HasLastUpdate {
+pub trait HasLastUpdate : HasId {
     /// Geneate a timestamp for now(), useful for updating last_updated fields
     fn get_timestamp() -> String {
         let now = Utc::now();
@@ -177,16 +233,13 @@ pub trait HasLastUpdate {
 
     /// Store a timestamp into last_update field (if available)
     fn set_last_update(&mut self, time : impl Into<String>);
-}
 
-/// Trait to create a TMF struct including initialising a last_update field
-pub trait CreateTMFWithTime<T : Default + HasId + HasLastUpdate> {
     /// Create a new TMF object, also set last_update field to now()
-    fn create_with_time() -> T {
+    fn create_with_time() -> Self {
         // Create default instance
-        let mut item = T::default();
+        let mut item = Self::default();
         item.generate_id();
-        item.set_last_update(T::get_timestamp());
+        item.set_last_update(Self::get_timestamp());
         item
     }
 }
@@ -205,6 +258,11 @@ pub trait HasValidity {
     fn set_validity_start(&mut self, start : TimeStamp) -> TimePeriod;
     /// Set only the end of the validty period, returns updated [`TimePeriod`]
     fn set_validity_end(&mut self, end : TimeStamp) -> TimePeriod;
+    /// Return true as follows:
+    /// - If no end is set and the start is in the past return true.
+    /// - If end is set and start is in the past and end is in the future, return true.
+    /// - Otherwise return false.
+    fn is_valid(&self) -> bool;
 }
 
 /// Does an object have a name field?
@@ -225,7 +283,7 @@ pub trait HasNote : HasId {
     fn get_note(&self, idx : usize) -> Option<&Note>;
     /// Add a new note
     fn add_note(&mut self, note : Note);
-    ///
+    /// Remove a note by index
     fn remove_note(&mut self, idx: usize) -> Result<Note,String>;
 }
 
@@ -284,6 +342,8 @@ pub mod tmf679;
 pub mod tmf681;
 #[cfg(any(feature = "tmf697-v4" , feature = "tmf697-v5"))]
 pub mod tmf697;
+#[cfg(any(feature = "tmf696-v4" , feature = "tmf696-v5"))]
+pub mod tmf696;
 #[cfg(any(feature = "tmf699-v4" , feature = "tmf699-v5"))]
 pub mod tmf699;
 pub mod tmf700;
@@ -292,6 +352,8 @@ pub mod tmf760;
 
 #[cfg(test)]
 mod test {
+    use crate::Quantity;
+
     use super::gen_code;
     const CODE : &str = "T-DXQR65";
     const HASH : &str = "DXQR656VE3FIKEZZWJX6C3WC27NSRTJVMYR7ILA5XNDLSJXQPDVQ";
@@ -302,5 +364,13 @@ mod test {
 
         assert_eq!(code,CODE.to_string());
         assert_eq!(hash,HASH.to_string());
+    }
+
+    #[test]
+    fn test_quantity_kg() {
+        let quantity = Quantity::kg(10.5);
+
+        assert_eq!(quantity.amount,10.5);
+        assert_eq!(quantity.units, "kg".to_string());
     }
 }

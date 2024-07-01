@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasName, CreateTMF, LIB_PATH,HasValidity, TimePeriod, CreateTMFWithTime, HasLastUpdate,Cardinality};
+use crate::{HasId, HasName, LIB_PATH,HasValidity, TimePeriod, HasLastUpdate,Cardinality};
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
 
 use crate::tmf633::service_specification::{ServiceSpecification,ServiceSpecificationRef};
@@ -250,9 +250,9 @@ impl From<&ServiceSpecification> for ProductSpecification {
         }
         if value.version.is_some() {
             // If source has a version defined take that 
-            ps.version = value.version.clone();
+            ps.version.clone_from(&value.version);
         }
-        ps.lifecycle_status = value.lifecycle_status.clone();
+        ps.lifecycle_status.clone_from(&value.lifecycle_status);
         ps
     }
 }

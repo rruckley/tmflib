@@ -15,13 +15,10 @@ use crate::{
     DateTime,
     HasValidity,
     TimePeriod,
-    CreateTMF,
     LIB_PATH,
     Uri,
 };
 use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
-
-use crate::CreateTMFWithTime;
 
 const CLASS_PATH: &str = "category";
 const CAT_VERS: &str = "1.0";

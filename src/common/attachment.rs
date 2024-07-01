@@ -2,7 +2,7 @@
 //!
 //!
 use serde::{Deserialize, Serialize};
-use crate::{HasId, HasValidity, CreateTMF};
+use crate::{HasId, HasValidity};
 use tmflib_derive::{HasId,HasValidity};
 
 use crate::TimePeriod;

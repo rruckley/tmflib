@@ -9,7 +9,6 @@ use crate::common::event::{Event,EventPayload};
 use crate::{
     HasName,
     HasId,
-    CreateTMF,
     HasValidity, 
     TimePeriod,
     TMFEvent,

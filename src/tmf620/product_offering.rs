@@ -8,9 +8,7 @@ use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
 
-use crate::{
-    CreateTMF, 
-    CreateTMFWithTime,
+use crate::{ 
     HasLastUpdate, 
     HasId, 
     HasName, 

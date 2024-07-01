@@ -2,11 +2,11 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::common::money::Money;
-use crate::{HasId,CreateTMF,LIB_PATH,HasValidity,TimePeriod};
+use crate::{HasId, LIB_PATH,HasValidity,TimePeriod};
 use tmflib_derive::{HasId,HasValidity};
 use crate::common::contact::ContactMedium;
 use crate::common::related_party::RelatedParty;
+use crate::common::price::Price;
 
 
 use super::MOD_PATH;
@@ -23,15 +23,7 @@ pub struct CartPrice {
     price_type: String,
     recurring_charge_period: String,
     unit_of_measure: String,
-}
-
-/// Pricing for Shopping Cart
-#[derive(Clone, Debug, Default, Deserialize,PartialEq, Serialize)]
-pub struct Price {
-    percentage: f32,
-    tax_rate: f32,
-    duty_free_amount: Money,
-    tax_included_amount: Money,
+    price: Option<Price>,
 }
 
 /// Shopping Cart

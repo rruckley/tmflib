@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, HasValidity, TimePeriod, DateTime};
+use crate::{HasId, HasLastUpdate, LIB_PATH, HasValidity, TimePeriod, DateTime};
 use tmflib_derive::{HasId,HasLastUpdate, HasValidity};
 
 const CLASS_PATH : &str = "appointment";

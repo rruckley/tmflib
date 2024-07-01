@@ -2,7 +2,8 @@
 //! 
 
 use serde::{Deserialize,Serialize};
-use crate::{LIB_PATH,HasId,CreateTMF, HasName, Uri, DateTime};
+use crate::{LIB_PATH,HasId, HasName, Uri, DateTime};
+use crate::common::external_identifier::ExternalIdentifier;
 use tmflib_derive::{HasId,HasName};
 use super::MOD_PATH;
 const CLASS_PATH : &str = "incident";
@@ -117,15 +118,7 @@ pub struct EntityRef {
     name: String,
 }
 
-/// External Identifier Reference
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ExternalIdentifier {
-    external_identifier_type: String,
-    href: Uri,
-    id: String,
-    owner: String,
-}
+
 
 /// ITIL Incident
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasName, Serialize)]
