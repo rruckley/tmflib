@@ -1,13 +1,15 @@
-//! Create Quote Event
-use tmflib::tmf648::{
-    quote::{Quote,QuoteEventType}, 
-    quote_item::QuoteItem, 
-    quote_price::QuotePrice
-};
-use tmflib::common::event::EventPayload;
+//! Create Quote Example
+
+use tmflib::tmf632::organization_v4::Organization;
+use tmflib::tmf648::{quote::Quote, quote_item::QuoteItem, quote_price::QuotePrice};
 use tmflib::common::price::Price;
+use tmflib::common::related_party::RelatedParty;
+use tmflib::tmf651::agreement::Agreement;
+use tmflib::{HasName, HasRelatedParty};
 
 fn main() {
+    // Create a quote using various components
+
     // First create a quote item
     let mut item = QuoteItem::new();
     // Create a price for this item
@@ -18,6 +20,7 @@ fn main() {
     item.price(quote_price);
     // Create the new Quote
     let mut quote = Quote::new();
+    quote.set_name("My Quote");
     // Add the item to the quote
     let _result = quote.add_quote_item(item);
     // Set the external Id
@@ -30,9 +33,12 @@ fn main() {
     let quote_total_price = QuotePrice::new("Total Contract").price(total_price).period("Contract");
     // Add QuotePrice to quote
     quote.price(quote_total_price);
-    quote.description = Some(String::from("MyFirstQuote"));
+    // Add an organisation
+    let org = Organization::new("A Customer");
+    quote.add_party(RelatedParty::from(&org));
+    
 
-    let event = quote.to_event(QuoteEventType::QuoteInformationRequiredEvent);
+    let agreement = Agreement::from(&quote);
 
-    dbg!(event);
+    dbg!(&agreement);
 }
