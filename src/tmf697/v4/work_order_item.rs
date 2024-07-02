@@ -32,6 +32,12 @@ pub struct WorkOrderItem {
 
 impl WorkOrderItem {
     /// Create new WorkOrderItem based on some Work
+    /// ```
+    /// use tmflib::tmf697::v4::work::{WorkRefOrValue,Work};
+    /// use tmflib::tmf697::v4::work_order_item::WorkOrderItem;
+    /// let work = Work::new("Some Work");
+    /// let woi = WorkOrderItem::with(WorkRefOrValue::from(work));
+    /// ```
     pub fn with(work : WorkRefOrValue) -> WorkOrderItem {
         WorkOrderItem {
             id : Some(gen_code(work.get_name(), work.get_id(), None, Some("WI-".to_string()), Some(7)).0),
