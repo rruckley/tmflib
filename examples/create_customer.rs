@@ -1,8 +1,6 @@
 //! Create Customer example
 //! 
 use tmflib::tmf629::customer::Customer;
-#[cfg(feature = "tmf632-v5")]
-use tmflib::tmf632::organization_v5::Organization;
 
 use tmflib::HasId;
 

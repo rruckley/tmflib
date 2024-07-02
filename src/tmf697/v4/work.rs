@@ -1,4 +1,5 @@
 //! Work Module
+//! This module defines a unit of work to be done.
 
 use crate::{
     LIB_PATH,

@@ -1,6 +1,6 @@
 //! Work Order Item Module
 //! 
-//! 
+//! This module defines an item as part of an overall [`WorkOrder`]
 
 use serde::{Deserialize,Serialize};
 use crate::gen_code;
