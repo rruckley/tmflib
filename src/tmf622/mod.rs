@@ -14,8 +14,6 @@
 
 //! TMF622 Product Order Management
 
-use super::LIB_PATH;
-
 const MOD_PATH: &str = "productOrderingManagement/v4";
 
 #[cfg(feature = "tmf622-v4")]

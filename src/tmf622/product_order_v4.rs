@@ -13,12 +13,12 @@ use crate::{
     HasNote, 
     HasRelatedParty,
     Uri,
+    LIB_PATH,
 };
 use crate::tmf663::shopping_cart::ShoppingCart;
 use super::product_order_item::ProductOrderItem;
 
 // URL Path components
-use super::LIB_PATH;
 use super::MOD_PATH;
 
 

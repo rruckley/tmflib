@@ -2,7 +2,13 @@
 
 use serde::{Deserialize,Serialize};
 
-use crate::{LIB_PATH, CreateTMF, HasName, HasId,TMFEvent};
+use crate::{
+    LIB_PATH, 
+    HasName, 
+    HasId,
+    TMFEvent,
+    gen_code
+};
 use tmflib_derive::{HasId,HasName};
 use uuid::Uuid;
 use chrono::Utc;
@@ -12,6 +18,7 @@ use crate::common::related_party::RelatedParty;
 use super::MOD_PATH;
 const CLASS_PATH: &str = "geographicSite";
 const DEFAULT_TZ : &str = "AEST";
+const CODE_PREFIX : &str = "S-";
 
 /// Reference to a place
 /// # Uses
@@ -83,6 +90,9 @@ pub struct GeographicSite {
     pub href: Option<String>,
     /// Name
     pub name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    /// Site Code
+    pub code : Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     place: Option<PlaceRefOrValue>,
     /// Site Status

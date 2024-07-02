@@ -340,6 +340,8 @@ pub mod tmf674;
 pub mod tmf678;
 pub mod tmf679;
 pub mod tmf681;
+#[cfg(any(feature = "tmf697-v4" , feature = "tmf697-v5"))]
+pub mod tmf697;
 #[cfg(any(feature = "tmf696-v4" , feature = "tmf696-v5"))]
 #[cfg(feature = "tmf687-v4")]
 pub mod tmf687;
