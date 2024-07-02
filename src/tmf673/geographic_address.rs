@@ -2,7 +2,7 @@
 
 use serde::{Deserialize,Serialize};
 
-use crate::{HasId, HasName};
+use crate::{HasId, HasName, Uri};
 use tmflib_derive::{HasId,HasName};
 use crate::LIB_PATH;
 use super::MOD_PATH;
@@ -49,10 +49,11 @@ pub struct GeographicSubAddress {
     pub sub_unit: Option<String>,
 }
 
+/// Geographic Location Ref or Value
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct GeographicLocationRefOrValue {
     /// A bounding box array that contains the geometry. The axes order follows the axes order of the geometry
-    pub bbox: Vec<f32>,
+    pub bbox: Vec<f64>,
     href: Option<String>,
     /// Unique identifier of the geographic location
     id: Option<String>,
@@ -60,8 +61,8 @@ pub struct GeographicLocationRefOrValue {
     name : Option<String>,
 }
 
-impl From<(f32,f32)> for GeographicLocationRefOrValue {
-    fn from(value: (f32,f32)) -> Self {
+impl From<(f64,f64)> for GeographicLocationRefOrValue {
+    fn from(value: (f64,f64)) -> Self {
         GeographicLocationRefOrValue {
             bbox: vec![value.0,value.1],
             ..Default::default()
