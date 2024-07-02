@@ -16,7 +16,6 @@ use crate::tmf620::product_specification::ProductSpecificationRef;
 use super::MOD_PATH;
 use crate::{
     HasId,
-    CreateTMF,
     HasValidity,
     HasNote,
     HasName, 

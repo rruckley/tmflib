@@ -3,13 +3,18 @@
 use std::ops::Deref;
 use chrono::Utc;
 use uuid::Uuid;
-use sha256::digest;
-use hex::decode;
-use base32::encode;
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasName, CreateTMF,DateTime,TMFEvent,TimePeriod,LIB_PATH};
+use crate::{
+    HasId, 
+    HasName, 
+    DateTime, 
+    TMFEvent, 
+    TimePeriod, 
+    LIB_PATH,
+    gen_code
+};
 use tmflib_derive::HasId;
 use super::{MOD_PATH,Characteristic};
 use crate::common::related_party::RelatedParty;
@@ -17,7 +22,6 @@ use crate::common::contact::ContactMedium;
 use crate::common::event::{Event, EventPayload};
 
 const CLASS_PATH : &str = "individual";
-const CODE_LENGTH : usize = 6;
 const CODE_PREFIX : &str = "I-";
 
 /// Language ability of an individual
@@ -243,13 +247,13 @@ impl Individual {
             let code_char = Characteristic {
                 name : String::from("code"),
                 name_type : String::from("String"),
-                value : format!("{}{}",CODE_PREFIX,sha_slice),
+                value : code,
                 ..Default::default()
             };
             let hash_char = Characteristic {
                 name : String::from("code"),
                 name_type : String::from("String"),
-                value : format!("{}{}",CODE_PREFIX,sha_slice),
+                value : hash,
                 ..Default::default()
             };
             self.replace_characteristic(code_char);
