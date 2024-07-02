@@ -15,28 +15,50 @@ const CLASS_PATH : &str = "geographicAddress";
 #[serde(rename_all = "camelCase")]
 pub struct GeographicSubAddress {
     /// Building Name
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub building_name: Option<String>,
     /// URI for SubAddress
-    pub href: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub href: Option<Uri>,
     /// ID for Sub Address
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// Level within building
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub level_number: Option<String>,
     /// Level Type
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub level_type: Option<String>,
     /// Name of Sub-Address
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /// Private Address Name
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub private_street_name: Option<String>,
     /// Private Address Number
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub private_street_number: Option<String>,
     /// Sub Address Type
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub sub_address_type: Option<String>,
     /// Sub Unit Number
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub sub_unit_number: Option<String>,
     /// Sub Unit
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub sub_unit: Option<String>,
 }
+
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct GeographicLocationRefOrValue {
+    /// A bounding box array that contains the geometry. The axes order follows the axes order of the geometry
+    pub bbox: Vec<f32>,
+    href: String,
+    /// Unique identifier of the geographic location
+    id: String,
+    name : String,
+}
+
 /// Geographic Address 
 #[derive(Clone, Debug, Default, Deserialize, HasId,HasName, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -63,6 +85,8 @@ pub struct GeographicAddress {
     // Reference Types
     #[serde(skip_serializing_if = "Option::is_none")]
     geographic_sub_address: Option<Vec<GeographicSubAddress>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    geographic_location: Option<GeographicLocationRefOrValue>,
 }
 
 impl GeographicAddress {
