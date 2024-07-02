@@ -49,6 +49,31 @@ pub enum WorkRefOrValue {
     Val(Work),
 }
 
+impl WorkRefOrValue {
+    /// Get the id, independant on varient
+    pub fn get_id(&self) -> String {
+        match self {
+            WorkRefOrValue::Ref(r) => {
+                r.id.clone()
+            },
+            WorkRefOrValue::Val(v) => {
+                v.get_id()
+            },    
+        }
+    }
+    /// Get the name, independant on varient
+    pub fn get_name(&self) -> String {
+        match self {
+            WorkRefOrValue::Ref(r) => {
+                r.name.clone()
+            },
+            WorkRefOrValue::Val(v) => {
+                v.get_name()
+            },
+        }
+    }
+}
+
 impl From<WorkRef> for WorkRefOrValue {
     fn from(value: WorkRef) -> Self {
         WorkRefOrValue::Ref(value)
