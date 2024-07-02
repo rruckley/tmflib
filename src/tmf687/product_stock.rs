@@ -24,12 +24,14 @@ use serde::{Deserialize,Serialize};
 
 const CLASS_PATH : &str = "productStock";
 
+/// Product Stock Relationship
 #[derive(Clone,Default,Debug,Deserialize,Serialize)]
 pub struct ProductStockRelationship {
     relationship_type : String,
 
 }
 
+/// Product Stock Reference
 #[derive(Clone,Default,Debug,Deserialize,Serialize)]
 pub struct ProductStockRef {
     href: Uri,

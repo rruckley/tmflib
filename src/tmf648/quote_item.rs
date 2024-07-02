@@ -123,7 +123,7 @@ impl QuoteItem {
     /// Get the ProductOffering for this QuoteItem
     pub fn get_offer(&self) -> Option<ProductOffering> {
         match self.product.as_ref() {
-            Some(p) => {
+            Some(_p) => {
                 // p.product_specification;
                 None
             },
