@@ -3,6 +3,8 @@
 //! 
 
 use serde::{Deserialize,Serialize};
+use crate::gen_code;
+
 use super::work::WorkRefOrValue;
 
 /// Work Order Item
@@ -31,9 +33,11 @@ pub struct WorkOrderItem {
 impl WorkOrderItem {
     /// Create new WorkOrderItem based on some Work
     pub fn with(work : WorkRefOrValue) -> WorkOrderItem {
-        let mut woi = WorkOrderItem::default();
-        woi.work = Some(work);
-        woi
+        WorkOrderItem {
+            id : Some(gen_code(work.get_name(), work.get_id(), None, Some("WI-".to_string()), Some(7)).0),
+            work : Some(work),
+            ..Default::default()
+        }
     }
 }
 

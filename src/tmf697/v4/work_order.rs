@@ -58,10 +58,12 @@ pub struct WorkOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@schemaLocation")]
     schema_location: Option<String>,
+    /// HTTP Reference
     #[serde(skip_serializing_if = "Option::is_none")]
-    href: Option<Uri>,
+    pub href: Option<Uri>,
+    /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]
-    id: Option<String>,
+    pub id: Option<String>,
     /// Work Order Status@type
     #[serde(skip_serializing_if = "Option::is_none")]
     pub state: Option<WorkOrderStateType>,
@@ -70,7 +72,7 @@ pub struct WorkOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub appointment : Option<AppointmentRef>,
     /// Work Order Items
-    pub work_order_item : Vec<WorkOrderItem>,
+    pub work_order_item : Option<Vec<WorkOrderItem>>,
     /// Work Order Notes
     #[serde(skip_serializing_if = "Option::is_none")]
     pub note: Option<Vec<Note>>,
@@ -82,14 +84,37 @@ pub struct WorkOrder {
 impl WorkOrder {
     /// Create a new Work Order instance
     pub fn new() -> WorkOrder {
-        let mut out = WorkOrder::create();
-        out.state = Some(WorkOrderStateType::default());
-        out
+        // Use create() to define remainint fields
+        WorkOrder {
+            state : Some(WorkOrderStateType::default()),
+            r#type : Some(WorkOrder::get_class()),
+            base_type : Some(WorkOrder::get_class()),
+            ..WorkOrder::create()
+        }
     }
 
     /// Add a work order item to this WorkOrder
+    /// ```
+    /// use tmflib::tmf697::v4::work_order::WorkOrder;
+    /// use tmflib::tmf697::v4::work_order_item::WorkOrderItem;
+    /// use tmflib::tmf697::v4::work::{WorkRefOrValue,Work};
+    /// 
+    /// let mut wo = WorkOrder::new();
+    /// let work = Work::new("Some Work");
+    /// let work_item = WorkOrderItem::with(WorkRefOrValue::from(work));
+    /// wo.add_item(work_item);
+    /// ```
     pub fn add_item(&mut self, item : WorkOrderItem) {
-        self.work_order_item.push(item);
+        // Safely add item
+        match self.work_order_item.as_mut() {
+            Some(woi) => {
+                woi.push(item);
+            },
+            None => {
+                self.work_order_item = Some(vec![item]);
+            }
+        }
+        
     }
 }
 
