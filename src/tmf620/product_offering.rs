@@ -7,8 +7,13 @@ use crate::tmf620::category::CategoryRef;
 use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
+use crate::tmf634::resource_candidate::ResourceCandidateRef;
+use crate::tmf633::service_candidate::ServiceCandidateRef;
+use crate::tmf667::document::Document;
 
-use crate::{ 
+
+use crate::{
+    HasAttachment,
     HasLastUpdate, 
     HasId, 
     HasName, 
@@ -18,8 +23,7 @@ use crate::{
     Uri,
     LIB_PATH,
 };
-use crate::tmf634::resource_candidate::ResourceCandidateRef;
-use crate::tmf633::service_candidate::ServiceCandidateRef;
+
 use super::product_offering_price::ProductOfferingPriceRef;
 use serde::{Deserialize, Serialize};
 
@@ -243,6 +247,25 @@ impl ProductOffering {
         offer_rel.relationship_type = Some(relationship_type.to_string());
         offer_rel.role = Some(role.to_string());
         self.product_offering_relationship.as_mut().unwrap().push(offer_rel);
+    }
+}
+
+impl HasAttachment for ProductOffering {
+    fn add(&mut self, attachment : &AttachmentRefOrValue) {
+        match self.attachment.as_mut() {
+            Some(v) => {
+                v.push(attachment.clone());
+            }
+            None => {
+                self.attachment = Some(vec![attachment.clone()]);
+            }
+        }    
+    }
+    fn link_doc(&mut self, document : &Document) -> bool {
+        // Convert document into attachment then use add()
+        let attach = AttachmentRefOrValue::from(document);
+        self.add(&attach);
+        true 
     }
 }
 

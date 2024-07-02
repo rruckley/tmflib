@@ -1,13 +1,7 @@
 //! Document Module
 
 use crate::{
-    HasId,
-    HasName,
-    HasLastUpdate,
-    HasRelatedParty,
-    LIB_PATH,
-    DateTime,
-    Uri,
+    common::attachment::AttachmentRefOrValue, DateTime, HasId, HasLastUpdate, HasName, HasRelatedParty, Uri, LIB_PATH
 };
 use tmflib_derive::{HasId,HasName,HasLastUpdate,HasRelatedParty};
 use crate::common::related_party::RelatedParty;
@@ -47,21 +41,24 @@ pub struct Document {
     // HasName
     #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
-    // HasLastUpdate
+    /// For trait HasLastUpdate
     #[serde(skip_serializing_if = "Option::is_none")]
-    last_update: Option<DateTime>,
+    pub last_update: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
     status: Option<DocumentStatusType>,
     #[serde(skip_serializing_if = "Option::is_none")]
     version: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     document_type: Option<String>,
+    /// Description of document
     #[serde(skip_serializing_if = "Option::is_none")]
-    description: Option<String>,
+    pub description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     creation_date: Option<DateTime>,
     // Referenced objects
     related_party: Option<Vec<RelatedParty>>,
+    /// Attachement
+    attachment : AttachmentRefOrValue,
 }
 
 impl Document {
@@ -75,6 +72,12 @@ impl Document {
         doc
     }
 
+    /// Set the attachment for this document.
+    pub fn attachment(mut self, attachment : AttachmentRefOrValue) -> Document {
+        self.attachment = attachment;
+        self
+    }
+
     /// Set the document type
     /// ```
     /// use tmflib::tmf667::document::Document;
@@ -84,6 +87,17 @@ impl Document {
     pub fn doc_type(mut self, r#type : impl Into<String>) -> Document {
         self.document_type = Some(r#type.into());
         self
+    }
+}
+
+impl From<AttachmentRefOrValue> for Document {
+    fn from(value: AttachmentRefOrValue) -> Self {
+        let mut document = Document::create_with_time();
+        document.set_name(value.get_name());
+        document.description = value.description.clone();
+        document.status = Some(DocumentStatusType::Created);
+        document.attachment = value.clone();
+        document
     }
 }
 
