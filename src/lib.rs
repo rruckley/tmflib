@@ -321,18 +321,13 @@ pub trait HasAttachment : HasId {
     fn add(&mut self, attachment : &AttachmentRefOrValue);
 }
 
-/// Common Modules
 pub mod common;
-/// Product Catalogue
 #[cfg(any(feature = "tmf620-v4" , feature = "tmf620-v5"))]
 pub mod tmf620;
-/// Product Order
 #[cfg(any(feature = "tmf622-v4" , feature = "tmf622-v5"))]
 pub mod tmf622;
-/// Customer
 #[cfg(any(feature = "tmf629-v4" , feature = "tmf629-v5"))]
 pub mod tmf629;
-/// Party
 #[cfg(any(feature = "tmf632-v4" , feature = "tmf632-v5"))]
 pub mod tmf632;
 pub mod tmf633;
