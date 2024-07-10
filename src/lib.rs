@@ -33,7 +33,6 @@
 
 use chrono::{Utc,Days};
 use common::{attachment::AttachmentRefOrValue, related_party::RelatedParty};
-use tmf667::document::Document;
 use uuid::Uuid;
 use serde::{Deserialize, Serialize};
 use crate::common::note::Note;
@@ -314,13 +313,16 @@ pub trait TMFEvent<T> : HasId + HasName {
 }
 
 /// Struct has Attachments
-pub trait HasAttachment : HasId {
-    /// Link a document in as an attachment
-    fn link_doc(&mut self, document : &Document) -> bool;
-    /// Create local attachment as Base64 encoded data
+pub trait HasAttachment {
+    /// Add an attachment, Base64 encoding the data
+    /// vec[] will be created as required.
     fn add(&mut self, attachment : &AttachmentRefOrValue);
     /// Find an attachement based on matching string against filename
-    fn find(&self, name : impl Into<String>) -> Option<usize>;
+    fn position(&self, name : impl Into<String>) -> Option<usize>;
+    /// Retrieve an attachment based on name
+    fn find(&self, name : impl Into<String>) -> Option<&AttachmentRefOrValue>;
+    /// Get a specific attachment returing value
+    fn get(&self, position: usize) -> Option<AttachmentRefOrValue>;
     /// Remove an attachment at a particular position
     fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue>;
 }
