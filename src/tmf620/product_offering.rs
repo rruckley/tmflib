@@ -267,6 +267,19 @@ impl HasAttachment for ProductOffering {
         self.add(&attach);
         true 
     }
+    fn find(&self, name : impl Into<String>) -> Option<usize> {
+        match self.attachment.as_ref() {
+            Some(v) => {
+                let pattern : String = name.into();
+                v.iter().position(|a| a.name == Some(pattern.clone()))
+            }
+            None => None,
+        }
+
+    }
+    fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue> {
+        Some(self.attachment.as_mut().unwrap().remove(position))
+    }
 }
 
 #[cfg(test)]
