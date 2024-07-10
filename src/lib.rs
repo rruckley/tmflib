@@ -319,6 +319,10 @@ pub trait HasAttachment : HasId {
     fn link_doc(&mut self, document : &Document) -> bool;
     /// Create local attachment as Base64 encoded data
     fn add(&mut self, attachment : &AttachmentRefOrValue);
+    /// Find an attachement based on matching string against filename
+    fn find(&self, name : impl Into<String>) -> Option<usize>;
+    /// Remove an attachment at a particular position
+    fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue>;
 }
 
 pub mod common;
