@@ -2,7 +2,13 @@
 
 use serde::{Deserialize,Serialize};
 use crate::common::attachment::AttachmentRefOrValue;
-use tmflib_derive::{HasId,HasName,HasLastUpdate,HasValidity};
+use tmflib_derive::{
+    HasId,
+    HasAttachment,
+    HasName,
+    HasLastUpdate,
+    HasValidity
+};
 
 use crate::{
     LIB_PATH,
@@ -10,6 +16,7 @@ use crate::{
     DateTime,
     TimePeriod,
     HasId,
+    HasAttachment,
     HasName,
     HasLastUpdate,
     HasValidity,
@@ -19,7 +26,7 @@ use super::MOD_PATH;
 const CLASS_PATH: &str = "shippingSpecification";
 
 /// Shipment Specification
-#[derive(Clone,Default,Debug,Deserialize,HasId,HasName,HasLastUpdate,HasValidity,Serialize)]
+#[derive(Clone,Default,Debug,Deserialize,HasId,HasAttachment,HasName,HasLastUpdate,HasValidity,Serialize)]
 pub struct ShipmentSpecificationRefOrValue {
     /// Description
     pub description: String,

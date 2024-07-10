@@ -4,8 +4,19 @@
 use super::MOD_PATH;
 use serde::{Deserialize,Serialize};
 
-use crate::{LIB_PATH,HasId, DateTime,TimePeriod,HasLastUpdate,Uri};
-use tmflib_derive::{HasId,HasLastUpdate};
+use crate::{
+    LIB_PATH,
+    HasId, 
+    HasAttachment,
+    HasLastUpdate,
+    DateTime,
+    TimePeriod,
+    Uri
+};
+use tmflib_derive::{
+    HasId,
+    HasLastUpdate
+};
 use crate::tmf666::billing_account::BillingAccountRef;
 use crate::common::money::Money;
 use crate::common::related_party::RelatedParty;
@@ -92,6 +103,53 @@ impl CustomerBill {
         let mut bill = CustomerBill::create();
         bill.state = Some(CustomerBillStateType::default());
         bill
+    }
+}
+
+impl HasAttachment for CustomerBill {
+    fn add(&mut self, attachment : &AttachmentRefOrValue) {
+        match self.bill_document.as_mut() {
+            Some(v) => {
+                v.push(attachment.clone());
+            }
+            None => {
+                self.bill_document = Some(vec![attachment.clone()]);
+            }
+        }    
+    }
+    fn position(&self, name : impl Into<String>) -> Option<usize> {
+        match self.bill_document.as_ref() {
+            Some(v) => {
+                let pattern : String = name.into();
+                v.iter().position(|a| a.name == Some(pattern.clone()))
+            }
+            None => None,
+        }
+    }
+    fn find(&self, name : impl Into<String>) -> Option<&AttachmentRefOrValue> {
+        match self.bill_document.as_ref() {
+            Some(v) => {
+                let pattern : String = name.into();
+                v.iter().find(|a| a.name == Some(pattern.clone()))               
+            },
+            None => None,
+        }
+    }
+    fn get(&self, position: usize) -> Option<AttachmentRefOrValue> {
+        match self.bill_document.as_ref() {
+            Some(v) => {
+                v.get(position).cloned()
+            },
+            None => None,
+        }    
+    }
+    fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue> {
+        match self.bill_document.as_mut() {
+            Some(v) => {
+                Some(v.remove(position))
+            },
+            None => None,
+        }
     }
 }
 

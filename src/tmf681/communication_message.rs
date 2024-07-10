@@ -1,8 +1,18 @@
 //! Communication Message Module
 
-use crate::{ DateTime, HasId, HasName, Uri, LIB_PATH};
+use crate::{ 
+    DateTime, 
+    HasId, 
+    HasAttachment,
+    HasName, 
+    Uri, 
+    LIB_PATH
+};
 use serde::{Deserialize, Serialize};
-use tmflib_derive::HasId;
+use tmflib_derive::{
+    HasId,
+    HasAttachment
+};
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::related_party::RelatedParty;
 #[cfg(feature = "tmf632-v4")]
@@ -66,7 +76,7 @@ pub enum CommunicationMessageStateType {
 }
 
 /// Communication Message
-#[derive(Clone,Default,Debug,Deserialize,HasId,Serialize)]
+#[derive(Clone,Default,Debug,Deserialize,HasId,HasAttachment,Serialize)]
 pub struct CommunicationMessage {
     content : String,
     /// Message Description
@@ -85,7 +95,7 @@ pub struct CommunicationMessage {
     subject: Option<String>,
     try_times : u32,
     // Referenced structures
-    attachment : Vec<AttachmentRefOrValue>,
+    attachment : Option<Vec<AttachmentRefOrValue>>,
     /// Reciever(s)
     pub receiver: Vec<Receiver>,
     /// Sender

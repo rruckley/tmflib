@@ -9,7 +9,6 @@ use crate::tmf620::product_specification::{
 };
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
 use crate::tmf633::service_candidate::ServiceCandidateRef;
-use crate::tmf667::document::Document;
 
 
 use crate::{
@@ -30,7 +29,13 @@ use serde::{Deserialize, Serialize};
 use super::{ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
 use crate::tmf651::agreement::AgreementRef;
 
-use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
+use tmflib_derive::{
+    HasId,
+    HasAttachment,
+    HasLastUpdate,
+    HasName,
+    HasValidity
+};
 
 use super::MOD_PATH;
 
@@ -92,7 +97,7 @@ impl From<ProductOffering> for ProductOfferingRelationship {
 }
 
 /// Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasAttachment, HasLastUpdate, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier
@@ -247,38 +252,6 @@ impl ProductOffering {
         offer_rel.relationship_type = Some(relationship_type.to_string());
         offer_rel.role = Some(role.to_string());
         self.product_offering_relationship.as_mut().unwrap().push(offer_rel);
-    }
-}
-
-impl HasAttachment for ProductOffering {
-    fn add(&mut self, attachment : &AttachmentRefOrValue) {
-        match self.attachment.as_mut() {
-            Some(v) => {
-                v.push(attachment.clone());
-            }
-            None => {
-                self.attachment = Some(vec![attachment.clone()]);
-            }
-        }    
-    }
-    fn link_doc(&mut self, document : &Document) -> bool {
-        // Convert document into attachment then use add()
-        let attach = AttachmentRefOrValue::from(document);
-        self.add(&attach);
-        true 
-    }
-    fn find(&self, name : impl Into<String>) -> Option<usize> {
-        match self.attachment.as_ref() {
-            Some(v) => {
-                let pattern : String = name.into();
-                v.iter().position(|a| a.name == Some(pattern.clone()))
-            }
-            None => None,
-        }
-
-    }
-    fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue> {
-        Some(self.attachment.as_mut().unwrap().remove(position))
     }
 }
 
