@@ -32,7 +32,7 @@
 #![warn(missing_docs)]
 
 use chrono::{Utc,Days};
-use common::related_party::RelatedParty;
+use common::{attachment::AttachmentRefOrValue, related_party::RelatedParty};
 use uuid::Uuid;
 use serde::{Deserialize, Serialize};
 use crate::common::note::Note;
@@ -113,6 +113,15 @@ impl Default for TimePeriod {
         let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
         TimePeriod {
             start_date_time : time.to_rfc3339(),
+            end_date_time: None,
+        }
+    }
+}
+
+impl From<DateTime> for TimePeriod {
+    fn from(value: TimeStamp) -> Self {
+        TimePeriod {
+            start_date_time : value.clone(),
             end_date_time: None,
         }
     }
@@ -303,18 +312,28 @@ pub trait TMFEvent<T> : HasId + HasName {
     fn event(&self) -> T;
 }
 
-/// Common Modules
+/// Struct has Attachments
+pub trait HasAttachment {
+    /// Add an attachment, Base64 encoding the data
+    /// vec[] will be created as required.
+    fn add(&mut self, attachment : &AttachmentRefOrValue);
+    /// Find an attachement based on matching string against filename
+    fn position(&self, name : impl Into<String>) -> Option<usize>;
+    /// Retrieve an attachment based on name
+    fn find(&self, name : impl Into<String>) -> Option<&AttachmentRefOrValue>;
+    /// Get a specific attachment returing value
+    fn get(&self, position: usize) -> Option<AttachmentRefOrValue>;
+    /// Remove an attachment at a particular position
+    fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue>;
+}
+
 pub mod common;
-/// Product Catalogue
 #[cfg(any(feature = "tmf620-v4" , feature = "tmf620-v5"))]
 pub mod tmf620;
-/// Product Order
 #[cfg(any(feature = "tmf622-v4" , feature = "tmf622-v5"))]
 pub mod tmf622;
-/// Customer
 #[cfg(any(feature = "tmf629-v4" , feature = "tmf629-v5"))]
 pub mod tmf629;
-/// Party
 #[cfg(any(feature = "tmf632-v4" , feature = "tmf632-v5"))]
 pub mod tmf632;
 pub mod tmf633;

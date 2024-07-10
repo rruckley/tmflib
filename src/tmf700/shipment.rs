@@ -5,10 +5,11 @@ use crate::{
     DateTime,
     Uri,
     HasId,
+    HasAttachment,
     HasName,
     Quantity,
 };
-use tmflib_derive::{HasId,HasName};
+use tmflib_derive::{HasAttachment, HasId, HasName};
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::external_identifier::ExternalIdentifier;
 use serde::{Deserialize,Serialize};
@@ -86,7 +87,7 @@ pub struct ShipmentItem {
 
 
 /// Shipment
-#[derive(Clone,Default,Debug,Deserialize,HasId,HasName,Serialize)]
+#[derive(Clone,Default,Debug,Deserialize,HasId,HasAttachment,HasName,Serialize)]
 pub struct ShipmentRefOrValue {
     /// Collection Date
     pub collection_date : String,

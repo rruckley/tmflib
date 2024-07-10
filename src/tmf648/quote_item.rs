@@ -12,6 +12,9 @@ use crate::tmf620::product_specification::ProductSpecificationRef;
 
 use super::quote_price::QuotePrice;
 
+use crate::HasAttachment;
+use tmflib_derive::HasAttachment;
+
 /// Status of product for Quote Item
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub enum ProductStatusType {
@@ -73,7 +76,7 @@ pub struct ProductRefOrValue {
 }
 
 /// Quote Item, line item for a product quote
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasAttachment, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct QuoteItem {
     /// Unique Id

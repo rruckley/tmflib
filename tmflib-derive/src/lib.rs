@@ -77,6 +77,71 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+/// Generate functions for HasAttachment Trait
+#[proc_macro_derive(HasAttachment)]
+pub fn hasattachment_derive(input : TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let fields = match input.data {
+        Data::Struct(s) => {
+            s.fields
+                .into_iter()
+                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
+            },
+        _ => panic!("HasAttachments only supports Struct"),
+    };
+    let _last_update = fields.iter().find(|s| *s == "attachment").expect("No attachment field present");
+    let name = input.ident;
+    let out = quote! {
+        impl HasAttachment for #name {
+            fn add(&mut self, attachment : &AttachmentRefOrValue) {
+                match self.attachment.as_mut() {
+                    Some(v) => {
+                        v.push(attachment.clone());
+                    }
+                    None => {
+                        self.attachment = Some(vec![attachment.clone()]);
+                    }
+                }    
+            }
+            fn position(&self, name : impl Into<String>) -> Option<usize> {
+                match self.attachment.as_ref() {
+                    Some(v) => {
+                        let pattern : String = name.into();
+                        v.iter().position(|a| a.name == Some(pattern.clone()))
+                    }
+                    None => None,
+                }
+            }
+            fn find(&self, name : impl Into<String>) -> Option<&AttachmentRefOrValue> {
+                match self.attachment.as_ref() {
+                    Some(v) => {
+                        let pattern : String = name.into();
+                        v.iter().find(|a| a.name == Some(pattern.clone()))               
+                    },
+                    None => None,
+                }
+            }
+            fn get(&self, position: usize) -> Option<AttachmentRefOrValue> {
+                match self.attachment.as_ref() {
+                    Some(v) => {
+                        v.get(position).cloned()
+                    },
+                    None => None,
+                }    
+            }
+            fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue> {
+                match self.attachment.as_mut() {
+                    Some(v) => {
+                        Some(v.remove(position))
+                    },
+                    None => None,
+                }
+            }
+        }
+    };
+    out.into()
+}
+
 /// Generate code for [tmflib::HasLastUpdate] trait.
 #[proc_macro_derive(HasLastUpdate)]
 pub fn haslastupdate_derive(input: TokenStream) -> TokenStream {

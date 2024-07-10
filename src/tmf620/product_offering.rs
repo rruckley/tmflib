@@ -7,8 +7,12 @@ use crate::tmf620::category::CategoryRef;
 use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
+use crate::tmf634::resource_candidate::ResourceCandidateRef;
+use crate::tmf633::service_candidate::ServiceCandidateRef;
 
-use crate::{ 
+
+use crate::{
+    HasAttachment,
     HasLastUpdate, 
     HasId, 
     HasName, 
@@ -18,15 +22,20 @@ use crate::{
     Uri,
     LIB_PATH,
 };
-use crate::tmf634::resource_candidate::ResourceCandidateRef;
-use crate::tmf633::service_candidate::ServiceCandidateRef;
+
 use super::product_offering_price::ProductOfferingPriceRef;
 use serde::{Deserialize, Serialize};
 
 use super::{ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
 use crate::tmf651::agreement::AgreementRef;
 
-use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
+use tmflib_derive::{
+    HasId,
+    HasAttachment,
+    HasLastUpdate,
+    HasName,
+    HasValidity
+};
 
 use super::MOD_PATH;
 
@@ -88,7 +97,7 @@ impl From<ProductOffering> for ProductOfferingRelationship {
 }
 
 /// Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasAttachment, HasLastUpdate, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier

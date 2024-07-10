@@ -2,8 +2,9 @@
 //!
 //!
 use serde::{Deserialize, Serialize};
-use crate::{HasId, HasValidity};
-use tmflib_derive::{HasId,HasValidity};
+use crate::{HasId, HasName, HasValidity, DateTime};
+use tmflib_derive::{HasId, HasName, HasValidity};
+use crate::tmf667::document::Document;
 
 use crate::TimePeriod;
 
@@ -32,7 +33,7 @@ pub struct AttachmentSize {
 }
 
 /// Attachment Reference or Value
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasValidity, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AttachmentRefOrValue {
     /// Unique Id
@@ -53,6 +54,9 @@ pub struct AttachmentRefOrValue {
     /// Mime Type of the attachment
     #[serde(skip_serializing_if = "Option::is_none")]
     pub mime_type: Option<String>,
+    /// Name of document
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name : Option<String>,
     /// URL where the content is stored for the external attachment
     #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
@@ -68,5 +72,22 @@ impl AttachmentRefOrValue {
     /// Create a new attachment object
     pub fn new() -> AttachmentRefOrValue {
         AttachmentRefOrValue::create()
+    }
+}
+
+impl From<&Document> for AttachmentRefOrValue {
+    fn from(value: &Document) -> Self {
+        let validity  = match value.last_update.as_ref() {
+            Some(t) => Some(TimePeriod::from(t.clone() as DateTime)),
+            None => None,
+        };
+        AttachmentRefOrValue {
+            name: Some(value.get_name()),
+            id: Some(value.get_id()),
+            href: Some(value.get_href()),
+            description: value.description.clone(),
+            valid_for : validity,
+            ..Default::default()
+        }
     }
 }

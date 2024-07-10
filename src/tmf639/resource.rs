@@ -6,8 +6,15 @@ use crate::common::related_party::RelatedParty;
 use crate::common::attachment::AttachmentRefOrValue;
 use super::MOD_PATH;
 use super::characteristic::Characteristic;
-use crate::{HasId, LIB_PATH};
-use tmflib_derive::HasId;
+use crate::{
+    HasId,
+    HasAttachment,
+    LIB_PATH
+};
+use tmflib_derive::{
+    HasId,
+    HasAttachment
+};
 
 const CLASS_PATH : &str = "resource";
 const RESOURCE_VERS : &str = "1.0";
@@ -65,11 +72,11 @@ pub enum ResourceStatusType {
 }
 
 /// TMF Resource 
-#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasAttachment, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Resource {
     administrative_state: ResourceAdministrativeStateType,
-    attachment: Vec<AttachmentRefOrValue>,
+    attachment: Option<Vec<AttachmentRefOrValue>>,
     id: Option<String>,
     href: Option<String>,
     name: String,
