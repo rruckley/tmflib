@@ -14,6 +14,7 @@
 
 //! TMF637 Product Inventory Module
 
-const MOD_PATH: &str = "productInventoryManagement/v4";
-
-pub mod product;
+#[cfg(feature = "tmf637-v4")]
+pub mod v4;
+#[cfg(feature = "tmf637-v5")]
+pub mod v5;
