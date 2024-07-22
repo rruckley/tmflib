@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::tmf620::product_specification::ProductSpecificationRef;
 use crate::tmf651::agreement::AgreementRef;
-use crate::tmf651::agreement_item::AgreementItemRef;
+// use crate::tmf651::agreement_item::AgreementItemRef;
 use crate::tmf666::billing_account::BillingAccountRef;
 use crate::{HasId, HasName, LIB_PATH, DateTime,HasValidity, TimePeriod};
 use tmflib_derive::{HasId, HasName, HasValidity};
