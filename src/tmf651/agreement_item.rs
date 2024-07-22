@@ -1,7 +1,10 @@
 //! Agreement Item Module
 use serde::{Deserialize,Serialize};
 use crate::{tmf648::quote_item::QuoteItem, HasValidity, TimePeriod};
+#[cfg(feature = "tmf620-v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
+#[cfg(feature = "tmf620-v5")]
+use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use tmflib_derive::HasValidity;
 
 /// Agreement Item

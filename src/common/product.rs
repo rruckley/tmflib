@@ -1,7 +1,10 @@
 //! Product Information Module
 
 use serde::{Deserialize,Serialize};
+#[cfg(feature = "tmf620-v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
+#[cfg(feature = "tmf620-v5")]
+use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf620::product_specification::ProductSpecificationRef;
 use crate::tmf666::billing_account::BillingAccountRef;
 use super::related_place::RelatedPlaceRefOrValue;

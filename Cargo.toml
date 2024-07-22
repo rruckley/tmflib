@@ -31,7 +31,7 @@ tmf697-v4 = []
 tmf697-v5 = []
 tmf699-v4 = []
 tmf699-v5 = []
-default = ["v4"]
+default = ["v5"]
 v4 = [
     "tmf620-v4",
     "tmf622-v4",

@@ -8,6 +8,8 @@ use crate::{HasId, HasName, LIB_PATH, DateTime,HasValidity, TimePeriod};
 use tmflib_derive::{HasId, HasName, HasValidity};
 use crate::common::related_place::RelatedPlaceRefOrValue;
 use crate::common::product::ProductStatusType;
+use crate::tmf620::product_offering_price::ProductOfferingPriceRef;
+use crate::common::price::Price;
 #[cfg(feature = "tmf620-v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
 #[cfg(feature = "tmf620-v5")]
