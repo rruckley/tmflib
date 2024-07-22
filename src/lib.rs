@@ -156,7 +156,7 @@ impl Quantity {
     /// ```
     pub fn cartons(amount : f64) -> Quantity {
         Quantity {
-            amount : amount,
+            amount,
             units: "cartons".to_string()
         }
     }

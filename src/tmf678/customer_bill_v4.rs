@@ -144,12 +144,7 @@ impl HasAttachment for CustomerBill {
         }    
     }
     fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue> {
-        match self.bill_document.as_mut() {
-            Some(v) => {
-                Some(v.remove(position))
-            },
-            None => None,
-        }
+        self.bill_document.as_mut().map(|v| v.remove(position))
     }
 }
 

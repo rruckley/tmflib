@@ -107,7 +107,7 @@ impl From<&Quote> for Agreement {
         agreement.description = value.description.clone();
         let party = value.get_party(0);
         if party.is_some() {
-            agreement.engaged_party = vec![party.as_deref().cloned().unwrap()];
+            agreement.engaged_party = vec![party.cloned().unwrap()];
         }
         // Iterate through 
         if value.quote_item.is_some() {
