@@ -47,7 +47,7 @@ pub enum WorkRefOrValue {
     /// Reference variant
     Ref(WorkRef),
     /// Value variant
-    Val(Work),
+    Val(Box<Work>),
 }
 
 impl WorkRefOrValue {
@@ -83,7 +83,7 @@ impl From<WorkRef> for WorkRefOrValue {
 
 impl From<Work> for WorkRefOrValue {
     fn from(value: Work) -> Self {
-        WorkRefOrValue::Val(value)
+        WorkRefOrValue::Val(Box::new(value))
     }
 }
 

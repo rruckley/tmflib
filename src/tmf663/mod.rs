@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Shopping Cart Modules
+//! TMF663 Shopping Cart Management
+//! # Description
+//! Provides schema for management of [`shopping_cart::ShoppingCart`]s.
+//! # Versions
+//! - v4 supported
 
 const MOD_PATH : &str = "shoppingCart/v4";
 

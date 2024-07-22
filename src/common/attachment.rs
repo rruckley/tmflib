@@ -77,10 +77,7 @@ impl AttachmentRefOrValue {
 
 impl From<&Document> for AttachmentRefOrValue {
     fn from(value: &Document) -> Self {
-        let validity  = match value.last_update.as_ref() {
-            Some(t) => Some(TimePeriod::from(t.clone() as DateTime)),
-            None => None,
-        };
+        let validity  = value.last_update.as_ref().map(|t| TimePeriod::from(t.clone() as DateTime));
         AttachmentRefOrValue {
             name: Some(value.get_name()),
             id: Some(value.get_id()),

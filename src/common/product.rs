@@ -1,7 +1,12 @@
 //! Product Information Module
 
 use serde::{Deserialize,Serialize};
+#[cfg(feature = "tmf620-v4")]
+use crate::tmf620::product_offering::ProductOfferingRef;
+#[cfg(feature = "tmf620-v5")]
+use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf620::product_specification::ProductSpecificationRef;
+use crate::tmf666::billing_account::BillingAccountRef;
 use super::related_place::RelatedPlaceRefOrValue;
 use super::related_party::RelatedParty;
 
@@ -56,6 +61,8 @@ pub struct ProductRefOrValue {
     /// Status of product
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status : Option<ProductStatusType>,
+
+    // Referenced types
     /// Product Specification (TMF620)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_specification : Option<ProductSpecificationRef>,
@@ -65,4 +72,8 @@ pub struct ProductRefOrValue {
     /// Related Parties for this Quote Item
     #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
+    /// Billing account for this product
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub billing_account: Option<BillingAccountRef>,
+    product_offering : Option<ProductOfferingRef>,
 }

@@ -177,7 +177,7 @@ impl Customer {
     /// Will return the newly generated cryptographic code.
     /// Takes the following steps:
     /// -   Moves existing ID into characteristic of 'Id'
-    /// -   Generate cryptographic code via [generate_code] 
+    /// -   Generate cryptographic code via generate_code 
     /// -   Replace Id, with newly genreated code.
     /// -   Returns new code.
     /// 

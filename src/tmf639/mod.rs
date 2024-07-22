@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Resource Inventory Module
+//! TMF639 Resource Inventory Management
 
 const MOD_PATH : &str = "resourceInventoryManagement/v4";
 

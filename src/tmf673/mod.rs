@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF673 Geographic Address Management Module
+//! TMF673 Geographic Address Management
 
 pub mod geographic_address;
 

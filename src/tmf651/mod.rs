@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF651 Agreement Management Module
+//! TMF651 Agreement Management
 
 pub mod agreement;
 pub mod agreement_item;

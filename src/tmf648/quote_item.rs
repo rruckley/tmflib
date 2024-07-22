@@ -7,7 +7,11 @@ use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
 use crate::common::related_place::RelatedPlaceRefOrValue;
+#[cfg(feature = "tmf620-v4")]
 use crate::tmf620::product_offering::ProductOffering;
+#[cfg(feature = "tmf620-v5")]
+use crate::tmf620::product_offering_v5::ProductOffering;
+
 use crate::tmf620::product_specification::ProductSpecificationRef;
 
 use super::quote_price::QuotePrice;

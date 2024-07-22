@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Resource Catalogue Modules
+//! TMF634 Resource Catalogue Management
 
 const MOD_PATH : &str = "resourceCatalog/v4";
 

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! User Roles and Permissions Module
+//! TMF672 User Roles and Permissions Management
 
 const MOD_PATH: &str = "tmf672";
 

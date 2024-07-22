@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF648 Quote Module
+//! TMF648 Quote Managment
+//! # Description
+//! Provides schema for management of product [`quote::Quote`]s.
 
 const MOD_PATH: &str = "quoteManagement/v4";
 

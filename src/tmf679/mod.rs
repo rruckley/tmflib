@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF679 Product Qualification Management Module
+//! TMF679 Product Qualification Management
 
 /// Common path for TMF679
 pub const MOD_PATH : &str = "productOfferingQualificationManagement/v4";
