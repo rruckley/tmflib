@@ -15,8 +15,8 @@
 //! TMF669 Party Role Management
 //! # Description
 //! This API can be seen as a generalisation of CUstomer management API where Party Roles may be any, not only a customer. 
-//! In fact, Customer  ([tmf629]) can be seen as a specific instance of a party role. 
-//! The role defines a specialisation of how the party object is used and thus a reference to a party (via [tmf632]) is required.
+//! In fact, Customer  ([crate::tmf629]) can be seen as a specific instance of a party role. 
+//! The role defines a specialisation of how the party object is used and thus a reference to a party (via [`crate::tmf632`]) is required.
 //! This is achieved via the [common/related_party] object.
 
 const MOD_PATH : &str = "partyRoleManagement/v4";

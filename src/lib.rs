@@ -150,10 +150,7 @@ impl Quantity {
             units: "kg".to_string(),
         }
     }
-    /// use tmflib::Quantity;
-    /// let weight = Quantity::cartons(3);
-    /// assert_eq!(weight.amount,3.0);
-    /// ```
+    /// Shortcut functions to set carton quantity and associated units.
     pub fn cartons(amount : f64) -> Quantity {
         Quantity {
             amount,

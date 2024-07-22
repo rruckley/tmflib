@@ -14,7 +14,7 @@
 
 //! TMF674 Geographic Site Management
 //! # Description
-//! Provides schema for management of [`GeographicSite`]s.
+//! Provides schema for management of [`geographic_site_v4::GeographicSite`]s.
 //! # Versions
 //! - V4 Supported
 //! - V5 Supported

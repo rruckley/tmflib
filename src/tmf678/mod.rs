@@ -14,7 +14,7 @@
 
 //! TMF678 Customer Bill Management
 //! # Description
-//! Provides schema for management of [`CustomerBill`]s.
+//! Provides schema for management of [`customer_bill_v4::CustomerBill`]s.
 //! # Versions
 //! - V4 Supported
 //! - V5 Supported

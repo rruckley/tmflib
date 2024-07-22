@@ -14,7 +14,7 @@
 
 //! TMF663 Shopping Cart Management
 //! # Description
-//! Provides schema for management of [`ShoppingCart`]s.
+//! Provides schema for management of [`shopping_cart::ShoppingCart`]s.
 //! # Versions
 //! - v4 supported
 

@@ -1,4 +1,4 @@
-//! Product Inventory Management [v4]
+//! Product Inventory Management
 //! 
 
 

@@ -14,7 +14,7 @@
 
 //! TMF641 Service Order Management Modules
 //! # Description
-//! Provides schema related to management of [`ServiceOrder`]s and [`ServiceOrderItem`]s.
+//! Provides schema related to management of [`service_order::ServiceOrder`]s and [`service_order_item::ServiceOrderItem`]s.
 
 const MOD_PATH: &str = "serviceOrder/v4";
 

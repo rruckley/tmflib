@@ -1,6 +1,6 @@
 //! Work Order Item Module
 //! 
-//! This module defines an item as part of an overall [`WorkOrder`]
+//! This module defines an item as part of an overall [`super::work_order::WorkOrder`]
 
 use serde::{Deserialize,Serialize};
 use crate::gen_code;
@@ -10,7 +10,7 @@ use super::work::WorkRefOrValue;
 /// Work Order Item
 #[derive(Clone,Debug,Default,Deserialize,Serialize)]
 pub struct WorkOrderItem {
-    /// Metadata: Type of schema, same as [`base_type`] if aligned to TMF specification.
+    /// Metadata: Type of schema, same as [WorkOrderItem::base_type] if aligned to TMF specification.
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@type")]
     pub r#type: Option<String>,

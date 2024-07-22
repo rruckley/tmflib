@@ -14,7 +14,7 @@
 
 //! TMF646 Appointment Management Management
 //! # Description
-//! Prodives schema for managing [`Appointments`].
+//! Prodives schema for managing [`appointment::Appointment`]s.
 
 const MOD_PATH : &str = "appointment";
 

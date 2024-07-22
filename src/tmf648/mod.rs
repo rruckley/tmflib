@@ -14,7 +14,7 @@
 
 //! TMF648 Quote Managment
 //! # Description
-//! Provides schema for management of product [`Quote`]s.
+//! Provides schema for management of product [`quote::Quote`]s.
 
 const MOD_PATH: &str = "quoteManagement/v4";
 
