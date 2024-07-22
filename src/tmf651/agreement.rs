@@ -102,9 +102,9 @@ impl From<Agreement> for AgreementRef {
 impl From<&Quote> for Agreement {
     fn from(value: &Quote) -> Self {
         let mut agreement = Agreement::new(format!("Agreement from: {}",value.get_name()));
-        agreement.version = value.version.clone();
+        agreement.version.clone_from(&value.version);
         agreement.agreement_period = Some(TimePeriod::period_days(365));
-        agreement.description = value.description.clone();
+        agreement.description.clone_from(&value.description);
         let party = value.get_party(0);
         if party.is_some() {
             agreement.engaged_party = vec![party.cloned().unwrap()];

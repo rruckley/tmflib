@@ -94,7 +94,7 @@ impl From<AttachmentRefOrValue> for Document {
     fn from(value: AttachmentRefOrValue) -> Self {
         let mut document = Document::create_with_time();
         document.set_name(value.get_name());
-        document.description = value.description.clone();
+        document.description.clone_from(&value.description);
         document.status = Some(DocumentStatusType::Created);
         document.attachment = value.clone();
         document
