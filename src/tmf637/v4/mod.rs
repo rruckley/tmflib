@@ -1,4 +1,4 @@
-//! TMF637 Product Inventory v4
+//! Product Inventory Management [v4]
 //! 
 
 

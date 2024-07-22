@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Appointment Management Modules
+//! TMF646 Appointment Management Management
+//! # Description
+//! Prodives schema for managing [`Appointments`].
 
 const MOD_PATH : &str = "appointment";
 

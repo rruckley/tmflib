@@ -12,7 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Customer Bill Management Module
+//! TMF678 Customer Bill Management
+//! # Description
+//! Provides schema for management of [`CustomerBill`]s.
+//! # Versions
+//! - V4 Supported
+//! - V5 Supported
 
 const MOD_PATH : &str = "tmf678/v5";
 

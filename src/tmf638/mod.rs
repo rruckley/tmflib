@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF638 Service Inventory Module
+//! TMF638 Service Inventory Management
 
 const MOD_PATH : &str = "serviceInventory/v4";
 

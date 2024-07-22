@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF637 Product Inventory Module
+//! TMF637 Product Inventory Management
 
 #[cfg(feature = "tmf637-v4")]
 pub mod v4;

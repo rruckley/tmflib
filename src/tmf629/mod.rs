@@ -15,7 +15,7 @@
 //! TMF629 Customer Management
 //! # Description
 //! This module represents the common case of a customer. Customer is a specific instance of a Party Role [tmf669]. 
-//! This means to create a customer, an organisation (from [tmf632]) must be supplied. 
+//! This means to create a customer, an organisation (from [`tmf632``]) must be supplied. 
 
 const MOD_PATH: &str = "customerManagement/v4";
 

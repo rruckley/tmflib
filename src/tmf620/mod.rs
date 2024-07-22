@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF620 Product Catalogue Module
+//! TMF620 Product Catalogue Management
 //!
 //! Structs associated with product catalogue management
 

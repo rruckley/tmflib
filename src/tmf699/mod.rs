@@ -13,6 +13,9 @@
 // limitations under the License.
 
 //! TMF699 Sales Management
+//! # Versions
+//! - V4 Supported
+//! - V5 Supported
 
 #[cfg(feature = "tmf699-v4")]
 const MOD_PATH : &str = "tmf699/v4";

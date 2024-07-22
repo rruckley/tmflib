@@ -12,7 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF632 Party Management Modules
+//! TMF632 Party Management Management
+//! # Description
+//! Manages data related to Parties either [`Individual`] or [`Organization`]
 
 use serde::{Deserialize,Serialize};
 

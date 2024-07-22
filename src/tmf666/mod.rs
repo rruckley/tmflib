@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF666 Account Management Module
+//! TMF666 Billing Account Management
+//! # Description
+//! Provides schema for management of billing accounts.
+//! # Versions
+//! - V4 Supported
 
 pub mod billing_account;
 

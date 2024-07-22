@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF667 V4 Module
+//! TMF667 Document Management
+//! # Description
+//! Provides schema for management of documents.
+//! # Versions
+//! - V4 Supported
 
 pub mod document;
 

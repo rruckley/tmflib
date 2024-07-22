@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Communication Management Module
+//! TMF681 Communication Management
 
 const MOD_PATH : &str = "tmf681";
 

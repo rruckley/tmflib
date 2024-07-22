@@ -12,7 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF674 Geographic Site Module
+//! TMF674 Geographic Site Management
+//! # Description
+//! Provides schema for management of [`GeographicSite`]s.
+//! # Versions
+//! - V4 Supported
+//! - V5 Supported
 
 #[cfg(feature = "tmf674-v4")]
 pub mod geographic_site_v4;

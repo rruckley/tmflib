@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Party Role Management
+//! TMF669 Party Role Management
 //! # Description
 //! This API can be seen as a generalisation of CUstomer management API where Party Roles may be any, not only a customer. 
 //! In fact, Customer  ([tmf629]) can be seen as a specific instance of a party role. 

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Product Configurator Modules
+//! TMF760 Product Configurator
 
 const MOD_PATH : &str = "productConfiguration/v5";
 
