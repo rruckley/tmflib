@@ -52,12 +52,9 @@ pub struct ProductOrderRef {
 
 impl From<&ProductOrder> for ProductOrderRef {
     fn from(value: &ProductOrder) -> Self {
-        let name = match value.description.as_deref() {
-            Some(d) => d,
-            None => {
-                "No Order Description"
-            }
-        };
+        let name = value.description.as_deref().unwrap_or({
+            "No Order Description"
+        });
         ProductOrderRef {
             href: value.get_href(),
             id: value.get_id(),
