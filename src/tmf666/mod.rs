@@ -18,6 +18,57 @@
 //! # Versions
 //! - V4 Supported
 
+use serde::{Deserialize, Serialize};
+
+use crate::TimePeriod;
+use crate::common::money::Money;
+
 pub mod billing_account;
+pub mod party_account;
+pub mod financial_account;
+pub mod settlement_account;
 
 const MOD_PATH : &str = "accountManagement/v4";
+
+/// Account Reference
+#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AccountRef {
+    description: Option<String>,
+    href: String,
+    id: String,
+    name : String,
+}
+
+/// Account Relationship
+#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AccountRelationship {
+    relationship_type: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    valid_for: Option<TimePeriod>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    account: Option<AccountRef>,
+}
+
+/// Account Balance
+#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AccountBalance {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    amount : Option<Money>,
+    balance_type: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    valid_for: Option<TimePeriod>,
+}
+
+/// Tax Exemption Status
+#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct AccountTaxExemption {
+    certificate_number: String,
+    issuing_jurisdiction: String,
+    reason: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    valid_for: Option<TimePeriod>,
+}
