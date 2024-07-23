@@ -1,4 +1,5 @@
 # TMFLib
+![Cargo Build](https://github.com/rruckley/tmflib/actions/workflows/rust.yml/badge.svg)
 
 ## TMF Library for Rust
 ### Description
