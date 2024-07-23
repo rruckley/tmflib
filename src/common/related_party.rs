@@ -149,7 +149,7 @@ impl From<&PartyRole> for RelatedParty {
 
 #[cfg(test)]
 mod test {
-    use crate::tmf629::customer::Customer;
+    use crate::{tmf629::customer::Customer, tmf632::organization_v4::OrganizationRef};
     #[cfg(feature = "tmf632-v4")]
     use crate::tmf632::organization_v4::Organization;
     #[cfg(feature = "tmf632-v5")]
@@ -192,6 +192,29 @@ mod test {
         let party = RelatedParty::from(&cust);
 
         assert_eq!(party.referred_type.unwrap(), Customer::get_class());
+    }
+
+    #[test]
+    fn test_related_party_from_organization() {
+        let org = Organization::new(String::from("ACustomer"));
+
+        let party = RelatedParty::from(&org);
+
+        assert_eq!(org.name,party.name);
+        assert_eq!(org.id.unwrap(),party.id);
+        assert_eq!(org.href.unwrap(),party.href);
+    }
+
+    #[test]
+    fn test_related_party_from_organization_ref() {
+        let org = Organization::new(String::from("ACustomer"));
+        let orgRef = OrganizationRef::from(org);
+
+        let party = RelatedParty::from(orgRef.clone());
+
+        assert_eq!(orgRef.name,party.name.unwrap());
+        assert_eq!(orgRef.id,party.id);
+        assert_eq!(orgRef.href,party.href);       
     }
 }
 

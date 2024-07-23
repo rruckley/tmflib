@@ -71,7 +71,10 @@ pub struct AttachmentRefOrValue {
 impl AttachmentRefOrValue {
     /// Create a new attachment object
     pub fn new() -> AttachmentRefOrValue {
-        AttachmentRefOrValue::create()
+        AttachmentRefOrValue {
+            valid_for: Some(TimePeriod::default()),
+            ..AttachmentRefOrValue::create()
+        }
     }
 }
 
@@ -86,5 +89,28 @@ impl From<&Document> for AttachmentRefOrValue {
             valid_for : validity,
             ..Default::default()
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::{tmf667::document::Document, HasName};
+
+    use super::AttachmentRefOrValue;
+
+    #[test]
+    fn test_attachment_default() {
+        let attachment = AttachmentRefOrValue::new();
+
+        assert_eq!(attachment.valid_for.is_some(),true);
+    }
+
+    #[test]
+    fn test_attachment_from_document() {
+        let document = Document::new("A Document");
+
+        let attachment = AttachmentRefOrValue::from(&document);
+
+        assert_eq!(attachment.name.unwrap(),document.get_name());
     }
 }

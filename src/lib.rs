@@ -371,7 +371,7 @@ pub mod tmf760;
 
 #[cfg(test)]
 mod test {
-    use crate::Quantity;
+    use crate::{Quantity, TimePeriod};
 
     use super::gen_code;
     const CODE : &str = "T-DXQR65";
@@ -391,5 +391,34 @@ mod test {
 
         assert_eq!(quantity.amount,10.5);
         assert_eq!(quantity.units, "kg".to_string());
+    }
+
+    #[test]
+    fn test_timeperiod_30days() {
+        let days = TimePeriod::period_30days();
+
+        assert_eq!(days.started(),true);
+        assert_eq!(days.finished(),false);
+    }
+
+    #[test]
+    fn test_timeperiod_default() {
+        let default_period = TimePeriod::default();
+
+        assert_eq!(default_period.started(),true);
+        assert_eq!(default_period.end_date_time.is_none(),true);
+    }
+
+    #[test]
+    fn test_timeperiod_finished() {
+        let mut finished = TimePeriod::default();
+
+        // At this point, end_date_time is not set, should  return !finished().
+        assert_eq!(finished.finished(),false);
+        // Assumption is some small period of time has elapsed since setting start_time so that
+        // start time will be in the past. 
+        finished.end_date_time = Some(finished.start_date_time.clone());
+
+        assert_eq!(finished.finished(),true);
     }
 }

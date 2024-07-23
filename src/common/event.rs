@@ -61,3 +61,22 @@ pub trait EventPayload<T> {
     /// Convert the item into an event
     fn to_event(&self,event_type : Self::EventType) -> Event<T,Self::EventType>;
 }
+
+#[cfg(test)]
+mod test {
+    use crate::tmf632::organization_v4::Organization;
+    use crate::tmf629::customer::{Customer,CustomerEventType};
+    use super::EventPayload;
+
+    const PATH : &str = "status";
+    #[test]
+    fn test_event_path() {
+        let org = Organization::new("An Organization");
+        let cust = Customer::from(&org);
+    
+        let event = cust.to_event(CustomerEventType::CustomerCreateEvent)
+            .path(PATH);
+
+        assert_eq!(event.field_path.unwrap(),PATH.to_string());
+    }
+}
