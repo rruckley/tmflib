@@ -25,7 +25,7 @@ const CLASS_PATH : &str = "account";
 /// Billing Account
 #[derive( Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct BillingAccount {
+pub struct SettlementAccount {
     #[serde(skip_serializing_if = "Option::is_none")]
     account_type: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -66,17 +66,18 @@ pub struct BillingAccount {
     default_payment_method: Option<PaymentMethodRef>,
 }
 
-impl BillingAccount {
+impl SettlementAccount {
     /// Create new Billing Account
-    pub fn new(name :impl Into<String>) -> BillingAccount {
-        let mut account = BillingAccount::create();
-        account.name = Some(name.into());
-        account
+    pub fn new(name :impl Into<String>) -> SettlementAccount {
+        SettlementAccount {
+            name: Some(name.into()),
+            ..SettlementAccount::create()
+        }
     }
 }
 
-impl From<BillingAccount> for AccountRef {
-    fn from(value: BillingAccount) -> Self {
+impl From<SettlementAccount> for AccountRef {
+    fn from(value: SettlementAccount) -> Self {
         AccountRef {
             id : value.get_id(),
             href: value.get_href(),
@@ -97,25 +98,15 @@ pub struct BillingAccountRef {
     name: String,
 }
 
-impl From<BillingAccount> for BillingAccountRef {
-    fn from(value: BillingAccount) -> Self {
-        BillingAccountRef {
-            id : value.id.unwrap_or_default(),
-            href : value.href.unwrap_or_default(),
-            name: value.name.unwrap_or_default(),
-        }
-    }
-}
-
 #[cfg(test)]
 mod test {
     use super::*;
 
-    const ACCOUNT : &str = "BillingAccount";
+    const ACCOUNT : &str = "SettlementAccount";
 
     #[test]
-    fn test_billing_account_new_name() {
-        let account = BillingAccount::new(ACCOUNT);
+    fn test_settlement_account_new_name() {
+        let account = SettlementAccount::new(ACCOUNT);
 
         assert_eq!(account.name,Some(ACCOUNT.into()));
     }
