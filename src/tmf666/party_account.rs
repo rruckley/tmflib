@@ -16,10 +16,16 @@ use crate::common::{
     related_party::RelatedParty,
     contact::Contact,
 };
-use super::AccountBalance;
-use super::AccountRef;
+use super::{
+    AccountBalance,
+    AccountRef,
+    AccountTaxExemption,
+    financial_account::FinancialAccountRef,
+    MOD_PATH,
+    PaymentPlan,
+    PaymentMethodRef,
+};
 
-use super::MOD_PATH;
 const CLASS_PATH : &str = "account";
 
 /// Party Account
@@ -49,6 +55,14 @@ pub struct PartyAccount {
     contact: Option<Vec<Contact>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     account_balance: Option<Vec<AccountBalance>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    tax_exemption: Option<Vec<AccountTaxExemption>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    financial_account: Option<FinancialAccountRef>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    payment_plan: Option<Vec<PaymentPlan>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    default_payment_method: Option<PaymentMethodRef>,
 }
 
 impl From<PartyAccount> for AccountRef {

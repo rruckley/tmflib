@@ -10,7 +10,15 @@ use crate::common::{
     contact::Contact,
 };
 
-use super::{AccountRef, AccountBalance, MOD_PATH};
+use super::{
+    AccountRef, 
+    AccountBalance, 
+    AccountTaxExemption,
+    financial_account::FinancialAccountRef,
+    MOD_PATH,
+    PaymentPlan,
+    PaymentMethodRef,
+};
 
 const CLASS_PATH : &str = "account";
 
@@ -18,23 +26,44 @@ const CLASS_PATH : &str = "account";
 #[derive( Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SettlementAccount {
+    #[serde(skip_serializing_if = "Option::is_none")]
     account_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     credit_limit: Option<Money>,
     /// Account Description
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     /// Unique Identifier
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HTTP URI
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     last_modified: Option<DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     payment_status: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     rating_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     state: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     last_update : Option<DateTime>,
     related_party: Vec<RelatedParty>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     contact: Option<Vec<Contact>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     account_balance: Option<Vec<AccountBalance>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    tax_exemption: Option<Vec<AccountTaxExemption>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    financial_account: Option<FinancialAccountRef>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    payment_plan: Option<Vec<PaymentPlan>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    default_payment_method: Option<PaymentMethodRef>,
 }
 
 impl SettlementAccount {
