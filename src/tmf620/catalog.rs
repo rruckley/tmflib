@@ -173,10 +173,13 @@ mod tests {
 
     const CAT_NAME : &str = "A Catalog";
 
+    use crate::common::related_party::RelatedParty;
     use crate::tmf620::catalog::{CAT_VERS,CLASS_PATH};
+    use crate::tmf632::organization_v4::Organization;
 
     use super::Catalog;
-    use crate::HasId;
+    use crate::tmf620::category::{Category, CategoryRef};
+    use crate::{HasId,HasName};
 
     #[test]
     fn test_cat_name() {
@@ -196,5 +199,33 @@ mod tests {
     fn test_cat_class() {
 
         assert_eq!(Catalog::get_class(),CLASS_PATH.to_owned());
+    }
+
+    #[test]
+    fn test_cat_rename() {
+        let cat = Catalog::new(CAT_NAME)
+            .name("NewName".to_string());
+
+        assert_eq!(cat.get_name(),"NewName".to_string());
+    }
+
+    #[test]
+    fn test_cat_add_cat() {
+        let mut cat = Catalog::new(CAT_NAME);
+        let category = Category::new("A Category");
+        cat.add_category(CategoryRef::from(&category));
+
+        assert_eq!(cat.category.is_some(),true);
+    }
+
+    #[test]
+    fn test_cat_add_party() {
+        let mut cat = Catalog::new(CAT_NAME);
+
+        let org = Organization::new("An Organisation");
+
+        cat.add_party(RelatedParty::from(&org));
+
+        assert_eq!(cat.related_party.is_some(),true);
     }
 }
