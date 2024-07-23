@@ -72,3 +72,33 @@ pub struct AccountTaxExemption {
     #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
 }
+
+/// Reference to a Payment Plan
+#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+pub struct PaymentPlanRef {
+    href : String,
+    id : String,
+    name : String,
+}
+
+/// a Payment Plan
+#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+pub struct PaymentPlan {
+    number_of_payments: u32,
+    payment_frequency: String,
+    plan_type: String,
+    priority: u16,
+    status: String,
+    total_amount: Option<Money>,
+    valid_for: Option<TimePeriod>,
+    // Referenced Data
+    payment_method: Option<PaymentMethodRef>,
+}
+
+/// Reference to a Payment Method
+#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+pub struct PaymentMethodRef {
+    href: String,
+    id: String,
+    name: String,
+}
