@@ -38,8 +38,8 @@ impl From<GeographicSite> for RelatedPlaceRefOrValue {
     }
 }
 
-impl From<GeographicAddress> for RelatedPlaceRefOrValue {
-    fn from(value: GeographicAddress) -> Self {
+impl From<&GeographicAddress> for RelatedPlaceRefOrValue {
+    fn from(value: &GeographicAddress) -> Self {
         RelatedPlaceRefOrValue {
             referred_type: GeographicAddress::get_class(),
             name: value.get_name(),
@@ -49,5 +49,30 @@ impl From<GeographicAddress> for RelatedPlaceRefOrValue {
             schema_location: None,
             r#type: Some(String::from("geographicaddress"))
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::GeographicAddress;
+    use super::GeographicSite;
+    use super::RelatedPlaceRefOrValue;
+
+    #[test]
+    fn test_place_from_address() {
+        let address = GeographicAddress::new("An Address");
+
+        let place = RelatedPlaceRefOrValue::from(&address);
+
+        assert_eq!(address.name.unwrap(),place.name);
+    }
+
+    #[test]
+    fn test_place_from_site() {
+        let site = GeographicSite::new("A Site");
+        
+        let place = RelatedPlaceRefOrValue::from(site.clone());
+
+        assert_eq!(site.name.unwrap(),place.name);
     }
 }

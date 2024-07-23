@@ -208,13 +208,13 @@ mod test {
     #[test]
     fn test_related_party_from_organization_ref() {
         let org = Organization::new(String::from("ACustomer"));
-        let orgRef = OrganizationRef::from(org);
+        let org_ref = OrganizationRef::from(org);
 
-        let party = RelatedParty::from(orgRef.clone());
+        let party = RelatedParty::from(org_ref.clone());
 
-        assert_eq!(orgRef.name,party.name.unwrap());
-        assert_eq!(orgRef.id,party.id);
-        assert_eq!(orgRef.href,party.href);       
+        assert_eq!(org_ref.name,party.name.unwrap());
+        assert_eq!(org_ref.id,party.id);
+        assert_eq!(org_ref.href,party.href);       
     }
 }
 

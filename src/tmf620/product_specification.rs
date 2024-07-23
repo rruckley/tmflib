@@ -369,12 +369,14 @@ impl ProductSpecificationCharacteristicValueUse {
 mod test {
 
     use super::ProductSpecification;
+    use super::ProductSpecificationCharacteristic;
     use super::ProductSpecificationCharacteristicValueUse;
     use super::SPEC_VERS;
     use super::CHAR_VALUE_MIN_CARD;
     use super::CHAR_VALUE_MAX_CARD;
     const SPEC_NAME: &str = "MySpecification";
     const VALUE_NAME: &str = "MyCharValueUse";
+    const DESC : &str = "A Description";
 
     #[test]
     fn test_char_value_use_new() {
@@ -409,5 +411,21 @@ mod test {
         let spec = ProductSpecification::new(SPEC_NAME);
 
         assert_eq!(spec.version, Some(SPEC_VERS.to_string()));
+    }
+
+    #[test]
+    fn test_spec_char_configurable() {
+        let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME)
+        .configurable(true);
+
+        assert_eq!(spec_char.configurable,true);
+    }
+
+    #[test]
+    fn test_spec_char_description() {
+        let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME)
+        .description(DESC.to_string()); 
+
+    assert_eq!(spec_char.description.unwrap(),DESC.to_string());   
     }
 }
