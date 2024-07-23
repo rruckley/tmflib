@@ -4,18 +4,37 @@ use serde::{Deserialize, Serialize};
 
 use crate::{HasId, HasLastUpdate, HasName, LIB_PATH, DateTime};
 use tmflib_derive::{HasId, HasName, HasLastUpdate};
+use crate::common::{
+    money::Money,
+    related_party::RelatedParty,
+    contact::Contact,
+};
 
-use super::MOD_PATH;
+use super::{AccountRef, AccountBalance, MOD_PATH};
 
 const CLASS_PATH : &str = "account";
 
 /// Billing Account
 #[derive( Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct BillingAccount {
-    id: Option<String>,
-    href: Option<String>,
+    account_type: Option<String>,
+    credit_limit: Option<Money>,
+    /// Account Description
+    pub description: Option<String>,
+    /// Unique Identifier
+    pub id: Option<String>,
+    /// HTTP URI
+    pub href: Option<String>,
+    last_modified: Option<DateTime>,
     name: Option<String>,
+    payment_status: Option<String>,
+    rating_type: Option<String>,
+    state: Option<String>,
     last_update : Option<DateTime>,
+    related_party: Vec<RelatedParty>,
+    contact: Option<Vec<Contact>>,
+    account_balance: Option<Vec<AccountBalance>>,
 }
 
 impl BillingAccount {
@@ -24,6 +43,17 @@ impl BillingAccount {
         let mut account = BillingAccount::create();
         account.name = Some(name.into());
         account
+    }
+}
+
+impl From<BillingAccount> for AccountRef {
+    fn from(value: BillingAccount) -> Self {
+        AccountRef {
+            id : value.get_id(),
+            href: value.get_href(),
+            name: value.get_name(),
+            description : value.description.clone(),
+        }
     }
 }
 
