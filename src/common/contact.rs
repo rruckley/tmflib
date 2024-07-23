@@ -3,6 +3,9 @@
 use serde::{Deserialize, Serialize};
 use std::hash::Hash;
 
+use crate::TimePeriod;
+use super::related_party::RelatedParty;
+
 const EMAIL_TYPE : &str = "email";
 
 /// Characteristics for contact mediums
@@ -72,6 +75,17 @@ impl ContactMedium {
             preferred: false,
         }
     }
+}
+
+/// A singular contact
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+pub struct Contact {
+    contact_name: String,
+    contact_type: String,
+    party_role_type: String,
+    valid_for: Option<TimePeriod>,
+    related_party: Option<RelatedParty>,
+    contact_medium: Option<Vec<ContactMedium>>,
 }
 
 /// Contact Characteristic
