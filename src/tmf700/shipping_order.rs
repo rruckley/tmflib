@@ -117,21 +117,19 @@ impl ShippingOrder {
 }
 #[cfg(test)]
 mod test {
+    use crate::tmf700::shipping_instruction::ShippingInstruction;
+
     use super::RelatedShippingOrder;
     use super::ShippingOrder;
     use super::HasId;
+
+    const SHIP_INST : &str = "ShippingInstruction";
     #[test]
     fn shipping_order_create_id() {
         // Generate shipping order, test id
         let so = ShippingOrder::new();
 
         assert_eq!(so.id.is_some(),true);
-    }
-
-    #[test]
-    fn shipping_order_create_href() {
-        let so = ShippingOrder::new();
-
         assert_eq!(so.href.is_some(), true);
     }
 
@@ -164,5 +162,15 @@ mod test {
         let linked_order = so_child.related_shipping_order.unwrap();
         
         assert_eq!(so_parent.get_id(),linked_order.id);
+    }
+
+    #[test]
+    fn shipping_order_instruction() {
+        let instruction = ShippingInstruction::new(SHIP_INST);
+        let so = ShippingOrder::new()
+            .instruction(instruction);
+
+        assert_eq!(so.shipping_instruction.is_some(),true);
+        assert_eq!(so.shipping_instruction.unwrap().label_message,Some(SHIP_INST.to_string()));
     }
 }

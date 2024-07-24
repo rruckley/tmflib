@@ -225,10 +225,13 @@ impl EventPayload<QuoteEvent> for Quote {
 #[cfg(test)]
 mod test {
     use super::QuoteStateType;
+    use crate::common::event::EventPayload;
     use crate::tmf648::quote::QUOTE_VERS;
-    use crate::HasId;
-
+    use crate::{HasId,HasName};
     use super::Quote;
+    use super::QuoteEventType;
+
+    const QUOTE_EXTERNAL : &str = "ExternalId";
     #[test]
     fn quote_test_new_vers() {
         let quote = Quote::new();
@@ -256,5 +259,26 @@ mod test {
         let quote = Quote::new();
         
         assert_eq!(quote.description(),format!("Quote-{}",quote.get_id()));
+    }
+
+    #[test]
+    fn test_quote_external_id() {
+        let mut quote = Quote::new();
+
+        quote.with_external_id(QUOTE_EXTERNAL.to_string());
+
+        assert_eq!(quote.external_id,Some(QUOTE_EXTERNAL.to_string()));
+    }
+
+    #[test]
+    fn test_quote_event() {
+        let quote = Quote::new();
+
+        let event = quote.to_event(QuoteEventType::QuoteCreateEvent);
+
+        // assert_eq!(quote.description,event.description);
+        assert_eq!(event.href,quote.href);
+        assert_eq!(event.id,quote.id);
+        assert_eq!(event.title.unwrap(),quote.get_name());
     }
 }

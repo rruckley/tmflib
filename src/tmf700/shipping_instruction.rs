@@ -43,8 +43,9 @@ pub struct ShippingInstruction {
     pub id: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     insured_value: Option<Money>,
+    /// Message for the shipping label
     #[serde(skip_serializing_if = "Option::is_none")]
-    label_message: Option<String>,
+    pub label_message: Option<String>,
     package_type: String,
     receipt_confirmation: String,
     shipping_type: String,

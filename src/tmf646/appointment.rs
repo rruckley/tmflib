@@ -92,5 +92,15 @@ mod test {
 
         assert_eq!(appointment.status, AppointmentStateType::Initialized);
     }
+
+    #[test]
+    fn test_ref_from_appointment() {
+        let appointment = Appointment::new();
+
+        let appoint_ref = AppointmentRef::from(appointment.clone());
+
+        assert_eq!(appointment.get_id(),appoint_ref.id);
+        assert_eq!(appointment.get_href(),appoint_ref.href); 
+    }
 }
 

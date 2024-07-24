@@ -36,11 +36,13 @@ pub struct FinancialAccountRef {
 
 impl From<FinancialAccount> for FinancialAccountRef {
     fn from(value: FinancialAccount) -> Self {
+        let balance = value.account_balance.clone().map(|v| v.first().unwrap().clone());
+  
         FinancialAccountRef {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            account_balance: value.account_balance.as_ref().unwrap().first().cloned(),
+            account_balance: balance,
         }
     }
 }
@@ -67,4 +69,24 @@ pub struct FinancialAccount {
     account_balance: Option<Vec<AccountBalance>>,
     account_relationship: Option<Vec<AccountRelationship>>,
     tax_exemption: Option<Vec<AccountTaxExemption>>,
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::{HasId,HasName};
+    const ACC_NAME: &str = "Financial Account";
+
+    #[test]
+    fn test_ref_from_financial() {
+        let mut financial = FinancialAccount::default();
+        financial.generate_id();
+        financial.set_name(ACC_NAME);
+
+        let fin_ref = FinancialAccountRef::from(financial.clone());
+
+        assert_eq!(fin_ref.id,financial.get_id());
+        assert_eq!(fin_ref.href,financial.get_href());
+        assert_eq!(fin_ref.name,financial.get_name());
+    }
 }
