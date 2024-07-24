@@ -19,6 +19,8 @@ use super::quote_price::QuotePrice;
 use crate::HasAttachment;
 use tmflib_derive::HasAttachment;
 
+const QUOTEITEM_DEF_QTY : u16 = 1;
+
 /// Status of product for Quote Item
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub enum ProductStatusType {
@@ -116,15 +118,17 @@ impl QuoteItem {
         let id = Uuid::new_v4().to_string();
         QuoteItem {
             id : Some(id),
-            quantity : 1,
-            quote_item_price : Some(vec![]),
+            quantity : QUOTEITEM_DEF_QTY,
             ..Default::default()
         }
     }
 
     /// Add QuotePrice to this QuoteItem
     pub fn price(&mut self, price : QuotePrice) {
-        self.quote_item_price.as_mut().unwrap().push(price);
+        match self.quote_item_price.as_mut() {
+            Some(v) => v.push(price),
+            None => self.quote_item_price = Some(vec![price]),
+        }
     }
 
     /// Get the ProductOffering for this QuoteItem
@@ -136,5 +140,27 @@ impl QuoteItem {
             },
             None => None,
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_quote_item_new() {
+        let quote_item = QuoteItem::new();
+
+        assert_eq!(quote_item.id.is_some(),true);
+        assert_eq!(quote_item.quantity,QUOTEITEM_DEF_QTY);
+    }
+
+    #[test]
+    fn test_quote_item_price() {
+        let price = QuotePrice::new("A Price");
+        let mut quote_item = QuoteItem::new();
+        quote_item.price(price);
+
+        assert_eq!(quote_item.quote_item_price.is_some(),true);
     }
 }
