@@ -43,3 +43,20 @@ pub struct CharacteristicRelationship {
     id: Option<String>,
     relationship_type: Option<String>,
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const CHAR_NAME : &str = "A Characteristic";
+    const CHAR_VALUE: &str = "A Value";
+
+    #[test]
+    fn test_characteristic_new() {
+        let characteristic = Characteristic::new(CHAR_NAME,CHAR_VALUE);
+
+        assert_eq!(characteristic.name,CHAR_NAME.to_string());
+        assert_eq!(characteristic.value,CHAR_VALUE.to_string());
+        assert_eq!(characteristic.value_type,"String".to_string());
+    }
+}

@@ -22,6 +22,7 @@ use super::MOD_PATH;
 const CLASS_PATH: &str = "geographicSite";
 const DEFAULT_TZ : &str = "AEST";
 const CODE_PREFIX : &str = "S-";
+const CALENDAR_WEEKDAYS : &str = "weekdays";
 
 
 /// Reference to a place
@@ -80,7 +81,7 @@ impl CalendarPeriod {
     /// Generate standard business hours calendar
     pub fn business_hours() -> CalendarPeriod {
     CalendarPeriod {
-        day : Some("weekdays".to_string()),
+        day : Some(CALENDAR_WEEKDAYS.to_string()),
         status : Some("open".to_string()),
         time_zone : Some(DEFAULT_TZ.to_string()),
         hour_period : Some(
@@ -247,6 +248,14 @@ mod test {
         let path = GeographicSite::get_class_href();
 
         assert_eq!(path.contains("geographicSiteManagement"),true);
+    }
+
+    #[test]
+    fn test_site_business_hours() {
+        let bus_hours = CalendarPeriod::business_hours();
+
+        assert_eq!(bus_hours.day,Some(CALENDAR_WEEKDAYS.to_string()));
+        assert_eq!(bus_hours.hour_period.is_some(),true);
     }
 }
 

@@ -160,7 +160,10 @@ impl ProductOrder {
     /// dbg!(order);
     /// ```
     pub fn add_party(&mut self, party: RelatedParty) {
-        self.related_party.as_mut().unwrap().push(party);
+        match self.related_party.as_mut() {
+            Some(v) => v.push(party),
+            None => self.related_party = Some(vec![party]),
+        }
     }
 }
 
