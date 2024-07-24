@@ -18,3 +18,19 @@ pub struct ExternalIdentifier {
     id: Option<String>,
     owner: String,
 }
+
+#[cfg(test)]
+mod test {
+    use super::ExternalIdentifier;
+    use crate::HasId;
+
+    #[test]
+    fn test_exteranl_hasid() {
+        let mut external = ExternalIdentifier::default();
+        external.generate_id();
+
+        let id = external.get_id();
+
+        assert_eq!(external.id,Some(id));
+    }
+}

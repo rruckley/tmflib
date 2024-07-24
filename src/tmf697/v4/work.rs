@@ -140,3 +140,72 @@ impl Work {
         out
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const WORK_NAME : &str = "Some Work";
+
+    #[test]
+    fn test_workref_from_work() {
+        let work = Work::new(WORK_NAME);
+
+        let work_ref = WorkRef::from(work.clone());
+
+        assert_eq!(work.get_name(),work_ref.name);
+        assert_eq!(work.get_id(),work_ref.id);
+        assert_eq!(work.get_href(),work_ref.href);
+    }
+
+    #[test]
+    fn test_workref_get_id() {
+        let work = Work::new(WORK_NAME);
+
+        let work_ref = WorkRef::from(work.clone());
+
+        let wrov = WorkRefOrValue::from(work_ref);
+
+        let id = wrov.get_id();
+
+        assert_eq!(work.get_id(),id);
+        
+    }
+
+    #[test]
+    fn test_work_get_id() {
+        let work = Work::new(WORK_NAME);
+
+        let wrov = WorkRefOrValue::from(work.clone());
+
+        let id = wrov.get_id();
+
+        assert_eq!(work.get_id(),id); 
+    }
+
+    #[test]
+    fn test_work_get_name() {
+        let work = Work::new(WORK_NAME);
+
+        let work_ref = WorkRef::from(work.clone());
+
+        let wrov = WorkRefOrValue::from(work_ref);
+
+        let name = wrov.get_name();
+
+        assert_eq!(name,WORK_NAME.to_string());
+        assert_eq!(work.get_name(),name);  
+    }
+
+    #[test]
+    fn test_workref_get_name() {
+        let work = Work::new(WORK_NAME);
+
+        let wrov = WorkRefOrValue::from(work.clone());
+
+        let name = wrov.get_name();
+
+        assert_eq!(name,WORK_NAME.to_string());
+        assert_eq!(work.get_name(),name);  
+    }
+}
