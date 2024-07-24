@@ -173,11 +173,12 @@ mod tests {
 
     const CAT_NAME : &str = "A Catalog";
 
+    use crate::common::event::EventPayload;
     use crate::common::related_party::RelatedParty;
     use crate::tmf620::catalog::{CAT_VERS,CLASS_PATH};
     use crate::tmf632::organization_v4::Organization;
 
-    use super::Catalog;
+    use super::{Catalog,CatalogEventType};
     use crate::tmf620::category::{Category, CategoryRef};
     use crate::{HasId,HasName};
 
@@ -227,5 +228,16 @@ mod tests {
         cat.add_party(RelatedParty::from(&org));
 
         assert_eq!(cat.related_party.is_some(),true);
+    }
+
+    #[test]
+    fn test_catalog_event() {
+        let cat = Catalog::new(CAT_NAME);
+        let event = cat.to_event(CatalogEventType::CatalogCreateEvent);
+
+        assert_eq!(event.domain.unwrap(),Catalog::get_class());
+        assert_eq!(event.href,cat.href);
+        assert_eq!(event.id,cat.id);
+        assert_eq!(event.title,cat.name);
     }
 }

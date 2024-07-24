@@ -16,7 +16,6 @@
 //!
 //! Structs associated with product catalogue management
 
-use super::LIB_PATH;
 use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "tmf620-v4")]

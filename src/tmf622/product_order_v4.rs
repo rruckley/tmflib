@@ -50,11 +50,14 @@ pub struct ProductOrderRef {
 
 impl From<ProductOrder> for ProductOrderRef {
     fn from(value: ProductOrder) -> Self {
+        let name = value.description.as_deref().unwrap_or({
+            "No Order Description"
+        });
         ProductOrderRef {
             href: value.get_href(),
             id: value.get_id(),
             // Should ideally generate a useful name if description is missing
-            name: value.description.as_ref().unwrap().clone(),
+            name: name.to_string(),
             r#type : Some("ProductOrder".to_string()),
             ..Default::default()
         }
@@ -132,10 +135,9 @@ impl HasLastUpdate for ProductOrder {
 impl ProductOrder {
     /// Create a new product order via trait
     pub fn new() -> ProductOrder {
-        let mut po = ProductOrder::create_with_time();
-        po.related_party = Some(vec![]);
-        po.product_order_item = Some(vec![]);
-        po
+        ProductOrder {
+            ..ProductOrder::create_with_time()
+        }
     }
 
     /// Add an ProductOrderItem into the ProductOrder
@@ -217,5 +219,30 @@ impl From<ShoppingCart> for ProductOrder {
             });
         }
         order
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_orderref_from_order() {
+        let order = ProductOrder::new();
+
+        let order_ref = ProductOrderRef::from(order.clone());
+
+        assert_eq!(order.get_id(),order_ref.id);
+        assert_eq!(order.get_href(),order_ref.href);
+    }
+
+    #[test]
+    fn test_orderref_from_order_ref() {
+        let order = ProductOrder::new();
+
+        let order_ref = ProductOrderRef::from(&order);
+
+        assert_eq!(order.get_id(),order_ref.id);
+        assert_eq!(order.get_href(),order_ref.href);   
     }
 }

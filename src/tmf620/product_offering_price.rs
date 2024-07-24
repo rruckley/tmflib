@@ -108,6 +108,7 @@ impl ProductOfferingPrice {
 
 #[cfg(test)]
 mod test {
+
     use super::*;
 
     const POP : &str = "APrice";
