@@ -125,4 +125,15 @@ mod test {
 
         assert_eq!(pop.version,Some(PRICE_VERS.into()));    
     }
+
+    #[test]
+    fn test_priceref_from_price() {
+        let price = ProductOfferingPrice::new(POP);
+
+        let price_ref = ProductOfferingPriceRef::from(price.clone());
+
+        assert_eq!(price.id,price_ref.id);
+        assert_eq!(price.href,price_ref.href);
+        assert_eq!(price.get_name(),price_ref.name);
+    }
 }

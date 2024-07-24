@@ -257,10 +257,14 @@ impl ProductOffering {
 
 #[cfg(test)]
 mod test {
-    use super::ProductOffering;
-    use super::PO_VERS_INIT;
+    use super::*;
+    use crate::tmf620::category::{Category,CategoryRef};
+    use crate::{HasId,HasName};
 
     const PO_NAME : &str = "An Offer";
+    const PO_STATUS: &str = "A Status";
+    const CAT_NAME : &str = "A Category";
+    const SPEC_NAME: &str = "A Specification";
 
     #[test]
     fn test_po_new_name() {
@@ -274,5 +278,54 @@ mod test {
         let po = ProductOffering::new(PO_NAME);
 
         assert_eq!(po.version, Some(PO_VERS_INIT.into()));
+    }
+
+    #[test]
+    fn test_poref_from_po() {
+        let po = ProductOffering::new(PO_NAME);
+        let po_ref = ProductOfferingRef::from(po.clone());
+
+        assert_eq!(po.get_id(),po_ref.id);
+        assert_eq!(po.get_href(),po_ref.href);
+        assert_eq!(po.get_name(),po_ref.name);
+    }
+
+    #[test]
+    fn test_por_from_po() {
+        let po = ProductOffering::new(PO_NAME);
+        let por = ProductOfferingRelationship::from(po.clone());
+
+        assert_eq!(po.id,por.id);
+        assert_eq!(po.href,por.href);
+        assert_eq!(po.name,por.name);
+        assert_eq!(por.relationship_type.is_none(),true);
+        assert_eq!(por.role.is_none(),true);
+        assert_eq!(por.valid_for.is_none(),true);
+    }
+
+    #[test]
+    fn test_po_status() {
+        let mut po = ProductOffering::new(PO_NAME);
+        po.status(PO_STATUS);
+
+        assert_eq!(po.lifecycle_status.unwrap(),PO_STATUS.to_string());
+    }
+
+    #[test]
+    fn test_po_with_cat() {
+        let cat = Category::new(CAT_NAME);
+        let po = ProductOffering::new(PO_NAME)
+            .with_category(CategoryRef::from(&cat));
+
+        assert_eq!(po.category.is_some(),true);
+    }
+
+    #[test]
+    fn test_po_with_spec() {
+        let spec = ProductSpecification::new(SPEC_NAME);
+        let po = ProductOffering::new(PO_NAME)
+            .with_specification(spec);
+
+        assert_eq!(po.product_specification.is_some(),true);
     }
 }

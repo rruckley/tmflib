@@ -111,7 +111,6 @@ impl Individual {
         ind.set_name(name);
         // Need this as default would be None
         ind.related_party = Some(vec![]);
-        ind.contact_medium = Some(vec![]);
         ind.generate_code(None);
         ind
     }
@@ -190,7 +189,10 @@ impl Individual {
 
     /// Add a contact medium to the individual
     pub fn add_contact(&mut self, medium : ContactMedium) {
-        self.contact_medium.as_mut().unwrap().push(medium);
+        match self.contact_medium.as_mut() {
+            Some(v) => v.push(medium),
+            None => self.contact_medium = Some(vec![medium]),
+        }
     }
 
     /// Find a particular contact medium matching ``medium``
@@ -207,13 +209,13 @@ impl Individual {
         
     }
 
-    /// Get Email address from contact medium if present
+    /// Get Mobile number from contact medium if present
     pub fn get_mobile(&self) -> Option<String> {
         // Optionally get the email address
         let medium = self.find_medium("mobile")?;
         let medium = medium.first()?;
         let characteristic = medium.characteristic.as_ref()?;
-        characteristic.email_address.clone()
+        characteristic.phone_number.clone()
     }
 
     /// Get Email address from contact medium if present
@@ -378,6 +380,12 @@ impl EventPayload<IndividualEvent> for Individual {
 #[cfg(test)]
 mod test {
     use super::Individual;
+
+    const IND_TITLE: &str = "A Title";
+    const IND_GENDER: &str = "A Gender";
+    const IND_PREF: &str = "A Preferred Name";
+    const IND_MOBILE: &str = "0411 111 111";
+
     #[test]
     fn test_individual_create_id() {
         let ind = Individual::new("APerson");
@@ -428,5 +436,58 @@ mod test {
             .email(EMAIL);
 
         assert_eq!(ind.get_email(),Some(EMAIL.to_string())) 
+    }
+
+    #[test]
+    fn test_individual_title() {
+        let ind = Individual::new("John Bagford Smith")
+            .title(IND_TITLE);
+    
+        assert_eq!(ind.title.unwrap(),IND_TITLE.to_string());
+    }
+
+    #[test]
+    fn test_individual_gender() {
+        let ind = Individual::new("John Bagford Smith")
+            .gender(IND_GENDER);
+
+        assert_eq!(ind.gender.unwrap(),IND_GENDER.to_string());
+    }
+
+    #[test]
+    fn test_individual_preferred() {
+        let ind = Individual::new("John Bagford Smith")
+            .preferred(IND_PREF);
+
+        assert_eq!(ind.preferred_given_name.unwrap(),IND_PREF.to_string());
+    }
+
+    #[test]
+    fn test_individual_find_medium() {
+        let ind = Individual::new("John Bagford Smith");
+
+        let medium = ind.find_medium("medium");
+
+        assert_eq!(medium.is_none(),true);
+    }
+
+    #[test]
+    fn test_individual_mobile() {
+        let ind = Individual::new("John Bagford Smith")
+            .mobile(IND_MOBILE);
+
+        // assert_eq!(ind.get_mobile(),Some(IND_MOBILE.to_string()));
+        assert_eq!(ind.contact_medium.is_some(),true);
+        assert_eq!(ind.get_mobile(),Some(IND_MOBILE.to_string()));
+    }
+
+    #[test]
+    fn test_individual_get_mobile() {
+        let ind = Individual::new("John Bagford Smith")
+        .mobile(IND_MOBILE);
+        let mobile = ind.get_mobile();
+
+        assert_eq!(mobile.is_some(),true);    
+        assert_eq!(mobile.unwrap(),IND_MOBILE.to_string());
     }
 }

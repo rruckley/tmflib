@@ -349,8 +349,8 @@ impl ProductSpecificationCharacteristicValueUse {
     pub fn new(name : impl Into<String>) -> ProductSpecificationCharacteristicValueUse {
         ProductSpecificationCharacteristicValueUse { 
             description: None, 
-            max_cardinality: 1, 
-            min_cardinality: 0, 
+            max_cardinality: CHAR_VALUE_MAX_CARD, 
+            min_cardinality: CHAR_VALUE_MIN_CARD, 
             name : name.into(), 
             value_type: String::from("String"), 
             valid_for: None,
@@ -426,6 +426,33 @@ mod test {
         let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME)
         .description(DESC.to_string()); 
 
-    assert_eq!(spec_char.description.unwrap(),DESC.to_string());   
+        assert_eq!(spec_char.description.unwrap(),DESC.to_string());   
+    }
+
+    #[test]
+    fn test_spec_extensible() {
+        let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME)
+            .extensible(true);
+
+        assert_eq!(spec_char.extensible,Some(true));    
+    }
+
+    #[test]
+    fn test_spec_cardinality() {
+        let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME)
+            .cardinality(1, 2);
+
+        assert_eq!(spec_char.min_cardinality,1);
+        assert_eq!(spec_char.max_cardinality,2);
+    }
+
+    #[test]
+    fn test_spec_cardinality_invalid() {
+        let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME)
+        .cardinality(10, 2); 
+
+    // Show in valid setting wont' update anything.
+    assert_eq!(spec_char.min_cardinality,CHAR_VALUE_MIN_CARD);
+    assert_eq!(spec_char.max_cardinality,CHAR_VALUE_MAX_CARD);   
     }
 }
