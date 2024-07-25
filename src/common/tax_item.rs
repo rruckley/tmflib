@@ -11,3 +11,15 @@ pub struct TaxItem {
     tax_rate: f32,
     tax_amount: Money,
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn test_taxitem_deserialise() {
+        let tax = TaxItem::default();
+        let tax_str = serde_json::to_string(&tax);
+
+        assert_eq!(tax_str.is_ok(),true);
+    }
+}

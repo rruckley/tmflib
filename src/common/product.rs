@@ -77,3 +77,26 @@ pub struct ProductRefOrValue {
     pub billing_account: Option<BillingAccountRef>,
     product_offering : Option<ProductOfferingRef>,
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_product_deserialise() {
+        let prod = ProductRefOrValue::default();
+
+        let prod_str = serde_json::to_string(&prod);
+
+        assert_eq!(prod_str.is_ok(),true);
+    }
+
+    #[test]
+    fn test_productstatustype_deserialise() {
+        let prod_status = ProductStatusType::default();
+
+        let status_str = serde_json::to_string(&prod_status);
+
+        assert_eq!(status_str.is_ok(),true);
+    }
+}
