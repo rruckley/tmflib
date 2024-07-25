@@ -45,9 +45,12 @@ const CLASS_PATH: &str = "productOffering";
 /// Product Offering Reference
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ProductOfferingRef {
-    id: String,
-    href: String,
-    name : String,
+    /// Unique Id
+    pub id: String,
+    /// HTTP URI
+    pub href: String,
+    /// Name of offer
+    pub name : String,
 }
 
 impl From<ProductOffering> for ProductOfferingRef {

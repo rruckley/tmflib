@@ -39,8 +39,37 @@ impl From<ProductOfferingRef> for CartItem {
             id: Some(id), 
             quantity: 1,
             product_offering: Some(value),
-            note: vec![],
-            item_price: vec![],
+            ..Default::default()
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::common::note::Note;
+    use crate::tmf620::product_offering::{ProductOffering,ProductOfferingRef};
+
+    use super::CartItem;
+
+    const OFFER_NAME : &str = "OfferName";
+    #[test]
+    fn test_cartitem_add_note() {
+        let note = Note::from("A Note");
+
+        let mut cart_item = CartItem::default();
+        cart_item.add_note(note);
+
+        assert_eq!(cart_item.note.len(),1);
+    }
+
+    #[test]
+    fn test_cartitem_from_offeringref() {
+        let offer = ProductOffering::new(OFFER_NAME);
+
+        let cart_item = CartItem::from(ProductOfferingRef::from(offer));
+
+        assert_eq!(cart_item.quantity,1);
+        assert_eq!(cart_item.product_offering.is_some(),true);
+        assert_eq!(cart_item.product_offering.unwrap().name,OFFER_NAME.to_string());
     }
 }
