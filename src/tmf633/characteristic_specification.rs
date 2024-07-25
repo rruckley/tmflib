@@ -77,3 +77,46 @@ impl CharacteristicSpecification {
         self
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const CHARSPEC_NAME : &str = "CharSpecName";
+    const CARD_MIN : u16 = 7;
+    const CARD_MAX : u16 = 8;
+    const CHARSPEC_DESC : &str = "CharSpecDescription";
+    #[test]
+    fn test_charspec_cardinality() {
+        let charspec = CharacteristicSpecification::new(CHARSPEC_NAME)
+            .cardinality(CARD_MIN,CARD_MAX);
+
+        assert_eq!(charspec.min_cardinality,Some(CARD_MIN));
+        assert_eq!(charspec.max_cardinality,Some(CARD_MAX));    
+    }
+
+    #[test]
+    fn test_charspec_optional() {
+        let charspec = CharacteristicSpecification::new(CHARSPEC_NAME)
+            .optional();
+        assert_eq!(charspec.min_cardinality,Some(0));
+        assert_eq!(charspec.max_cardinality,Some(1));
+    }
+
+    #[test]
+    fn test_charspec_mandatory() {
+        let charspec = CharacteristicSpecification::new(CHARSPEC_NAME)
+            .mandatory();
+        assert_eq!(charspec.min_cardinality,Some(1));
+        assert_eq!(charspec.max_cardinality,Some(1));
+    }
+
+    #[test]
+    fn test_charspec_description() {
+        let charspec = CharacteristicSpecification::new(CHARSPEC_NAME)
+        .description(CHARSPEC_DESC);
+
+        assert_eq!(charspec.description.is_some(),true);
+        assert_eq!(charspec.description.unwrap().as_str(),CHARSPEC_DESC);
+    }
+}

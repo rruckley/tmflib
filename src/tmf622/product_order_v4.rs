@@ -145,26 +145,6 @@ impl ProductOrder {
         self.product_order_item.as_mut().unwrap().push(order_item);
     }
 
-    /// Add a RelatedParty into the ProductOrder
-    /// # Example
-    /// ```
-    /// # use tmflib::tmf622::product_order_v4::ProductOrder;
-    /// use tmflib::common::related_party::RelatedParty;
-    /// use tmflib::tmf629::customer::Customer;
-    /// use tmflib::tmf632::organization_v4::Organization;
-    /// 
-    /// let organization = Organization::new(String::from("My Customer"));
-    /// let customer = Customer::new(organization);
-    /// let mut order = ProductOrder::new();
-    /// order.add_party(RelatedParty::from(&customer));
-    /// dbg!(order);
-    /// ```
-    pub fn add_party(&mut self, party: RelatedParty) {
-        match self.related_party.as_mut() {
-            Some(v) => v.push(party),
-            None => self.related_party = Some(vec![party]),
-        }
-    }
 }
 
 impl From<ServiceOrder> for ProductOrder {
@@ -228,6 +208,10 @@ impl From<ShoppingCart> for ProductOrder {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::tmf641::service_order::ServiceOrder;
+    use crate::tmf663::shopping_cart::ShoppingCart;
+
+    const SERVICE_CAT : &str = "ServiceCategory";
 
     #[test]
     fn test_orderref_from_order() {
@@ -247,5 +231,26 @@ mod test {
 
         assert_eq!(order.get_id(),order_ref.id);
         assert_eq!(order.get_href(),order_ref.href);   
+    }
+
+    #[test]
+    fn test_prodorder_from_serviceorder() {
+        let mut service_order = ServiceOrder::new();
+        service_order.category = Some(SERVICE_CAT.to_string());
+
+        let product_order = ProductOrder::from(service_order.clone());
+
+        assert_eq!(product_order.category,service_order.category);
+    }
+
+    #[test]
+    fn test_productorder_from_shoppingcart() {
+        let cart = ShoppingCart::new();
+
+        let order = ProductOrder::from(cart.clone());
+
+        assert_eq!(order.description.is_some(),true);
+        assert_eq!(order.related_party.is_none(),true);
+        assert_eq!(order.product_order_item.is_none(),true);
     }
 }

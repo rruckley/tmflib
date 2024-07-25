@@ -17,3 +17,16 @@ impl Characteristic {
         Characteristic { name : name.into(), ..Default::default() }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const CHAR_NAME : &str = "CharacteristicName";
+    #[test]
+    fn test_characteristic_new() {
+        let char = Characteristic::new(CHAR_NAME);
+
+        assert_eq!(char.name.as_str(),CHAR_NAME);
+    }
+}

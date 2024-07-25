@@ -99,6 +99,8 @@ mod test {
     const BPO_MIN: u8 = 0;
     const BPO_MAX: u8 = 100;
 
+    const OFFER_NAME : &str = "ProductOffer";
+
     #[test]
     fn test_bpo_new() {
         let bpo = BundledProductOffering::new(BPO_NAME);
@@ -122,5 +124,14 @@ mod test {
         assert_eq!(bpo_option.number_rel_offer_default,BPO_DEFAULT);
         assert_eq!(bpo_option.number_rel_offer_lower_limit,BPO_MIN);
         assert_eq!(bpo_option.number_rel_offer_upper_limit,BPO_MAX);
+    }
+
+    #[test]
+    fn test_bpo_from_po() {
+        let offer = ProductOffering::new(OFFER_NAME);
+
+        let bpo = BundledProductOffering::from(offer.clone());
+
+        assert_eq!(bpo.offer.get_name().as_str(),OFFER_NAME);
     }
 }

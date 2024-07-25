@@ -44,3 +44,17 @@ pub struct Characteristic {
     #[serde(rename = "@type")]
     r#type: Option<String>,
 }
+
+#[cfg(test)]
+mod test {
+
+    use super::Characteristic;
+    #[test]
+    fn test_characteristic_deserialise() {
+        let char = Characteristic::default();
+
+        let char_str = serde_json::to_string(&char);
+
+        assert_eq!(char_str.is_ok(),true);
+    }
+}
