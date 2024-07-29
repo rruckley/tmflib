@@ -67,6 +67,16 @@ mod test {
     use crate::tmf632::organization_v4::Organization;
     use crate::tmf629::customer::{Customer,CustomerEventType};
     use super::EventPayload;
+    use super::Event;
+    
+    const EVENT_JSON : &str = "{
+        \"eventType\" : \"CustomerCreateEvent\",
+        \"eventId\" : \"E123\",
+        \"eventTime\" : \"2024-01-01T13:00:00Z\",
+        \"event\" : {
+            \"relatedParty\" : []
+        }
+    }";
 
     const PATH : &str = "status";
     #[test]
@@ -78,5 +88,12 @@ mod test {
             .path(PATH);
 
         assert_eq!(event.field_path.unwrap(),PATH.to_string());
+    }
+
+    #[test]
+    fn test_event_deserialize() {
+        let event : Event<Customer,CustomerEventType> = serde_json::from_str(EVENT_JSON).unwrap();
+
+        assert_eq!(event.event_id.as_str(),"E123");
     }
 }

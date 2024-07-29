@@ -13,6 +13,7 @@ use uuid::Uuid;
 
 /// Shopping Cart Item
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CartItem {
     id: Option<String>,
     /// Notes for this Cart Item
@@ -52,6 +53,13 @@ mod test {
     use super::CartItem;
 
     const OFFER_NAME : &str = "OfferName";
+
+    const CART_JSON : &str = "{
+        \"id\" : \"CI123\",
+        \"note\" : [],
+        \"quantity\" : 1,
+        \"itemPrice\" : []
+    }";
     #[test]
     fn test_cartitem_add_note() {
         let note = Note::from("A Note");
@@ -71,5 +79,13 @@ mod test {
         assert_eq!(cart_item.quantity,1);
         assert_eq!(cart_item.product_offering.is_some(),true);
         assert_eq!(cart_item.product_offering.unwrap().name,OFFER_NAME.to_string());
+    }
+
+    #[test]
+    fn test_cartitem_deserialization() {
+        let cartitem : CartItem = serde_json::from_str(CART_JSON).unwrap();
+
+        assert_eq!(cartitem.id.is_some(),true);
+        assert_eq!(cartitem.quantity,1);
     }
 }

@@ -105,6 +105,9 @@ mod test {
         \"amount\" : 123.4,
         \"units\" : \"bytes\"  
     }";
+    const ATTACH_NAME: &str= "AttachmentName";
+
+    const ATTACH_JSON : &str = "{}";
 
     #[test]
     fn test_attachment_default() {
@@ -135,5 +138,30 @@ mod test {
 
         assert_eq!(attach_size.amount,123.4);
         assert_eq!(attach_size.units.as_str(),"bytes");
+    }
+
+    #[test]
+    fn test_attach_deserialize() {
+        let _attach : AttachmentRefOrValue = serde_json::from_str(ATTACH_JSON).unwrap();
+
+    }
+
+    #[test]
+    fn test_attach_hasname() {
+        let mut attach = AttachmentRefOrValue::new();
+        
+        attach.set_name(ATTACH_NAME);
+
+        assert_eq!(attach.get_name().as_str(),ATTACH_NAME);
+    }
+
+    #[test]
+    fn test_attach_hasvalidity() {
+        let mut attach = AttachmentRefOrValue::new();
+        attach.set_validity(TimePeriod::period_30days());
+
+        assert_eq!(attach.valid_for.is_some(),true);
+        assert_eq!(attach.valid_for.unwrap().started(),true);
+        // assert_eq!(attach.valid_for.unwrap().finished(),false);
     }
 }
