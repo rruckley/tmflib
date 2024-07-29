@@ -10,12 +10,14 @@ use crate::{
     HasId,
     HasName,
     HasAttachment,
+    HasRelatedParty,
     LIB_PATH
 };
 use tmflib_derive::{
     HasId,
     HasName,
-    HasAttachment
+    HasAttachment,
+    HasRelatedParty,
 };
 
 const CLASS_PATH : &str = "resource";
@@ -74,19 +76,22 @@ pub enum ResourceStatusType {
 }
 
 /// TMF Resource 
-#[derive(Clone, Debug, Default, Deserialize, HasId, HasName, HasAttachment, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasName, HasAttachment, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Resource {
     administrative_state: ResourceAdministrativeStateType,
     attachment: Option<Vec<AttachmentRefOrValue>>,
+    /// Unique Id
     pub id: Option<String>,
+    /// HTTP Uri
     pub href: Option<String>,
+    /// Resource Name
     pub name: Option<String>,
     operational_state: ResourceOperationalStateType,
     resource_characteristic: Vec<Characteristic>,
     resource_status: ResourceStatusType,
     resource_version: Option<String>,
-    related_party: Vec<RelatedParty>,
+    related_party: Option<Vec<RelatedParty>>,
     usage_state: ResourceUsageStateType,
 }
 
@@ -97,11 +102,6 @@ impl Resource {
         resource.name = Some(name.into());
         resource.resource_version = Some(RESOURCE_VERS.to_owned());
         resource    
-    }
-
-    /// Add related party to this resource
-    pub fn add_party(&mut self, party: RelatedParty) {
-        self.related_party.push(party);
     }
 }
 
