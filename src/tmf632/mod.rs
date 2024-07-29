@@ -35,6 +35,7 @@ pub mod organization_v5;
 
 /// General Party characteristic
 #[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Characteristic {
     name: String,
     name_type : String,
@@ -49,12 +50,19 @@ pub struct Characteristic {
 mod test {
 
     use super::Characteristic;
+
+    const CHAR_JSON : &str = "{
+        \"name\" : \"name\",
+        \"nameType\" : \"NameType\",
+        \"value\" : \"CharName\"
+    }";
+
     #[test]
     fn test_characteristic_deserialise() {
-        let char = Characteristic::default();
+        let char : Characteristic = serde_json::from_str(CHAR_JSON).unwrap();
 
-        let char_str = serde_json::to_string(&char);
-
-        assert_eq!(char_str.is_ok(),true);
+        assert_eq!(char.name.as_str(),"name");
+        assert_eq!(char.name_type.as_str(),"NameType");
+        assert_eq!(char.value.as_str(),"CharName");
     }
 }
