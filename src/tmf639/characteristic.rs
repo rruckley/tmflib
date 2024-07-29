@@ -6,7 +6,8 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Characteristic {
     id: Option<String>,
-    name: String,
+    /// Characteristic Name
+    pub name: String,
     value: Option<String>,
     value_type: Option<String>,
 }
@@ -23,10 +24,20 @@ mod test {
     use super::*;
 
     const CHAR_NAME : &str = "CharacteristicName";
+    const CHAR_JSON : &str = "{
+        \"name\" : \"CharacteristicName\"
+    }";
     #[test]
     fn test_characteristic_new() {
         let char = Characteristic::new(CHAR_NAME);
 
         assert_eq!(char.name.as_str(),CHAR_NAME);
+    }
+
+    #[test]
+    fn test_characteristic_deserialize() {
+        let char : Characteristic = serde_json::from_str(CHAR_JSON).unwrap();
+
+        assert_eq!(char.name.as_str(),"CharacteristicName");
     }
 }

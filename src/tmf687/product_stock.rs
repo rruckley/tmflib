@@ -79,3 +79,28 @@ impl ProductStock {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const STOCK_NAME : &str = "ProductStock";
+
+    #[test]
+    fn test_product_stock_new() {
+        let stock = ProductStock::new(STOCK_NAME);
+
+        assert_eq!(stock.name.is_some(),true);
+        assert_eq!(stock.name.unwrap().as_str(),STOCK_NAME);
+    }
+
+    #[test]
+    fn test_productstockref_from_productstock() {
+        let stock = ProductStock::new(STOCK_NAME);
+        let stock_ref = ProductStockRef::from(stock.clone());
+
+        assert_eq!(stock_ref.id,stock.get_id());
+        assert_eq!(stock_ref.href,stock.get_href());
+        assert_eq!(stock_ref.name,stock.get_name());
+    }
+}

@@ -80,17 +80,23 @@ pub enum ResourceStatusType {
 #[serde(rename_all = "camelCase")]
 pub struct Resource {
     administrative_state: ResourceAdministrativeStateType,
+    #[serde(skip_serializing_if = "Option::is_none")]
     attachment: Option<Vec<AttachmentRefOrValue>>,
     /// Unique Id
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HTTP Uri
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Resource Name
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     operational_state: ResourceOperationalStateType,
     resource_characteristic: Vec<Characteristic>,
     resource_status: ResourceStatusType,
+    #[serde(skip_serializing_if = "Option::is_none")]
     resource_version: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     related_party: Option<Vec<RelatedParty>>,
     usage_state: ResourceUsageStateType,
 }

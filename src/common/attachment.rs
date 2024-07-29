@@ -14,7 +14,7 @@ use crate::LIB_PATH;
 const CLASS_PATH: &str = "attachment";
 
 /// Attachment Type
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum AttachmentType {
     /// Inline Attachment, i.e. inside the payload
@@ -28,8 +28,10 @@ pub enum AttachmentType {
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AttachmentSize {
-    amount: f64,
-    units: String,
+    /// Amount of units
+    pub amount: f64,
+    /// Units, e.g. bytes
+    pub units: String,
 }
 
 /// Attachment Reference or Value
@@ -96,7 +98,13 @@ impl From<&Document> for AttachmentRefOrValue {
 mod test {
     use crate::{tmf667::document::Document, HasName};
 
-    use super::AttachmentRefOrValue;
+    use super::*;
+
+    const ATTACH_TYPE_JSON : &str = "\"inLine\"";
+    const ATTACH_SIZE : &str = "{
+        \"amount\" : 123.4,
+        \"units\" : \"bytes\"  
+    }";
 
     #[test]
     fn test_attachment_default() {
@@ -112,5 +120,20 @@ mod test {
         let attachment = AttachmentRefOrValue::from(&document);
 
         assert_eq!(attachment.name.unwrap(),document.get_name());
+    }
+
+    #[test]
+    fn test_attachmenttype_deserialize() {
+        let attach_type : AttachmentType = serde_json::from_str(ATTACH_TYPE_JSON).unwrap();
+
+        assert_eq!(attach_type,AttachmentType::InLine);
+    }
+
+    #[test]
+    fn test_attachmentsize_deserialize() {
+        let attach_size : AttachmentSize = serde_json::from_str(ATTACH_SIZE).unwrap();
+
+        assert_eq!(attach_size.amount,123.4);
+        assert_eq!(attach_size.units.as_str(),"bytes");
     }
 }
