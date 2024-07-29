@@ -14,6 +14,7 @@ use crate::{HasId,HasName};
 
 /// Reference to a place (TMF673, TMF674, TMF674)
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct RelatedPlaceRefOrValue {
     referred_type : String,
     name: String,
@@ -58,6 +59,13 @@ mod test {
     use super::GeographicSite;
     use super::RelatedPlaceRefOrValue;
 
+    const RELATED_PLACE_JSON : &str = "{
+        \"referredType\" : \"geographicalSite\",
+        \"name\" : \"Head Office\",
+        \"href\" : \"https://example.com/site/S100\",
+        \"id\" : \"S100\"
+    }";
+
     #[test]
     fn test_place_from_address() {
         let address = GeographicAddress::new("An Address");
@@ -74,5 +82,15 @@ mod test {
         let place = RelatedPlaceRefOrValue::from(site.clone());
 
         assert_eq!(site.name.unwrap(),place.name);
+    }
+
+    #[test]
+    fn test_relatedplace_deserialize() {
+        let relatedplace : RelatedPlaceRefOrValue = serde_json::from_str(RELATED_PLACE_JSON).unwrap();
+
+        assert_eq!(relatedplace.referred_type.as_str(),"geographicalSite");
+        assert_eq!(relatedplace.name.as_str(),"Head Office");
+        assert_eq!(relatedplace.href.as_str(),"https://example.com/site/S100");
+        assert_eq!(relatedplace.id.as_str(),"S100");
     }
 }

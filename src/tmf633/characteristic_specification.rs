@@ -86,6 +86,13 @@ mod test {
     const CARD_MIN : u16 = 7;
     const CARD_MAX : u16 = 8;
     const CHARSPEC_DESC : &str = "CharSpecDescription";
+
+    const CHARSPEC_JSON : &str = "{
+        \"name\" : \"CharacteristicSpecification\",
+        \"id\" : \"CS123\",
+        \"href\" : \"http://example.com/tmf633/spec/CS123\"
+    }";
+
     #[test]
     fn test_charspec_cardinality() {
         let charspec = CharacteristicSpecification::new(CHARSPEC_NAME)
@@ -118,5 +125,18 @@ mod test {
 
         assert_eq!(charspec.description.is_some(),true);
         assert_eq!(charspec.description.unwrap().as_str(),CHARSPEC_DESC);
+    }
+
+    #[test]
+    fn test_charspec_deserialization() {
+        let charspec : CharacteristicSpecification = serde_json::from_str(CHARSPEC_JSON).unwrap();
+
+        assert_eq!(charspec.id.is_some(),true);
+        // assert_eq!(charspec.href.is_some(),true);
+        assert_eq!(charspec.name.is_some(),true);
+
+        assert_eq!(charspec.id.unwrap().as_str(),"CS123");
+        // assert_eq!(charspec.href.unwrap().as_str(),"http://example.com/tmf633/spec/CS123");
+        assert_eq!(charspec.name.unwrap().as_str(),"CharacteristicSpecification");
     }
 }
