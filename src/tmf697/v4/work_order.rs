@@ -48,6 +48,7 @@ pub enum WorkOrderStateType {
 
 /// Work Order
 #[derive(Clone,Debug,Default,Deserialize,HasId,HasNote,HasRelatedParty,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct WorkOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@type")]

@@ -9,6 +9,7 @@ use super::work::WorkRefOrValue;
 
 /// Work Order Item
 #[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct WorkOrderItem {
     /// Metadata: Type of schema, same as [WorkOrderItem::base_type] if aligned to TMF specification.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -45,5 +46,26 @@ impl WorkOrderItem {
             ..Default::default()
         }
     }
+}
+
+#[cfg(test)]
+mod test {
+
+    use super::*;
+
+    const WORK_ITEM_JSON: &str = "{
+        \"id\" : \"WI_123\"
+    }";
+
+
+
+    #[test]
+    fn test_workorderitem_deserialize() {
+        let workorderitem : WorkOrderItem = serde_json::from_str(WORK_ITEM_JSON).unwrap();
+
+        assert_eq!(workorderitem.id.is_some(),true);
+        assert_eq!(workorderitem.id.unwrap().as_str(),"WI_123");
+    }
+
 }
 

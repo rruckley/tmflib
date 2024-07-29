@@ -54,6 +54,8 @@ pub struct SLARef {}
 mod test {
     use super::*;
 
+    const EMPTY_JSON: &str = "{}";
+
     #[test]
     fn test_channelref_deserialise() {
         let channel = ChannelRef::default();
@@ -88,6 +90,26 @@ mod test {
         let sla_str = serde_json::to_string(&sla);
 
         assert_eq!(sla_str.is_ok(),true);
+    }
+
+    #[test]
+    fn test_channelref_deserialize() {
+        let _channelref : ChannelRef = serde_json::from_str(EMPTY_JSON).unwrap();
+    }
+
+    #[test]
+    fn test_marketsegmentref_deserialize() {
+        let _marketsegmentref : MarketSegmentRef  = serde_json::from_str(EMPTY_JSON).unwrap();
+    }
+
+    #[test]
+    fn test_placeref_deserialize() {
+        let _placeref : PlaceRef  = serde_json::from_str(EMPTY_JSON).unwrap();
+    }
+
+    #[test]
+    fn test_slafef_deserialize() {
+        let _slaref : SLARef = serde_json::from_str(EMPTY_JSON).unwrap();
     }
 
 }
