@@ -371,11 +371,22 @@ pub mod tmf760;
 
 #[cfg(test)]
 mod test {
-    use crate::{Quantity, TimePeriod};
+    use crate::{HasName, Quantity, TimePeriod};
 
     use super::gen_code;
+    use crate::tmf632::organization_v4::Organization;
+
     const CODE : &str = "T-DXQR65";
     const HASH : &str = "DXQR656VE3FIKEZZWJX6C3WC27NSRTJVMYR7ILA5XNDLSJXQPDVQ";
+    const CARTON_QTY : f64 = 12.34;
+    const ORG_NAME : &str = "Organisation";
+    const QUANTITY_JSON : &str = "{
+        \"amount\" : 12.34,
+        \"units\" : \"units\"
+    }";
+    const PERIOD_JSON : &str = "{
+        \"startDateTime\" : \"2024-07-29T23:07:57Z\"
+    }";
     #[test]
     fn test_gen_code() {
         // Generate a code with a known hash
@@ -420,5 +431,48 @@ mod test {
         finished.end_date_time = Some(finished.start_date_time.clone());
 
         assert_eq!(finished.finished(),true);
+    }
+
+    #[test]
+    fn test_quantity_cartons() {
+        let quantity = Quantity::cartons(CARTON_QTY);
+
+        assert_eq!(quantity.amount,CARTON_QTY);
+        assert_eq!(quantity.units.as_str(),"cartons");
+    }
+
+    #[test]
+    fn test_hasname_find() {
+        let cust = Organization::new(ORG_NAME);
+
+        let find_match = cust.find("Org");
+
+        assert_eq!(find_match,true);
+    }
+
+    #[test]
+    fn test_quantity_deserialize() {
+        let quantity : Quantity = serde_json::from_str(QUANTITY_JSON).unwrap();
+
+        assert_eq!(quantity.amount,12.34);
+        assert_eq!(quantity.units.as_str(),"units");
+    }
+
+    #[test]
+    fn test_timeperiod_deserialize() {
+        let period : TimePeriod = serde_json::from_str(PERIOD_JSON).unwrap();
+
+        assert_eq!(period.start_date_time.as_str(),"2024-07-29T23:07:57Z");
+        assert_eq!(period.end_date_time.is_none(),true);
+    }
+
+    #[test]
+    fn test_timeperiod_not_started() {
+        let old_period = TimePeriod::period_30days();
+
+        let mut new_period = TimePeriod::default();
+        new_period.start_date_time = old_period.end_date_time.unwrap().clone();
+
+        assert_eq!(new_period.started(),false);
     }
 }

@@ -82,21 +82,28 @@ pub struct ProductRefOrValue {
 mod test {
     use super::*;
 
+    const PROD_STATUS_TYPE_JSON : &str = "\"created\"";
+
+    const PRODREF_JSON : &str = "{
+        \"id\" : \"PR123\",
+        \"name\" : \"ProductRef\",
+        \"isBundle\" : false
+    }";
+
     #[test]
     fn test_product_deserialise() {
-        let prod = ProductRefOrValue::default();
+        let prod : ProductRefOrValue = serde_json::from_str(PRODREF_JSON).unwrap();
 
-        let prod_str = serde_json::to_string(&prod);
-
-        assert_eq!(prod_str.is_ok(),true);
+        assert_eq!(prod.id.is_some(),true);
+        assert_eq!(prod.name.as_str(),"ProductRef");
+        assert_eq!(prod.is_bundle.is_some(),true);
+        assert_eq!(prod.is_bundle.unwrap(),false);
     }
 
     #[test]
     fn test_productstatustype_deserialise() {
-        let prod_status = ProductStatusType::default();
+        let prod_status : ProductStatusType = serde_json::from_str(PROD_STATUS_TYPE_JSON).unwrap();
 
-        let status_str = serde_json::to_string(&prod_status);
-
-        assert_eq!(status_str.is_ok(),true);
+        assert_eq!(prod_status,ProductStatusType::Created);
     }
 }

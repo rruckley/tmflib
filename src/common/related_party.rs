@@ -154,32 +154,37 @@ mod test {
     use crate::tmf632::organization_v4::Organization;
     #[cfg(feature = "tmf632-v5")]
     use crate::tmf632::organization_v5::Organization;
-    use crate::HasId;
+    use crate::tmf669::party_role::PartyRole;
+    use crate::{HasId, HasName};
     use super::RelatedParty;
+
+    const ORG_NAME : &str = "An Organisation";
+    const ROLE_NAME : &str = "A Role";
+
     #[test]
     fn test_related_party_from_customer_id() {
-        let org = Organization::new(String::from("ACustomer"));
+        let org = Organization::new(ORG_NAME);
         let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
         assert_eq!(cust.id.unwrap(), party.id);
     }
     #[test]
     fn test_related_party_from_customer_href() {
-        let org = Organization::new(String::from("ACustomer"));
+        let org = Organization::new(ORG_NAME);
         let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
         assert_eq!(cust.href.unwrap(), party.href);
     }
     #[test]
     fn test_related_party_from_customer_name() {
-        let org = Organization::new(String::from("ACustomer"));
+        let org = Organization::new(ORG_NAME);
         let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
         assert_eq!(cust.name, party.name);
     }
     #[test]
     fn test_related_party_from_customer_role() {
-        let org = Organization::new(String::from("ACustomer"));
+        let org = Organization::new(ORG_NAME);
         let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
         assert_eq!(party.role.unwrap(), Customer::get_class());
@@ -187,7 +192,7 @@ mod test {
     }
     #[test]
     fn test_related_party_from_customer_referred() {
-        let org = Organization::new(String::from("ACustomer"));
+        let org = Organization::new(ORG_NAME);
         let cust = Customer::new(org);
         let party = RelatedParty::from(&cust);
 
@@ -196,7 +201,7 @@ mod test {
 
     #[test]
     fn test_related_party_from_organization() {
-        let org = Organization::new(String::from("ACustomer"));
+        let org = Organization::new(ORG_NAME);
 
         let party = RelatedParty::from(&org);
 
@@ -207,7 +212,7 @@ mod test {
 
     #[test]
     fn test_related_party_from_organization_ref() {
-        let org = Organization::new(String::from("ACustomer"));
+        let org = Organization::new(ORG_NAME);
         let org_ref = OrganizationRef::from(org);
 
         let party = RelatedParty::from(org_ref.clone());
@@ -215,6 +220,20 @@ mod test {
         assert_eq!(org_ref.name,party.name.unwrap());
         assert_eq!(org_ref.id,party.id);
         assert_eq!(org_ref.href,party.href);       
+    }
+
+    #[test]
+    fn test_relatedparty_from_partyrole() {
+        let party = Organization::new(ORG_NAME);
+        let role = PartyRole::new(ROLE_NAME,RelatedParty::from(party.clone()));
+
+        let new_party = RelatedParty::from(&role);
+
+        assert_eq!(new_party.id,role.get_id());
+        assert_eq!(new_party.role.is_some(),true);
+        assert_eq!(new_party.role.unwrap(),role.get_name());
+        assert_eq!(new_party.referred_type.is_some(),true);
+        assert_eq!(new_party.referred_type.unwrap(),PartyRole::get_class());
     }
 }
 
