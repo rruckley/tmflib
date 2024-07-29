@@ -243,7 +243,10 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
     let out = quote! {   
         impl HasRelatedParty for #name {
             fn add_party(&mut self, party : RelatedParty) {
-                self.related_party.as_mut().unwrap().push(party);
+                match self.related_party.as_mut() {
+                    Some(v) => v.push(party),
+                    None => self.related_party = Some(vec![party]),
+                }
             }
             fn get_party(&self, idx : usize ) -> Option<&RelatedParty> {
                 match self.related_party.as_ref() {
