@@ -70,10 +70,14 @@ pub struct ProductOfferingTerm {}
 
 /// Product Offering Relationship
 #[derive(Clone, Debug, Deserialize, Serialize, HasValidity)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductOfferingRelationship {
-    id: Option<String>,
-    href: Option<String>,
-    name: Option<String>,
+    /// Unique Id
+    pub id: Option<String>,
+    /// HTTP Uri
+    pub href: Option<String>,
+    /// Name of referenced Product Offer
+    pub name: Option<String>,
     /// Type of relationship between product offerings
     /// # Example
     /// Parent/Child
@@ -269,6 +273,20 @@ mod test {
     const CAT_NAME : &str = "A Category";
     const SPEC_NAME: &str = "A Specification";
 
+
+    const PRODOFFERREF_JSON : &str = "{
+        \"id\" : \"PO123\",
+        \"href\" : \"http://example.com/tmf620/offering/PO123\",
+        \"name\" : \"ProductOffering\"
+    }";
+
+    const PRODOFFERTERM_JSON : &str = "{}";
+    const PRODOFFERREL_JSON : &str = "{
+        \"id\" : \"POR123\",
+        \"name\" : \"ProductOfferRel\",
+        \"relationshipType\" : \"Parent/Child\",
+        \"role\" : \"child\"
+    }";
     #[test]
     fn test_po_new_name() {
         let po = ProductOffering::new(PO_NAME);
@@ -330,5 +348,28 @@ mod test {
             .with_specification(spec);
 
         assert_eq!(po.product_specification.is_some(),true);
+    }
+
+    #[test]
+    fn test_po_deserialize() {
+        let productofferref : ProductOfferingRef = serde_json::from_str(PRODOFFERREF_JSON).unwrap();
+
+        assert_eq!(productofferref.id.as_str(),"PO123");
+        assert_eq!(productofferref.name.as_str(),"ProductOffering");
+    }
+
+    #[test]
+    fn test_po_term_deserialize() {
+        let _offerterm : ProductOfferingTerm = serde_json::from_str(PRODOFFERTERM_JSON).unwrap();
+    }
+
+    #[test]
+    fn test_po_relationship_deserialize() {
+        let offer_rel : ProductOfferingRelationship = serde_json::from_str(PRODOFFERREL_JSON).unwrap();
+
+        assert_eq!(offer_rel.id.is_some(),true);
+        assert_eq!(offer_rel.name.is_some(),true);
+        assert_eq!(offer_rel.relationship_type.is_some(),true);
+        assert_eq!(offer_rel.role.is_some(),true);
     }
 }

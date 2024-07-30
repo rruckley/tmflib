@@ -382,6 +382,7 @@ mod test {
     const SPEC_STATUS: &str = "SpecificationStatus";
     const ENUM_STR : &str = "ValueEnumString";
 
+   
     #[test]
     fn test_char_value_use_new() {
         let value_use = ProductSpecificationCharacteristicValueUse::new(VALUE_NAME);
