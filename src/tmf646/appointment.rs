@@ -78,6 +78,19 @@ impl Appointment {
 mod test {
     use super::*;
 
+    const APPOINTMENT_JSON : &str = "{
+        \"description\" : \"AppointmentDescription\",
+        \"id\" : \"AP123\",
+        \"href\" : \"http://example.com/tmf646/appointment/AP123\",
+        \"status\" : \"Initialized\"
+    }";
+    const APPOINTMENTREF_JSON : &str = "{
+        \"description\" : \"AppointmentDescription\",
+        \"id\" : \"AP123\",
+        \"href\" : \"http://example.com/tmf646/appointment/AP123\"
+    }";
+    const APPOINTMENTTYPE_JSON: &str = "\"Initialized\"";
+
     #[test]
     fn test_create_appointment_id() {
         let appointment = Appointment::new();
@@ -101,6 +114,44 @@ mod test {
 
         assert_eq!(appointment.get_id(),appoint_ref.id);
         assert_eq!(appointment.get_href(),appoint_ref.href); 
+    }
+
+    #[test]
+    fn test_appointmentstate_deserialize() {
+        let appointmentstate : AppointmentStateType = serde_json::from_str(APPOINTMENTTYPE_JSON).unwrap();
+
+        assert_eq!(appointmentstate,AppointmentStateType::Initialized);
+    }
+
+    #[test]
+    fn test_appointment_deserialize() {
+        let appointment : Appointment = serde_json::from_str(APPOINTMENT_JSON).unwrap();
+
+        assert_eq!(appointment.get_id(),"AP123");
+        assert_eq!(appointment.description.unwrap().as_str(),"AppointmentDescription");
+        // assert_eq!(appointment.get_href(),"http://example.com/tmf646/appointment/AP123");
+        assert_eq!(appointment.status,AppointmentStateType::Initialized);
+    }
+
+    #[test]
+    fn test_appointmentref_deserialize() {
+        let appointmentref : AppointmentRef = serde_json::from_str(APPOINTMENTREF_JSON).unwrap();
+
+        assert_eq!(appointmentref.id.as_str(),"AP123");
+        assert_eq!(appointmentref.description.as_str(),"AppointmentDescription");
+        assert_eq!(appointmentref.href.as_str(),"http://example.com/tmf646/appointment/AP123");
+    }
+
+    #[test]
+    fn test_appointment_validity() {
+        let mut appointment = Appointment::new();
+
+        appointment.set_validity(TimePeriod::period_30days());
+
+        assert_eq!(appointment.valid_for.is_some(),true);
+        let validity = appointment.get_validity().unwrap();
+        assert_eq!(validity.started(),true);
+        assert_eq!(validity.finished(),false);
     }
 }
 
