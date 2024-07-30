@@ -12,7 +12,7 @@ use crate::tmf663::cart_item::CartItem;
 
 
 /// Action Type for Order Items
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum OrderItemActionType {
     /// Add Order Item [Default]
@@ -76,6 +76,13 @@ mod test {
     use crate::{HasId,HasName};
 
     const OFFER_NAME: &str = "ProductOffering";
+
+    const ORDERITEMTYPE_JSON : &str = "\"add\"";
+    const ORDERITEM_JSON : &str = "{
+        \"quantity\" : 1,
+        \"action\" : \"add\"
+    }";
+
     #[test]
     fn test_orderitem_from_offering() {
         let offer = ProductOffering::new(OFFER_NAME);
@@ -111,5 +118,20 @@ mod test {
         assert_eq!(cart.quantity,order_item.quantity);
         // No way to set offer on cart_item, this is matching None with None
         assert_eq!(cart.product_offering,order_item.product_offering);
+    }
+
+    #[test]
+    fn test_orderitemtype_deserialize() {
+        let orderitemtype : OrderItemActionType = serde_json::from_str(ORDERITEMTYPE_JSON).unwrap();
+
+        assert_eq!(orderitemtype,OrderItemActionType::Add);
+    }
+
+    #[test]
+    fn test_productorderitem_deserialize() {
+        let orderitem : ProductOrderItem = serde_json::from_str(ORDERITEM_JSON).unwrap();
+
+        assert_eq!(orderitem.quantity,1);
+        assert_eq!(orderitem.action,OrderItemActionType::Add);
     }
 }

@@ -101,6 +101,18 @@ mod test {
 
     const OFFER_NAME : &str = "ProductOffer";
 
+    const BPO_JSON : &str = "{
+        \"id\" : \"BPO123\",
+        \"name\" : \"BundleProductOffering\",
+        \"offer\" : {}
+    }";
+
+    const BPO_OPTION_JSON : &str = "{
+        \"numberRelOfferDefault\" : 1,
+        \"numberRelOfferLowerLimit\" : 2,
+        \"numberRelOfferUpperLimit\" : 3
+    }";
+
     #[test]
     fn test_bpo_new() {
         let bpo = BundledProductOffering::new(BPO_NAME);
@@ -133,5 +145,24 @@ mod test {
         let bpo = BundledProductOffering::from(offer.clone());
 
         assert_eq!(bpo.offer.get_name().as_str(),OFFER_NAME);
+    }
+
+    #[test]
+    fn test_bpo_deserialize() {
+        let bpo : BundledProductOffering = serde_json::from_str(BPO_JSON).unwrap();
+
+        assert_eq!(bpo.id.is_some(),true);
+        assert_eq!(bpo.get_id(),"BPO123");
+        assert_eq!(bpo.name.is_some(),true);
+        assert_eq!(bpo.get_name().as_str(),"BundleProductOffering");
+    }
+
+    #[test]
+    fn test_bpo_option_deserialize() {
+        let bpo_option : BundledProductOfferingOption = serde_json::from_str(BPO_OPTION_JSON).unwrap();
+
+        assert_eq!(bpo_option.number_rel_offer_default,1);
+        assert_eq!(bpo_option.number_rel_offer_lower_limit,2);
+        assert_eq!(bpo_option.number_rel_offer_upper_limit,3);
     }
 }
