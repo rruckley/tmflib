@@ -64,6 +64,8 @@ mod test {
     #[test]
     fn test_riskresult_deserialize() {
         let riskresult : RiskAssessmentResult = serde_json::from_str(RISKRESULT_JSON).unwrap();
+
+        assert_eq!(riskresult.score.is_some(),true);
     }
     #[test]
     fn test_riskscore_deserialize() {
