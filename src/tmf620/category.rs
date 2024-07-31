@@ -251,16 +251,24 @@ impl From<&Category> for CategoryRef {
 
 #[cfg(test)]
 mod test {
-    use crate::tmf620::category::CAT_VERS;
-
+    use crate::{tmf620::category::CAT_VERS, HasName};
     use super::{Category, CategoryRef};
-    #[test]
 
+    const CAT_NAME : &str = "CategoryName";
+
+    #[test]
     fn catref_test_from() {
         let cat = Category::new(String::from("MyCategory"));
         let cat_ref = CategoryRef::from(&cat);
 
         assert_eq!(cat_ref.name, Some(String::from("MyCategory")));
         assert_eq!(cat_ref.version, Some(CAT_VERS.to_string()));
+    }
+
+    #[test]
+    fn cat_hasname() {
+        let cat = Category::new(CAT_NAME);
+
+        assert_eq!(cat.get_name().as_str(),CAT_NAME);
     }
 }

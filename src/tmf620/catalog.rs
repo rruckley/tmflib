@@ -150,16 +150,6 @@ pub enum CatalogEventType {
     CatalogBatchEvent,
 }
 
-impl std::fmt::Display for CatalogEventType {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self {
-            CatalogEventType::CatalogCreateEvent => write!(f, "CatalogCreateEvent"),
-            CatalogEventType::CatalogDeleteEvent => write!(f, "CatalogDeleteEvent"),
-            CatalogEventType::CatalogBatchEvent => write!(f, "CatalogBatchEvent"),
-        }
-    }
-}
-
 // Notifications
 /// Catalog created Event
 pub struct CatalogCreateEvent {}
@@ -178,7 +168,7 @@ mod tests {
     use crate::tmf620::catalog::{CAT_VERS,CLASS_PATH};
     use crate::tmf632::organization_v4::Organization;
 
-    use super::{Catalog,CatalogEventType};
+    use super::{Catalog, CatalogEvent, CatalogEventType};
     use crate::tmf620::category::{Category, CategoryRef};
     use crate::{HasId,HasName, HasValidity,TimePeriod};
 
@@ -188,6 +178,10 @@ mod tests {
     }";
 
     const CAT_EVENT_TYPE_JSON : &str = "\"CatalogCreateEvent\"";
+
+    const CATALOGEVENT_JSON : &str = "{
+        \"catalog\" : {}
+    }";
 
     #[test]
     fn test_cat_name() {
@@ -270,6 +264,26 @@ mod tests {
         let eventtype : CatalogEventType = serde_json::from_str(CAT_EVENT_TYPE_JSON).unwrap();
 
         assert_eq!(eventtype,CatalogEventType::CatalogCreateEvent);
+    }
+
+    #[test]
+    fn test_catalogevent_deserialize() {
+        let _catalogevent : CatalogEvent = serde_json::from_str(CATALOGEVENT_JSON).unwrap();
+    }
+
+    #[test]
+    fn test_catalogeventtype_display() {
+        let catalogeventtype = CatalogEventType::CatalogCreateEvent;
+
+        println!("{:?}",catalogeventtype);
+
+        let catalogeventtype = CatalogEventType::CatalogBatchEvent;
+
+        println!("{:?}",catalogeventtype);
+
+        let catalogeventtype = CatalogEventType::CatalogDeleteEvent;
+
+        println!("{:?}",catalogeventtype);
     }
 
 
