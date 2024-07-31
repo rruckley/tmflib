@@ -12,7 +12,6 @@ use super::related_party::RelatedParty;
 
 /// Status of product for Quote Item
 #[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
 pub enum ProductStatusType {
     /// Created
     #[default]
@@ -82,7 +81,7 @@ pub struct ProductRefOrValue {
 mod test {
     use super::*;
 
-    const PROD_STATUS_TYPE_JSON : &str = "\"created\"";
+    const PROD_STATUS_TYPE_JSON : &str = "\"Created\"";
 
     const PRODREF_JSON : &str = "{
         \"id\" : \"PR123\",
