@@ -12,7 +12,7 @@ use crate::common::related_party::RelatedParty;
 const CLASS_PATH: &str = "serviceOrder";
 
 /// Service Order Status
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub enum ServiceOrderStateType {
     /// Acknowledged
     #[default]
@@ -108,5 +108,43 @@ impl ServiceOrder {
         so.related_party = Some(vec![]);
         so.servce_order_item = Some(vec![]);
         so
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const SERVICEORDERSTATE_JSON : &str = "\"Acknowledged\"";
+    const SERVICEORDER_JSON : &str = "{
+        \"description\" : \"Description\"
+    }";
+    const NOTE_TEXT : &str = "A Note";
+    #[test]
+    fn test_serviceorderstate_deserialize() {
+        let serviceorderstate : ServiceOrderStateType = serde_json::from_str(SERVICEORDERSTATE_JSON).unwrap();
+
+        assert_eq!(serviceorderstate,ServiceOrderStateType::Acknowledged);
+    }
+
+    #[test]
+    fn test_serviceorder_deserialize() {
+        let serviceorder : ServiceOrder = serde_json::from_str(SERVICEORDER_JSON).unwrap();
+
+        assert_eq!(serviceorder.description.is_some(),true);
+        assert_eq!(serviceorder.description.unwrap().as_str(),"Description");
+    }
+
+    #[test]
+    fn test_serviceorder_hasnote() {
+        let mut serviceorder = ServiceOrder::new();
+        let note1 = Note::new(NOTE_TEXT);
+        let note2 = Note::new(NOTE_TEXT);
+
+        serviceorder.add_note(note1);
+        serviceorder.add_note(note2);
+
+        assert_eq!(serviceorder.note.is_some(),true);
+        assert_eq!(serviceorder.note.unwrap().len(),2);
     }
 }
