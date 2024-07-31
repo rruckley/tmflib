@@ -186,7 +186,17 @@ mod test {
     }
 
     #[test]
-    fn test_resource_hasattachment() {}
+    fn test_resource_hasattachment() {
+        let mut resource = Resource::new(RESOURCE_NAME);
+
+        let attach = AttachmentRefOrValue::new();
+
+        resource.add(&attach);
+
+        assert_eq!(resource.attachment.is_some(),true);
+        assert_eq!(resource.attachment.unwrap().len(),1);
+
+    }
 
     #[test]
     fn test_resource_hasrelatedparty() {
