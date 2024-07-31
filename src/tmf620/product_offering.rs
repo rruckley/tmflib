@@ -45,9 +45,12 @@ const CLASS_PATH: &str = "productOffering";
 /// Product Offering Reference
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ProductOfferingRef {
-    id: String,
-    href: String,
-    name : String,
+    /// Unique Id
+    pub id: String,
+    /// HTTP URI
+    pub href: String,
+    /// Name of offer
+    pub name : String,
 }
 
 impl From<ProductOffering> for ProductOfferingRef {
@@ -67,10 +70,14 @@ pub struct ProductOfferingTerm {}
 
 /// Product Offering Relationship
 #[derive(Clone, Debug, Deserialize, Serialize, HasValidity)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductOfferingRelationship {
-    id: Option<String>,
-    href: Option<String>,
-    name: Option<String>,
+    /// Unique Id
+    pub id: Option<String>,
+    /// HTTP Uri
+    pub href: Option<String>,
+    /// Name of referenced Product Offer
+    pub name: Option<String>,
     /// Type of relationship between product offerings
     /// # Example
     /// Parent/Child
@@ -257,11 +264,29 @@ impl ProductOffering {
 
 #[cfg(test)]
 mod test {
-    use super::ProductOffering;
-    use super::PO_VERS_INIT;
+    use super::*;
+    use crate::tmf620::category::{Category,CategoryRef};
+    use crate::{HasId,HasName};
 
     const PO_NAME : &str = "An Offer";
+    const PO_STATUS: &str = "A Status";
+    const CAT_NAME : &str = "A Category";
+    const SPEC_NAME: &str = "A Specification";
 
+
+    const PRODOFFERREF_JSON : &str = "{
+        \"id\" : \"PO123\",
+        \"href\" : \"http://example.com/tmf620/offering/PO123\",
+        \"name\" : \"ProductOffering\"
+    }";
+
+    const PRODOFFERTERM_JSON : &str = "{}";
+    const PRODOFFERREL_JSON : &str = "{
+        \"id\" : \"POR123\",
+        \"name\" : \"ProductOfferRel\",
+        \"relationshipType\" : \"Parent/Child\",
+        \"role\" : \"child\"
+    }";
     #[test]
     fn test_po_new_name() {
         let po = ProductOffering::new(PO_NAME);
@@ -274,5 +299,77 @@ mod test {
         let po = ProductOffering::new(PO_NAME);
 
         assert_eq!(po.version, Some(PO_VERS_INIT.into()));
+    }
+
+    #[test]
+    fn test_poref_from_po() {
+        let po = ProductOffering::new(PO_NAME);
+        let po_ref = ProductOfferingRef::from(po.clone());
+
+        assert_eq!(po.get_id(),po_ref.id);
+        assert_eq!(po.get_href(),po_ref.href);
+        assert_eq!(po.get_name(),po_ref.name);
+    }
+
+    #[test]
+    fn test_por_from_po() {
+        let po = ProductOffering::new(PO_NAME);
+        let por = ProductOfferingRelationship::from(po.clone());
+
+        assert_eq!(po.id,por.id);
+        assert_eq!(po.href,por.href);
+        assert_eq!(po.name,por.name);
+        assert_eq!(por.relationship_type.is_none(),true);
+        assert_eq!(por.role.is_none(),true);
+        assert_eq!(por.valid_for.is_none(),true);
+    }
+
+    #[test]
+    fn test_po_status() {
+        let mut po = ProductOffering::new(PO_NAME);
+        po.status(PO_STATUS);
+
+        assert_eq!(po.lifecycle_status.unwrap(),PO_STATUS.to_string());
+    }
+
+    #[test]
+    fn test_po_with_cat() {
+        let cat = Category::new(CAT_NAME);
+        let po = ProductOffering::new(PO_NAME)
+            .with_category(CategoryRef::from(&cat));
+
+        assert_eq!(po.category.is_some(),true);
+    }
+
+    #[test]
+    fn test_po_with_spec() {
+        let spec = ProductSpecification::new(SPEC_NAME);
+        let po = ProductOffering::new(PO_NAME)
+            .with_specification(spec);
+
+        assert_eq!(po.product_specification.is_some(),true);
+    }
+
+    #[test]
+    fn test_po_deserialize() {
+        let productofferref : ProductOfferingRef = serde_json::from_str(PRODOFFERREF_JSON).unwrap();
+
+        assert_eq!(productofferref.id.as_str(),"PO123");
+        assert_eq!(productofferref.name.as_str(),"ProductOffering");
+    }
+
+    #[test]
+    fn test_po_term_deserialize() {
+        let _offerterm : ProductOfferingTerm = serde_json::from_str(PRODOFFERTERM_JSON).unwrap();
+    }
+
+    #[test]
+    fn test_po_relationship_deserialize() {
+        let offer_rel : ProductOfferingRelationship = serde_json::from_str(PRODOFFERREL_JSON).unwrap();
+
+        assert_eq!(offer_rel.id.is_some(),true);
+        assert_eq!(offer_rel.name.is_some(),true);
+        assert_eq!(offer_rel.relationship_type.is_some(),true);
+        assert_eq!(offer_rel.role.is_some(),true);
     }
 }

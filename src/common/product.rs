@@ -12,7 +12,6 @@ use super::related_party::RelatedParty;
 
 /// Status of product for Quote Item
 #[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
 pub enum ProductStatusType {
     /// Created
     #[default]
@@ -76,4 +75,34 @@ pub struct ProductRefOrValue {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub billing_account: Option<BillingAccountRef>,
     product_offering : Option<ProductOfferingRef>,
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const PROD_STATUS_TYPE_JSON : &str = "\"Created\"";
+
+    const PRODREF_JSON : &str = "{
+        \"id\" : \"PR123\",
+        \"name\" : \"ProductRef\",
+        \"isBundle\" : false
+    }";
+
+    #[test]
+    fn test_product_deserialise() {
+        let prod : ProductRefOrValue = serde_json::from_str(PRODREF_JSON).unwrap();
+
+        assert_eq!(prod.id.is_some(),true);
+        assert_eq!(prod.name.as_str(),"ProductRef");
+        assert_eq!(prod.is_bundle.is_some(),true);
+        assert_eq!(prod.is_bundle.unwrap(),false);
+    }
+
+    #[test]
+    fn test_productstatustype_deserialise() {
+        let prod_status : ProductStatusType = serde_json::from_str(PROD_STATUS_TYPE_JSON).unwrap();
+
+        assert_eq!(prod_status,ProductStatusType::Created);
+    }
 }

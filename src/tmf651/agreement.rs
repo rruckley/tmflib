@@ -61,8 +61,6 @@ impl Agreement {
     pub fn new(name : impl Into<String>) -> Agreement {
         let mut agreement = Agreement::create();
         agreement.name = Some(name.into());
-        // Pre-create the agreement item vec
-        agreement.agreement_item = Some(vec![]);
         agreement
     }
     /// Add a new item to the list
@@ -127,6 +125,8 @@ mod test {
     use super::*;
 
     const AGREEMENT : &str = "AnAgreement";
+    const QUOTE_VERS: &str = "1.0";
+    const QUOTE_DESC: &str = "QuoteDescription";
 
     #[test]
     fn test_agreement_new_name() {
@@ -143,5 +143,33 @@ mod test {
         assert_eq!(agreement.id,Some(agreement_ref.id));
         assert_eq!(agreement.name,Some(agreement_ref.name));
         assert_eq!(agreement.href,Some(agreement_ref.href)); 
+    }
+
+    #[test]
+    fn test_agreement_from_quote() {
+        let mut quote = Quote::new();
+        quote.version = Some(QUOTE_VERS.to_string());
+        quote.description = Some(QUOTE_DESC.to_string());
+        let agreement = Agreement::from(&quote);
+
+        assert_eq!(quote.version,agreement.version);
+        assert_eq!(agreement.agreement_period.is_some(),true);
+        assert_eq!(agreement.description.is_some(),true);
+        assert_eq!(agreement.description.unwrap().as_str(),QUOTE_DESC);
+    }
+
+    #[test]
+    fn test_agreement_add_item() {
+        let item1 = AgreementItem::default();
+        let mut agreement = Agreement::new(AGREEMENT);
+
+        agreement.add_item(item1);
+
+        let item2 = AgreementItem::default();
+
+        agreement.add_item(item2);
+
+        assert_eq!(agreement.agreement_item.is_some(),true);
+        assert_eq!(agreement.agreement_item.unwrap().len(),2);
     }
 }

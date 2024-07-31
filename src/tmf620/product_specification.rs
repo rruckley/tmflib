@@ -170,7 +170,6 @@ impl ProductSpecification {
         prod_spec.name = Some(name.into());
         prod_spec.version = Some(SPEC_VERS.to_string());
 
-        prod_spec.product_spec_characteristic= Some(vec![]);
         prod_spec
     }
 
@@ -184,7 +183,12 @@ impl ProductSpecification {
         mut self,
         characteristic: ProductSpecificationCharacteristic,
     ) -> ProductSpecification {
-        self.product_spec_characteristic.as_mut().unwrap().push(characteristic);
+        match self.product_spec_characteristic.as_mut() {
+            Some(v) => {
+                v.push(characteristic)
+            },
+            None => self.product_spec_characteristic = Some(vec![characteristic]),
+        }
         self
     }
 }
@@ -349,8 +353,8 @@ impl ProductSpecificationCharacteristicValueUse {
     pub fn new(name : impl Into<String>) -> ProductSpecificationCharacteristicValueUse {
         ProductSpecificationCharacteristicValueUse { 
             description: None, 
-            max_cardinality: 1, 
-            min_cardinality: 0, 
+            max_cardinality: CHAR_VALUE_MAX_CARD, 
+            min_cardinality: CHAR_VALUE_MIN_CARD, 
             name : name.into(), 
             value_type: String::from("String"), 
             valid_for: None,
@@ -368,14 +372,17 @@ impl ProductSpecificationCharacteristicValueUse {
 #[cfg(test)]
 mod test {
 
-    use super::ProductSpecification;
-    use super::ProductSpecificationCharacteristicValueUse;
-    use super::SPEC_VERS;
-    use super::CHAR_VALUE_MIN_CARD;
-    use super::CHAR_VALUE_MAX_CARD;
+    use crate::tmf633::characteristic_specification::CharacteristicSpecification;
+
+    use super::*;
     const SPEC_NAME: &str = "MySpecification";
     const VALUE_NAME: &str = "MyCharValueUse";
+    const DESC : &str = "A Description";
+    const SERVICE_SPEC : &str = "ServiceSpecification";
+    const SPEC_STATUS: &str = "SpecificationStatus";
+    const ENUM_STR : &str = "ValueEnumString";
 
+   
     #[test]
     fn test_char_value_use_new() {
         let value_use = ProductSpecificationCharacteristicValueUse::new(VALUE_NAME);
@@ -409,5 +416,128 @@ mod test {
         let spec = ProductSpecification::new(SPEC_NAME);
 
         assert_eq!(spec.version, Some(SPEC_VERS.to_string()));
+    }
+
+    #[test]
+    fn test_spec_char_configurable() {
+        let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME)
+        .configurable(true);
+
+        assert_eq!(spec_char.configurable,true);
+    }
+
+    #[test]
+    fn test_spec_char_description() {
+        let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME)
+        .description(DESC.to_string()); 
+
+        assert_eq!(spec_char.description.unwrap(),DESC.to_string());   
+    }
+
+    #[test]
+    fn test_spec_extensible() {
+        let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME)
+            .extensible(true);
+
+        assert_eq!(spec_char.extensible,Some(true));    
+    }
+
+    #[test]
+    fn test_spec_cardinality() {
+        let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME)
+            .cardinality(1, 2);
+
+        assert_eq!(spec_char.min_cardinality,1);
+        assert_eq!(spec_char.max_cardinality,2);
+    }
+
+    #[test]
+    fn test_spec_cardinality_invalid() {
+        let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME)
+        .cardinality(10, 2); 
+
+        // Show in valid setting wont' update anything.
+        assert_eq!(spec_char.min_cardinality,CHAR_VALUE_MIN_CARD);
+        assert_eq!(spec_char.max_cardinality,CHAR_VALUE_MAX_CARD);   
+    }
+
+    #[test]
+    fn test_spec_from_service_spec() {
+        let service_spec = CharacteristicSpecification::new(SERVICE_SPEC);
+
+        let spec = ProductSpecificationCharacteristic::from(service_spec.clone());
+
+        assert_eq!(service_spec.name.unwrap(),spec.name);
+        assert_eq!(service_spec.min_cardinality.unwrap_or_default(),spec.min_cardinality);
+        assert_eq!(service_spec.max_cardinality.unwrap_or_default(),spec.max_cardinality);
+        assert_eq!(service_spec.description,spec.description);
+    }
+
+    #[test]
+    fn test_spec_status() {
+        let mut spec = ProductSpecification::new(SPEC_NAME);
+
+        spec.status(SPEC_STATUS);
+
+        assert_eq!(spec.lifecycle_status.is_some(),true);
+        assert_eq!(spec.lifecycle_status.unwrap(),SPEC_STATUS.to_string());
+    }
+
+    #[test]
+    fn test_spec_with_char() {
+        let spec_char1 = ProductSpecificationCharacteristic::new(SPEC_NAME)
+            .cardinality(1, 2);
+        let spec_char2 = ProductSpecificationCharacteristic::new(SPEC_NAME)
+            .cardinality(3, 4);
+        let spec = ProductSpecification::new(SPEC_NAME)
+            .with_charateristic(spec_char1)
+            .with_charateristic(spec_char2);
+
+        assert_eq!(spec.product_spec_characteristic.is_some(),true);
+        assert_eq!(spec.product_spec_characteristic.unwrap().len(),2);        
+    }
+
+    fn enum_to_type(value : ValueEnum) -> String {
+        let enum_type = match value {
+            ValueEnum::Str(_) => "Str",
+            ValueEnum::Int(_) => "Int",
+            ValueEnum::BadValue => "Bad",
+        };
+        enum_type.to_string()
+    }
+
+    #[test]
+    fn test_valueenum_from_string() {
+        let value = ValueEnum::from(ENUM_STR.to_string());
+
+        assert_eq!(enum_to_type(value),"Str");
+    }
+
+    #[test]
+    fn test_valueenum_from_str() {
+        let value = ValueEnum::from(ENUM_STR);
+
+        assert_eq!(enum_to_type(value),"Str");
+    }
+
+    #[test]
+    fn test_valueenum_from_u16() {
+        let value = ValueEnum::from(16 as u16);
+
+        assert_eq!(enum_to_type(value),"Int");
+    }
+
+    #[test]
+    fn test_valueenum_default() {
+        let value = ValueEnum::default();
+
+        assert_eq!(enum_to_type(value),"Bad");
+    }
+
+    #[test]
+    fn test_prodspeccharval_new() {
+        let pscv = ProductSpecificationCharacteristicValue::new(ValueEnum::from("Value"));
+
+        assert_eq!(enum_to_type(pscv.value),"Str");
     }
 }

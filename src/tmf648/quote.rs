@@ -111,10 +111,6 @@ impl Quote {
         let mut quote = Quote::create();
         quote.version = Some(QUOTE_VERS.to_string());
         quote.state = Some(QuoteStateType::Accepted);
-        quote.quote_item = Some(vec![]);
-        quote.quote_total_price = Some(vec![]);
-        // This should really be handled in add_party()
-        quote.related_party = Some(vec![]);
         quote
     }
 
@@ -139,7 +135,10 @@ impl Quote {
 
     /// Add a price entry to this quote
     pub fn price(&mut self, price : QuotePrice) {
-        self.quote_total_price.as_mut().unwrap().push(price);
+        match self.quote_total_price.as_mut() {
+            Some(v) => v.push(price),
+            None => self.quote_total_price = Some(vec![price]),
+        }
     }
 
     /// Get a description for this quote
@@ -225,10 +224,16 @@ impl EventPayload<QuoteEvent> for Quote {
 #[cfg(test)]
 mod test {
     use super::QuoteStateType;
+    use crate::common::event::EventPayload;
     use crate::tmf648::quote::QUOTE_VERS;
-    use crate::HasId;
-
+    use crate::tmf648::quote_item::QuoteItem;
+    use crate::tmf648::quote_price::QuotePrice;
+    use crate::{HasId,HasName};
     use super::Quote;
+    use super::QuoteEventType;
+
+    const QUOTE_EXTERNAL : &str = "ExternalId";
+    const QUOTE_PRICE : &str = "QuotePrice";
     #[test]
     fn quote_test_new_vers() {
         let quote = Quote::new();
@@ -256,5 +261,58 @@ mod test {
         let quote = Quote::new();
         
         assert_eq!(quote.description(),format!("Quote-{}",quote.get_id()));
+    }
+
+    #[test]
+    fn test_quote_external_id() {
+        let mut quote = Quote::new();
+
+        quote.with_external_id(QUOTE_EXTERNAL.to_string());
+
+        assert_eq!(quote.external_id,Some(QUOTE_EXTERNAL.to_string()));
+    }
+
+    #[test]
+    fn test_quote_event() {
+        let quote = Quote::new();
+
+        let event = quote.to_event(QuoteEventType::QuoteCreateEvent);
+
+        // assert_eq!(quote.description,event.description);
+        assert_eq!(event.href,quote.href);
+        assert_eq!(event.id,quote.id);
+        assert_eq!(event.title.unwrap(),quote.get_name());
+    }
+
+    #[test]
+    fn test_quote_add_item() {
+        let item1 = QuoteItem::new();
+        let mut quote = Quote::new();
+
+        let res1 = quote.add_quote_item(item1);
+
+        assert_eq!(res1.is_ok(),true);
+
+        let item2 = QuoteItem::new();
+
+        let res2 = quote.add_quote_item(item2);
+
+        assert_eq!(res2.is_ok(),true);
+
+        assert_eq!(quote.quote_item.is_some(),true);
+        assert_eq!(quote.quote_item.unwrap().len(),2);
+    }
+
+    #[test]
+    fn test_quote_add_price() {
+        let mut quote = Quote::new();
+        let price1 = QuotePrice::new(QUOTE_PRICE);
+        quote.price(price1);
+
+        let price2 = QuotePrice::new(QUOTE_PRICE);
+        quote.price(price2);
+
+        assert_eq!(quote.quote_total_price.is_some(),true);
+        assert_eq!(quote.quote_total_price.unwrap().len(),2);
     }
 }

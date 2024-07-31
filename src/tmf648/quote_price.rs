@@ -67,7 +67,16 @@ impl QuotePrice {
 
 #[cfg(test)]
 mod test {
+
     use super::*;
+
+    const QUOTE_PERIOD : &str = "period";
+    const QUOTE_PRICE : f32 = 3600.0;
+
+    const QUOTE_PRICE_JSON : &str = "{
+        \"name\" : \"QuotePrice\",
+        \"description\" : \"QuotePriceDescription\"
+    }";
 
     #[test]
     fn test_quote_price_none() {
@@ -80,21 +89,43 @@ mod test {
 
     #[test]
     fn test_quote_price_inc() {
-        const PRICE : f32 = 3600.0;
-        let price = Price::new_inc(PRICE);
+        let price = Price::new_inc(QUOTE_PRICE);
         let quote_price = QuotePrice::new("IncPrice")
             .price(price.clone());
-        assert_eq!(quote_price.inc_tax(),PRICE);
-        assert_eq!(quote_price.ex_tax(),PRICE/(1.0+price.tax_rate));
+        assert_eq!(quote_price.inc_tax(),QUOTE_PRICE);
+        assert_eq!(quote_price.ex_tax(),QUOTE_PRICE/(1.0+price.tax_rate));
     }
 
     #[test]
     fn test_quote_price_ex() {
-        const PRICE : f32 = 3600.0;
-        let price = Price::new_ex(PRICE);
+        
+        let price = Price::new_ex(QUOTE_PRICE);
         let quote_price = QuotePrice::new("IncPrice")
             .price(price.clone());
-        assert_eq!(quote_price.ex_tax(),PRICE);
-        assert_eq!(quote_price.inc_tax(),PRICE*(1.0+price.tax_rate));
+        assert_eq!(quote_price.ex_tax(),QUOTE_PRICE);
+        assert_eq!(quote_price.inc_tax(),QUOTE_PRICE*(1.0+price.tax_rate));
+    }
+
+    #[test]
+    fn test_quote_price_period() {
+        
+        let price = Price::new_ex(QUOTE_PRICE);
+        let quote_price = QuotePrice::new("IncPrice")
+            .price(price.clone())
+            .period(QUOTE_PERIOD); 
+
+        assert_eq!(quote_price.recurring_charge_period.is_some(),true);
+        assert_eq!(quote_price.recurring_charge_period.unwrap().as_str(),QUOTE_PERIOD);
+    }
+
+    #[test]
+    fn test_quote_price_deserialize() {
+        let quote_price : QuotePrice = serde_json::from_str(QUOTE_PRICE_JSON).unwrap();
+
+        assert_eq!(quote_price.name.is_some(),true);
+        assert_eq!(quote_price.description.is_some(),true);
+
+        assert_eq!(quote_price.name.unwrap().as_str(),"QuotePrice");
+        assert_eq!(quote_price.description.unwrap().as_str(),"QuotePriceDescription");
     }
 }

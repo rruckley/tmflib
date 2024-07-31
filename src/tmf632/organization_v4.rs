@@ -238,17 +238,37 @@ impl EventPayload<OrganizationEvent> for Organization {
 mod test {
     use super::*;
 
+    const ORG_NAME : &str = "AnOrganisation";
+
     #[test]
     fn test_org_new_name() {
-        let org = Organization::new("AnOrganization");
+        let org = Organization::new(ORG_NAME);
 
-        assert_eq!(org.name,Some("AnOrganization".into()));
+        assert_eq!(org.name,Some(ORG_NAME.into()));
     }
 
     #[test]
     fn test_org_new_state() {
-        let org = Organization::new("AnOrganization");
+        let org = Organization::new(ORG_NAME);
 
         assert_eq!(org.status,Some(OrganizationStateType::default()));
+    }
+
+    #[test]
+    fn test_org_from_string() {
+        let org = Organization::from(ORG_NAME.to_string());
+
+        assert_eq!(org.get_name(),ORG_NAME.to_string());
+    }
+
+    #[test]
+    fn test_org_event() {
+        let org = Organization::from(ORG_NAME.to_string());
+
+        let event = org.to_event(OrganizationEventType::OrganizationCreateEvent);
+
+        assert_eq!(org.id,event.id);
+        assert_eq!(org.href,event.href);
+        assert_eq!(event.domain.unwrap(),Organization::get_class());
     }
 }

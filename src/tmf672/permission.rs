@@ -57,7 +57,17 @@ mod test {
     use super::Permission;
 
     const IND : &str = "An Individual";
+    const ADMIN: &str = "An Administrator";
     const DESC: &str = "A Description";
+
+    const PERM_JSON : &str = "{
+        \"description\" : \"A description\",
+        \"user\" : { 
+            \"id\" : \"U123\",
+            \"href\" : \"http://example.com/user/U123\",
+            \"name\" : \"John Q. Citizen\"
+        }
+    }";
     #[test]
     fn test_permission_new() {
         let user = Individual::new(IND);
@@ -73,5 +83,26 @@ mod test {
             .desc(DESC);
 
         assert_eq!(perm.description, Some(DESC.into()));
+    }
+
+    #[test]
+    fn test_permission_granter() {
+        let user = Individual::new(IND);
+        let admin = Individual::new(ADMIN);
+        let party = RelatedParty::from(&user);
+        let perm = Permission::new(party)
+            .granter(RelatedParty::from(&admin));
+
+        assert_eq!(perm.granter.is_some(),true);
+        // assert_eq!(perm.granter.unwrap().name.is_some(),true);
+        assert_eq!(perm.granter.unwrap().name.unwrap().as_str(),ADMIN);
+    }
+
+    #[test]
+    fn test_permission_deserialize() {
+        let perm : Permission = serde_json::from_str(PERM_JSON).unwrap();
+
+        assert_eq!(perm.user.name.is_some(),true);
+        assert_eq!(perm.user.name.unwrap().as_str(),"John Q. Citizen");
     }
 }

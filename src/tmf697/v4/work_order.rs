@@ -48,6 +48,7 @@ pub enum WorkOrderStateType {
 
 /// Work Order
 #[derive(Clone,Debug,Default,Deserialize,HasId,HasNote,HasRelatedParty,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct WorkOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@type")]
@@ -121,6 +122,9 @@ impl WorkOrder {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::tmf697::v4::work::{WorkRefOrValue,Work};
+
+    const WORK_NAME:&str = "WorkName";
 
     #[test]
     fn test_work_order_new() {
@@ -128,5 +132,21 @@ mod test {
 
         assert_eq!(wo.state.is_some(),true);
         assert_eq!(wo.state.unwrap(),WorkOrderStateType::default());
+    }
+
+    #[test]
+    fn test_work_order_add_item() {
+        let item1 = WorkOrderItem::with(WorkRefOrValue::from(Work::new(WORK_NAME)));
+        let mut wo = WorkOrder::new();
+
+        wo.add_item(item1);
+
+        assert_eq!(wo.work_order_item.is_some(),true);
+
+        let item2 = WorkOrderItem::with(WorkRefOrValue::from(Work::new(WORK_NAME)));
+
+        wo.add_item(item2);
+
+        assert_eq!(wo.work_order_item.unwrap().len(),2);
     }
 }

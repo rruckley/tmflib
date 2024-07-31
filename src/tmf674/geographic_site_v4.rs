@@ -22,6 +22,7 @@ use super::MOD_PATH;
 const CLASS_PATH: &str = "geographicSite";
 const DEFAULT_TZ : &str = "AEST";
 const CODE_PREFIX : &str = "S-";
+const CALENDAR_WEEKDAYS : &str = "weekdays";
 
 
 /// Reference to a place
@@ -80,7 +81,7 @@ impl CalendarPeriod {
     /// Generate standard business hours calendar
     pub fn business_hours() -> CalendarPeriod {
     CalendarPeriod {
-        day : Some("weekdays".to_string()),
+        day : Some(CALENDAR_WEEKDAYS.to_string()),
         status : Some("open".to_string()),
         time_zone : Some(DEFAULT_TZ.to_string()),
         hour_period : Some(
@@ -131,15 +132,16 @@ impl GeographicSite {
     pub fn new(name : impl Into<String>) -> GeographicSite {
         let mut site = GeographicSite::create();
         site.name = Some(name.into());
-        site.calendar = Some(vec![]);
         site.generate_code(None);
-        site.place = Some(vec![]);
         site
     }
     /// Set the place on this Site
     pub fn place(mut self, place : PlaceRefOrValue) -> GeographicSite {
-        self.place.as_mut().unwrap().push(place);
-        self    
+        match self.place.as_mut() {
+            Some(v) => v.push(place),
+            None => self.place = Some(vec![place])
+        }
+        self 
     }
 
     /// Set the code for this site
@@ -150,7 +152,10 @@ impl GeographicSite {
 
     /// Set the calendar for this site
     pub fn calendar(mut self, calendar : CalendarPeriod) -> GeographicSite {
-        self.calendar.as_mut().unwrap().push(calendar);
+        match self.calendar.as_mut() {
+            Some(v) => v.push(calendar),
+            None => self.calendar = Some(vec![calendar]),
+        }
         self
     }
 
@@ -224,6 +229,7 @@ mod test {
 
     const SITE : &str = "ASites";
     const ADDRESS : &str = "AnAddress";
+    const SITE_CODE: &str = "SiteCode";
 
     #[test]
     fn test_site_new_name() {
@@ -247,6 +253,33 @@ mod test {
         let path = GeographicSite::get_class_href();
 
         assert_eq!(path.contains("geographicSiteManagement"),true);
+    }
+
+    #[test]
+    fn test_site_business_hours() {
+        let bus_hours = CalendarPeriod::business_hours();
+
+        assert_eq!(bus_hours.day,Some(CALENDAR_WEEKDAYS.to_string()));
+        assert_eq!(bus_hours.hour_period.is_some(),true);
+    }
+
+    #[test]
+    fn test_site_code() {
+        let site = GeographicSite::new(SITE)
+            .code(SITE_CODE.to_string());
+
+        assert_eq!(site.code.is_some(),true);
+        assert_eq!(site.code.unwrap().as_str(),SITE_CODE);
+    }
+
+    #[test]
+    fn test_site_calendar() {
+        let site = GeographicSite::new(SITE)
+            .calendar(CalendarPeriod::business_hours())
+            .calendar(CalendarPeriod::business_hours());
+
+        assert_eq!(site.calendar.is_some(),true);
+        assert_eq!(site.calendar.unwrap().len(),2);
     }
 }
 

@@ -53,6 +53,11 @@ impl Money {
 mod test {
     use super::*;
 
+    const MONEY_JSON : &str = "{
+        \"unit\" : \"AUD\",
+        \"value\" : 12.34
+    }";
+
     #[test]
     fn test_valid_currency() {
         let mut money = Money::default();
@@ -66,5 +71,13 @@ mod test {
         let mut money = Money::default();
         let result = money.currency("INVALID");
         assert_eq!(result.is_err(),true);
+    }
+
+    #[test]
+    fn test_money_deserialize() {
+        let money : Money = serde_json::from_str(MONEY_JSON).unwrap();
+
+        assert_eq!(money.unit.as_str(),"AUD");
+        assert_eq!(money.value,12.34);
     }
 }

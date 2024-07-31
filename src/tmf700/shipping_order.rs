@@ -76,7 +76,7 @@ pub struct ShippingOrder {
     // Referenced Types
     //
     /// Shipping Line Items
-    pub shipping_order_item: Vec<ShippingOrderItem>,
+    pub shipping_order_item: Option<Vec<ShippingOrderItem>>,
     /// Notes
     #[serde(skip_serializing_if = "Option::is_none")]
     pub note: Option<Vec<Note>>,
@@ -94,9 +94,7 @@ pub struct ShippingOrder {
 impl ShippingOrder {
     /// Create new ShippingOrder
     pub fn new() -> ShippingOrder {
-        let mut order = ShippingOrder::create();
-        order.note = Some(vec![]);
-        order
+        ShippingOrder::create()
     }
 
     /// Set shipping instructions for this shipping order
@@ -107,7 +105,10 @@ impl ShippingOrder {
 
     /// Add an order item to this order
     pub fn add_item(&mut self, item : ShippingOrderItem) {
-        self.shipping_order_item.push(item);
+        match self.shipping_order_item.as_mut() {
+            Some(v) => v.push(item),
+            None => self.shipping_order_item = Some(vec![item]),
+        }
     }
 
     /// Add a RelatedShippingOrder to this order
@@ -117,21 +118,20 @@ impl ShippingOrder {
 }
 #[cfg(test)]
 mod test {
+    use crate::tmf700::shipping_instruction::ShippingInstruction;
+    use crate::tmf700::shipping_order_item::ShippingOrderItem;
+
     use super::RelatedShippingOrder;
     use super::ShippingOrder;
     use super::HasId;
+
+    const SHIP_INST : &str = "ShippingInstruction";
     #[test]
     fn shipping_order_create_id() {
         // Generate shipping order, test id
         let so = ShippingOrder::new();
 
         assert_eq!(so.id.is_some(),true);
-    }
-
-    #[test]
-    fn shipping_order_create_href() {
-        let so = ShippingOrder::new();
-
         assert_eq!(so.href.is_some(), true);
     }
 
@@ -164,5 +164,29 @@ mod test {
         let linked_order = so_child.related_shipping_order.unwrap();
         
         assert_eq!(so_parent.get_id(),linked_order.id);
+    }
+
+    #[test]
+    fn shipping_order_instruction() {
+        let instruction = ShippingInstruction::new(SHIP_INST);
+        let so = ShippingOrder::new()
+            .instruction(instruction);
+
+        assert_eq!(so.shipping_instruction.is_some(),true);
+        assert_eq!(so.shipping_instruction.unwrap().label_message,Some(SHIP_INST.to_string()));
+    }
+
+    #[test]
+    fn shipping_order_add_item() {
+        let mut so = ShippingOrder::new();
+        let item1 = ShippingOrderItem::new();
+        so.add_item(item1);
+
+        assert_eq!(so.shipping_order_item.is_some(),true);
+
+        let item2 = ShippingOrderItem::new();
+        so.add_item(item2);
+
+        assert_eq!(so.shipping_order_item.unwrap().len(),2);        
     }
 }

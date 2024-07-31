@@ -157,7 +157,10 @@ impl CommunicationMessage {
 
 #[cfg(test)]
 mod test {
-    use super::CommunicationMessage;
+    use crate::tmf632::individual_v4::Individual;
+    use crate::{HasId,HasName};
+
+    use super::{CommunicationMessage, Receiver, Sender};
 
     const MSG : &str = "AMessage";
     const SUB : &str = "ASubject";
@@ -193,5 +196,34 @@ mod test {
         assert_eq!(email.content,MSG);
         assert_eq!(email.subject.unwrap(),SUB);
         assert_eq!(email.message_type,"email".to_string());
+    }
+
+    #[test]
+    fn test_receiver_from_individual() {
+        let individual = Individual::new("An Individual");
+
+        let rcv = Receiver::from(&individual);
+
+        assert_eq!(individual.get_id(),rcv.id);
+        assert_eq!(individual.get_name(),rcv.name);
+    }
+
+    #[test]
+    fn test_sender_from_individual() {
+        let individual = Individual::new("An Individual");
+
+        let snd = Sender::from(&individual);
+
+        assert_eq!(individual.get_id(),snd.id);
+        assert_eq!(individual.get_name(),snd.name);
+    }
+
+    #[test]
+    fn test_message_from() {
+        let individual = Individual::new("An Individual");
+        let email = CommunicationMessage::email(SUB,MSG)
+            .from(&individual);
+
+        assert_eq!(email.sender.is_some(),true);
     }
 }

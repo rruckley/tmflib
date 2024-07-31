@@ -14,7 +14,7 @@ use crate::LIB_PATH;
 const CLASS_PATH: &str = "attachment";
 
 /// Attachment Type
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum AttachmentType {
     /// Inline Attachment, i.e. inside the payload
@@ -28,8 +28,10 @@ pub enum AttachmentType {
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AttachmentSize {
-    amount: f64,
-    units: String,
+    /// Amount of units
+    pub amount: f64,
+    /// Units, e.g. bytes
+    pub units: String,
 }
 
 /// Attachment Reference or Value
@@ -71,7 +73,10 @@ pub struct AttachmentRefOrValue {
 impl AttachmentRefOrValue {
     /// Create a new attachment object
     pub fn new() -> AttachmentRefOrValue {
-        AttachmentRefOrValue::create()
+        AttachmentRefOrValue {
+            valid_for: Some(TimePeriod::default()),
+            ..AttachmentRefOrValue::create()
+        }
     }
 }
 
@@ -86,5 +91,77 @@ impl From<&Document> for AttachmentRefOrValue {
             valid_for : validity,
             ..Default::default()
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::{tmf667::document::Document, HasName};
+
+    use super::*;
+
+    const ATTACH_TYPE_JSON : &str = "\"inLine\"";
+    const ATTACH_SIZE : &str = "{
+        \"amount\" : 123.4,
+        \"units\" : \"bytes\"  
+    }";
+    const ATTACH_NAME: &str= "AttachmentName";
+
+    const ATTACH_JSON : &str = "{}";
+
+    #[test]
+    fn test_attachment_default() {
+        let attachment = AttachmentRefOrValue::new();
+
+        assert_eq!(attachment.valid_for.is_some(),true);
+    }
+
+    #[test]
+    fn test_attachment_from_document() {
+        let document = Document::new("A Document");
+
+        let attachment = AttachmentRefOrValue::from(&document);
+
+        assert_eq!(attachment.name.unwrap(),document.get_name());
+    }
+
+    #[test]
+    fn test_attachmenttype_deserialize() {
+        let attach_type : AttachmentType = serde_json::from_str(ATTACH_TYPE_JSON).unwrap();
+
+        assert_eq!(attach_type,AttachmentType::InLine);
+    }
+
+    #[test]
+    fn test_attachmentsize_deserialize() {
+        let attach_size : AttachmentSize = serde_json::from_str(ATTACH_SIZE).unwrap();
+
+        assert_eq!(attach_size.amount,123.4);
+        assert_eq!(attach_size.units.as_str(),"bytes");
+    }
+
+    #[test]
+    fn test_attach_deserialize() {
+        let _attach : AttachmentRefOrValue = serde_json::from_str(ATTACH_JSON).unwrap();
+
+    }
+
+    #[test]
+    fn test_attach_hasname() {
+        let mut attach = AttachmentRefOrValue::new();
+        
+        attach.set_name(ATTACH_NAME);
+
+        assert_eq!(attach.get_name().as_str(),ATTACH_NAME);
+    }
+
+    #[test]
+    fn test_attach_hasvalidity() {
+        let mut attach = AttachmentRefOrValue::new();
+        attach.set_validity(TimePeriod::period_30days());
+
+        assert_eq!(attach.valid_for.is_some(),true);
+        assert_eq!(attach.valid_for.unwrap().started(),true);
+        // assert_eq!(attach.valid_for.unwrap().finished(),false);
     }
 }

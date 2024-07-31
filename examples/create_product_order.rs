@@ -19,6 +19,7 @@ use tmflib::tmf632::organization_v4::Organization;
 use tmflib::tmf632::individual_v5::Individual;
 #[cfg(feature = "tmf632-v5")]
 use tmflib::tmf632::organization_v5::Organization;
+use tmflib::HasRelatedParty;
 
 fn main() {
     // This example simple creates in memory structures without reference to any persistence

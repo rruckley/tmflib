@@ -119,4 +119,26 @@ mod test {
 
         assert_eq!(account.name,Some(ACCOUNT.into()));
     }
+
+    #[test]
+    fn test_ref_from_billing_account() {
+        let account = BillingAccount::new(ACCOUNT);
+
+        let account_ref = AccountRef::from(account.clone());
+
+        assert_eq!(account_ref.id,account.get_id());
+        assert_eq!(account_ref.href,account.get_href());
+        assert_eq!(account_ref.name,account.get_name());
+    }
+
+    #[test]
+    fn test_billingref_from_billing_account() {
+        let account = BillingAccount::new(ACCOUNT);
+
+        let account_ref = BillingAccountRef::from(account.clone());
+
+        assert_eq!(account_ref.id,account.get_id());
+        assert_eq!(account_ref.href,account.get_href());
+        assert_eq!(account_ref.name,account.get_name());    
+    }
 }

@@ -50,3 +50,38 @@ impl From<ServiceCandidate> for ServiceCandidateRef {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const CANDIDATE_NAME : &str = "CandidateName";
+    #[test]
+    fn test_servicecandidate_new() {
+        let candidate = ServiceCandidate::new(CANDIDATE_NAME);
+
+        assert_eq!(candidate.get_name().as_str(),CANDIDATE_NAME);
+        assert_eq!(candidate.id.is_some(),true);
+        assert_eq!(candidate.href.is_some(),true);
+    }
+
+    #[test]
+    fn test_servicecandidate_from_string() {
+        let candidate = ServiceCandidate::from(CANDIDATE_NAME.to_string());  
+
+        assert_eq!(candidate.get_name().as_str(),CANDIDATE_NAME);
+        assert_eq!(candidate.id.is_some(),true);
+        assert_eq!(candidate.href.is_some(),true); 
+    }
+
+    #[test]
+    fn test_candidateref_from_candidate() {
+        let candidate = ServiceCandidate::from(CANDIDATE_NAME.to_string()); 
+
+        let candidate_ref = ServiceCandidateRef::from(candidate.clone());
+
+        assert_eq!(candidate.get_name(),candidate_ref.name);
+        assert_eq!(candidate.get_id(),candidate_ref.id);
+        assert_eq!(candidate.get_href(),candidate_ref.href);
+    }
+}

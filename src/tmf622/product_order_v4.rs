@@ -50,11 +50,14 @@ pub struct ProductOrderRef {
 
 impl From<ProductOrder> for ProductOrderRef {
     fn from(value: ProductOrder) -> Self {
+        let name = value.description.as_deref().unwrap_or({
+            "No Order Description"
+        });
         ProductOrderRef {
             href: value.get_href(),
             id: value.get_id(),
             // Should ideally generate a useful name if description is missing
-            name: value.description.as_ref().unwrap().clone(),
+            name: name.to_string(),
             r#type : Some("ProductOrder".to_string()),
             ..Default::default()
         }
@@ -132,10 +135,9 @@ impl HasLastUpdate for ProductOrder {
 impl ProductOrder {
     /// Create a new product order via trait
     pub fn new() -> ProductOrder {
-        let mut po = ProductOrder::create_with_time();
-        po.related_party = Some(vec![]);
-        po.product_order_item = Some(vec![]);
-        po
+        ProductOrder {
+            ..ProductOrder::create_with_time()
+        }
     }
 
     /// Add an ProductOrderItem into the ProductOrder
@@ -143,23 +145,6 @@ impl ProductOrder {
         self.product_order_item.as_mut().unwrap().push(order_item);
     }
 
-    /// Add a RelatedParty into the ProductOrder
-    /// # Example
-    /// ```
-    /// # use tmflib::tmf622::product_order_v4::ProductOrder;
-    /// use tmflib::common::related_party::RelatedParty;
-    /// use tmflib::tmf629::customer::Customer;
-    /// use tmflib::tmf632::organization_v4::Organization;
-    /// 
-    /// let organization = Organization::new(String::from("My Customer"));
-    /// let customer = Customer::new(organization);
-    /// let mut order = ProductOrder::new();
-    /// order.add_party(RelatedParty::from(&customer));
-    /// dbg!(order);
-    /// ```
-    pub fn add_party(&mut self, party: RelatedParty) {
-        self.related_party.as_mut().unwrap().push(party);
-    }
 }
 
 impl From<ServiceOrder> for ProductOrder {
@@ -217,5 +202,55 @@ impl From<ShoppingCart> for ProductOrder {
             });
         }
         order
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::tmf641::service_order::ServiceOrder;
+    use crate::tmf663::shopping_cart::ShoppingCart;
+
+    const SERVICE_CAT : &str = "ServiceCategory";
+
+    #[test]
+    fn test_orderref_from_order() {
+        let order = ProductOrder::new();
+
+        let order_ref = ProductOrderRef::from(order.clone());
+
+        assert_eq!(order.get_id(),order_ref.id);
+        assert_eq!(order.get_href(),order_ref.href);
+    }
+
+    #[test]
+    fn test_orderref_from_order_ref() {
+        let order = ProductOrder::new();
+
+        let order_ref = ProductOrderRef::from(&order);
+
+        assert_eq!(order.get_id(),order_ref.id);
+        assert_eq!(order.get_href(),order_ref.href);   
+    }
+
+    #[test]
+    fn test_prodorder_from_serviceorder() {
+        let mut service_order = ServiceOrder::new();
+        service_order.category = Some(SERVICE_CAT.to_string());
+
+        let product_order = ProductOrder::from(service_order.clone());
+
+        assert_eq!(product_order.category,service_order.category);
+    }
+
+    #[test]
+    fn test_productorder_from_shoppingcart() {
+        let cart = ShoppingCart::new();
+
+        let order = ProductOrder::from(cart.clone());
+
+        assert_eq!(order.description.is_some(),true);
+        assert_eq!(order.related_party.is_none(),true);
+        assert_eq!(order.product_order_item.is_none(),true);
     }
 }

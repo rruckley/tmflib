@@ -9,6 +9,7 @@ const AUS_CURRENCY : &str = "AUD";
 
 /// Common Pricing structure
 #[derive(Clone, Debug, Default, Deserialize,PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Price {
     /// Percentage
     pub percentage: f32,
@@ -68,6 +69,13 @@ impl Price {
 #[cfg(test)]
 mod test {
     use super::*;
+
+    const PRICE_JSON : &str = "{
+        \"percentage\" : 30.0,
+        \"taxRate\" : 10.0,
+        \"dutyFreeAmount\" : { \"unit\" : \"AUD\", \"value\" : 100.0 },
+        \"taxIncludedAmount\" : { \"unit\" : \"AUD\", \"value\" : 110.0 }
+    }";
     #[test]
     fn test_price_inc() {
         let price = Price::new_inc(100.0);
@@ -78,5 +86,14 @@ mod test {
     fn test_price_ex() {
         let price = Price::new_ex(100.0);
         assert_eq!(price.tax_included_amount.value,100.0*(1.0+price.tax_rate));
+    }
+
+    #[test]
+    fn test_price_deserialization() {
+        let price : Price = serde_json::from_str(PRICE_JSON).unwrap();
+
+        assert_eq!(price.percentage, 30.0);
+        assert_eq!(price.tax_rate,10.0);
+   
     }
 }

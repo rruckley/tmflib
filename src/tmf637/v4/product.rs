@@ -111,6 +111,7 @@ impl Product {
 
 /// Product Term
 #[derive(Clone,Debug,Default,Deserialize, HasValidity, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductTerm {
     /// Term Description
     description: Option<String>,
@@ -126,20 +127,98 @@ pub struct ProductTerm {
 mod test {
     use super::*;
     use crate::common::product::ProductStatusType;
+    use crate::{TimePeriod,HasValidity};
 
-    const PRODUCT : &str = "AProduct";
+    const PRODUCT_NAME : &str = "A Product";
+
+    const PRODUCTPRICE_JSON : &str = "{
+        \"applicationDuration\" : 1,
+        \"description\" : \"Description\",
+        \"name\" : \"Name\",
+        \"priceType\" : \"Fixed\",
+        \"priority\" : 2,
+        \"recurringChargePeriod\" : \"monthly\",
+        \"unitOfMeasure\" : \"Dollars\"
+    }";
+    const PRICEALTERATION_JSON : &str = "{
+        \"applicationDuration\" : 1,
+        \"description\" : \"Description\",
+        \"name\" : \"Name\",
+        \"priceType\" : \"Fixed\",
+        \"priority\" : 2,
+        \"recurringChargePeriod\" : \"monthly\",
+        \"unitOfMeasure\" : \"Dollars\"
+    }";
+    const PRODUCT_JSON : &str = "{
+        \"status\" : \"Created\"
+    }";
+    const PRODUCTTERM_JSON : &str = "{
+        \"name\" : \"annual\",
+        \"duration\" : 365
+    }";
 
     #[test]
     fn test_product_new_name() {
-        let product = Product::new(PRODUCT);
+        let product = Product::new(PRODUCT_NAME);
 
-        assert_eq!(product.name,Some(PRODUCT.into()));
+        assert_eq!(product.get_name(),PRODUCT_NAME);
     }
 
     #[test]
     fn test_product_new_status() {
-        let product = Product::new(PRODUCT);
+        let product = Product::new(PRODUCT_NAME);
 
         assert_eq!(product.status,ProductStatusType::Created);
+    }
+
+    #[test]
+    fn test_productprice_deserialize() {
+        let productprice : ProductPrice = serde_json::from_str(PRODUCTPRICE_JSON).unwrap();
+
+        assert_eq!(productprice.name.as_str(),"Name");
+        assert_eq!(productprice.description.is_some(),true);
+        assert_eq!(productprice.description.unwrap().as_str(),"Description");
+    }
+
+    #[test]
+    fn test_pricealteration_deserialize() {
+        let pricealteration : PriceAlteration = serde_json::from_str(PRICEALTERATION_JSON).unwrap();
+
+        assert_eq!(pricealteration.application_duration,1);
+        assert_eq!(pricealteration.priority,2);
+    }
+
+    #[test]
+    fn test_product_deserialize() {
+        let product : Product = serde_json::from_str(PRODUCT_JSON).unwrap();
+
+        assert_eq!(product.status,ProductStatusType::Created);
+    }
+
+    #[test]
+    fn test_product_hasname() {
+        let product = Product::new(PRODUCT_NAME);
+
+        assert_eq!(product.get_name().as_str(),PRODUCT_NAME);
+    }
+
+    #[test]
+    fn test_productterm_desrialize() {
+        let productterm : ProductTerm = serde_json::from_str(PRODUCTTERM_JSON).unwrap();
+
+        assert_eq!(productterm.name.is_some(),true);
+        assert_eq!(productterm.name.unwrap().as_str(),"annual");
+        assert_eq!(productterm.duration,365);
+    }
+
+    #[test]
+    fn test_productterm_hasvalidity() {
+        let mut productterm = ProductTerm::default();
+        productterm.set_validity(TimePeriod::period_30days());
+
+        assert_eq!(productterm.valid_for.is_some(),true);
+        let validity = productterm.get_validity().unwrap();
+        assert_eq!(validity.started(),true);
+        assert_eq!(validity.finished(),false);
     }
 }

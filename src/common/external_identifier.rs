@@ -18,3 +18,32 @@ pub struct ExternalIdentifier {
     id: Option<String>,
     owner: String,
 }
+
+#[cfg(test)]
+mod test {
+    use super::ExternalIdentifier;
+    use crate::HasId;
+
+    const EXTERNAL_JSON: &str = "{
+        \"externalIdentifierType\" : \"email\",
+        \"owner\" : \"customer\"
+    }";
+
+    #[test]
+    fn test_exteranl_hasid() {
+        let mut external = ExternalIdentifier::default();
+        external.generate_id();
+
+        let id = external.get_id();
+
+        assert_eq!(external.id,Some(id));
+    }
+
+    #[test]
+    fn test_external_deserialize() {
+        let external : ExternalIdentifier = serde_json::from_str(EXTERNAL_JSON).unwrap();
+
+        assert_eq!(external.external_identifier_type.as_str(),"email");
+        assert_eq!(external.owner.as_str(),"customer");
+    }
+}

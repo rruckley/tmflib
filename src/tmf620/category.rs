@@ -148,6 +148,8 @@ mod tests {
     use super::CAT_VERS;
     use super::CLASS_PATH;
     use crate::HasId;
+
+    const DESC: &str = "A Description";
     #[test]
     fn cat_test_name() {
         let cat = Category::new(String::from("MyCategory"));
@@ -177,6 +179,36 @@ mod tests {
     fn cat_test_class() {
         
         assert_eq!(Category::get_class(),CLASS_PATH);
+    }
+
+    #[test]
+    fn test_cat_root() {
+        let cat = Category::new("A Category");
+
+        assert_eq!(cat.root(),false);
+    }
+
+    #[test]
+    fn test_cat_description() {
+        let cat = Category::new("A Category")
+            .description(DESC.to_string());
+
+        assert_eq!(cat.description.unwrap(),DESC.to_string());
+
+    }
+
+    #[test]
+    fn test_cat_set_parent_root() {
+        let parent = Category::new("Parent");
+        let child = Category::new("Child")
+            // Make root=true
+            .is_root(true)
+            // Should make root=false
+            .parent(parent.get_id());
+            
+
+        // Child should no longer be root
+        assert_eq!(child.is_root.unwrap(),false);
     }
 }
 
@@ -219,16 +251,24 @@ impl From<&Category> for CategoryRef {
 
 #[cfg(test)]
 mod test {
-    use crate::tmf620::category::CAT_VERS;
-
+    use crate::{tmf620::category::CAT_VERS, HasName};
     use super::{Category, CategoryRef};
-    #[test]
 
+    const CAT_NAME : &str = "CategoryName";
+
+    #[test]
     fn catref_test_from() {
         let cat = Category::new(String::from("MyCategory"));
         let cat_ref = CategoryRef::from(&cat);
 
         assert_eq!(cat_ref.name, Some(String::from("MyCategory")));
         assert_eq!(cat_ref.version, Some(CAT_VERS.to_string()));
+    }
+
+    #[test]
+    fn cat_hasname() {
+        let cat = Category::new(CAT_NAME);
+
+        assert_eq!(cat.get_name().as_str(),CAT_NAME);
     }
 }

@@ -12,7 +12,7 @@ use crate::tmf663::cart_item::CartItem;
 
 
 /// Action Type for Order Items
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum OrderItemActionType {
     /// Add Order Item [Default]
@@ -64,5 +64,74 @@ impl From<CartItem> for ProductOrderItem {
             quantity: value.quantity,
             ..Default::default()
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::tmf620::product_offering::ProductOffering;
+    use crate::tmf641::service_order_item::ServiceOrderItem;
+    use crate::tmf663::cart_item::CartItem;
+    use super::*;
+    use crate::{HasId,HasName};
+
+    const OFFER_NAME: &str = "ProductOffering";
+
+    const ORDERITEMTYPE_JSON : &str = "\"add\"";
+    const ORDERITEM_JSON : &str = "{
+        \"quantity\" : 1,
+        \"action\" : \"add\"
+    }";
+
+    #[test]
+    fn test_orderitem_from_offering() {
+        let offer = ProductOffering::new(OFFER_NAME);
+
+        let item = ProductOrderItem::from(offer.clone());
+
+        assert_eq!(item.quantity,1);
+        assert_eq!(item.product_offering.is_some(),true);
+        let new_offer = item.product_offering.unwrap();
+        assert_eq!(new_offer.name,offer.get_name());
+        assert_eq!(new_offer.id,offer.get_id());
+        assert_eq!(new_offer.href,offer.get_href());
+    }
+
+    #[test]
+    fn test_orderitem_from_serviceitem() {
+        let service_item = ServiceOrderItem::default();
+        let product_item = ProductOrderItem::from(service_item.clone());
+
+        assert_eq!(product_item.quantity,service_item.quantity);
+        assert_eq!(product_item.product_offering.is_some(),true);
+        let new_offer = product_item.product_offering.unwrap();
+        assert_eq!(new_offer.name,"Generated Offer".to_string());
+    }
+
+    #[test]
+    fn test_orderitem_from_cartitem() {
+        let _offer = ProductOffering::new(OFFER_NAME);
+        let cart = CartItem::default();
+
+        let order_item = ProductOrderItem::from(cart.clone());
+
+        assert_eq!(cart.quantity,order_item.quantity);
+        // No way to set offer on cart_item, this is matching None with None
+        assert_eq!(cart.product_offering,order_item.product_offering);
+    }
+
+    #[test]
+    fn test_orderitemtype_deserialize() {
+        let orderitemtype : OrderItemActionType = serde_json::from_str(ORDERITEMTYPE_JSON).unwrap();
+
+        assert_eq!(orderitemtype,OrderItemActionType::Add);
+    }
+
+    #[test]
+    fn test_productorderitem_deserialize() {
+        let orderitem : ProductOrderItem = serde_json::from_str(ORDERITEM_JSON).unwrap();
+
+        assert_eq!(orderitem.quantity,1);
+        assert_eq!(orderitem.action,OrderItemActionType::Add);
     }
 }

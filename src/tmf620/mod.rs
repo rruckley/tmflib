@@ -16,7 +16,6 @@
 //!
 //! Structs associated with product catalogue management
 
-use super::LIB_PATH;
 use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "tmf620-v4")]
@@ -36,18 +35,82 @@ pub mod product_offering_price;
 pub mod product_specification;
 
 /// Channel Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ChannelRef {}
 
 /// Market Segment Refefence
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct MarketSegmentRef {}
 
 /// Place Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct PlaceRef {}
 
 /// Service Level Agreement Reference
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct SLARef {}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const EMPTY_JSON: &str = "{}";
+
+    #[test]
+    fn test_channelref_deserialise() {
+        let channel = ChannelRef::default();
+
+        let channel_str = serde_json::to_string(&channel);
+
+        assert_eq!(channel_str.is_ok(),true);
+    }
+
+    #[test]
+    fn test_marketsegment_deserialise() {
+        let segment = MarketSegmentRef::default();
+
+        let segment_str = serde_json::to_string(&segment);
+
+        assert_eq!(segment_str.is_ok(),true);  
+    }
+
+    #[test]
+    fn test_placeref_deserialise() {
+        let place = PlaceRef::default();
+
+        let place_str = serde_json::to_string(&place);
+
+        assert_eq!(place_str.is_ok(),true);
+    }
+
+    #[test]
+    fn test_slaref_deserialise() {
+        let sla = SLARef::default();
+
+        let sla_str = serde_json::to_string(&sla);
+
+        assert_eq!(sla_str.is_ok(),true);
+    }
+
+    #[test]
+    fn test_channelref_deserialize() {
+        let _channelref : ChannelRef = serde_json::from_str(EMPTY_JSON).unwrap();
+    }
+
+    #[test]
+    fn test_marketsegmentref_deserialize() {
+        let _marketsegmentref : MarketSegmentRef  = serde_json::from_str(EMPTY_JSON).unwrap();
+    }
+
+    #[test]
+    fn test_placeref_deserialize() {
+        let _placeref : PlaceRef  = serde_json::from_str(EMPTY_JSON).unwrap();
+    }
+
+    #[test]
+    fn test_slafef_deserialize() {
+        let _slaref : SLARef = serde_json::from_str(EMPTY_JSON).unwrap();
+    }
+
+}
 
