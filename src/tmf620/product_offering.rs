@@ -246,7 +246,10 @@ impl ProductOffering {
 
     /// Add characteristic value uses into this Product Offering
     pub fn with_char_value_use(mut self, char_value_use : ProductSpecificationCharacteristicValueUse) -> ProductOffering {
-        self.prod_spec_char_value_use.as_mut().unwrap().push(char_value_use);
+        match self.prod_spec_char_value_use.as_mut() {
+            Some(v) => v.push(char_value_use),
+            None => self.prod_spec_char_value_use = Some(vec![char_value_use]),
+        }
         self
     }
 
@@ -276,6 +279,7 @@ mod test {
     const PO_STATUS: &str = "A Status";
     const CAT_NAME : &str = "A Category";
     const SPEC_NAME: &str = "A Specification";
+    const CHARVALUSE_NAME : &str = "CharValUse";
 
 
     const PRODOFFERREF_JSON : &str = "{
@@ -297,6 +301,9 @@ mod test {
         \"relationshipType\" : \"Parent/Child\",
         \"role\" : \"child\"
     }";
+
+    const PO_TERM_JSON : &str = "{}";
+
     #[test]
     fn test_po_new_name() {
         let po = ProductOffering::new(PO_NAME);
@@ -395,10 +402,28 @@ mod test {
     fn test_po_hasattachment() {}
 
     #[test]
-    fn test_po_hasvalidity() {}
+    fn test_po_hasvalidity() {
+        let mut po = ProductOffering::new(PO_NAME);
+
+        po.set_validity(TimePeriod::period_30days());
+
+        assert_eq!(po.valid_for.is_some(),true);
+        assert_eq!(po.get_validity().unwrap().started(),true);
+        assert_eq!(po.get_validity().unwrap().finished(),false);
+        assert_eq!(po.get_validity_start().is_some(),true);
+        assert_eq!(po.get_validity_end().is_some(),true);
+    }
 
     #[test]
-    fn test_po_charvaluse() {}
+    fn test_po_charvaluse() {
+        let charvaluse = ProductSpecificationCharacteristicValueUse::new(CHARVALUSE_NAME);
+
+        let po = ProductOffering::new(PO_NAME)
+            .with_char_value_use(charvaluse);
+
+        assert_eq!(po.prod_spec_char_value_use.is_some(),true);
+        assert_eq!(po.prod_spec_char_value_use.unwrap().len(),1);
+    }
 
     #[test]
     fn test_po_link_po() {
@@ -411,7 +436,9 @@ mod test {
     }
 
     #[test]
-    fn test_pot_deserialize() {}
+    fn test_pot_deserialize() {
+        let _pot : ProductOfferingTerm = serde_json::from_str(PO_TERM_JSON).unwrap();
+    }
 
     #[test]
     fn test_por_hasvalidity() {}
