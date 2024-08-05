@@ -251,10 +251,19 @@ impl From<&Category> for CategoryRef {
 
 #[cfg(test)]
 mod test {
-    use crate::{tmf620::category::CAT_VERS, HasName};
+    use crate::{tmf620::category::CAT_VERS, HasName, HasValidity, TimePeriod};
     use super::{Category, CategoryRef};
 
     const CAT_NAME : &str = "CategoryName";
+
+    const CAT_JSON : &str = "{
+        \"name\" : \"CategoryName\"
+    }";
+
+    const CATREF_JSON : &str = "{
+        \"name\" : \"CategoryName\",
+        \"version\" : \"1.0\"
+    }";
 
     #[test]
     fn catref_test_from() {
@@ -270,5 +279,34 @@ mod test {
         let cat = Category::new(CAT_NAME);
 
         assert_eq!(cat.get_name().as_str(),CAT_NAME);
+    }
+
+    #[test]
+    fn cat_deserialize() {
+        let cat : Category = serde_json::from_str(CAT_JSON).unwrap();
+
+        assert_eq!(cat.name.is_some(),true);
+        assert_eq!(cat.get_name().as_str(),"CategoryName");
+    }
+
+    #[test]
+    fn cat_hasvalidity() {
+        let mut cat = Category::new(CAT_NAME);
+
+        cat.set_validity(TimePeriod::period_30days());
+
+        assert_eq!(cat.valid_for.is_some(),true);
+        assert_eq!(cat.get_validity().unwrap().started(),true);
+        assert_eq!(cat.get_validity().unwrap().finished(),false);
+        assert_eq!(cat.get_validity_start().is_some(),true);
+        assert_eq!(cat.get_validity_end().is_some(),true);
+    }
+
+    #[test]
+    fn catref_deserialize() {
+        let catref : CategoryRef = serde_json::from_str(CATREF_JSON).unwrap();
+
+        assert_eq!(catref.name.is_some(),true);
+        assert_eq!(catref.name.unwrap().as_str(),"CategoryName");
     }
 }
