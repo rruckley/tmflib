@@ -7,22 +7,17 @@ use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
 use crate::common::related_place::RelatedPlaceRefOrValue;
-#[cfg(feature = "tmf620-v4")]
 use crate::tmf620::product_offering::ProductOffering;
-#[cfg(feature = "tmf620-v5")]
-use crate::tmf620::product_offering_v5::ProductOffering;
-
 use crate::tmf620::product_specification::ProductSpecificationRef;
-
 use super::quote_price::QuotePrice;
 
-use crate::HasAttachment;
+use crate::{HasAttachment, HasName};
 use tmflib_derive::HasAttachment;
 
 const QUOTEITEM_DEF_QTY : u16 = 1;
 
 /// Status of product for Quote Item
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
 pub enum ProductStatusType {
     /// Created
     #[default]
@@ -81,6 +76,20 @@ pub struct ProductRefOrValue {
     pub related_party: Option<Vec<RelatedParty>>,
 }
 
+impl From<ProductOffering> for ProductRefOrValue {
+    fn from(value: ProductOffering) -> Self {
+        ProductRefOrValue {
+            id : value.id.clone(),
+            href: value.href.clone(),
+            name : value.get_name(),
+            description: value.description.clone(),
+            product_specification: value.product_specification.clone(),
+            is_bundle: value.is_bundle.clone(),
+            ..Default::default()
+        }
+    }
+}
+
 /// Quote Item, line item for a product quote
 #[derive(Clone, Default, Debug, Deserialize, HasAttachment, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -123,6 +132,12 @@ impl QuoteItem {
         }
     }
 
+    /// Set the product for this quoteItem
+    pub fn product(mut self, product : ProductOffering) -> QuoteItem {
+        self.product = Some(ProductRefOrValue::from(product));
+        self
+    }
+
     /// Add QuotePrice to this QuoteItem
     pub fn price(&mut self, price : QuotePrice) {
         match self.quote_item_price.as_mut() {
@@ -132,20 +147,19 @@ impl QuoteItem {
     }
 
     /// Get the ProductOffering for this QuoteItem
-    pub fn get_offer(&self) -> Option<ProductOffering> {
-        match self.product.as_ref() {
-            Some(_p) => {
-                // p.product_specification;
-                None
-            },
-            None => None,
-        }
+    pub fn get_offer(&self) -> Option<ProductRefOrValue> {
+        self.product.clone()
     }
 }
 
 #[cfg(test)]
 mod test {
+    use crate::tmf620::product_offering::ProductOffering;
+
     use super::*;
+
+    const PRODSTATUSTYPE_JSON : &str = "\"Created\"";
+    const OFFER_NAME : &str = "ProductOffering";
 
     #[test]
     fn test_quote_item_new() {
@@ -162,5 +176,25 @@ mod test {
         quote_item.price(price);
 
         assert_eq!(quote_item.quote_item_price.is_some(),true);
+    }
+
+    #[test]
+    fn test_prodstatustype_deserialize() {
+        let prodstatustype : ProductStatusType = serde_json::from_str(PRODSTATUSTYPE_JSON).unwrap();
+
+        assert_eq!(prodstatustype,ProductStatusType::Created);
+    }
+
+    #[test]
+    fn test_quoteitem_getoffer() {
+        let po = ProductOffering::new(OFFER_NAME);
+
+        let quote_item = QuoteItem::new()
+            .product(po);
+
+        let prodref = quote_item.get_offer();
+
+        assert_eq!(prodref.is_some(),true);
+
     }
 }

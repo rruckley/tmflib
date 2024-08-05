@@ -101,13 +101,25 @@ pub struct BillingAccountRef {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::HasId;
 
-    const ACCOUNT : &str = "SettlementAccount";
+    const ACCOUNT_NAME : &str = "SettlementAccount";
 
     #[test]
     fn test_settlement_account_new_name() {
-        let account = SettlementAccount::new(ACCOUNT);
+        let account = SettlementAccount::new(ACCOUNT_NAME);
 
-        assert_eq!(account.name,Some(ACCOUNT.into()));
+        assert_eq!(account.name,Some(ACCOUNT_NAME.into()));
+    }
+
+    #[test]
+    fn test_accountref_from_settlementaccount() {
+        let settlementaccount = SettlementAccount::new(ACCOUNT_NAME);
+
+        let accountref = AccountRef::from(settlementaccount.clone());
+
+        assert_eq!(accountref.id,settlementaccount.get_id());
+        assert_eq!(accountref.href,settlementaccount.get_href());
+        assert_eq!(accountref.name,settlementaccount.get_name());
     }
 }

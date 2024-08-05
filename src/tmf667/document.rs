@@ -110,6 +110,7 @@ mod test {
 
     const DOC_NAME : &str  = "A Document";
     const DOC_TYPE : &str = "PDF";
+    const DOC_STATE: &str = "\"Created\"";
     #[test]
     fn test_document_new() {
         let doc = Document::new(DOC_NAME);
@@ -138,5 +139,12 @@ mod test {
         let doc = Document::new(DOC_NAME);
 
         assert_eq!(doc.status.unwrap(),DocumentStatusType::Created);
+    }
+
+    #[test]
+    fn test_docstatustype_deserialize() {
+        let docstatustype : DocumentStatusType = serde_json::from_str(DOC_STATE).unwrap();
+
+        assert_eq!(docstatustype,DocumentStatusType::Created);
     }
 }
