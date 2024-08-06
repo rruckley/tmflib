@@ -323,6 +323,16 @@ mod test {
     }
 
     #[test]
+    fn test_geosite_hasvalidity() {
+       let mut geositerel = GeographicSiteRelationship::default();
+
+        geositerel.set_validity(TimePeriod::period_30days());
+
+        assert_eq!(geositerel.valid_for.is_some(),true);
+
+    }
+
+    #[test]
     fn test_hourperiod_deserialize() {
         let hourperiod : HourPeriod = serde_json::from_str(HOURPERIOD_JSON).unwrap();
 
