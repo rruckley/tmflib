@@ -50,3 +50,63 @@ impl From<AgreementSpecification> for AgreementSpecificationRef {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use crate::{HasId, HasName};
+
+    use super::{AgreementSpecification, AgreementSpecificationRef};
+
+    const AGREESPEC_ID : &str = "AS123";
+    const AGREESPEC_NAME: &str= "AgreementSpecificationName";
+
+    const AGREESPECREF_JSON : &str = "{
+        \"description\" : \"Description\",
+        \"href\" : \"http://example.com/tmf651/specification/AS123\",
+        \"id\" : \"AS123\",
+        \"name\" : \"AgreementSpecificationName\"
+    }";
+    #[test]
+    fn test_agreespec_deseralize() {}
+
+    #[test]
+    fn test_agreespec_hasid() {}
+
+    #[test]
+    fn test_agreespec_hasname() {}
+
+    #[test]
+    fn test_agreespec_haslastupdate() {
+
+    }
+
+    #[test]
+    fn test_agreespec_hasvalidity() {
+
+    }
+
+    #[test]
+    fn test_agreespecref_deserialize() {
+        let agreespecref : AgreementSpecificationRef = serde_json::from_str(AGREESPECREF_JSON).unwrap();
+
+        assert_eq!(agreespecref.description.as_str(),"Description");
+        assert_eq!(agreespecref.id.as_str(),"AS123");
+        assert_eq!(agreespecref.name.as_str(),"AgreementSpecificationName")
+    }
+
+    #[test]
+    fn test_agreespecref_from_agreespec() {
+        let mut agreespec = AgreementSpecification::default();
+        agreespec.set_id(AGREESPEC_ID);
+        agreespec.set_name(AGREESPEC_NAME);
+        agreespec.description = Some(String::from("Description"));
+
+        let agreespecref = AgreementSpecificationRef::from(agreespec.clone());
+
+        assert_eq!(agreespec.get_id().as_str(),agreespecref.id);
+        assert_eq!(agreespec.get_name().as_str(),agreespecref.name);
+        assert_eq!(agreespec.description.is_some(),true);
+        assert_eq!(agreespec.description.unwrap().as_str(),agreespecref.description);
+
+    }
+}
