@@ -103,14 +103,17 @@ impl From<AttachmentRefOrValue> for Document {
 
 #[cfg(test)]
 mod test {
+    use crate::common::attachment::AttachmentRefOrValue;
     use super::DocumentStatusType;
     use super::DOC_VERSION;
 
     use super::Document;
+    use crate::HasName;
 
     const DOC_NAME : &str  = "A Document";
     const DOC_TYPE : &str = "PDF";
     const DOC_STATE: &str = "\"Created\"";
+
     #[test]
     fn test_document_new() {
         let doc = Document::new(DOC_NAME);
@@ -146,5 +149,15 @@ mod test {
         let docstatustype : DocumentStatusType = serde_json::from_str(DOC_STATE).unwrap();
 
         assert_eq!(docstatustype,DocumentStatusType::Created);
+    }
+
+    #[test]
+    fn test_document_from_attachref() {
+        let attachref = AttachmentRefOrValue::new();
+
+        // Cloning attachref as from() consumes
+        let doc = Document::from(attachref.clone());
+
+        assert_eq!(doc.get_name(),attachref.get_name());
     }
 }
