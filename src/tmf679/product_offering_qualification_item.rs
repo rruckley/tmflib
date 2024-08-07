@@ -13,8 +13,7 @@ use crate::common::note::Note;
 use super::product_qualification::TaskStateType;
 
 /// Action for this product offering
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub enum ProductActionType {
     /// Add a new offering
     Add,
@@ -48,5 +47,41 @@ impl ProductOfferingQualificationItem {
     pub fn new() -> ProductOfferingQualificationItem {
         let id = Uuid::new_v4().simple().to_string();
         ProductOfferingQualificationItem { id: Some(id), ..Default::default() }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::{ProductActionType, ProductOfferingQualificationItem};
+    use crate::tmf679::product_qualification::TaskStateType;
+
+    const ACTIONTYPE : &str = "\"NoChange\"";
+
+    const POQI_JSON : &str = "{
+        \"action\" : \"NoChange\",
+        \"note\" : [],
+        \"state\" : \"InProgress\"
+    }";
+
+    #[test]
+    fn test_actiontype_deserialize() {
+        let actiontype : ProductActionType = serde_json::from_str(ACTIONTYPE).unwrap();
+
+        assert_eq!(actiontype,ProductActionType::NoChange);
+    }
+
+    #[test]
+    fn test_poqi_deserialize() {
+        let poqi : ProductOfferingQualificationItem = serde_json::from_str(POQI_JSON).unwrap();
+
+        assert_eq!(poqi.action,ProductActionType::NoChange);
+        assert_eq!(poqi.state,TaskStateType::InProgress);
+    }
+
+    #[test]
+    fn test_poqi_new() {
+        let poqi = ProductOfferingQualificationItem::new();
+
+        assert_eq!(poqi.id.is_some(),true);
     }
 }
