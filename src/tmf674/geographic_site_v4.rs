@@ -231,6 +231,29 @@ mod test {
     const ADDRESS : &str = "AnAddress";
     const SITE_CODE: &str = "SiteCode";
 
+    const PLACEREF_JSON : &str = "{
+        \"id\" : \"P123\",
+        \"href\" : \"http://example.com/tmf674/place/P123\",
+        \"name\" : \"PlaceName\"
+    }";
+
+    const GEOSITEREL_JSON : &str = "{
+        \"id\" : \"G123\",
+        \"href\" : \"http://example.com/tmf674/site/G123\",
+        \"relationshipType\" : \"RelationshipType\",
+        \"role\" : \"Role\"
+    }";
+
+    const HOURPERIOD_JSON : &str = "{
+        \"startHour\" : \"09:00\",
+        \"endHour\" : \"17:00\"
+    }";
+
+    const CALENDAR_JSON : &str = "{
+        \"day\" : \"Monday\",
+        \"status\" :\"Status\"
+    }";
+
     #[test]
     fn test_site_new_name() {
         let site = GeographicSite::new(SITE);
@@ -280,6 +303,51 @@ mod test {
 
         assert_eq!(site.calendar.is_some(),true);
         assert_eq!(site.calendar.unwrap().len(),2);
+    }
+
+    #[test]
+    fn test_placeref_deserialize() {
+        let placeref : PlaceRefOrValue = serde_json::from_str(PLACEREF_JSON).unwrap();
+
+        assert_eq!(placeref.id.as_str(),"P123");
+        assert_eq!(placeref.name.as_str(),"PlaceName");
+    }
+
+    #[test]
+    fn test_geositerel_deserialize() {
+        let geositerel : GeographicSiteRelationship = serde_json::from_str(GEOSITEREL_JSON).unwrap();
+
+        assert_eq!(geositerel.id.as_str(),"G123");
+        assert_eq!(geositerel.relationship_type.as_str(),"RelationshipType");
+        assert_eq!(geositerel.role.as_str(),"Role");
+    }
+
+    #[test]
+    fn test_geosite_hasvalidity() {
+       let mut geositerel = GeographicSiteRelationship::default();
+
+        geositerel.set_validity(TimePeriod::period_30days());
+
+        assert_eq!(geositerel.valid_for.is_some(),true);
+
+    }
+
+    #[test]
+    fn test_hourperiod_deserialize() {
+        let hourperiod : HourPeriod = serde_json::from_str(HOURPERIOD_JSON).unwrap();
+
+        assert_eq!(hourperiod.start_hour.as_str(),"09:00");
+        assert_eq!(hourperiod.end_hour.as_str(),"17:00");
+    }
+
+    #[test]
+    fn test_calendar_deseralize() {
+        let calendar : CalendarPeriod = serde_json::from_str(CALENDAR_JSON).unwrap();
+
+        assert_eq!(calendar.day.is_some(),true);
+        assert_eq!(calendar.day.unwrap().as_str(),"Monday");
+        assert_eq!(calendar.status.is_some(),true);
+        assert_eq!(calendar.status.unwrap().as_str(),"Status");
     }
 }
 

@@ -75,6 +75,7 @@ pub struct AccountTaxExemption {
 
 /// Reference to a Payment Plan
 #[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PaymentPlanRef {
     href : String,
     id : String,
@@ -83,6 +84,7 @@ pub struct PaymentPlanRef {
 
 /// a Payment Plan
 #[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PaymentPlan {
     number_of_payments: u32,
     payment_frequency: String,
@@ -97,8 +99,74 @@ pub struct PaymentPlan {
 
 /// Reference to a Payment Method
 #[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PaymentMethodRef {
     href: String,
     id: String,
     name: String,
+}
+
+#[cfg(test)]
+mod test {
+    use super::{AccountBalance, AccountRef, PaymentMethodRef, PaymentPlan};
+
+    const ACCOUNTREF_JSON : &str = "{
+        \"name\" : \"AccountName\",
+        \"id\" : \"ACC123\",
+        \"href\" : \"http://example.com/tmf666/account/ACC123\"        
+    }";
+
+    const ACCOUNTBAL_JSON : &str = "{
+        \"balanceType\" : \"Remaining\"
+    }";
+
+    const PP_JSON : &str = "{
+        \"numberOfPayments\" : 12,
+        \"paymentFrequency\" : \"Monthly\",
+        \"planType\" : \"12Month\",
+        \"priority\" : 1,
+        \"status\" : \"New\"
+    }";
+
+    const PMREF_JSON : &str = "{
+        \"name\" : \"PaymentMethod\",
+        \"id\" : \"PM123\",
+        \"href\" : \"http://example.com/tmf666/method/PM123\"
+    }";
+
+    #[test]
+    fn test_accountref_deserialize() {
+        let accountref : AccountRef = serde_json::from_str(ACCOUNTREF_JSON).unwrap();
+
+        assert_eq!(accountref.name.as_str(),"AccountName");
+        assert_eq!(accountref.id.as_str(),"ACC123");
+        assert_eq!(accountref.href.as_str(),"http://example.com/tmf666/account/ACC123");
+    }
+
+    #[test]
+    fn test_accountbal_deserialize() {
+        let accountbal : AccountBalance = serde_json::from_str(ACCOUNTBAL_JSON).unwrap();
+
+        assert_eq!(accountbal.balance_type.as_str(),"Remaining");
+    }
+
+    #[test]
+    fn test_pp_deserialize() {
+        let paymentplan : PaymentPlan = serde_json::from_str(PP_JSON).unwrap();
+
+        assert_eq!(paymentplan.number_of_payments, 12);
+        assert_eq!(paymentplan.payment_frequency.as_str(),"Monthly");
+        assert_eq!(paymentplan.plan_type.as_str(),"12Month");
+        assert_eq!(paymentplan.priority,1);
+        assert_eq!(paymentplan.status.as_str(),"New");
+    }
+
+    #[test]
+    fn test_pmref_deserialize() {
+        let pmref : PaymentMethodRef = serde_json::from_str(PMREF_JSON).unwrap();
+
+        assert_eq!(pmref.href.as_str(),"http://example.com/tmf666/method/PM123");
+        assert_eq!(pmref.id.as_str(),"PM123");
+        assert_eq!(pmref.name.as_str(),"PaymentMethod");
+    }
 }

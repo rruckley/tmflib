@@ -26,7 +26,7 @@ use crate::common::tax_item::TaxItem;
 const CLASS_PATH : &str = "customer_bill";
 
 /// Customer Bill Run Type
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone,Debug,Default,Deserialize, PartialEq, Serialize)]
 pub enum CustomerBillRunType {
     /// Inside regular bill cycle
     #[default]
@@ -55,6 +55,7 @@ pub enum CustomerBillStateType {
 
 /// Customer Bill
 #[derive(Clone,Debug,Default,Deserialize,HasId,HasLastUpdate,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CustomerBill {
     #[serde(skip_serializing_if = "Option::is_none")]
     amount_due: Option<Money>,
@@ -151,11 +152,98 @@ impl HasAttachment for CustomerBill {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::HasName;
+
+    const ATTACH_NAME : &str = "AttachmentName";
+    const RUNTYPE_JSON : &str = "\"OnCycle\"";
+    const STATETYPE_JSON: &str = "\"New\"";
+    const CUSTOMERBILL_JSON: &str = "{
+        \"billNo\" : \"1\",
+        \"billingPeriod\" : {
+            \"startDateTime\" : \"2024-01-01T13:00Z\"
+        },
+        \"category\" : \"Category\",
+        \"nextBillDate\" : \"2024-01-01\",
+        \"paymentDueDate\" : \"2024-01-01\",
+        \"remainingAmount\" : {
+            \"unit\" : \"AUD\",
+            \"value\" : 2.34
+        },
+        \"runType\" : \"OnCycle\",
+        \"taxExcludedAmount\" : {
+            \"unit\" : \"AUD\",
+            \"value\" : 5.67
+        },
+        \"taxIncludedAmount\" : {
+            \"unit\" : \"AUD\",
+            \"value\" : 6.24
+        }
+    }";
 
     #[test]
     fn test_customer_bill_new_state() {
         let bill = CustomerBill::new();
 
         assert_eq!(bill.state,Some(CustomerBillStateType::default()));
+    }
+
+    #[test]
+    fn test_runtype_deserialize() {
+        let runtype : CustomerBillRunType = serde_json::from_str(RUNTYPE_JSON).unwrap();
+
+        assert_eq!(runtype,CustomerBillRunType::OnCycle);
+    }
+
+    #[test]
+    fn test_statetype_deserialize() {
+        let statetype : CustomerBillStateType = serde_json::from_str(STATETYPE_JSON).unwrap();
+
+        assert_eq!(statetype,CustomerBillStateType::New);
+    }
+
+    #[test]
+    fn test_customerbill_deserialize() {
+        let customerbill : CustomerBill = serde_json::from_str(CUSTOMERBILL_JSON).unwrap();
+
+        assert_eq!(customerbill.bill_no.as_str(),"1");
+        assert_eq!(customerbill.category.as_str(),"Category");
+    }
+
+    #[test]
+    fn test_customerbill_addattach() {
+        let mut customerbill = CustomerBill::new();
+
+        customerbill.add(&AttachmentRefOrValue::new());
+
+        assert_eq!(customerbill.bill_document.is_some(),true);
+        assert_eq!(customerbill.bill_document.unwrap().len(),1);
+    }
+
+    #[test]
+    fn test_customerbill_attachposition() {
+        let mut attach = AttachmentRefOrValue::new();
+        attach.set_name(ATTACH_NAME);
+        let mut customerbill = CustomerBill::new();
+
+        customerbill.add(&attach);
+
+        let pos = customerbill.position(ATTACH_NAME);
+
+        assert_eq!(pos.is_some(),true);
+        assert_eq!(pos.unwrap(),0);
+    }
+
+    #[test]
+    fn test_customerbill_attachfind() {
+        let mut attach = AttachmentRefOrValue::new();
+        attach.set_name(ATTACH_NAME);
+        let mut customerbill = CustomerBill::new();
+
+        customerbill.add(&attach);
+
+        let found_attach = customerbill.find(ATTACH_NAME);
+
+        assert_eq!(found_attach.as_ref().is_some(),true);
+        assert_eq!(found_attach.cloned().unwrap().name.unwrap(),ATTACH_NAME);    
     }
 }

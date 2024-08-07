@@ -211,8 +211,6 @@ impl ProductOffering {
         let mut offer = ProductOffering::create_with_time();
         offer.name = Some(name.into());
         offer.version = Some(PO_VERS_INIT.to_string());
-        offer.product_offering_relationship = Some(vec![]);
-        offer.prod_spec_char_value_use = Some(vec![]);
         offer.base_type = Some(ProductOffering::get_class());
         offer.r#type = Some(ProductOffering::get_class());
         offer
@@ -248,7 +246,10 @@ impl ProductOffering {
 
     /// Add characteristic value uses into this Product Offering
     pub fn with_char_value_use(mut self, char_value_use : ProductSpecificationCharacteristicValueUse) -> ProductOffering {
-        self.prod_spec_char_value_use.as_mut().unwrap().push(char_value_use);
+        match self.prod_spec_char_value_use.as_mut() {
+            Some(v) => v.push(char_value_use),
+            None => self.prod_spec_char_value_use = Some(vec![char_value_use]),
+        }
         self
     }
 
@@ -258,7 +259,12 @@ impl ProductOffering {
         let mut offer_rel = ProductOfferingRelationship::from(remote_po);
         offer_rel.relationship_type = Some(relationship_type.to_string());
         offer_rel.role = Some(role.to_string());
-        self.product_offering_relationship.as_mut().unwrap().push(offer_rel);
+        match self.product_offering_relationship.as_mut() {
+            Some(v) => {
+                v.push(offer_rel);
+            },
+            None => self.product_offering_relationship = Some(vec![offer_rel]),
+        };
     }
 }
 
@@ -268,13 +274,21 @@ mod test {
     use crate::tmf620::category::{Category,CategoryRef};
     use crate::{HasId,HasName};
 
-    const PO_NAME : &str = "An Offer";
+    const PO_NAME : &str = "ProductOffering";
+    const PO2_NAME: &str = "Offer Two";
     const PO_STATUS: &str = "A Status";
     const CAT_NAME : &str = "A Category";
     const SPEC_NAME: &str = "A Specification";
+    const CHARVALUSE_NAME : &str = "CharValUse";
 
 
     const PRODOFFERREF_JSON : &str = "{
+        \"id\" : \"PO123\",
+        \"href\" : \"http://example.com/tmf620/offering/PO123\",
+        \"name\" : \"ProductOffering\"
+    }";
+
+    const PRODOFFER_JSON : &str = "{
         \"id\" : \"PO123\",
         \"href\" : \"http://example.com/tmf620/offering/PO123\",
         \"name\" : \"ProductOffering\"
@@ -287,6 +301,9 @@ mod test {
         \"relationshipType\" : \"Parent/Child\",
         \"role\" : \"child\"
     }";
+
+    const PO_TERM_JSON : &str = "{}";
+
     #[test]
     fn test_po_new_name() {
         let po = ProductOffering::new(PO_NAME);
@@ -351,7 +368,7 @@ mod test {
     }
 
     #[test]
-    fn test_po_deserialize() {
+    fn test_poref_deserialize() {
         let productofferref : ProductOfferingRef = serde_json::from_str(PRODOFFERREF_JSON).unwrap();
 
         assert_eq!(productofferref.id.as_str(),"PO123");
@@ -372,4 +389,57 @@ mod test {
         assert_eq!(offer_rel.relationship_type.is_some(),true);
         assert_eq!(offer_rel.role.is_some(),true);
     }
+
+    #[test]
+    fn test_po_deserialize() {
+        let po : ProductOffering = serde_json::from_str(PRODOFFER_JSON).unwrap();
+
+        assert_eq!(po.name.is_some(),true);
+        assert_eq!(po.get_name().as_str(),PO_NAME);
+    }
+
+    #[test]
+    fn test_po_hasattachment() {}
+
+    #[test]
+    fn test_po_hasvalidity() {
+        let mut po = ProductOffering::new(PO_NAME);
+
+        po.set_validity(TimePeriod::period_30days());
+
+        assert_eq!(po.valid_for.is_some(),true);
+        assert_eq!(po.get_validity().unwrap().started(),true);
+        assert_eq!(po.get_validity().unwrap().finished(),false);
+        assert_eq!(po.get_validity_start().is_some(),true);
+        assert_eq!(po.get_validity_end().is_some(),true);
+    }
+
+    #[test]
+    fn test_po_charvaluse() {
+        let charvaluse = ProductSpecificationCharacteristicValueUse::new(CHARVALUSE_NAME);
+
+        let po = ProductOffering::new(PO_NAME)
+            .with_char_value_use(charvaluse);
+
+        assert_eq!(po.prod_spec_char_value_use.is_some(),true);
+        assert_eq!(po.prod_spec_char_value_use.unwrap().len(),1);
+    }
+
+    #[test]
+    fn test_po_link_po() {
+        let mut po1 = ProductOffering::new(PO_NAME);
+        let po2 = ProductOffering::new(PO2_NAME);
+
+        po1.link_po(po2, "Parent/Child", "Parent");
+
+        assert_eq!(po1.product_offering_relationship.is_some(),true);
+    }
+
+    #[test]
+    fn test_pot_deserialize() {
+        let _pot : ProductOfferingTerm = serde_json::from_str(PO_TERM_JSON).unwrap();
+    }
+
+    #[test]
+    fn test_por_hasvalidity() {}
 }

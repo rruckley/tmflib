@@ -21,6 +21,7 @@ pub const CLASS_PATH : &str = "productOrderRiskAssessment";
 
 /// Product Order Risk Assessment
 #[derive(Clone,Default,Debug,Deserialize,HasId,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ProductOrderRiskAssessment {
     /// Link to Risk Assessment
     pub href : Option<Uri>,
@@ -72,4 +73,59 @@ impl ProductOrderRiskAssessment {
             }
         }
     }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::tmf696::characteristic::Characteristic;
+    use crate::HasId;
+    use crate::tmf622::product_order_v4::{ProductOrder, ProductOrderRef};
+
+    use super::ProductOrderRiskAssessment;
+
+    const PORA_JSON : &str = "{
+        \"id\" : \"PORA123\",
+        \"status\" : \"New\",
+        \"productOrder\" : {
+            \"id\" : \"PO123\",
+            \"href\" : \"http://example.com/tmf622/order/PO123\",
+            \"name\" : \"ProductOrderName\"
+        }
+    }";
+    #[test]
+    fn test_pora_deseralize() {
+        let pora : ProductOrderRiskAssessment = serde_json::from_str(PORA_JSON).unwrap();
+
+        assert_eq!(pora.id.is_some(),true);
+        assert_eq!(pora.get_id().as_str(),"PORA123");
+        assert_eq!(pora.status.is_some(),true);
+    }
+
+    #[test]
+    fn test_pora_new() {
+        let order = ProductOrderRef::from(ProductOrder::new());
+        let pora = ProductOrderRiskAssessment::new(order.clone());
+
+        assert_eq!(pora.product_order.id,order.id);
+    }
+
+    #[test]
+    fn test_pora_replacechar() {
+        let char1 = Characteristic::new("Char", "Value1");
+        let char2 = Characteristic::new("Char", "Value2");
+        
+        let order = ProductOrderRef::from(ProductOrder::new());
+        let mut pora = ProductOrderRiskAssessment::new(order.clone());
+
+        // Add char in new
+        pora.replace_characteristic(char1);
+
+        assert_eq!(pora.characteristic.is_some(),true);
+        assert_eq!(pora.characteristic.clone().unwrap().len(),1);
+
+        pora.replace_characteristic(char2);
+
+        assert_eq!(pora.characteristic.unwrap().len(),1);
+    }
+
 }
