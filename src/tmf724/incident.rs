@@ -10,7 +10,6 @@ const CLASS_PATH : &str = "incident";
 
 /// Incident Priority
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
 pub enum PriorityType {
     /// Critical
     Critical,
@@ -25,7 +24,6 @@ pub enum PriorityType {
 
 /// Incident Urgency 
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
 pub enum UrgencyType {
     /// Critical
     Critical,
@@ -40,7 +38,6 @@ pub enum UrgencyType {
 
 /// Incident Acknowledge State
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
 pub enum IncidentAckStateType {
     /// Acknowledged
     Acknowledged,
@@ -51,7 +48,6 @@ pub enum IncidentAckStateType {
 
 /// Incident Status
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
 pub enum IncidentStateType {
     /// Raised
     #[default]
@@ -64,7 +60,6 @@ pub enum IncidentStateType {
 
 /// Incident Impact
 #[derive(Clone, Debug, Default, Deserialize,PartialEq, Serialize)]
-#[serde(rename_all = "camelCase")]
 pub enum ImpactType {
     /// Extensive (Highest)
     Extensive,
@@ -216,6 +211,20 @@ impl Incident {
 mod test {
     use super::*;
 
+    const PRIORITY_JSON : &str = "\"Medium\"";
+    const URGENCY_JSON : &str = "\"Medium\"";
+    const ACKSTATE_JSON : &str = "\"Unacknowledged\"";
+    const STATE_JSON : &str = "\"Raised\"";
+    const IMPACT_JSON : &str = "\"Moderate\"";
+
+    const CHAR_JSON : &str = "{
+        \"id\" : \"CHAR123\",
+        \"name\" :\"CharacteristicName\",
+        \"value\" : \"Value\",
+        \"valueType\" : \"ValueType\"
+    }";
+
+
     #[test]
     fn test_incident_new_name() {
         let incident = Incident::new("AnIncident");
@@ -256,5 +265,49 @@ mod test {
         let incident = Incident::new("AnIncident");
 
         assert_eq!(incident.ack_state, Some(IncidentAckStateType::Unacknowledged));
+    }
+    #[test]
+    fn test_priority_deserialize() {
+        let priority : PriorityType = serde_json::from_str(PRIORITY_JSON).unwrap();
+
+        assert_eq!(priority,PriorityType::Medium);
+    }
+
+    #[test]
+    fn test_urgency_deseralize() {
+        let urgency : UrgencyType = serde_json::from_str(URGENCY_JSON).unwrap();
+
+        assert_eq!(urgency,UrgencyType::Medium);
+    }
+
+    #[test]
+    fn test_ackstate_deserialize() {
+        let ackstate : IncidentAckStateType = serde_json::from_str(ACKSTATE_JSON).unwrap();
+
+        assert_eq!(ackstate,IncidentAckStateType::Unacknowledged);
+    }
+
+    #[test]
+    fn test_state_deseralize() {
+        let state : IncidentStateType = serde_json::from_str(STATE_JSON).unwrap();
+
+        assert_eq!(state,IncidentStateType::Raised);
+    }
+
+    #[test]
+    fn test_impact_deseralize() {
+        let impact : ImpactType = serde_json::from_str(IMPACT_JSON).unwrap();
+
+        assert_eq!(impact, ImpactType::Moderate);
+    }
+
+    #[test]
+    fn test_char_deserialize() {
+        let characteristic : Characteristic = serde_json::from_str(CHAR_JSON).unwrap();
+
+        assert_eq!(characteristic.id.as_str(),"CHAR123");
+        assert_eq!(characteristic.name.as_str(),"CharacteristicName");
+        assert_eq!(characteristic.value.as_str(),"Value");
+        assert_eq!(characteristic.value_type.as_str(), "ValueType");
     }
 }

@@ -11,7 +11,7 @@ const CLASS_PATH : &str = "shippingOrderItem";
 const NEW_STATUS : &str = "New";
 
 /// Shipping Item Action Type
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone,Default,Debug,Deserialize,PartialEq, Serialize)]
 pub enum ShippingOrderItemActionType {
     /// Add new item
     #[default]
@@ -66,12 +66,47 @@ impl ShippingOrderItem {
 
 #[cfg(test)]
 mod test {
-    use super::{ShippingOrderItem, NEW_STATUS};
+
+    use crate::tmf700::shipping_instruction::ShippingInstruction;
+
+    use super::{ShippingOrderItem, ShippingOrderItemActionType , NEW_STATUS};
+
+    const ITEMACTION_JSON : &str = "\"Add\"";
+    const ORDERITEM_JSON : &str = "{
+        \"action\" : \"Add\",
+        \"quantity\" : \"1\",
+        \"status\" : \"Status\"
+    }";
 
     #[test]
     fn shipping_item_new() {
         let item = ShippingOrderItem::new();
 
         assert_eq!(item.status, NEW_STATUS.to_string());
+    }
+
+    #[test]
+    fn test_itemaction_deserialize() {
+        let itemaction : ShippingOrderItemActionType  = serde_json::from_str(ITEMACTION_JSON).unwrap();
+
+        assert_eq!(itemaction,ShippingOrderItemActionType::Add);
+    }
+
+    #[test]
+    fn test_orderitem_deserialize() {
+        let orderitem : ShippingOrderItem = serde_json::from_str(ORDERITEM_JSON).unwrap();
+
+        assert_eq!(orderitem.action,ShippingOrderItemActionType::Add);
+        assert_eq!(orderitem.quantity.as_str(),"1");
+        assert_eq!(orderitem.status.as_str(),"Status");
+    }
+
+    #[test]
+    fn test_orderitem_instruction() {
+        let orderitem = ShippingOrderItem::new()
+            .instruction(ShippingInstruction::new("SomeInstruction"));
+
+        assert_eq!(orderitem.shipping_instruction.is_some(),true);
+        assert_eq!(orderitem.shipping_instruction.unwrap().label_message.is_some(),true);
     }
 }
