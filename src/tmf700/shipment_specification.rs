@@ -186,6 +186,14 @@ mod test {
     #[test]
     fn test_charspec_deserialize() {
         let charspec : CharacteristicSpecification = serde_json::from_str(CHARSPEC_JSON).unwrap();
+
+        assert_eq!(charspec.configurable,true);
+        assert_eq!(charspec.description.as_str(),"Description");
+        assert_eq!(charspec.extensible,false);
+        assert_eq!(charspec.is_unique,false);
+        assert_eq!(charspec.min_cardinality,1);
+        assert_eq!(charspec.max_cardinality,2);
+        assert_eq!(charspec.name.is_some(),true);
     }
 
    #[test]
