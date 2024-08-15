@@ -58,8 +58,8 @@ pub struct RelatedParty {
 impl From<&Customer> for RelatedParty {
     fn from(cust: &Customer) -> Self {
         RelatedParty { 
-            id: cust.id.as_ref().unwrap().clone(), 
-            href: cust.href.as_ref().unwrap().clone(), 
+            id: cust.get_id(), 
+            href: cust.get_href(), 
             name: cust.name.clone(),
             role: Some(Customer::get_class()),
             base_type: Some(Customer::get_class()),
