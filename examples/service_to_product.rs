@@ -57,7 +57,8 @@ fn main() {
     // Set the external Id
     so.external_id = Some("PON1234983".to_string());
     // Add sample Service Order Item
-    so.servce_order_item.as_mut().unwrap().push(soi);
+    // This should use an add_item() function
+    so.add_item(soi);
 
     // Now transform the Service Order into a Product Order for downstream parties
     let po = ProductOrder::from(so);
