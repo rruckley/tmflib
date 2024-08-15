@@ -14,6 +14,7 @@ use tmflib::tmf632::individual_v5::Individual;
 use tmflib::common::note::Note;
 use tmflib::common::related_party::RelatedParty;
 use tmflib::tmf641::service_order_item::{ServiceOrderItem,ServiceRefOrValue};
+use tmflib::HasNote;
 
 fn main() {
     let mut ss = ServiceSpecification::new("Access");
@@ -45,7 +46,7 @@ fn main() {
     // Create new ServiceOrder
     let mut so = ServiceOrder::new();
     // Add a sample note
-    so.note.as_mut().unwrap().push(Note::new("This is a Note."));
+    so.add_note(Note::new("This is a Note."));
     // Create a related party
     let ind = Individual::new("John Q. Citizen");
     // Add related party reference to ServiceOrder
