@@ -74,7 +74,7 @@ impl TimePeriod {
     /// Calculate period `days` into the future
     pub fn period_days(days : u64) -> TimePeriod {
         let now = Utc::now() + Days::new(days);
-        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).expect("Invalid now() output");
         TimePeriod {
             end_date_time: Some(time.to_rfc3339()),
             ..Default::default()
