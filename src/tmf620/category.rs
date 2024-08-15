@@ -133,11 +133,13 @@ impl Category {
     ///     .is_root(true);
     /// ```
     pub fn is_root(mut self, root: bool) -> Category {
-        self.is_root = Some(root);
-        if self.is_root.unwrap() {
-            // Remove parent
+ 
+        // Two steps 1) delete parent if root= true
+        // update is_root
+        if root {
             self.parent_id = None;
-        }
+        };
+        self.is_root = Some(root);
         self
     }
 }
