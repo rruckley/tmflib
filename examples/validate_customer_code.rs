@@ -2,7 +2,7 @@
 //! 
 use tmflib::{tmf629::customer::Customer, HasName,HasId};
 
-fn main() {
+fn main() -> Result<(),String> {
 
     let mut cust1 = Customer::default();
 
@@ -10,17 +10,19 @@ fn main() {
     cust1.id = Some(String::from("123456"));
     cust1.generate_code(None);
 
-    let code1 = cust1.get_characteristic("code");
-    let hash = cust1.get_characteristic("hash");
+    let code1 = cust1.get_characteristic("code").ok_or(String::from("No Value"))?;
+    let hash = cust1.get_characteristic("hash").ok_or(String::from("No Value"))?;
 
-    println!("Customer: {} + ID: {} Offset=0\t generates Code: {}",cust1.get_name(),cust1.get_id(),code1.unwrap().value);
-    println!("Customer: {},\tBase32: {}",cust1.get_name(),hash.unwrap().value);
+    println!("Customer: {} + ID: {} Offset=0\t generates Code: {}",cust1.get_name(),cust1.get_id(),code1.value);
+    println!("Customer: {},\tBase32: {}",cust1.get_name(),hash.value);
 
     cust1.generate_code(Some(1));
 
-    let code1 = cust1.get_characteristic("code");
-    let hash = cust1.get_characteristic("hash");
+    let code1 = cust1.get_characteristic("code").ok_or(String::from("No Value"))?;
+    let hash = cust1.get_characteristic("hash").ok_or(String::from("No Value"))?;
 
-    println!("Customer: {} + ID: {} Offset=1\t generates Code: {}",cust1.get_name(),cust1.get_id(),code1.unwrap().value);
-    println!("Customer: {},\tBase32: {}",cust1.get_name(),hash.unwrap().value);
+    println!("Customer: {} + ID: {} Offset=1\t generates Code: {}",cust1.get_name(),cust1.get_id(),code1.value);
+    println!("Customer: {},\tBase32: {}",cust1.get_name(),hash.value);
+
+    Ok(())
 }
