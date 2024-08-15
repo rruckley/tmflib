@@ -127,14 +127,14 @@ mod test {
 
     #[test]
     fn test_attachmenttype_deserialize() {
-        let attach_type : AttachmentType = serde_json::from_str(ATTACH_TYPE_JSON).unwrap();
+        let attach_type : AttachmentType = serde_json::from_str(ATTACH_TYPE_JSON).expect("Could not parse test json");
 
         assert_eq!(attach_type,AttachmentType::InLine);
     }
 
     #[test]
     fn test_attachmentsize_deserialize() {
-        let attach_size : AttachmentSize = serde_json::from_str(ATTACH_SIZE).unwrap();
+        let attach_size : AttachmentSize = serde_json::from_str(ATTACH_SIZE).expect("Could not parse test json");
 
         assert_eq!(attach_size.amount,123.4);
         assert_eq!(attach_size.units.as_str(),"bytes");
