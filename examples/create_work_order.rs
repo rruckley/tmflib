@@ -30,7 +30,5 @@ fn main() {
 
     wo.add_item(woi);
 
-    // dbg!(wo);
-    let json = serde_json::to_string(&wo).unwrap();
-    println!("JSON>>\n{}\n<<JSON",json);
+    dbg!(wo);
 }
