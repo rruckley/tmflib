@@ -165,7 +165,7 @@ impl From<ServiceOrder> for ProductOrder {
         po.expected_completion_date.clone_from(&value.expected_completion_date);
         
         // Iterate through service order items
-        let items = match value.servce_order_item {
+        let items = match value.service_order_item {
             Some(i) => {
                 let mut out = vec![];
                 i.into_iter().for_each(|i| {
