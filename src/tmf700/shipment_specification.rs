@@ -107,6 +107,7 @@ pub struct CharacteristicSpecification {
 
 /// Shipping Order Characteristic Speficiation
 #[derive(Clone,Default,Debug,HasValidity,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CharacteristicSpecificationRelationship {
     characteristic_specification_id : String,
     name : String,
@@ -119,6 +120,7 @@ pub struct CharacteristicSpecificationRelationship {
 
 /// Shipping Characteristic Value Specification
 #[derive(Clone,Default,Debug,HasValidity,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CharacteristicValueSpecification {
     is_default: bool,
     range_interval: String,
@@ -135,7 +137,7 @@ pub struct CharacteristicValueSpecification {
 mod test {
     use crate::{HasId, HasName};
 
-    use super::{CharacteristicSpecification, ShipmentSpecificationRefOrValue, ShipmentSpecificationRelationship};
+    use super::*;
 
 
     const SHIPSPEC_JSON : &str = "{
@@ -160,6 +162,25 @@ mod test {
         \"name\" : \"CharactaristicSpecificationName\",
         \"regex\" : \"Regex\",
         \"valueType\" :\"String\"
+    }";
+
+    const CHARSPECREL_JSON : &str = "{
+        \"characteristicSpecificationId\" : \"CS123\",
+        \"name\" : \"CharacteristicSpecificationName\",
+        \"parentSpecificationHref\" : \"http://example.com/tmf700/specification/CS456\",
+        \"parentSpecificationId\" : \"CS456\",
+        \"relationshipType\" : \"RelationshipType\"
+    }";
+
+    const CHARVALSPEC_JSON : &str = "{
+        \"isDefault\" : false,
+        \"rangeInterval\" : \"1\",
+        \"regex\" : \"Regex\",
+        \"unitOfMeasure\" : \"Units\",
+        \"value\" : \"2\",
+        \"valueFrom\" : 3,
+        \"valueTo\" : 4,
+        \"valueType\" : \"ValueType\"
     }";
    #[test]
    fn test_shipspec_deserialize() {
@@ -186,12 +207,38 @@ mod test {
     #[test]
     fn test_charspec_deserialize() {
         let charspec : CharacteristicSpecification = serde_json::from_str(CHARSPEC_JSON).unwrap();
+
+        assert_eq!(charspec.configurable,true);
+        assert_eq!(charspec.description.as_str(),"Description");
+        assert_eq!(charspec.extensible,false);
+        assert_eq!(charspec.is_unique,false);
+        assert_eq!(charspec.min_cardinality,1);
+        assert_eq!(charspec.max_cardinality,2);
+        assert_eq!(charspec.name.is_some(),true);
     }
 
-   #[test]
-   fn test_charspecrel_deserialize() {}
+    #[test]
+    fn test_charspecrel_deserialize() {
+        let charspecrel : CharacteristicSpecificationRelationship = serde_json::from_str(CHARSPECREL_JSON).unwrap();
 
-   #[test]
-   fn test_charvalspec_deserialize() {}
+        assert_eq!(charspecrel.characteristic_specification_id.as_str(),"CS123");
+        assert_eq!(charspecrel.name.as_str(),"CharacteristicSpecificationName");
+        assert_eq!(charspecrel.parent_specification_id.as_str(),"CS456");
+        assert_eq!(charspecrel.relationship_type.as_str(),"RelationshipType");
+    }
+
+    #[test]
+    fn test_charvalspec_deserialize() {
+        let charvalspec : CharacteristicValueSpecification = serde_json::from_str(CHARVALSPEC_JSON).unwrap();
+
+        assert_eq!(charvalspec.is_default,false);
+        assert_eq!(charvalspec.range_interval.as_str(),"1");
+        assert_eq!(charvalspec.regex.as_str(),"Regex");
+        assert_eq!(charvalspec.unit_of_measure.as_str(),"Units");
+        assert_eq!(charvalspec.value.as_str(),"2");
+        assert_eq!(charvalspec.value_from,3);
+        assert_eq!(charvalspec.value_to,4);
+        assert_eq!(charvalspec.value_type.as_str(),"ValueType");
+    }
 
 }
