@@ -14,7 +14,7 @@ use tmflib::tmf632::individual_v5::Individual;
 use tmflib::common::note::Note;
 use tmflib::common::related_party::RelatedParty;
 use tmflib::tmf641::service_order_item::{ServiceOrderItem,ServiceRefOrValue};
-use tmflib::HasNote;
+use tmflib::{HasRelatedParty,HasNote};
 
 fn main() {
     let mut ss = ServiceSpecification::new("Access");
@@ -50,7 +50,8 @@ fn main() {
     // Create a related party
     let ind = Individual::new("John Q. Citizen");
     // Add related party reference to ServiceOrder
-    so.related_party.as_mut().unwrap().push(RelatedParty::from(&ind));
+    // This should use trait functions to add a party.
+    so.add_party(RelatedParty::from(&ind));
     // Set the Category
     so.category = Some("Fixed Product".to_string());
     // Set the external Id
