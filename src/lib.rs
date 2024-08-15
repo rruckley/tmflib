@@ -84,7 +84,7 @@ impl TimePeriod {
     pub fn started(&self) -> bool {
         let now = Utc::now();
         
-        let start = chrono::DateTime::parse_from_rfc3339(&self.start_date_time).unwrap();
+        let start = chrono::DateTime::parse_from_rfc3339(&self.start_date_time).expect("Could not start parse time from now()");
         // Start is in the past, return true
         if start < now { 
             return true
@@ -96,7 +96,7 @@ impl TimePeriod {
         match &self.end_date_time {
             Some(f) => {
                 let now = Utc::now();
-                let finish = chrono::DateTime::parse_from_rfc3339(f).unwrap();
+                let finish = chrono::DateTime::parse_from_rfc3339(f).expect("Could not parse finish time from now()");
                 if finish < now {
                     return true
                 }
@@ -452,7 +452,7 @@ mod test {
 
     #[test]
     fn test_quantity_deserialize() {
-        let quantity : Quantity = serde_json::from_str(QUANTITY_JSON).unwrap();
+        let quantity : Quantity = serde_json::from_str(QUANTITY_JSON).expect("Could not parse Quantity JSON");
 
         assert_eq!(quantity.amount,12.34);
         assert_eq!(quantity.units.as_str(),"units");
@@ -460,7 +460,7 @@ mod test {
 
     #[test]
     fn test_timeperiod_deserialize() {
-        let period : TimePeriod = serde_json::from_str(PERIOD_JSON).unwrap();
+        let period : TimePeriod = serde_json::from_str(PERIOD_JSON).expect("Could not parse Period JSON");
 
         assert_eq!(period.start_date_time.as_str(),"2024-07-29T23:07:57Z");
         assert_eq!(period.end_date_time.is_none(),true);
