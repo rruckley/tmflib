@@ -198,7 +198,7 @@ impl From<ShoppingCart> for ProductOrder {
         // Bring across the related parties
         if value.related_party.is_some() {
             value.related_party.unwrap().into_iter().for_each(|rp| {
-                order.related_party.as_mut().unwrap().push(rp.clone());
+                order.add_party(rp);
             });
         }
         order

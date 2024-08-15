@@ -8,14 +8,18 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     HasId, 
-    HasName, 
+    HasName,
+    HasRelatedParty,
     DateTime, 
     TMFEvent, 
     TimePeriod, 
     LIB_PATH,
     gen_code
 };
-use tmflib_derive::HasId;
+use tmflib_derive::{
+    HasId,
+    HasRelatedParty
+};
 use super::{MOD_PATH,Characteristic};
 use crate::common::related_party::RelatedParty;
 use crate::common::contact::ContactMedium;
@@ -38,7 +42,7 @@ pub struct LanguageAbility {
 }
 
 /// An individual
-#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Individual {
     /// Unique id for this individual
@@ -197,11 +201,6 @@ impl Individual {
         let medium = ContactMedium::mobile(mobile);
         self.add_contact(medium);
         self
-    }
-
-    /// Add a related party to the individual
-    pub fn add_party(&mut self, party : RelatedParty) {
-        self.related_party.as_mut().unwrap().push(party);
     }
 
     /// Add a contact medium to the individual

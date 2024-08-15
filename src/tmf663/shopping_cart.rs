@@ -2,8 +2,8 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, LIB_PATH,HasValidity,TimePeriod};
-use tmflib_derive::{HasId,HasValidity};
+use crate::{HasId, LIB_PATH,HasValidity,HasRelatedParty,TimePeriod};
+use tmflib_derive::{HasId,HasValidity,HasRelatedParty};
 use crate::common::contact::ContactMedium;
 use crate::common::related_party::RelatedParty;
 use crate::common::price::Price;
@@ -27,7 +27,7 @@ pub struct CartPrice {
 }
 
 /// Shopping Cart
-#[derive(Clone, Debug, Default, Deserialize, HasId,HasValidity, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId,HasValidity,HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShoppingCart {
     /// Contact Medium
@@ -67,10 +67,6 @@ impl ShoppingCart {
     /// This function will calculate a total price and add it if not present
     pub fn add_item(&mut self, item : CartItem) {
         self.cart_item.as_mut().unwrap().push(item);
-    }
-    /// Add Related Party
-    pub fn add_party(&mut self, party : RelatedParty) {
-        self.related_party.as_mut().unwrap().push(party);
     }
 }
 
