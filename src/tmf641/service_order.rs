@@ -94,7 +94,7 @@ pub struct ServiceOrder {
     pub note: Option<Vec<Note>>,
     /// Service Order Items
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub servce_order_item: Option<Vec<ServiceOrderItem>>,
+    pub service_order_item: Option<Vec<ServiceOrderItem>>,
     /// Related Parties
     #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party : Option<Vec<RelatedParty>>,
@@ -106,8 +106,15 @@ impl ServiceOrder {
         let mut so = ServiceOrder::create();
         so.note = Some(vec![]);
         so.related_party = Some(vec![]);
-        so.servce_order_item = Some(vec![]);
         so
+    }
+
+    /// Safely add a new [ServiceOrderItem] to this ServiceOrder
+    pub fn add_item(&mut self, item: ServiceOrderItem) {
+        match self.service_order_item.as_mut() {
+            Some(v) => v.push(item),
+            None => self.service_order_item = Some(vec![item]),
+        }
     }
 }
 
