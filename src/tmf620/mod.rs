@@ -109,7 +109,7 @@ mod test {
 
     #[test]
     fn test_slafef_deserialize() {
-        let _slaref : SLARef = serde_json::from_str(EMPTY_JSON).expect("Could not parse Emoty JSON")
+        let _slaref : SLARef = serde_json::from_str(EMPTY_JSON).expect("Could not parse Emoty JSON");
     }
 
 }
