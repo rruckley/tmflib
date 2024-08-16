@@ -24,7 +24,8 @@ mod test {
 
     #[test]
     fn test_taxitem_deserialise() {
-        let taxitem : TaxItem = serde_json::from_str(TAX_JSON).unwrap();
+        let taxitem : TaxItem = serde_json::from_str(TAX_JSON)
+        .expect("Could not parase TAX_JSON");
 
         assert_eq!(taxitem.tax_category.as_str(),"TaxCategory");
         assert_eq!(taxitem.tax_rate,0.10);

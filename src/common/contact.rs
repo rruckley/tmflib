@@ -170,7 +170,6 @@ mod test {
         assert_eq!(email.medium_type.unwrap(),EMAIL_TYPE.to_string());
         assert_eq!(email.characteristic.is_some(),true);
         assert_eq!(email.characteristic.unwrap().contact_type.unwrap(),EMAIL_TYPE.to_string());
-        //assert_eq!(email.characteristic.unwrap().email_address.unwrap(),"test@example.com".to_string());
     }
 
     #[test]
@@ -195,10 +194,10 @@ mod test {
         let mediumchar: MediumCharacteristic = serde_json::from_str(MEDIUM_CHAR_JSON).unwrap();
 
         assert_eq!(mediumchar.contact_type.is_some(),true);
-        assert_eq!(mediumchar.contact_type.unwrap().as_str(),"email");
+        assert_eq!(mediumchar.contact_type.expect("Could not parse mediumchar JSON").as_str(),"email");
 
         assert_eq!(mediumchar.email_address.is_some(),true);
-        assert_eq!(mediumchar.email_address.unwrap().as_str(),"john@example.com");
+        assert_eq!(mediumchar.email_address.expect("Could not parse email_address JSON").as_str(),"john@example.com");
     }
 
     #[test]
@@ -223,6 +222,6 @@ mod test {
         let contact_char : ContactCharacteristic = serde_json::from_str(CONTACT_CHAR).unwrap();
 
         assert_eq!(contact_char.email_address.is_some(),true);
-        assert_eq!(contact_char.email_address.unwrap().as_str(),"john@example.com");
+        assert_eq!(contact_char.email_address.expect("Could not parse email_address JSON").as_str(),"john@example.com");
     }
 }
