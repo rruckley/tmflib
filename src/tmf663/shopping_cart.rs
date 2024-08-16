@@ -66,7 +66,10 @@ impl ShoppingCart {
     /// Add item to shopping cart
     /// This function will calculate a total price and add it if not present
     pub fn add_item(&mut self, item : CartItem) {
-        self.cart_item.as_mut().unwrap().push(item);
+        match self.cart_item.as_mut() {
+            Some(v) => v.push(item),
+            None => self.cart_item = Some(vec![item]),
+        }
     }
 }
 
