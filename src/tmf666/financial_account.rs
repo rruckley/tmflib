@@ -36,7 +36,12 @@ pub struct FinancialAccountRef {
 
 impl From<FinancialAccount> for FinancialAccountRef {
     fn from(value: FinancialAccount) -> Self {
-        let balance = value.account_balance.clone().map(|v| v.first().unwrap().clone());
+        let balance = value
+            .account_balance
+            .clone()
+            .unwrap()
+            .first()
+            .cloned();
   
         FinancialAccountRef {
             id: value.get_id(),
