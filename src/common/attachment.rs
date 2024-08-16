@@ -122,7 +122,7 @@ mod test {
 
         let attachment = AttachmentRefOrValue::from(&document);
 
-        assert_eq!(attachment.name.unwrap(),document.get_name());
+        assert_eq!(attachment.get_name(),document.get_name());
     }
 
     #[test]
@@ -142,7 +142,7 @@ mod test {
 
     #[test]
     fn test_attach_deserialize() {
-        let _attach : AttachmentRefOrValue = serde_json::from_str(ATTACH_JSON).unwrap();
+        let _attach : AttachmentRefOrValue = serde_json::from_str(ATTACH_JSON).expect("Could not parse attach JSON");
 
     }
 
