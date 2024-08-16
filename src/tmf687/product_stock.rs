@@ -91,7 +91,7 @@ mod test {
         let stock = ProductStock::new(STOCK_NAME);
 
         assert_eq!(stock.name.is_some(),true);
-        assert_eq!(stock.name.unwrap().as_str(),STOCK_NAME);
+        assert_eq!(stock.get_name().as_str(),STOCK_NAME);
     }
 
     #[test]

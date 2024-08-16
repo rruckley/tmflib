@@ -175,6 +175,6 @@ mod test {
     fn sales_lead_create_name() {
         let sl = SalesLead::new(SL_NAME);
 
-        assert_eq!(sl.name.unwrap(),SL_NAME.to_string());
+        assert_eq!(sl.get_name(),SL_NAME.to_string());
     }
 }
