@@ -162,6 +162,5 @@ mod test {
 
         assert_eq!(attach.valid_for.is_some(),true);
         assert_eq!(attach.valid_for.unwrap().started(),true);
-        // assert_eq!(attach.valid_for.unwrap().finished(),false);
     }
 }
