@@ -260,14 +260,16 @@ mod tests {
 
     #[test]
     fn test_catalogeventtype_deserialize() {
-        let eventtype : CatalogEventType = serde_json::from_str(CAT_EVENT_TYPE_JSON).unwrap();
+        let eventtype : CatalogEventType = serde_json::from_str(CAT_EVENT_TYPE_JSON)
+            .expect("Could not parse CAT_EVENT_TYPE_JSON");
 
         assert_eq!(eventtype,CatalogEventType::CatalogCreateEvent);
     }
 
     #[test]
     fn test_catalogevent_deserialize() {
-        let _catalogevent : CatalogEvent = serde_json::from_str(CATALOGEVENT_JSON).unwrap();
+        let _catalogevent : CatalogEvent = serde_json::from_str(CATALOGEVENT_JSON)
+            .expect("Could not parse CATALOGEVENT_JSON");
     }
 
     #[test]

@@ -149,7 +149,8 @@ mod test {
 
     #[test]
     fn test_bpo_deserialize() {
-        let bpo : BundledProductOffering = serde_json::from_str(BPO_JSON).unwrap();
+        let bpo : BundledProductOffering = serde_json::from_str(BPO_JSON)
+            .expect("Could not parse BPO_JSON");
 
         assert_eq!(bpo.id.is_some(),true);
         assert_eq!(bpo.get_id(),"BPO123");
@@ -159,7 +160,8 @@ mod test {
 
     #[test]
     fn test_bpo_option_deserialize() {
-        let bpo_option : BundledProductOfferingOption = serde_json::from_str(BPO_OPTION_JSON).unwrap();
+        let bpo_option : BundledProductOfferingOption = serde_json::from_str(BPO_OPTION_JSON)
+            .expect("Could not parse BPO_OPTION_JSON");
 
         assert_eq!(bpo_option.number_rel_offer_default,1);
         assert_eq!(bpo_option.number_rel_offer_lower_limit,2);

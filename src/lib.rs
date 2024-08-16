@@ -182,7 +182,7 @@ pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Optio
     let hash_input = format!("{}:{}:{}",name,id,offset.unwrap_or_default());
     let sha = digest(hash_input);
     let hex = decode(sha);
-    let base32 = encode(base32::Alphabet::Rfc4648 { padding: false }, hex.unwrap().as_ref());
+    let base32 = encode(base32::Alphabet::Rfc4648 { padding: false }, hex.expect("Could not parse HEX string from digest()").as_ref());
     let sha_slice = base32.as_str()[..length.unwrap_or(CODE_DEFAULT_LENGTH)].to_string().to_ascii_uppercase();
     (format!("{}{}",prefix.unwrap_or_default(),sha_slice),base32)
 }
@@ -471,7 +471,7 @@ mod test {
         let old_period = TimePeriod::period_30days();
 
         let mut new_period = TimePeriod::default();
-        new_period.start_date_time = old_period.end_date_time.unwrap().clone();
+        new_period.start_date_time = old_period.end_date_time.expect("perdio_30days() did not set end date").clone();
 
         assert_eq!(new_period.started(),false);
     }

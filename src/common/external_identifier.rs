@@ -41,7 +41,8 @@ mod test {
 
     #[test]
     fn test_external_deserialize() {
-        let external : ExternalIdentifier = serde_json::from_str(EXTERNAL_JSON).unwrap();
+        let external : ExternalIdentifier = serde_json::from_str(EXTERNAL_JSON)
+            .expect("Could not parse EXTERNAL_JSON");
 
         assert_eq!(external.external_identifier_type.as_str(),"email");
         assert_eq!(external.owner.as_str(),"customer");

@@ -191,7 +191,8 @@ mod test {
 
     #[test]
     fn test_mediumcharacteristic_deserialize() {
-        let mediumchar: MediumCharacteristic = serde_json::from_str(MEDIUM_CHAR_JSON).unwrap();
+        let mediumchar: MediumCharacteristic = serde_json::from_str(MEDIUM_CHAR_JSON)
+            .expect("MEDIUM_CHAR_JSON");
 
         assert_eq!(mediumchar.contact_type.is_some(),true);
         assert_eq!(mediumchar.contact_type.expect("Could not parse mediumchar JSON").as_str(),"email");

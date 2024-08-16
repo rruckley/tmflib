@@ -75,7 +75,8 @@ mod test {
 
     #[test]
     fn test_money_deserialize() {
-        let money : Money = serde_json::from_str(MONEY_JSON).unwrap();
+        let money : Money = serde_json::from_str(MONEY_JSON)
+            .expect("MONEY_JSON");
 
         assert_eq!(money.unit.as_str(),"AUD");
         assert_eq!(money.value,12.34);

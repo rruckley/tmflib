@@ -92,7 +92,8 @@ mod test {
 
     #[test]
     fn test_event_deserialize() {
-        let event : Event<Customer,CustomerEventType> = serde_json::from_str(EVENT_JSON).unwrap();
+        let event : Event<Customer,CustomerEventType> = serde_json::from_str(EVENT_JSON)
+            .expect("Could not parse EVENT_JSON");
 
         assert_eq!(event.event_id.as_str(),"E123");
     }
