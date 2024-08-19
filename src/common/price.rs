@@ -90,7 +90,8 @@ mod test {
 
     #[test]
     fn test_price_deserialization() {
-        let price : Price = serde_json::from_str(PRICE_JSON).unwrap();
+        let price : Price = serde_json::from_str(PRICE_JSON)
+            .expect("PRICE_JSON");
 
         assert_eq!(price.percentage, 30.0);
         assert_eq!(price.tax_rate,10.0);
