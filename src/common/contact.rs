@@ -214,7 +214,7 @@ mod test {
     
     #[test]
     fn test_contactmedium_deserialize() {
-        let contact_medium : ContactMedium = serde_json::from_str(CONTACT_MEDIUM).unwrap();
+        let contact_medium : ContactMedium = serde_json::from_str(CONTACT_MEDIUM).expect("Could not parse CONTACT_MEDIUM");
 
         assert_eq!(contact_medium.preferred,true);
     }
