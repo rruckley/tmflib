@@ -110,7 +110,7 @@ impl TimePeriod {
 impl Default for TimePeriod {
     fn default() -> Self {
         let now = Utc::now();
-        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).expect("Invalid input timestamp");
         TimePeriod {
             start_date_time : time.to_rfc3339(),
             end_date_time: None,
@@ -233,7 +233,7 @@ pub trait HasLastUpdate : HasId {
     /// Geneate a timestamp for now(), useful for updating last_updated fields
     fn get_timestamp() -> String {
         let now = Utc::now();
-        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).expect("Invalid timestamp from now()");
         time.to_string()
     }
 
