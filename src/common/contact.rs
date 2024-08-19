@@ -203,7 +203,8 @@ mod test {
 
     #[test]
     fn test_contact_deserialize() {
-        let contact : Contact = serde_json::from_str(CONTACT_JSON).unwrap();
+        let contact : Contact = serde_json::from_str(CONTACT_JSON)
+            .expect("CONTACT_JSON");
 
         assert_eq!(contact.contact_name.as_str(),"John Quinton Citizen");
         assert_eq!(contact.contact_type.as_str(),"primary");
