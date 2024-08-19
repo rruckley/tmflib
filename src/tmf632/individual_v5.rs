@@ -293,7 +293,8 @@ impl Individual {
 
 impl HasName for Individual {
     fn get_name(&self) -> String {
-        self.full_name.as_ref().unwrap().clone()
+        // This will panic if full_name is not set
+        self.full_name.as_ref().unwrap_or_default().clone()
     }
     fn set_name(&mut self, name : impl Into<String>) {
         let name : String = name.into();
