@@ -193,11 +193,12 @@ impl ProductOffering {
     /// let cat= Category::new(String::from("MyCategory"));
     /// let result = po.with_category(CategoryRef::from(&cat));
     /// ```
-    pub fn with_category(mut self, category: CategoryRef) -> ProductOffering {
-        if self.category.is_none() {
-            self.category = Some(vec![]);
+    pub fn with_category(mut self, category: Category) -> ProductOffering {
+        let cat_ref = CategoryRef::from(category);
+        match self.category.as_mut() {
+            Some(v) => v.push(cat_ref),
+            None => self.category = Some(vec![cat_ref]),
         }
-        self.category.as_mut().unwrap().push(category);
         self
     }
 
