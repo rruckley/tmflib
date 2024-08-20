@@ -187,6 +187,21 @@ pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Optio
     (format!("{}{}",prefix.unwrap_or_default(),sha_slice),base32)
 }
 
+/// Perform an safe insert operation on a optional vector of TMF objects
+/// # Actions
+/// - If Option is Some(v) then item is inserted into v
+/// - If Option is None then a new Vec is created with item as single entry
+pub fn vec_insert<T>(ov : &mut Option<Vec<T>>, item : T) {
+    match ov.as_mut() {
+        Some(v) => {
+            v.push(item);
+        },
+        None => {
+            let _old_i = ov.replace(vec![item]);
+        }
+    }
+}
+
 /// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId : Default {
     /// Get a new UUID in simple format (no seperators)
@@ -374,7 +389,9 @@ mod test {
     use crate::{HasName, Quantity, TimePeriod};
 
     use super::gen_code;
+    use super::vec_insert;
     use crate::tmf632::organization_v4::Organization;
+    use crate::common::related_party::RelatedParty;
 
     const CODE : &str = "T-DXQR65";
     const HASH : &str = "DXQR656VE3FIKEZZWJX6C3WC27NSRTJVMYR7ILA5XNDLSJXQPDVQ";
@@ -474,5 +491,30 @@ mod test {
         new_period.start_date_time = old_period.end_date_time.expect("perdio_30days() did not set end date").clone();
 
         assert_eq!(new_period.started(),false);
+    }
+
+    #[test]
+    fn test_vecinsert_none() {
+        let rp = RelatedParty::default();
+        let mut ov : Option<Vec<RelatedParty>> = None;
+
+        vec_insert(&mut ov,rp);
+
+        assert_eq!(ov.is_some(),true);
+        assert_eq!(ov.unwrap().len(),1);
+    }
+
+    #[test]
+    fn test_vecinsert_some() {
+        let mut rp = RelatedParty::default();
+        let _prev = rp.name.insert(String::from("one"));
+        let mut ov : Option<Vec<RelatedParty>> = Some(vec![rp]);   
+
+        let rp2 = RelatedParty::default();
+
+        vec_insert(&mut ov,rp2);
+
+        assert_eq!(ov.is_some(),true);
+        assert_eq!(ov.unwrap().len(),2);
     }
 }
