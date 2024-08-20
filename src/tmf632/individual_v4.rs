@@ -29,6 +29,7 @@ use crate::common::event::{Event, EventPayload};
 
 const CLASS_PATH : &str = "individual";
 const CODE_PREFIX : &str = "I-";
+const NAMENOTSET : &str = "NAMENOTSET";
 
 /// An individual
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasRelatedParty, Serialize)]
@@ -194,7 +195,7 @@ impl Individual {
         }
     }
 
-    /// Find a particular contact medium matching ``medium``
+    /// Find a particular contact medium matching [`medium`]
     fn find_medium(&self, medium : impl Into<String>) -> Option<Vec<&ContactMedium>> {
         match &self.contact_medium {
             None => None,
@@ -279,7 +280,10 @@ impl Individual {
 
 impl HasName for Individual {
     fn get_name(&self) -> String {
-        self.full_name.as_ref().unwrap().clone()
+        match self.full_name.as_ref() {
+            Some(f) => f.clone(),
+            None => String::from(NAMENOTSET),
+        }
     }
     fn set_name(&mut self, name : impl Into<String>) {
         let name : String = name.into();
