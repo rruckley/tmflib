@@ -28,6 +28,9 @@ pub mod party_account;
 pub mod financial_account;
 pub mod settlement_account;
 
+use crate::HasValidity;
+use tmflib_derive::HasValidity;
+
 const MOD_PATH : &str = "accountManagement/v4";
 
 /// Account Reference
@@ -52,7 +55,7 @@ pub struct AccountRelationship {
 }
 
 /// Account Balance
-#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[derive( Clone, Debug, Default, Deserialize, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AccountBalance {
     #[serde(skip_serializing_if = "Option::is_none")]
