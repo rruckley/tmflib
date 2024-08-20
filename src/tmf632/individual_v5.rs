@@ -27,6 +27,7 @@ use crate::common::event::{Event, EventPayload};
 
 const CLASS_PATH : &str = "individual";
 const CODE_PREFIX : &str = "I-";
+const NAMENOTSET : &str = "NAMENOTSET";
 
 /// Language ability of an individual
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -260,6 +261,11 @@ impl Individual {
         }
     
         /// Replace a characteristic returning the old value if found
+        /// # Actions
+        /// Performs the following actions:
+        /// - Creates a characteristic array if one does not exist
+        /// - Creates a new characteristic entry if one is not found.
+        /// - Returns the old entry if one was found.
         pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
             match self.party_characteristic.as_mut() {
                 Some(c) => {
@@ -271,11 +277,12 @@ impl Individual {
                             let old = c[u].clone();
                             // Replace
                             c[u] = characteristic;
+                            // Return the previous value
                             Some(old)
                         },
                         None => {
-                            // This means the characteristic could not be found, instead we insert it
-                            // Additional we return None to indicate that no old value was found
+                            // The characteristic could not be found, instead we insert it
+                            // Additionally, we return None to indicate that no previous value was found
                             c.push(characteristic);
                             None
                         },
@@ -294,7 +301,10 @@ impl Individual {
 impl HasName for Individual {
     fn get_name(&self) -> String {
         // This will panic if full_name is not set
-        self.full_name.as_ref().unwrap_or_default().clone()
+        match self.full_name.as_ref() {
+            Some(f) => f.clone(),
+            None => String::from(NAMENOTSET),
+        }
     }
     fn set_name(&mut self, name : impl Into<String>) {
         let name : String = name.into();
