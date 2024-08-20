@@ -13,6 +13,7 @@ use crate::{
     HasNote, 
     HasRelatedParty,
     Uri,
+    vec_insert,
     LIB_PATH,
 };
 use crate::tmf663::shopping_cart::ShoppingCart;
@@ -142,7 +143,8 @@ impl ProductOrder {
 
     /// Add an ProductOrderItem into the ProductOrder
     pub fn add_order_item(&mut self, order_item : ProductOrderItem) {
-        self.product_order_item.as_mut().unwrap().push(order_item);
+        vec_insert(&mut self.product_order_item,order_item);
+        // self.product_order_item.as_mut().unwrap().push(order_item);
     }
 
 }
