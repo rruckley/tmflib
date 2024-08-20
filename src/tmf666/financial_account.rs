@@ -36,18 +36,11 @@ pub struct FinancialAccountRef {
 
 impl From<FinancialAccount> for FinancialAccountRef {
     fn from(value: FinancialAccount) -> Self {
-        let balance = value
-            .account_balance
-            .clone()
-            .unwrap()
-            .first()
-            .cloned();
-  
         FinancialAccountRef {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            account_balance: balance,
+            account_balance: Some(value.get_balance()),
         }
     }
 }
@@ -74,6 +67,34 @@ pub struct FinancialAccount {
     account_balance: Option<Vec<AccountBalance>>,
     account_relationship: Option<Vec<AccountRelationship>>,
     tax_exemption: Option<Vec<AccountTaxExemption>>,
+}
+
+impl FinancialAccount {
+    /// Get summed balance accross all AccountBalance records
+    pub fn get_balance(&self) -> AccountBalance {
+        let total = match self.account_balance.as_ref() {
+            Some(v) => {
+                let mut out = 0.0;
+                v.iter().for_each(|ab| {
+                    out += match ab.amount.as_ref() {
+                        Some(m) => m.value,
+                        None => 0.0,
+                    }
+                });
+                out
+            },
+            None => 0.0,
+        };
+        let money = Money {
+            value : total,
+            unit : String::from("unknown"),
+        };
+        AccountBalance {
+            amount : Some(money),
+            balance_type: String::from("total"),
+            valid_for: None,
+        }
+    }
 }
 
 #[cfg(test)]
