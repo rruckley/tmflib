@@ -195,6 +195,7 @@ impl ProductOffering {
     /// ```
     pub fn with_category(mut self, category: Category) -> ProductOffering {
         let cat_ref = CategoryRef::from(category);
+        self.category = upsert(self.category,category);
         match self.category.as_mut() {
             Some(v) => v.push(cat_ref),
             None => self.category = Some(vec![cat_ref]),
@@ -202,10 +203,11 @@ impl ProductOffering {
         self
     }
 
-    /// Add specification into this Product Offering
-    pub fn with_specification(mut self, specification: ProductSpecification) -> ProductOffering {
-        self.product_specification = Some(ProductSpecificationRef::from(specification));
-        self
+    pub fn upsert<T : IntoIterator,U : HasId>( &i : Some(T), item : U) -> Option<T> {
+        match i.as_mut() {
+            Some(v) => v.push(U),
+            None => Some(vec![item]),
+        }
     }
 
     /// Add characteristic value uses into this Product Offering
