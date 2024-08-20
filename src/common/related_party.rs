@@ -58,8 +58,8 @@ pub struct RelatedParty {
 impl From<&Customer> for RelatedParty {
     fn from(cust: &Customer) -> Self {
         RelatedParty { 
-            id: cust.id.as_ref().unwrap().clone(), 
-            href: cust.href.as_ref().unwrap().clone(), 
+            id: cust.get_id(), 
+            href: cust.get_href(), 
             name: cust.name.clone(),
             role: Some(Customer::get_class()),
             base_type: Some(Customer::get_class()),
@@ -118,9 +118,9 @@ impl From<OrganizationRef> for RelatedParty {
 impl From<&Individual> for RelatedParty {
     fn from(value: &Individual) -> Self {
         RelatedParty { 
-            id: value.id.as_ref().unwrap().clone(), 
-            href: value.href.as_ref().unwrap().clone(), 
-            name: value.full_name.clone(), 
+            id: value.get_id(), 
+            href: value.get_href(), 
+            name: Some(value.get_name()), 
             role: Some(Individual::get_class()),
             referred_type: Some(Individual::get_class()),
             base_type: Some(Individual::get_class()),
@@ -135,8 +135,8 @@ impl From<&Individual> for RelatedParty {
 impl From<&PartyRole> for RelatedParty {
     fn from(value: &PartyRole) -> Self {
         RelatedParty { 
-            id: value.id.as_ref().unwrap().clone(), 
-            href: value.href.as_ref().unwrap().clone(), 
+            id: value.get_id(), 
+            href: value.get_href(), 
             name: None, 
             role: value.name.clone(),
             referred_type: Some(PartyRole::get_class()),

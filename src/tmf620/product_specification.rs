@@ -209,10 +209,10 @@ pub struct ProductSpecificationRef {
 impl From<ProductSpecification> for ProductSpecificationRef {
     fn from(ps: ProductSpecification) -> ProductSpecificationRef {
         ProductSpecificationRef {
-            id: ps.id.unwrap(),
-            href: ps.href.unwrap(),
-            name: ps.name,
-            version: ps.version,
+            id: ps.get_id(),
+            href: ps.get_href(),
+            name: ps.name.clone(),
+            version: ps.version.clone(),
         }
     }
 }

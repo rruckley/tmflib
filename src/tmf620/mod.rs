@@ -94,22 +94,22 @@ mod test {
 
     #[test]
     fn test_channelref_deserialize() {
-        let _channelref : ChannelRef = serde_json::from_str(EMPTY_JSON).unwrap();
+        let _channelref : ChannelRef = serde_json::from_str(EMPTY_JSON).expect("Could not parse Empty JSON");
     }
 
     #[test]
     fn test_marketsegmentref_deserialize() {
-        let _marketsegmentref : MarketSegmentRef  = serde_json::from_str(EMPTY_JSON).unwrap();
+        let _marketsegmentref : MarketSegmentRef  = serde_json::from_str(EMPTY_JSON).expect("Could not parse Emoty JSON");
     }
 
     #[test]
     fn test_placeref_deserialize() {
-        let _placeref : PlaceRef  = serde_json::from_str(EMPTY_JSON).unwrap();
+        let _placeref : PlaceRef  = serde_json::from_str(EMPTY_JSON).expect("Could not parse Emoty JSON");
     }
 
     #[test]
     fn test_slafef_deserialize() {
-        let _slaref : SLARef = serde_json::from_str(EMPTY_JSON).unwrap();
+        let _slaref : SLARef = serde_json::from_str(EMPTY_JSON).expect("Could not parse Emoty JSON");
     }
 
 }

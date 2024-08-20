@@ -44,7 +44,8 @@ mod test {
 
     #[test]
     fn test_characteristic_deserialize() {
-        let characteristic : Characteristic = serde_json::from_str(CHAR_JSON).unwrap();
+        let characteristic : Characteristic = serde_json::from_str(CHAR_JSON)
+            .expect("Could not parse CHAR_JSON");
 
         assert_eq!(characteristic.name.as_str(),"ABN");
         assert_eq!(characteristic.value_type.as_str(),"string");

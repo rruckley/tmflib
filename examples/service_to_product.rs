@@ -14,6 +14,7 @@ use tmflib::tmf632::individual_v5::Individual;
 use tmflib::common::note::Note;
 use tmflib::common::related_party::RelatedParty;
 use tmflib::tmf641::service_order_item::{ServiceOrderItem,ServiceRefOrValue};
+use tmflib::{HasRelatedParty,HasNote};
 
 fn main() {
     let mut ss = ServiceSpecification::new("Access");
@@ -45,17 +46,19 @@ fn main() {
     // Create new ServiceOrder
     let mut so = ServiceOrder::new();
     // Add a sample note
-    so.note.as_mut().unwrap().push(Note::new("This is a Note."));
+    so.add_note(Note::new("This is a Note."));
     // Create a related party
     let ind = Individual::new("John Q. Citizen");
     // Add related party reference to ServiceOrder
-    so.related_party.as_mut().unwrap().push(RelatedParty::from(&ind));
+    // This should use trait functions to add a party.
+    so.add_party(RelatedParty::from(&ind));
     // Set the Category
     so.category = Some("Fixed Product".to_string());
     // Set the external Id
     so.external_id = Some("PON1234983".to_string());
     // Add sample Service Order Item
-    so.servce_order_item.as_mut().unwrap().push(soi);
+    // This should use an add_item() function
+    so.add_item(soi);
 
     // Now transform the Service Order into a Product Order for downstream parties
     let po = ProductOrder::from(so);

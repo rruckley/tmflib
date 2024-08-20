@@ -170,7 +170,6 @@ mod test {
         assert_eq!(email.medium_type.unwrap(),EMAIL_TYPE.to_string());
         assert_eq!(email.characteristic.is_some(),true);
         assert_eq!(email.characteristic.unwrap().contact_type.unwrap(),EMAIL_TYPE.to_string());
-        //assert_eq!(email.characteristic.unwrap().email_address.unwrap(),"test@example.com".to_string());
     }
 
     #[test]
@@ -192,18 +191,20 @@ mod test {
 
     #[test]
     fn test_mediumcharacteristic_deserialize() {
-        let mediumchar: MediumCharacteristic = serde_json::from_str(MEDIUM_CHAR_JSON).unwrap();
+        let mediumchar: MediumCharacteristic = serde_json::from_str(MEDIUM_CHAR_JSON)
+            .expect("MEDIUM_CHAR_JSON");
 
         assert_eq!(mediumchar.contact_type.is_some(),true);
-        assert_eq!(mediumchar.contact_type.unwrap().as_str(),"email");
+        assert_eq!(mediumchar.contact_type.expect("Could not parse mediumchar JSON").as_str(),"email");
 
         assert_eq!(mediumchar.email_address.is_some(),true);
-        assert_eq!(mediumchar.email_address.unwrap().as_str(),"john@example.com");
+        assert_eq!(mediumchar.email_address.expect("Could not parse email_address JSON").as_str(),"john@example.com");
     }
 
     #[test]
     fn test_contact_deserialize() {
-        let contact : Contact = serde_json::from_str(CONTACT_JSON).unwrap();
+        let contact : Contact = serde_json::from_str(CONTACT_JSON)
+            .expect("CONTACT_JSON");
 
         assert_eq!(contact.contact_name.as_str(),"John Quinton Citizen");
         assert_eq!(contact.contact_type.as_str(),"primary");
@@ -213,7 +214,7 @@ mod test {
     
     #[test]
     fn test_contactmedium_deserialize() {
-        let contact_medium : ContactMedium = serde_json::from_str(CONTACT_MEDIUM).unwrap();
+        let contact_medium : ContactMedium = serde_json::from_str(CONTACT_MEDIUM).expect("Could not parse CONTACT_MEDIUM");
 
         assert_eq!(contact_medium.preferred,true);
     }
@@ -223,6 +224,6 @@ mod test {
         let contact_char : ContactCharacteristic = serde_json::from_str(CONTACT_CHAR).unwrap();
 
         assert_eq!(contact_char.email_address.is_some(),true);
-        assert_eq!(contact_char.email_address.unwrap().as_str(),"john@example.com");
+        assert_eq!(contact_char.email_address.expect("Could not parse email_address JSON").as_str(),"john@example.com");
     }
 }

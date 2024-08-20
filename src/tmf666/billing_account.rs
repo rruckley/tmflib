@@ -100,9 +100,9 @@ pub struct BillingAccountRef {
 impl From<BillingAccount> for BillingAccountRef {
     fn from(value: BillingAccount) -> Self {
         BillingAccountRef {
-            id : value.id.unwrap_or_default(),
-            href : value.href.unwrap_or_default(),
-            name: value.name.unwrap_or_default(),
+            id : value.get_id(),
+            href : value.get_href(),
+            name: value.get_name(),
         }
     }
 }

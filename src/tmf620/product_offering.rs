@@ -20,6 +20,7 @@ use crate::{
     TimePeriod, 
     DateTime,
     Uri,
+    vec_insert,
     LIB_PATH,
 };
 
@@ -34,7 +35,7 @@ use tmflib_derive::{
     HasAttachment,
     HasLastUpdate,
     HasName,
-    HasValidity
+    HasValidity,
 };
 
 use super::MOD_PATH;
@@ -231,10 +232,8 @@ impl ProductOffering {
     /// let result = po.with_category(CategoryRef::from(&cat));
     /// ```
     pub fn with_category(mut self, category: CategoryRef) -> ProductOffering {
-        if self.category.is_none() {
-            self.category = Some(vec![]);
-        }
-        self.category.as_mut().unwrap().push(category);
+        vec_insert(&mut self.category,category);
+        // self.category.as_mut().unwrap().push(category);
         self
     }
 

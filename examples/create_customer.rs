@@ -17,6 +17,4 @@ fn main() {
 
     customer.upgrade_to_code(None);
     dbg!(customer);
-
-    // println!("Customer Code: {}",customer.get_characteristic("code").unwrap().value);
 }

@@ -36,9 +36,10 @@ impl From<ProductOffering> for ProductOfferingRef {
     /// Convert from ProductOffering into ProductOfferingRef
     fn from(po : ProductOffering) -> ProductOfferingRef {
         ProductOfferingRef { 
-            id: po.id.unwrap().clone(), 
-            href: po.href.unwrap().clone(), 
-            name: po.name.as_ref().unwrap().clone() }
+            id: po.get_id(), 
+            href: po.get_href(), 
+            name: po.get_name() 
+        }
     }
 }
 
@@ -192,18 +193,21 @@ impl ProductOffering {
     /// let cat= Category::new(String::from("MyCategory"));
     /// let result = po.with_category(CategoryRef::from(&cat));
     /// ```
-    pub fn with_category(mut self, category: CategoryRef) -> ProductOffering {
-        if self.category.is_none() {
-            self.category = Some(vec![]);
+    pub fn with_category(mut self, category: Category) -> ProductOffering {
+        let cat_ref = CategoryRef::from(category);
+        self.category = upsert(self.category,category);
+        match self.category.as_mut() {
+            Some(v) => v.push(cat_ref),
+            None => self.category = Some(vec![cat_ref]),
         }
-        self.category.as_mut().unwrap().push(category);
         self
     }
 
-    /// Add specification into this Product Offering
-    pub fn with_specification(mut self, specification: ProductSpecification) -> ProductOffering {
-        self.product_specification = Some(ProductSpecificationRef::from(specification));
-        self
+    pub fn upsert<T : IntoIterator,U : HasId>( &i : Some(T), item : U) -> Option<T> {
+        match i.as_mut() {
+            Some(v) => v.push(U),
+            None => Some(vec![item]),
+        }
     }
 
     /// Add characteristic value uses into this Product Offering

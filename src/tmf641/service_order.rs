@@ -3,8 +3,8 @@ use serde::{Deserialize, Serialize};
 // URL Path components
 use crate::LIB_PATH;
 use super::MOD_PATH;
-use crate::{HasId,HasNote,DateTime};
-use tmflib_derive::{HasId,HasNote};
+use crate::{HasId,HasNote,HasRelatedParty,DateTime};
+use tmflib_derive::{HasId,HasNote,HasRelatedParty};
 use crate::common::note::Note;
 use super::service_order_item::ServiceOrderItem;
 use crate::common::related_party::RelatedParty;
@@ -40,7 +40,7 @@ pub enum ServiceOrderStateType {
 }
 
 /// Service Order Object
-#[derive(Clone, Debug, Default, Deserialize, HasId, HasNote, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasNote, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ServiceOrder {
     /// Cancellation Date
@@ -94,7 +94,7 @@ pub struct ServiceOrder {
     pub note: Option<Vec<Note>>,
     /// Service Order Items
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub servce_order_item: Option<Vec<ServiceOrderItem>>,
+    pub service_order_item: Option<Vec<ServiceOrderItem>>,
     /// Related Parties
     #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party : Option<Vec<RelatedParty>>,
@@ -106,8 +106,15 @@ impl ServiceOrder {
         let mut so = ServiceOrder::create();
         so.note = Some(vec![]);
         so.related_party = Some(vec![]);
-        so.servce_order_item = Some(vec![]);
         so
+    }
+
+    /// Safely add a new [ServiceOrderItem] to this ServiceOrder
+    pub fn add_item(&mut self, item: ServiceOrderItem) {
+        match self.service_order_item.as_mut() {
+            Some(v) => v.push(item),
+            None => self.service_order_item = Some(vec![item]),
+        }
     }
 }
 

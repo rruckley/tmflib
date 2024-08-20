@@ -12,6 +12,7 @@ use tmflib::tmf632::individual_v4::Individual;
 use tmflib::tmf632::individual_v5::Individual;
 use tmflib::tmf663::shopping_cart::ShoppingCart;
 use tmflib::tmf663::cart_item::CartItem;
+use tmflib::HasRelatedParty;
 
 
 fn main() {

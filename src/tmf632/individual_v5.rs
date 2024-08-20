@@ -8,14 +8,18 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     HasId, 
-    HasName, 
+    HasName,
+    HasRelatedParty,
     DateTime, 
     TMFEvent, 
     TimePeriod, 
     LIB_PATH,
     gen_code
 };
-use tmflib_derive::HasId;
+use tmflib_derive::{
+    HasId,
+    HasRelatedParty
+};
 use super::{MOD_PATH,Characteristic};
 use crate::common::related_party::RelatedParty;
 use crate::common::contact::ContactMedium;
@@ -23,6 +27,7 @@ use crate::common::event::{Event, EventPayload};
 
 const CLASS_PATH : &str = "individual";
 const CODE_PREFIX : &str = "I-";
+const NAMENOTSET : &str = "NAMENOTSET";
 
 /// Language ability of an individual
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -38,7 +43,7 @@ pub struct LanguageAbility {
 }
 
 /// An individual
-#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Individual {
     /// Unique id for this individual
@@ -199,11 +204,6 @@ impl Individual {
         self
     }
 
-    /// Add a related party to the individual
-    pub fn add_party(&mut self, party : RelatedParty) {
-        self.related_party.as_mut().unwrap().push(party);
-    }
-
     /// Add a contact medium to the individual
     pub fn add_contact(&mut self, medium : ContactMedium) {
         self.contact_medium.as_mut().unwrap().push(medium);
@@ -261,6 +261,11 @@ impl Individual {
         }
     
         /// Replace a characteristic returning the old value if found
+        /// # Actions
+        /// Performs the following actions:
+        /// - Creates a characteristic array if one does not exist
+        /// - Creates a new characteristic entry if one is not found.
+        /// - Returns the old entry if one was found.
         pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
             match self.party_characteristic.as_mut() {
                 Some(c) => {
@@ -272,11 +277,12 @@ impl Individual {
                             let old = c[u].clone();
                             // Replace
                             c[u] = characteristic;
+                            // Return the previous value
                             Some(old)
                         },
                         None => {
-                            // This means the characteristic could not be found, instead we insert it
-                            // Additional we return None to indicate that no old value was found
+                            // The characteristic could not be found, instead we insert it
+                            // Additionally, we return None to indicate that no previous value was found
                             c.push(characteristic);
                             None
                         },
@@ -294,7 +300,11 @@ impl Individual {
 
 impl HasName for Individual {
     fn get_name(&self) -> String {
-        self.full_name.as_ref().unwrap().clone()
+        // This will panic if full_name is not set
+        match self.full_name.as_ref() {
+            Some(f) => f.clone(),
+            None => String::from(NAMENOTSET),
+        }
     }
     fn set_name(&mut self, name : impl Into<String>) {
         let name : String = name.into();

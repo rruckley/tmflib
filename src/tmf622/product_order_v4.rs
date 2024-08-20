@@ -13,6 +13,7 @@ use crate::{
     HasNote, 
     HasRelatedParty,
     Uri,
+    vec_insert,
     LIB_PATH,
 };
 use crate::tmf663::shopping_cart::ShoppingCart;
@@ -142,7 +143,8 @@ impl ProductOrder {
 
     /// Add an ProductOrderItem into the ProductOrder
     pub fn add_order_item(&mut self, order_item : ProductOrderItem) {
-        self.product_order_item.as_mut().unwrap().push(order_item);
+        vec_insert(&mut self.product_order_item,order_item);
+        // self.product_order_item.as_mut().unwrap().push(order_item);
     }
 
 }
@@ -165,7 +167,7 @@ impl From<ServiceOrder> for ProductOrder {
         po.expected_completion_date.clone_from(&value.expected_completion_date);
         
         // Iterate through service order items
-        let items = match value.servce_order_item {
+        let items = match value.service_order_item {
             Some(i) => {
                 let mut out = vec![];
                 i.into_iter().for_each(|i| {
@@ -198,7 +200,7 @@ impl From<ShoppingCart> for ProductOrder {
         // Bring across the related parties
         if value.related_party.is_some() {
             value.related_party.unwrap().into_iter().for_each(|rp| {
-                order.related_party.as_mut().unwrap().push(rp.clone());
+                order.add_party(rp);
             });
         }
         order

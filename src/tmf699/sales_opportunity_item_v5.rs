@@ -6,14 +6,16 @@ use crate::{common::{
     money::Money, 
     note::Note, 
     related_party::RelatedParty
-}, TimePeriod
+}, TimePeriod,
+HasRelatedParty,
 };
+use tmflib_derive::HasRelatedParty;
 use crate::tmf629::customer::Customer;
 
 use super::{sales_lead_v5::SalesLeadRef, sales_opportunity_v5::SalesOpportunityPriorityType};
 
 /// Sales Opportunity Item
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone,Debug,Default,Deserialize, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SalesOpportunityItem {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -42,7 +44,7 @@ impl SalesOpportunityItem {
 
     /// Add customer to opportunity item
     pub fn for_customer(mut self, cust : Customer) -> SalesOpportunityItem {
-        self.related_party.as_mut().unwrap().push(RelatedParty::from(&cust));
+        self.add_party(RelatedParty::from(&cust));
         self
     }
 }

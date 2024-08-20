@@ -5,7 +5,8 @@ use crate::{
     HasId, 
     HasName,
     HasLastUpdate, 
-    HasValidity, 
+    HasValidity,
+    HasRelatedParty, 
     TimePeriod, 
     DateTime,
     TMFEvent,
@@ -15,7 +16,7 @@ use crate::{
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
-use tmflib_derive::{HasLastUpdate,HasId,HasName,HasValidity};
+use tmflib_derive::{HasLastUpdate,HasId,HasName,HasValidity,HasRelatedParty};
 
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
@@ -28,7 +29,7 @@ const CLASS_PATH: &str = "catalog";
 const CAT_VERS: &str = "1.0";
 
 /// Catalogue
-#[derive(Clone, Default, Debug, Deserialize,HasLastUpdate, HasId, HasName, HasValidity, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize,HasLastUpdate, HasId, HasName, HasValidity, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Catalog {
     /// Non-optional fields
@@ -90,12 +91,10 @@ impl Catalog {
 
     /// Add a category to a catalog
     pub fn add_category(&mut self, category: CategoryRef) {
-        self.category.as_mut().unwrap().push(category);
-    }
-
-    /// Add party to a catalog
-    pub fn add_party(&mut self, party : RelatedParty) {
-        self.related_party.as_mut().unwrap().push(party);
+        match self.category.as_mut() {
+            Some(v) => v.push(category),
+            None => self.category = Some(vec![category]),
+        }
     }
 }
 
@@ -170,7 +169,7 @@ mod tests {
 
     use super::{Catalog, CatalogEvent, CatalogEventType};
     use crate::tmf620::category::{Category, CategoryRef};
-    use crate::{HasId,HasName, HasValidity,TimePeriod};
+    use crate::{HasId,HasName, HasValidity,HasRelatedParty,TimePeriod};
 
     const CAT_JSON : &str = "{
         \"name\" : \"CatalogueName\",
@@ -261,14 +260,16 @@ mod tests {
 
     #[test]
     fn test_catalogeventtype_deserialize() {
-        let eventtype : CatalogEventType = serde_json::from_str(CAT_EVENT_TYPE_JSON).unwrap();
+        let eventtype : CatalogEventType = serde_json::from_str(CAT_EVENT_TYPE_JSON)
+            .expect("Could not parse CAT_EVENT_TYPE_JSON");
 
         assert_eq!(eventtype,CatalogEventType::CatalogCreateEvent);
     }
 
     #[test]
     fn test_catalogevent_deserialize() {
-        let _catalogevent : CatalogEvent = serde_json::from_str(CATALOGEVENT_JSON).unwrap();
+        let _catalogevent : CatalogEvent = serde_json::from_str(CATALOGEVENT_JSON)
+            .expect("Could not parse CATALOGEVENT_JSON");
     }
 
     #[test]

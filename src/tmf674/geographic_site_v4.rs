@@ -307,7 +307,8 @@ mod test {
 
     #[test]
     fn test_placeref_deserialize() {
-        let placeref : PlaceRefOrValue = serde_json::from_str(PLACEREF_JSON).unwrap();
+        let placeref : PlaceRefOrValue = serde_json::from_str(PLACEREF_JSON)
+            .expect("Cannot parse PLACEREF_JSON");
 
         assert_eq!(placeref.id.as_str(),"P123");
         assert_eq!(placeref.name.as_str(),"PlaceName");

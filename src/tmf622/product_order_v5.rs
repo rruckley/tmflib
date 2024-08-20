@@ -133,24 +133,6 @@ impl ProductOrder {
     pub fn add_order_item(&mut self, order_item : ProductOrderItem) {
         self.product_order_item.as_mut().unwrap().push(order_item);
     }
-
-    /// Add a RelatedParty into the ProductOrder
-    /// # Example
-    /// ```
-    /// # use tmflib::tmf622::product_order_v5::ProductOrder;
-    /// use tmflib::common::related_party::RelatedParty;
-    /// use tmflib::tmf629::customer::Customer;
-    /// use tmflib::tmf632::organization_v5::Organization;
-    /// 
-    /// let organization = Organization::new(String::from("My Customer"));
-    /// let customer = Customer::new(organization);
-    /// let mut order = ProductOrder::new();
-    /// order.add_party(RelatedParty::from(&customer));
-    /// dbg!(order);
-    /// ```
-    pub fn add_party(&mut self, party: RelatedParty) {
-        self.related_party.as_mut().unwrap().push(party);
-    }
 }
 
 impl From<ServiceOrder> for ProductOrder {
@@ -204,7 +186,7 @@ impl From<ShoppingCart> for ProductOrder {
         // Bring across the related parties
         if value.related_party.is_some() {
             value.related_party.unwrap().into_iter().for_each(|rp| {
-                order.related_party.as_mut().unwrap().push(rp.clone());
+                order.add_party(rp);
             });
         }
         order

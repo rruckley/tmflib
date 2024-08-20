@@ -74,7 +74,7 @@ impl TimePeriod {
     /// Calculate period `days` into the future
     pub fn period_days(days : u64) -> TimePeriod {
         let now = Utc::now() + Days::new(days);
-        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).expect("Invalid now() output");
         TimePeriod {
             end_date_time: Some(time.to_rfc3339()),
             ..Default::default()
@@ -84,7 +84,7 @@ impl TimePeriod {
     pub fn started(&self) -> bool {
         let now = Utc::now();
         
-        let start = chrono::DateTime::parse_from_rfc3339(&self.start_date_time).unwrap();
+        let start = chrono::DateTime::parse_from_rfc3339(&self.start_date_time).expect("Could not start parse time from now()");
         // Start is in the past, return true
         if start < now { 
             return true
@@ -96,7 +96,7 @@ impl TimePeriod {
         match &self.end_date_time {
             Some(f) => {
                 let now = Utc::now();
-                let finish = chrono::DateTime::parse_from_rfc3339(f).unwrap();
+                let finish = chrono::DateTime::parse_from_rfc3339(f).expect("Could not parse finish time from now()");
                 if finish < now {
                     return true
                 }
@@ -110,7 +110,7 @@ impl TimePeriod {
 impl Default for TimePeriod {
     fn default() -> Self {
         let now = Utc::now();
-        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).expect("Invalid input timestamp");
         TimePeriod {
             start_date_time : time.to_rfc3339(),
             end_date_time: None,
@@ -182,9 +182,24 @@ pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Optio
     let hash_input = format!("{}:{}:{}",name,id,offset.unwrap_or_default());
     let sha = digest(hash_input);
     let hex = decode(sha);
-    let base32 = encode(base32::Alphabet::Rfc4648 { padding: false }, hex.unwrap().as_ref());
+    let base32 = encode(base32::Alphabet::Rfc4648 { padding: false }, hex.expect("Could not parse HEX string from digest()").as_ref());
     let sha_slice = base32.as_str()[..length.unwrap_or(CODE_DEFAULT_LENGTH)].to_string().to_ascii_uppercase();
     (format!("{}{}",prefix.unwrap_or_default(),sha_slice),base32)
+}
+
+/// Perform an safe insert operation on a optional vector of TMF objects
+/// # Actions
+/// - If Option is Some(v) then item is inserted into v
+/// - If Option is None then a new Vec is created with item as single entry
+pub fn vec_insert<T>(ov : &mut Option<Vec<T>>, item : T) {
+    match ov.as_mut() {
+        Some(v) => {
+            v.push(item);
+        },
+        None => {
+            let _old_i = ov.replace(vec![item]);
+        }
+    }
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
@@ -233,7 +248,7 @@ pub trait HasLastUpdate : HasId {
     /// Geneate a timestamp for now(), useful for updating last_updated fields
     fn get_timestamp() -> String {
         let now = Utc::now();
-        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let time = chrono::DateTime::from_timestamp(now.timestamp(),0).expect("Invalid timestamp from now()");
         time.to_string()
     }
 
@@ -374,7 +389,9 @@ mod test {
     use crate::{HasName, Quantity, TimePeriod};
 
     use super::gen_code;
+    use super::vec_insert;
     use crate::tmf632::organization_v4::Organization;
+    use crate::common::related_party::RelatedParty;
 
     const CODE : &str = "T-DXQR65";
     const HASH : &str = "DXQR656VE3FIKEZZWJX6C3WC27NSRTJVMYR7ILA5XNDLSJXQPDVQ";
@@ -452,7 +469,7 @@ mod test {
 
     #[test]
     fn test_quantity_deserialize() {
-        let quantity : Quantity = serde_json::from_str(QUANTITY_JSON).unwrap();
+        let quantity : Quantity = serde_json::from_str(QUANTITY_JSON).expect("Could not parse Quantity JSON");
 
         assert_eq!(quantity.amount,12.34);
         assert_eq!(quantity.units.as_str(),"units");
@@ -460,7 +477,7 @@ mod test {
 
     #[test]
     fn test_timeperiod_deserialize() {
-        let period : TimePeriod = serde_json::from_str(PERIOD_JSON).unwrap();
+        let period : TimePeriod = serde_json::from_str(PERIOD_JSON).expect("Could not parse Period JSON");
 
         assert_eq!(period.start_date_time.as_str(),"2024-07-29T23:07:57Z");
         assert_eq!(period.end_date_time.is_none(),true);
@@ -471,8 +488,33 @@ mod test {
         let old_period = TimePeriod::period_30days();
 
         let mut new_period = TimePeriod::default();
-        new_period.start_date_time = old_period.end_date_time.unwrap().clone();
+        new_period.start_date_time = old_period.end_date_time.expect("perdio_30days() did not set end date").clone();
 
         assert_eq!(new_period.started(),false);
+    }
+
+    #[test]
+    fn test_vecinsert_none() {
+        let rp = RelatedParty::default();
+        let mut ov : Option<Vec<RelatedParty>> = None;
+
+        vec_insert(&mut ov,rp);
+
+        assert_eq!(ov.is_some(),true);
+        assert_eq!(ov.unwrap().len(),1);
+    }
+
+    #[test]
+    fn test_vecinsert_some() {
+        let mut rp = RelatedParty::default();
+        let _prev = rp.name.insert(String::from("one"));
+        let mut ov : Option<Vec<RelatedParty>> = Some(vec![rp]);   
+
+        let rp2 = RelatedParty::default();
+
+        vec_insert(&mut ov,rp2);
+
+        assert_eq!(ov.is_some(),true);
+        assert_eq!(ov.unwrap().len(),2);
     }
 }

@@ -1,4 +1,5 @@
 //! Shopping Cart to Product Order
+use tmflib::HasRelatedParty;
 use tmflib::common::related_party::RelatedParty;
 use tmflib::common::note::Note;
 #[cfg(feature = "tmf620-v4")]

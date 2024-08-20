@@ -122,19 +122,19 @@ mod test {
 
         let attachment = AttachmentRefOrValue::from(&document);
 
-        assert_eq!(attachment.name.unwrap(),document.get_name());
+        assert_eq!(attachment.get_name(),document.get_name());
     }
 
     #[test]
     fn test_attachmenttype_deserialize() {
-        let attach_type : AttachmentType = serde_json::from_str(ATTACH_TYPE_JSON).unwrap();
+        let attach_type : AttachmentType = serde_json::from_str(ATTACH_TYPE_JSON).expect("Could not parse test json");
 
         assert_eq!(attach_type,AttachmentType::InLine);
     }
 
     #[test]
     fn test_attachmentsize_deserialize() {
-        let attach_size : AttachmentSize = serde_json::from_str(ATTACH_SIZE).unwrap();
+        let attach_size : AttachmentSize = serde_json::from_str(ATTACH_SIZE).expect("Could not parse test json");
 
         assert_eq!(attach_size.amount,123.4);
         assert_eq!(attach_size.units.as_str(),"bytes");
@@ -142,7 +142,7 @@ mod test {
 
     #[test]
     fn test_attach_deserialize() {
-        let _attach : AttachmentRefOrValue = serde_json::from_str(ATTACH_JSON).unwrap();
+        let _attach : AttachmentRefOrValue = serde_json::from_str(ATTACH_JSON).expect("Could not parse attach JSON");
 
     }
 
@@ -162,6 +162,5 @@ mod test {
 
         assert_eq!(attach.valid_for.is_some(),true);
         assert_eq!(attach.valid_for.unwrap().started(),true);
-        // assert_eq!(attach.valid_for.unwrap().finished(),false);
     }
 }

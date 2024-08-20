@@ -59,8 +59,8 @@ impl From<Appointment> for AppointmentRef {
     fn from(value: Appointment) -> Self {
         AppointmentRef {
             description: value.get_href(),
-            href: value.href.unwrap().clone(),
-            id: value.id.unwrap().clone(),
+            href: value.get_href(),
+            id: value.get_id(),
         }
     }
 }

@@ -73,7 +73,8 @@ mod test {
 
     #[test]
     fn test_poq_deserialize() {
-        let poq : ProductOfferingQualification = serde_json::from_str(POQ_JSON).unwrap();
+        let poq : ProductOfferingQualification = serde_json::from_str(POQ_JSON)
+            .expect("Could not parse POQ JSON");
 
         assert_eq!(poq.id.is_some(),true);
         assert_eq!(poq.get_id().as_str(),"POQ123");
