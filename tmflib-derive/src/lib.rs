@@ -267,7 +267,7 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
 }
 
 /// Implement the HasDescription Trait
-#[proc_macro_derive(HasDecription)]
+#[proc_macro_derive(HasDescription)]
 pub fn hasdescription_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let fields = match input.data {
@@ -283,7 +283,7 @@ pub fn hasdescription_derive(input: TokenStream) -> TokenStream {
     let _name = fields.iter().find(|s| *s == "description").expect("No description field found");    
 
     let out = quote! {
-        impl HasDecription for #name {
+        impl HasDescription for #name {
             fn description(mut self, description : impl Into<String>) -> Self {
                 self.description = Some(description.into());
                 self
