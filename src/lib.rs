@@ -340,7 +340,7 @@ pub trait HasAttachment {
 }
 
 /// Trait for managing a description field. Description field must be defined as Option<String>
-pub trait HasDecription {
+pub trait HasDescription {
     /// Builder pattern function to set the description on object creation
     fn description(self, description : impl Into<String>) -> Self;
     /// Get the description by cloning it if set, returns empty string otherwise.
