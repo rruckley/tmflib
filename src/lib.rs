@@ -342,11 +342,12 @@ pub trait HasAttachment {
 /// Trait for managing a description field. Description field must be defined as Option<String>
 pub trait HasDecription {
     /// Builder pattern function to set the description on object creation
-    fn description(&mut self, description : impl Into<String>) -> Self;
+    fn description(self, description : impl Into<String>) -> Self;
     /// Get the description by cloning it if set, returns empty string otherwise.
     fn get_description(&self) -> String;
     /// Update the description by inserting a new value into the Option.
-    fn set_description(&self, description : impl Into<String>);
+    /// Returns the old value if set otherwise None.
+    fn set_description(&mut self, description : impl Into<String>) -> Option<String>;
 }
 
 pub mod common;
