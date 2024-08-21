@@ -6,10 +6,15 @@ use crate::{
     HasId, 
     HasName, 
     HasValidity, 
-    HasDecription,
+    HasDescription,
     DateTime
 };
-use tmflib_derive::{HasId, HasName, HasValidity};
+use tmflib_derive::{
+    HasId, 
+    HasDescription,
+    HasName, 
+    HasValidity
+};
 use crate::tmf667::document::Document;
 
 use crate::TimePeriod;
@@ -41,7 +46,7 @@ pub struct AttachmentSize {
 }
 
 /// Attachment Reference or Value
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasName, HasValidity, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasName, HasDescription, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AttachmentRefOrValue {
     /// Unique Id
@@ -86,22 +91,6 @@ impl AttachmentRefOrValue {
     }
 }
 
-impl HasDecription for AttachmentRefOrValue {
-    fn description(mut self, description : impl Into<String>) -> Self {
-        self.description = Some(description.into());
-        self
-    }
-    fn get_description(&self) -> String {
-        match self.description.as_ref() {
-            Some(d) => d.clone(),
-            None => String::default(),
-        }    
-    }
-    fn set_description(&mut self, description : impl Into<String>) -> Option<String> {
-        self.description.replace(description.into())
-    }
-}
-
 impl From<&Document> for AttachmentRefOrValue {
     fn from(value: &Document) -> Self {
         let validity  = value.last_update.as_ref().map(|t| TimePeriod::from(t.clone() as DateTime));
@@ -119,7 +108,7 @@ impl From<&Document> for AttachmentRefOrValue {
 #[cfg(test)]
 mod test {
     use crate::{tmf667::document::Document, HasName};
-
+    use crate::HasDescription;
     use super::*;
 
     const ATTACH_TYPE_JSON : &str = "\"inLine\"";
