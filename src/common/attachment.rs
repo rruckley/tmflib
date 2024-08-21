@@ -2,7 +2,13 @@
 //!
 //!
 use serde::{Deserialize, Serialize};
-use crate::{HasId, HasName, HasValidity, DateTime};
+use crate::{
+    HasId, 
+    HasName, 
+    HasValidity, 
+    HasDecription,
+    DateTime
+};
 use tmflib_derive::{HasId, HasName, HasValidity};
 use crate::tmf667::document::Document;
 
@@ -80,6 +86,22 @@ impl AttachmentRefOrValue {
     }
 }
 
+impl HasDecription for AttachmentRefOrValue {
+    fn description(mut self, description : impl Into<String>) -> Self {
+        self.description = Some(description.into());
+        self
+    }
+    fn get_description(&self) -> String {
+        match self.description.as_ref() {
+            Some(d) => d.clone(),
+            None => String::default(),
+        }    
+    }
+    fn set_description(&mut self, description : impl Into<String>) -> Option<String> {
+        self.description.replace(description.into())
+    }
+}
+
 impl From<&Document> for AttachmentRefOrValue {
     fn from(value: &Document) -> Self {
         let validity  = value.last_update.as_ref().map(|t| TimePeriod::from(t.clone() as DateTime));
@@ -108,6 +130,7 @@ mod test {
     const ATTACH_NAME: &str= "AttachmentName";
 
     const ATTACH_JSON : &str = "{}";
+    const ATTACH_DESC : &str = "AttachmentDescription";
 
     #[test]
     fn test_attachment_default() {
@@ -162,5 +185,24 @@ mod test {
 
         assert_eq!(attach.valid_for.is_some(),true);
         assert_eq!(attach.valid_for.unwrap().started(),true);
+    }
+
+    #[test]
+    fn test_attach_description() {
+        let attach = AttachmentRefOrValue::new()
+            .description(ATTACH_DESC);
+
+        assert_eq!(attach.description.is_some(),true);
+        assert_eq!(attach.get_description().as_str(),ATTACH_DESC);
+    }
+
+    #[test]
+    fn test_attach_setdescription() {
+        let mut attach = AttachmentRefOrValue::new();
+
+        attach.set_description(ATTACH_DESC);
+
+        assert_eq!(attach.description.is_some(),true);
+        assert_eq!(attach.get_description().as_str(),ATTACH_DESC);        
     }
 }
