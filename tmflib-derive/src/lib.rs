@@ -266,6 +266,43 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
+/// Implement the HasDescription Trait
+#[proc_macro_derive(HasDecription)]
+pub fn hasdescription_derive(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let fields = match input.data {
+        Data::Struct(s) => {
+            s.fields
+                .into_iter()
+                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
+            },
+        _ => panic!("HasValidity only supports Struct"),
+    };
+    let name = input.ident;
+    // Ensure id field is present
+    let _name = fields.iter().find(|s| *s == "description").expect("No description field found");    
+
+    let out = quote! {
+        impl HasDecription for #name {
+            fn description(mut self, description : impl Into<String>) -> Self {
+                self.description = Some(description.into());
+                self
+            }
+            fn get_description(&self) -> String {
+                match self.description.as_ref() {
+                    Some(d) => d.clone(),
+                    None => String::default(),
+                }    
+            }
+            fn set_description(&mut self, description : impl Into<String>) -> Option<String> {
+                self.description.replace(description.into())
+            }
+        }
+    };
+    out.into()
+}
+
+
 /// Generate code for HasValidity trait.
 #[proc_macro_derive(HasValidity)]
 pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
