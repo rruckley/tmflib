@@ -9,6 +9,8 @@ use crate::tmf620::product_specification::ProductSpecificationRef;
 use crate::tmf666::billing_account::BillingAccountRef;
 use super::related_place::RelatedPlaceRefOrValue;
 use super::related_party::RelatedParty;
+use crate::HasDescription;
+use tmflib_derive::HasDescription;
 
 /// Status of product for Quote Item
 #[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
@@ -34,7 +36,7 @@ pub enum ProductStatusType {
 
 // Not sure if this should be housed in TMF620 but sample payload shows it being local to QuoteItem
 /// Quote Item Product 
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasDescription, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductRefOrValue {
     /// Unique Id
