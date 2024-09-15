@@ -5,6 +5,7 @@ use crate::{
     LIB_PATH,
     HasId,
     HasName,
+    HasDescription,
     TimePeriod,
     Uri,
 };
@@ -12,6 +13,7 @@ use super::MOD_PATH;
 use tmflib_derive::{
     HasId,
     HasName,
+    HasDescription,
 };
 use serde::{Deserialize,Serialize};
 use crate::tmf646::appointment::AppointmentRef;
@@ -88,7 +90,7 @@ impl From<Work> for WorkRefOrValue {
 }
 
 /// Work
-#[derive(Clone,Debug,Default,Deserialize,HasId,HasName,Serialize)]
+#[derive(Clone,Debug,Default,Deserialize,HasId,HasName,HasDescription,Serialize)]
 pub struct Work {
     /// Metadata: Schema Type
     #[serde(skip_serializing_if = "Option::is_none")]

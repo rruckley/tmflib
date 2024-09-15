@@ -7,7 +7,8 @@ use tmflib_derive::{
     HasAttachment,
     HasName,
     HasLastUpdate,
-    HasValidity
+    HasValidity,
+    HasDescription,
 };
 
 use crate::{
@@ -20,17 +21,18 @@ use crate::{
     HasName,
     HasLastUpdate,
     HasValidity,
+    HasDescription,
 };
 
 use super::MOD_PATH;
 const CLASS_PATH: &str = "shippingSpecification";
 
 /// Shipment Specification
-#[derive(Clone,Default,Debug,Deserialize,HasId,HasAttachment,HasName,HasLastUpdate,HasValidity,Serialize)]
+#[derive(Clone,Default,Debug,Deserialize,HasId,HasAttachment,HasName,HasLastUpdate,HasValidity,HasDescription,Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShipmentSpecificationRefOrValue {
     /// Description
-    pub description: String,
+    pub description: Option<String>,
     /// HTTP Reference
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<Uri>,
@@ -186,7 +188,7 @@ mod test {
    fn test_shipspec_deserialize() {
         let shipspec : ShipmentSpecificationRefOrValue = serde_json::from_str(SHIPSPEC_JSON).unwrap();
 
-        assert_eq!(shipspec.description.as_str(),"Description");
+        assert_eq!(shipspec.get_description().as_str(),"Description");
         assert_eq!(shipspec.id.is_some(),true);
         assert_eq!(shipspec.get_id().as_str(),"SS123");
         assert_eq!(shipspec.is_bundle,false);

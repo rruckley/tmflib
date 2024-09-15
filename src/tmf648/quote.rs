@@ -8,10 +8,21 @@ use super::MOD_PATH;
 use super::quote_price::QuotePrice;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
-use crate::{DateTime, HasId, HasName, HasNote, HasRelatedParty, HasValidity, TMFEvent, TimePeriod, LIB_PATH};
+use crate::{
+    DateTime, 
+    HasId,
+    HasDescription,
+    HasName,
+    HasNote,
+    HasRelatedParty,
+    HasValidity,
+    TMFEvent,
+    TimePeriod,
+    LIB_PATH,
+};
 use crate::tmf651::agreement::AgreementRef;
 use crate::common::event::{Event, EventPayload};
-use tmflib_derive::{HasId,HasValidity,HasNote,HasRelatedParty};
+use tmflib_derive::{HasId,HasValidity,HasNote,HasRelatedParty,HasDescription};
 
 const CLASS_PATH: &str = "quote";
 const QUOTE_VERS: &str = "1.0";
@@ -36,7 +47,7 @@ pub enum QuoteStateType {
 }
 
 /// Product Quote
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasValidity, HasNote, HasRelatedParty, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasValidity, HasNote, HasDescription, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
     /// Unique Id
