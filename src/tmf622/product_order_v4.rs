@@ -1,13 +1,19 @@
 //! Product Order Module
 
 use serde::{Deserialize, Serialize};
-use tmflib_derive::{HasId,HasNote,HasRelatedParty};
+use tmflib_derive::{
+    HasId,
+    HasDescription,
+    HasNote,
+    HasRelatedParty
+};
 use crate::tmf641::service_order::ServiceOrder;
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
 use crate::tmf651::agreement::AgreementRef;
 use crate::{
-    DateTime, 
+    DateTime,
+    HasDescription,
     HasId, 
     HasLastUpdate, 
     HasNote, 
@@ -81,7 +87,7 @@ impl From<&ProductOrder> for ProductOrderRef {
 }
 
 /// ProductOrder
-#[derive(Clone, Debug, Default, Deserialize, HasId, HasNote, HasRelatedParty, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasDescription, HasNote, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOrder {
     #[serde(skip_serializing_if = "Option::is_none")]

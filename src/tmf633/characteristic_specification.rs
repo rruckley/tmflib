@@ -4,8 +4,11 @@ use serde::{Deserialize,Serialize};
 
 use crate::{Cardinality, TimePeriod};
 
+use crate::HasDescription;
+use tmflib_derive::HasDescription;
+
 /// Service Specification Characteristics
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone,Default,Debug,Deserialize,HasDescription, Serialize)]
 pub struct CharacteristicSpecification {
     /// Can this characteristic be configured?
     #[serde(skip_serializing_if = "Option::is_none")]
