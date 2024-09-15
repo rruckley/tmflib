@@ -14,17 +14,24 @@ use crate::{
     HasLastUpdate,
     DateTime,
     HasValidity,
+    HasDescription,
     TimePeriod,
     LIB_PATH,
     Uri,
 };
-use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
+use tmflib_derive::{
+    HasDescription,
+    HasId,
+    HasLastUpdate,
+    HasName,
+    HasValidity
+};
 
 const CLASS_PATH: &str = "category";
 const CAT_VERS: &str = "1.0";
 
 /// Category Resource
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Category {
     // Scalar fields
