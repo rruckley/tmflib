@@ -13,6 +13,7 @@ use crate::tmf633::service_candidate::ServiceCandidateRef;
 
 use crate::{
     HasAttachment,
+    HasDescription,
     HasLastUpdate, 
     HasId, 
     HasName, 
@@ -32,6 +33,7 @@ use crate::tmf651::agreement::AgreementRef;
 
 use tmflib_derive::{
     HasId,
+    HasDescription,
     HasAttachment,
     HasLastUpdate,
     HasName,
@@ -105,7 +107,7 @@ impl From<ProductOffering> for ProductOfferingRelationship {
 }
 
 /// Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasAttachment, HasLastUpdate, HasName, HasValidity, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasDescription, HasAttachment, HasLastUpdate, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier

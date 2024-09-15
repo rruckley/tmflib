@@ -5,8 +5,23 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasName, LIB_PATH,HasValidity, TimePeriod, HasLastUpdate,Cardinality};
-use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
+use crate::{
+    HasDescription,
+    HasId, 
+    HasName, 
+    LIB_PATH,
+    HasValidity, 
+    TimePeriod, 
+    HasLastUpdate,
+    Cardinality
+};
+use tmflib_derive::{
+    HasDescription,
+    HasId,
+    HasLastUpdate,
+    HasName,
+    HasValidity
+};
 
 use crate::tmf633::service_specification::{ServiceSpecification,ServiceSpecificationRef};
 use crate::tmf633::characteristic_specification::CharacteristicSpecification;
@@ -122,7 +137,7 @@ pub struct BundledProductSpecification {
 }
 
 /// Product Specification
-#[derive(Clone, Debug, Default, Deserialize, HasId, HasLastUpdate, HasName, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasLastUpdate, HasDescription, HasName, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecification {
     /// Id

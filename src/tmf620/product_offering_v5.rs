@@ -8,8 +8,19 @@ use crate::tmf620::product_specification::{
     ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
 
-use crate::{HasLastUpdate, HasId, HasName, TimePeriod};
-use tmflib_derive::{HasId,HasName,HasLastUpdate};
+use crate::{
+    HasLastUpdate, 
+    HasDescription,
+    HasId, 
+    HasName, 
+    TimePeriod
+};
+use tmflib_derive::{
+    HasDescription,
+    HasId,
+    HasName,
+    HasLastUpdate
+};
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
 use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
@@ -79,7 +90,7 @@ impl From<ProductOffering> for ProductOfferingRelationship {
 }
 
 /// Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasName,HasLastUpdate, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasDescription, HasName,HasLastUpdate, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier

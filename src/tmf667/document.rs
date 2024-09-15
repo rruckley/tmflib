@@ -1,9 +1,9 @@
 //! Document Module
 
 use crate::{
-    common::attachment::AttachmentRefOrValue, DateTime, HasId, HasLastUpdate, HasName, HasRelatedParty, Uri, LIB_PATH
+    common::attachment::AttachmentRefOrValue, DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty, Uri, LIB_PATH
 };
-use tmflib_derive::{HasId,HasName,HasLastUpdate,HasRelatedParty};
+use tmflib_derive::{HasId,HasName,HasLastUpdate,HasRelatedParty,HasDescription};
 use crate::common::related_party::RelatedParty;
 use serde::{Deserialize,Serialize};
 
@@ -30,7 +30,7 @@ pub enum DocumentStatusType {
 }
 
 /// TMF667 Document
-#[derive(Clone,Default,Debug,Deserialize,HasId,HasName,HasLastUpdate,HasRelatedParty,Serialize)]
+#[derive(Clone,Default,Debug,Deserialize,HasId,HasName,HasLastUpdate,HasRelatedParty,HasDescription, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Document {
     // HasId

@@ -339,6 +339,17 @@ pub trait HasAttachment {
     fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue>;
 }
 
+/// Trait for managing a description field. Description field must be defined as Option<String>
+pub trait HasDescription {
+    /// Builder pattern function to set the description on object creation
+    fn description(self, description : impl Into<String>) -> Self;
+    /// Get the description by cloning it if set, returns empty string otherwise.
+    fn get_description(&self) -> String;
+    /// Update the description by inserting a new value into the Option.
+    /// Returns the old value if set otherwise None.
+    fn set_description(&mut self, description : impl Into<String>) -> Option<String>;
+}
+
 pub mod common;
 #[cfg(any(feature = "tmf620-v4" , feature = "tmf620-v5"))]
 pub mod tmf620;
@@ -372,11 +383,11 @@ pub mod tmf674;
 pub mod tmf678;
 pub mod tmf679;
 pub mod tmf681;
+#[cfg(feature = "tmf687-v4")]
+pub mod tmf687;
 #[cfg(any(feature = "tmf697-v4" , feature = "tmf697-v5"))]
 pub mod tmf697;
 #[cfg(any(feature = "tmf696-v4" , feature = "tmf696-v5"))]
-#[cfg(feature = "tmf687-v4")]
-pub mod tmf687;
 pub mod tmf696;
 #[cfg(any(feature = "tmf699-v4" , feature = "tmf699-v5"))]
 pub mod tmf699;

@@ -11,8 +11,11 @@ use crate::tmf620::product_offering::ProductOffering;
 use crate::tmf620::product_specification::ProductSpecificationRef;
 use super::quote_price::QuotePrice;
 
-use crate::{HasAttachment, HasName};
-use tmflib_derive::HasAttachment;
+use crate::{HasAttachment, HasName, HasDescription};
+use tmflib_derive::{
+    HasAttachment,
+    HasDescription
+};
 
 const QUOTEITEM_DEF_QTY : u16 = 1;
 
@@ -40,7 +43,7 @@ pub enum ProductStatusType {
 
 // Not sure if this should be housed in TMF620 but sample payload shows it being local to QuoteItem
 /// Quote Item Product 
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize,HasDescription, Serialize)]
 pub struct ProductRefOrValue {
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]

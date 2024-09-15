@@ -4,6 +4,8 @@ use serde::{Deserialize,Serialize};
 
 use crate::tmf646::appointment::AppointmentRef;
 use crate::tmf633::service_specification::ServiceSpecificationRef;
+use crate::HasDescription;
+use tmflib_derive::HasDescription;
 
 /// Service Order Item Status
 #[derive(Clone,Default,Debug,Deserialize, PartialEq, Serialize)]
@@ -34,7 +36,7 @@ pub enum ServiceOrderItemStateType {
 }
 
 /// Link to Service via reference or value
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone,Default,Debug,Deserialize,HasDescription, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ServiceRefOrValue {
     /// Category

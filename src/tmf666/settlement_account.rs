@@ -2,8 +2,8 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasLastUpdate, HasName, LIB_PATH, DateTime};
-use tmflib_derive::{HasId, HasName, HasLastUpdate};
+use crate::{HasId, HasLastUpdate, HasName,HasDescription, LIB_PATH, DateTime};
+use tmflib_derive::{HasId, HasName, HasLastUpdate,HasDescription};
 use crate::common::{
     money::Money,
     related_party::RelatedParty,
@@ -23,7 +23,7 @@ use super::{
 const CLASS_PATH : &str = "account";
 
 /// Billing Account
-#[derive( Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, Serialize)]
+#[derive( Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasDescription, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SettlementAccount {
     #[serde(skip_serializing_if = "Option::is_none")]

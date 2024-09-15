@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     HasId, 
+    HasDescription,
     HasLastUpdate, 
     HasName,
     HasRelatedParty,
@@ -12,6 +13,7 @@ use crate::{
 };
 use tmflib_derive::{
     HasId, 
+    HasDescription,
     HasName, 
     HasLastUpdate,
     HasRelatedParty,
@@ -35,7 +37,7 @@ use super::{
 const CLASS_PATH : &str = "account";
 
 /// Party Account
-#[derive( Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasRelatedParty, Serialize)]
+#[derive( Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasRelatedParty, HasDescription, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PartyAccount {
     #[serde(skip_serializing_if = "Option::is_none")]

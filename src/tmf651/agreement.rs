@@ -1,8 +1,8 @@
 //! Agreement Module
 
 use serde::{Deserialize,Serialize};
-use crate::{LIB_PATH,HasId,HasName, HasRelatedParty, TimePeriod, DateTime};
-use tmflib_derive::{HasId,HasName};
+use crate::{LIB_PATH,HasId,HasName, HasRelatedParty, HasDescription, TimePeriod, DateTime};
+use tmflib_derive::{HasId,HasName,HasDescription};
 use crate::common::related_party::RelatedParty;
 use super::{agreement_item::AgreementItem, agreement_specification::AgreementSpecificationRef};
 use crate::tmf648::quote::Quote;
@@ -11,7 +11,7 @@ use super::MOD_PATH;
 const CLASS_PATH : &str = "agreement";
 
 /// Agreeement / Contract
-#[derive(Clone,Default,Debug, Deserialize, HasId, HasName, Serialize)]
+#[derive(Clone,Default,Debug, Deserialize, HasId, HasName, HasDescription, Serialize)]
 pub struct Agreement {
     /// Period of this agreement
     #[serde(skip_serializing_if = "Option::is_none")]

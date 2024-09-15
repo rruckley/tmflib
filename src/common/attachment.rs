@@ -2,8 +2,19 @@
 //!
 //!
 use serde::{Deserialize, Serialize};
-use crate::{HasId, HasName, HasValidity, DateTime};
-use tmflib_derive::{HasId, HasName, HasValidity};
+use crate::{
+    HasId, 
+    HasName, 
+    HasValidity, 
+    HasDescription,
+    DateTime
+};
+use tmflib_derive::{
+    HasId, 
+    HasDescription,
+    HasName, 
+    HasValidity
+};
 use crate::tmf667::document::Document;
 
 use crate::TimePeriod;
@@ -35,7 +46,7 @@ pub struct AttachmentSize {
 }
 
 /// Attachment Reference or Value
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasName, HasValidity, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasName, HasDescription, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AttachmentRefOrValue {
     /// Unique Id
@@ -97,7 +108,7 @@ impl From<&Document> for AttachmentRefOrValue {
 #[cfg(test)]
 mod test {
     use crate::{tmf667::document::Document, HasName};
-
+    use crate::HasDescription;
     use super::*;
 
     const ATTACH_TYPE_JSON : &str = "\"inLine\"";
@@ -108,6 +119,7 @@ mod test {
     const ATTACH_NAME: &str= "AttachmentName";
 
     const ATTACH_JSON : &str = "{}";
+    const ATTACH_DESC : &str = "AttachmentDescription";
 
     #[test]
     fn test_attachment_default() {
@@ -162,5 +174,24 @@ mod test {
 
         assert_eq!(attach.valid_for.is_some(),true);
         assert_eq!(attach.valid_for.unwrap().started(),true);
+    }
+
+    #[test]
+    fn test_attach_description() {
+        let attach = AttachmentRefOrValue::new()
+            .description(ATTACH_DESC);
+
+        assert_eq!(attach.description.is_some(),true);
+        assert_eq!(attach.get_description().as_str(),ATTACH_DESC);
+    }
+
+    #[test]
+    fn test_attach_setdescription() {
+        let mut attach = AttachmentRefOrValue::new();
+
+        attach.set_description(ATTACH_DESC);
+
+        assert_eq!(attach.description.is_some(),true);
+        assert_eq!(attach.get_description().as_str(),ATTACH_DESC);        
     }
 }

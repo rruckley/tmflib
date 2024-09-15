@@ -2,9 +2,9 @@
 
 use serde::{Deserialize,Serialize};
 
-use crate::{HasId,HasName,HasLastUpdate, TimePeriod};
+use crate::{HasId,HasName,HasLastUpdate,HasDescription, TimePeriod};
 use crate::common::related_party::RelatedParty;
-use tmflib_derive::{HasId,HasName,HasLastUpdate};
+use tmflib_derive::{HasId,HasName,HasLastUpdate,HasDescription};
 
 use super::MOD_PATH;
 use crate::LIB_PATH;
@@ -14,7 +14,7 @@ const CLASS_PATH : &str = "service";
 use super::characteristic_specification::CharacteristicSpecification;
 
 /// Service Specification
-#[derive(Clone,Default,Debug,Deserialize, HasId, HasName, HasLastUpdate, Serialize)]
+#[derive(Clone,Default,Debug,Deserialize, HasId, HasName, HasDescription, HasLastUpdate, Serialize)]
 pub struct ServiceSpecification {
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]

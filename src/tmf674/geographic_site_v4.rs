@@ -9,14 +9,15 @@ use crate::common::event::{Event,EventPayload};
 use crate::{
     HasName,
     HasId,
-    HasValidity, 
+    HasValidity,
+    HasDescription,
     TimePeriod,
     TMFEvent,
     gen_code,
     LIB_PATH,
 };
 use crate::common::related_party::RelatedParty;
-use tmflib_derive::{HasId, HasValidity, HasName};
+use tmflib_derive::{HasId, HasValidity, HasName, HasDescription};
 use crate::tmf673::geographic_address::GeographicAddress;
 use super::MOD_PATH;
 const CLASS_PATH: &str = "geographicSite";
@@ -96,7 +97,7 @@ impl CalendarPeriod {
 }
 
 /// Geographic Site
-#[derive(Clone, Debug, Default, Deserialize, HasId, HasName, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasName, HasDescription, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GeographicSite {
     /// Id

@@ -1,7 +1,11 @@
 //! Asynchronous Events
 //! 
 use serde::{Deserialize, Serialize};
-use crate::{HasId,HasName,TMFEvent};
+use crate::{
+    HasId,
+    HasName,
+    TMFEvent
+};
 
 /// Generic Event structure, will be linked into event specific payloads.
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
