@@ -16,4 +16,7 @@
 
 const MOD_PATH : &str = "resourceCatalog/v4";
 
+pub mod catalog;
+pub mod resource_category;
 pub mod resource_candidate;
+pub mod resource_specification;
