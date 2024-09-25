@@ -1,22 +1,51 @@
 //! Service Test Specification Module
 
-use crate::{HasId,HasName, Uri,LIB_PATH};
-use tmflib_derive::{HasId,HasName};
+use crate::{
+    HasId,
+    HasName,
+    HasDescription,
+    HasLastUpdate,
+    Uri,
+    LIB_PATH
+};
+use tmflib_derive::{
+    HasId,
+    HasName,
+    HasDescription,
+    HasLastUpdate,
+};
 
 use serde::{Deserialize,Serialize};
 
 use super::MOD_PATH;
 const CLASS_PATH: &str = "specification";
 
+/// Test Measure Definition
+#[derive(Clone,Default,Debug)]
+pub struct TestMeasureDefinition {
+    /// Measure Definition Name
+    pub name : Option<String>,
+}
+
 /// Service Test Specification
-#[derive(Clone,Debug,Default,Deserialize,HasId,HasName,Serialize)]
+#[derive(Clone,Debug,Default,Deserialize,HasId,HasName,HasDescription,HasLastUpdate,Serialize)]
 pub struct ServiceTestSpecification {
+    /// Description
+    pub description : Option<String>,
+    /// Is this part of a bundle?
+    pub is_bundle : bool,
+    /// Last Update Time
+    pub last_update: Option<String>,
+    /// Lifecycle Status
+    pub lifecycle_status: Option<String>,
     /// Unique Identifier
     pub id: Option<String>,
     /// HREF to specification
     pub href: Option<Uri>,
     /// Name
     pub name: Option<String>,
+    /// Version
+    pub version : Option<String>,
 }
 
 #[cfg(test)]
