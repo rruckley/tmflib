@@ -85,7 +85,8 @@ pub struct ServiceTestSpecification {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description : Option<String>,
     /// Is this part of a bundle?
-    pub is_bundle : bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_bundle : Option<bool>,
     /// Last Update Time
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_update: Option<String>,
