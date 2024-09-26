@@ -1,12 +1,15 @@
 //! Service Test Specification Module
 
+use serde::{Deserialize, Serialize};
+
 use crate::{
     HasId,
     HasName,
     HasDescription,
     HasLastUpdate,
     Uri,
-    LIB_PATH
+    LIB_PATH,
+    TimePeriod
 };
 use tmflib_derive::{
     HasId,
@@ -15,37 +18,94 @@ use tmflib_derive::{
     HasLastUpdate,
 };
 
-use serde::{Deserialize,Serialize};
-
 use super::MOD_PATH;
 const CLASS_PATH: &str = "specification";
 
+/// Threshold Consequence
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub struct MetricDefMeasureConsequence {
+    /// Consequence Name
+    pub name : Option<String>,
+    /// Consequence Description
+    pub description : Option<String>,
+}
+
+/// Threshold Rule
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub struct MetricDefMeasureThreasholdRule {
+    /// Rule Description
+    pub description : Option<String>,
+    /// Rule Consequences
+    consequence : Vec<MetricDefMeasureConsequence>
+}
+
 /// Test Measure Definition
-#[derive(Clone,Default,Debug)]
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct TestMeasureDefinition {
     /// Measure Definition Name
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name : Option<String>,
+    /// Capture Frequency
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub capture_frequency : Option<String>,
+    /// Capture Method
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub capture_method : Option<String>,
+    /// Capture Period
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub capture_period : Option<String>,
+    /// Metric Description
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metric_description: Option<String>,
+    /// Metric HREF
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metric_href : Option<String>,
+    /// Metric Name
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metric_name : Option<String>,
+    /// Unit of Measure
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub unit_of_measure : Option<String>,
+    /// Validity
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub valid_for : Option<TimePeriod>,
+    /// Value Type
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub value_type : Option<String>,
+    /// Threhold Rules
+    pub threshold_rule : Vec<MetricDefMeasureThreasholdRule>,
 }
 
 /// Service Test Specification
 #[derive(Clone,Debug,Default,Deserialize,HasId,HasName,HasDescription,HasLastUpdate,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ServiceTestSpecification {
     /// Description
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub description : Option<String>,
     /// Is this part of a bundle?
     pub is_bundle : bool,
     /// Last Update Time
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub last_update: Option<String>,
     /// Lifecycle Status
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub lifecycle_status: Option<String>,
     /// Unique Identifier
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// HREF to specification
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<Uri>,
     /// Name
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /// Version
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub version : Option<String>,
+    /// Test Measures
+    pub test_measure_definition : Vec<TestMeasureDefinition>,
 }
 
 #[cfg(test)]
