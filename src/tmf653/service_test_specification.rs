@@ -74,7 +74,7 @@ pub struct TestMeasureDefinition {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub value_type : Option<String>,
     /// Threhold Rules
-    pub threshold_rule : Vec<MetricDefMeasureThreasholdRule>,
+    pub threshold_rule : Option<Vec<MetricDefMeasureThreasholdRule>>,
 }
 
 /// Service Test Specification
@@ -106,7 +106,7 @@ pub struct ServiceTestSpecification {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub version : Option<String>,
     /// Test Measures
-    pub test_measure_definition : Vec<TestMeasureDefinition>,
+    pub test_measure_definition : Option<Vec<TestMeasureDefinition>>,
 }
 
 #[cfg(test)]
