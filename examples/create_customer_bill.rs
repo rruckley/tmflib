@@ -9,7 +9,11 @@ use tmflib::tmf678::customer_bill_v5::CustomerBill;
 
 fn main() {
 
-    let bill = CustomerBill::new();
+    #[cfg(feature = "tmf678-v4")]
+    {
+        let bill = CustomerBill::new();
 
-    dbg!(bill);
+        dbg!(bill);
+    
+    }
 }

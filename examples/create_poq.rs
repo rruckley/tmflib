@@ -1,5 +1,7 @@
 //! Create Product Offering Qualification Example
 //! 
+#![allow(unused_imports)]
+
 use tmflib::common::related_party::RelatedParty;
 #[cfg(feature = "tmf620-v4")]
 use tmflib::tmf620::product_offering::{ProductOffering,ProductOfferingRef};
@@ -10,16 +12,20 @@ use tmflib::tmf629::customer::Customer;
 use tmflib::tmf632::organization_v4::Organization;
 #[cfg(feature = "tmf632-v5")]
 use tmflib::tmf632::organization_v5::Organization;
+#[cfg(feature = "tmf679-v4")]
 use tmflib::tmf679::product_qualification::ProductOfferingQualification;
 use tmflib::HasRelatedParty;
 
 
 fn main() {
-    let org = Organization::new("ACustomer");
-    let customer = Customer::new(org);
-    let offering = ProductOffering::new("MyOffer");
-    let mut poq = ProductOfferingQualification::new(Some(ProductOfferingRef::from(offering)));
-    poq.add_party(RelatedParty::from(&customer));
-
-    dbg!(poq);
+    #[cfg(feature = "tmf679-v4")]
+    {
+        let org = Organization::new("ACustomer");
+        let customer = Customer::new(org);
+        let offering = ProductOffering::new("MyOffer");
+        let mut poq = ProductOfferingQualification::new(Some(ProductOfferingRef::from(offering)));
+        poq.add_party(RelatedParty::from(&customer));
+    
+        dbg!(poq);    
+    }
 }

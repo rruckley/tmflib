@@ -22,13 +22,18 @@ use tmflib::tmf697::v5::work::{
 
 fn main() {
 
-    let mut wo = WorkOrder::new();
+    #[cfg(feature = "tmf697-v4")]
+    {
+        let mut wo = WorkOrder::new();
 
-    let work = Work::new("Some work");
+        let work = Work::new("Some work");
+    
+        let woi = WorkOrderItem::with(WorkRefOrValue::from(work));
+    
+        wo.add_item(woi);
+    
+        dbg!(wo);
+    
+    }
 
-    let woi = WorkOrderItem::with(WorkRefOrValue::from(work));
-
-    wo.add_item(woi);
-
-    dbg!(wo);
 }

@@ -1,13 +1,19 @@
 //! Create Shipping Order Example
 //! 
 
+#![allow(unused_imports)]
+
+#[cfg(feature="tmf700-v4")]
 use tmflib::tmf700::shipping_instruction::SignatureRequiredByType;
+#[cfg(feature="tmf700-v4")]
 use tmflib::tmf700::{shipping_order::ShippingOrder,shipping_order_item::ShippingOrderItem,shipping_instruction::ShippingInstruction};
 use tmflib::common::note::Note;
 use tmflib::HasNote;
 
 fn main() {
-    let item = ShippingOrderItem::new()
+    #[cfg(feature = "tmf700-v4")]
+    {
+        let item = ShippingOrderItem::new()
         .instruction(ShippingInstruction::new("An Instruction"));
     let mut shipping_order = ShippingOrder::new()
         .instruction(
@@ -22,4 +28,6 @@ fn main() {
     
     shipping_order.link_order(&original_order, "Original Order");
     dbg!(shipping_order);
+
+    }
 }

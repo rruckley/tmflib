@@ -6,7 +6,11 @@ use tmflib::tmf699::sales_lead_v4::SalesLead;
 use tmflib::tmf699::sales_lead_v5::SalesLead;
 
 fn main() {
-    let sl = SalesLead::new("My Sales Lead");
+    #[cfg(feature = "tmf699-v4")]
+    {
+        let sl = SalesLead::new("My Sales Lead");
 
-    dbg!(sl);
+        dbg!(sl);
+    
+    }
 }
