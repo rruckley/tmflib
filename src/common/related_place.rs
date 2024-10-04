@@ -6,9 +6,9 @@
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 use crate::tmf673::geographic_address::GeographicAddress;
-#[cfg(feature = "v4")]
+#[cfg(feature = "tmf674-v4")]
 use crate::tmf674::geographic_site_v4::GeographicSite;
-#[cfg(feature = "v5")]
+#[cfg(feature = "tmf674-v5")]
 use crate::tmf674::geographic_site_v5::GeographicSite;
 use crate::{HasId,HasName};
 
