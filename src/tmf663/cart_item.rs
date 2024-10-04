@@ -3,9 +3,9 @@
 use serde::{Deserialize, Serialize};
 use crate::common::note::Note;
 use super::shopping_cart::CartPrice;
-#[cfg(feature = "v4")]
+#[cfg(feature = "tmf620-v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
-#[cfg(feature = "v5")]
+#[cfg(feature = "tmf620-v5")]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
 use std::convert::From;
