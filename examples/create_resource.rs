@@ -1,6 +1,8 @@
 //! Create Resource Example
 
+#![allow(unused_imports)]
 
+#[cfg(feature = "tmf639-v4")]
 use tmflib::tmf639::resource::Resource;
 use tmflib::tmf629::customer::Customer;
 #[cfg(feature = "tmf632-v4")]
@@ -11,7 +13,8 @@ use tmflib::common::related_party::RelatedParty;
 use tmflib::HasRelatedParty;
 
 fn main() {
-
+    #[cfg(feature = "tmf639-v4")]
+    {
     // Create an organisation
     let organisation = Organization::new("An Organisation");
     let customer = Customer::from(&organisation);
@@ -19,4 +22,5 @@ fn main() {
     resource.add_party(RelatedParty::from(&customer));
 
     dbg!(resource);
+    }
 }
