@@ -1,6 +1,6 @@
 [package]
 name = "tmflib"
-version = "0.1.21"
+version = "0.1.22"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Interface library for processing TMF payloads"
@@ -45,8 +45,14 @@ tmf653-v4 = []
 
 tmf663-v4 = []
 
+tmf666-v4 = []
+
 tmf667-v4 = []
 tmf667-v5 = []
+
+tmf669-v4 = []
+
+tmf672-v4 = []
 
 tmf673-v4 = []
 
@@ -71,7 +77,8 @@ tmf699-v5 = []
 
 tmf700-v4 = []
 
-default = ["TMFC005-v4"]
+tmf760-v5 = []
+
 v4 = [
     "tmf620-v4",
     "tmf622-v4",
@@ -83,6 +90,7 @@ v4 = [
     "tmf646-v4",
     "tmf648-v4",
     "tmf653-v4",
+    "tmf666-v4",
     "tmf667-v4",
     "tmf679-v4",
     "tmf674-v4",
@@ -105,26 +113,135 @@ v5 = [
     "tmf687-v4",
     "tmf696-v5",
     "tmf697-v4",
-    "tmf699-v5"
+    "tmf699-v5",
+    "tmf760-v5"
 ]
 
-# ODA Component features
-TMFC001-v4 = ["tmf620-v4","tmf667-v4","tmf629-v4","tmf632-v4","tmf674-v4"]
-TMFC002-v4 = ["tmf622-v4","tmf629-v4","tmf632-v4","tmf648-v4","tmf663-v4","tmf667-v4","tmf674-v4"]
-TMFC003-v4 = []
-TMFC004-v4 = []
-TMFC005-v4 = ["tmf620-v4","tmf629-v4","tmf632-v4","tmf637-v4","tmf667-v4","tmf674-v4"]
-TMFC006-v4 = []
-TMFC007-v4 = ["tmf641-v4"]
-TMFC008-v4 = ["tmf638-v4"]
-TMFC009-v4 = ["tmf645-v4"]
-TMFC010-v4 = []
-TMFC011-v4 = ["tmf652-v4"]
-TMFC012-v4 = ["tmf639-v4"]
-TMFC013-v4 = []
-TMFC014-v4 = ["tmf673-v4","tmf674-v4"]
-TMFC046-v4 = ["tmf646-v4"]
+# Specifications referenced from common module
+common = ["tmf620-v4","tmf629-v4","tmf632-v4","tmf666-v4","tmf667-v4","tmf674-v4"]
 
+# ODA Component features
+# Product Catalog Management
+TMFC001-v4 = ["tmf620-v4","common"]
+# Product Order Capture and Validation
+TMFC002-v4 = ["tmf622-v4","common"]
+# Product Order Delivery Orchestration and Management
+TMFC003-v4 = ["common"]
+TMFC004-v4 = ["common"]
+# Product Inventory
+TMFC005-v4 = ["tmf620-v4","common"]
+# Service Catalog Management
+TMFC006-v4 = ["common"]
+# Service Order Management
+TMFC007-v4 = ["tmf641-v4"]
+# Service Inventory
+TMFC008-v4 = ["tmf638-v4"]
+# Servicve Qualification Management
+TMFC009-v4 = ["tmf645-v4"]
+# Resource Catalog Management
+TMFC010-v4 = ["common"]
+# Resource Order Management
+TMFC011-v4 = ["tmf652-v4"]
+# Resource Inventory
+TMFC012-v4 = ["tmf639-v4"]
+# Service Balance Management
+TMFC013-v4 = ["common"]
+# Location Management
+TMFC014-v4 = ["tmf673-v4","tmf674-v4","common"]
+# Service Usage Management
+TMFC015-v4 = ["common"]
+# Resource Usage Management
+TMFC016-v4 = ["common"]
+# API Management
+TMFC017-v4 = ["common"]
+# Enterprise Integration
+TMFC018-v4 = ["common"]
+# Event Management
+TMFC019-v4 = ["common"]
+# Digital Identity Management
+TMFC020-v4 = ["common"]
+# Party Privacy Management
+TMFC022-v4 = ["common"]
+# Party Interaction Management
+TMFC023-v4 = ["common"]
+# Billing Account Management
+TMFC024-v4 = ["tmf666-v4","common"]
+# Billing Inquiries Management
+TMFC025-v4 = ["common"]
+# Debt Collection Management
+TMFC026-v4 = ["common"]
+# Product Configurator
+TMFC027-v4 = ["tmf679-v4","tmf760-v5","common"]
+# Party Management
+TMFC028-v4 = ["common"]
+# Payment Management
+TMFC029-v4 = ["common"]
+# Bill Generation Management
+TMFC030-v4 = ["tmf678-v4","common"]
+# Bill Calculation Management
+TMFC031-v4 = ["tmf678-v4","common"]
+# Supply Chain Management
+TMFC032-v4 = ["common"]
+# Purchase Management
+TMFC033-v4 = ["common"]
+# Party Roles Permissions Management
+TMFC035-v4 = ["tmf672-v4","tmf669-v4","common"]
+# Lead and Opportunity Management
+TMFC036-v4 = ["tmf699-v4","common"]
+# Service Performance Management
+TMFC037-v4 = ["common"]
+# Resource Performance Management
+TMFC038-v4 = ["common"]
+# Agreement Management
+TMFC039-v4 = ["tmf651-v4","common"]
+# Product Usage Management
+TMFC040-v4 = ["common"]
+# Anomaly Detector
+TMFC041-v4 = ["common"]
+# Anomaly Predictor
+TMFC042-v4 = ["common"]
+# Anomaly Mitigator
+TMFC043-v4 = ["common"]
+# Strategic Resource Planning
+TMFC044-v4 = ["common"]
+# Resource Discovery and Reconciliation
+TMFC045-v4 = ["common"]
+# Workforce Management
+TMFC046-v4 = ["tmf646-v4"]
+# Party Problem Management
+TMFC047-v4 = ["common"]
+# Sales Strategy & Planning
+TMFC048-v4 = ["common"]
+# Marketing Communications
+TMFC049-v4 = ["common"]
+# Recommendation Management
+TMFC050-v4 = ["common"]
+# Document Management
+TMFC051-v4 = ["common"]
+# IT and Network Infrastructure Management
+TMFC052-v4 = ["common"]
+# Service Quality Management
+TMFC053-v4 = ["common"]
+# Product Test Management
+TMFC054-v4 = ["common"]
+# Service Test Management
+TMFC055-v4 = ["common"]
+# Resource Test Management
+TMFC056-v4 = ["common"]
+# Campaign Management
+TMFC057-v4 = ["common"]
+# Product/Sales Performance Management
+TMFC058-v4 = ["common"]
+# Commission Management
+TMFC059-v4 = ["common"]
+# Knowledge Management
+TMFC060-v4 = ["common"]
+# Work Order Management
+TMFC061-v4 = ["common"]
+# Resource Configuration and Activation
+TMFC062-v4 = ["common"]
+
+default = ["TMFC035-v4"]
 
 [dependencies]
 chrono = "0.4.38"
