@@ -188,10 +188,58 @@ TMFC033-v4 = ["common"]
 TMFC035-v4 = ["tmf672-v4","tmf669-v4","common"]
 # Lead and Opportunity Management
 TMFC036-v4 = ["tmf699-v4","common"]
+# Service Performance Management
+TMFC037-v4 = ["common"]
+# Resource Performance Management
+TMFC038-v4 = ["common"]
 # Agreement Management
 TMFC039-v4 = ["tmf651-v4","common"]
+# Product Usage Management
+TMFC040-v4 = ["common"]
+# Anomaly Detector
+TMFC041-v4 = ["common"]
+# Anomaly Predictor
+TMFC042-v4 = ["common"]
+# Anomaly Mitigator
+TMFC043-v4 = ["common"]
+# Strategic Resource Planning
+TMFC044-v4 = ["common"]
+# Resource Discovery and Reconciliation
+TMFC045-v4 = ["common"]
 # Workforce Management
 TMFC046-v4 = ["tmf646-v4"]
+# Party Problem Management
+TMFC047-v4 = ["common"]
+# Sales Strategy & Planning
+TMFC048-v4 = ["common"]
+# Marketing Communications
+TMFC049-v4 = ["common"]
+# Recommendation Management
+TMFC050-v4 = ["common"]
+# Document Management
+TMFC051-v4 = ["common"]
+# IT and Network Infrastructure Management
+TMFC052-v4 = ["common"]
+# Service Quality Management
+TMFC053-v4 = ["common"]
+# Product Test Management
+TMFC054-v4 = ["common"]
+# Service Test Management
+TMFC055-v4 = ["common"]
+# Resource Test Management
+TMFC056-v4 = ["common"]
+# Campaign Management
+TMFC057-v4 = ["common"]
+# Product/Sales Performance Management
+TMFC058-v4 = ["common"]
+# Commission Management
+TMFC059-v4 = ["common"]
+# Knowledge Management
+TMFC060-v4 = ["common"]
+# Work Order Management
+TMFC061-v4 = ["common"]
+# Resource Configuration and Activation
+TMFC062-v4 = ["common"]
 
 default = ["TMFC035-v4"]
 
