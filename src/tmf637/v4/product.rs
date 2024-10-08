@@ -11,9 +11,9 @@ use tmflib_derive::{HasId, HasName, HasValidity};
 use crate::common::related_place::RelatedPlaceRefOrValue;
 use crate::common::product::{ProductRefOrValue,ProductStatusType};
 use crate::common::price::Price;
-#[cfg(feature = "tmf620-v4")]
+#[cfg(all(feature = "tmf620", feature = "build-V4"))]
 use crate::tmf620::product_offering::ProductOfferingRef;
-#[cfg(feature = "tmf620-v5")]
+#[cfg(all(feature = "tmf620", feature = "build-V5"))]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf620::product_offering_price::ProductOfferingPriceRef;
 

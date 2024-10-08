@@ -1,10 +1,10 @@
 //! Appointment booking example
 
-#[cfg(feature = "tmf646-v4")]
+#[cfg(all(feature = "tmf646", feature = "build-V4"))]
 use tmflib::tmf646::appointment::Appointment;
 
 fn main() {
-    #[cfg(feature = "tmf646-v4")]
+    #[cfg(all(feature = "tmf646", feature = "build-V4"))]
     {
         let appointment = Appointment::new();
 

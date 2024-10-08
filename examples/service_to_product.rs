@@ -2,23 +2,23 @@
 
 #![allow(unused_imports)]
 
-#[cfg(feature = "tmf633-v4")]
+#[cfg(all(feature = "tmf633", feature = "build-V4"))]
 use tmflib::tmf633::service_specification::{ServiceSpecification, ServiceSpecificationRef};
-#[cfg(feature = "tmf633-v4")]
+#[cfg(all(feature = "tmf633", feature = "build-V4"))]
 use tmflib::tmf633::characteristic_specification::CharacteristicSpecification;
-#[cfg(feature = "tmf641-v4")]
+#[cfg(all(feature = "tmf641", feature = "build-V4"))]
 use tmflib::tmf641::service_order::ServiceOrder;
-#[cfg(feature = "tmf622-v4")]
+#[cfg(all(feature = "tmf622", feature = "build-V4"))]
 use tmflib::tmf622::product_order_v4::ProductOrder;
-#[cfg(feature = "tmf622-v5")]
+#[cfg(all(feature = "tmf622", feature = "build-V5"))]
 use tmflib::tmf622::product_order_v5::ProductOrder;
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use tmflib::tmf632::individual_v4::Individual;
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use tmflib::tmf632::individual_v5::Individual;
 use tmflib::common::note::Note;
 use tmflib::common::related_party::RelatedParty;
-#[cfg(feature = "tmf641-v4")]
+#[cfg(all(feature = "tmf641", feature = "build-V4"))]
 use tmflib::tmf641::service_order_item::{ServiceOrderItem,ServiceRefOrValue};
 use tmflib::{HasRelatedParty,HasNote};
 
@@ -34,7 +34,7 @@ fn main() {
     ss.add_char(cs2);
     ss.description = Some("Access Layer component".to_string());
 
-    #[cfg(feature = "tmf641-v4")]
+    #[cfg(all(feature = "tmf641", feature = "build-V4"))]
     {
         let ssr = ServiceSpecificationRef::from(ss);
         let mut soi = ServiceOrderItem::default();

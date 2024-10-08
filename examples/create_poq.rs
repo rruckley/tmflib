@@ -3,22 +3,22 @@
 #![allow(unused_imports)]
 
 use tmflib::common::related_party::RelatedParty;
-#[cfg(feature = "tmf620-v4")]
+#[cfg(all(feature = "tmf620", feature = "build-V4"))]
 use tmflib::tmf620::product_offering::{ProductOffering,ProductOfferingRef};
-#[cfg(feature = "tmf620-v5")]
+#[cfg(all(feature = "tmf620", feature = "build-V5"))]
 use tmflib::tmf620::product_offering_v5::{ProductOffering,ProductOfferingRef};
 use tmflib::tmf629::customer::Customer;
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use tmflib::tmf632::organization_v4::Organization;
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use tmflib::tmf632::organization_v5::Organization;
-#[cfg(feature = "tmf679-v4")]
+#[cfg(all(feature = "tmf679", feature = "build-V4"))]
 use tmflib::tmf679::product_qualification::ProductOfferingQualification;
 use tmflib::HasRelatedParty;
 
 
 fn main() {
-    #[cfg(feature = "tmf679-v4")]
+    #[cfg(all(feature = "tmf679", feature = "build-V4"))]
     {
         let org = Organization::new("ACustomer");
         let customer = Customer::new(org);

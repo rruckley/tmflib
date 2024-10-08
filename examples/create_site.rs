@@ -3,9 +3,9 @@
 
 
 use tmflib::tmf673::geographic_address::GeographicAddress;
-#[cfg(feature = "tmf674-v4")]
+#[cfg(all(feature = "tmf674", feature = "build-V4"))]
 use tmflib::tmf674::geographic_site_v4::{GeographicSite, PlaceRefOrValue,CalendarPeriod};
-#[cfg(feature = "tmf674-v5")]
+#[cfg(all(feature = "tmf674", feature = "build-V5"))]
 use tmflib::tmf674::geographic_site_v5::{GeographicSite, PlaceRefOrValue,CalendarPeriod};
 
 

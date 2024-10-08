@@ -6,25 +6,25 @@
 use tmflib::HasRelatedParty;
 use tmflib::common::related_party::RelatedParty;
 use tmflib::common::note::Note;
-#[cfg(feature = "tmf620-v4")]
+#[cfg(all(feature = "tmf620", feature = "build-V4"))]
 use tmflib::tmf620::product_offering::{ProductOffering,ProductOfferingRef};
-#[cfg(feature = "tmf620-v5")]
+#[cfg(all(feature = "tmf620", feature = "build-V5"))]
 use tmflib::tmf620::product_offering_v5::{ProductOffering,ProductOfferingRef};
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use tmflib::tmf632::individual_v4::Individual;
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use tmflib::tmf632::individual_v5::Individual;
-#[cfg(feature = "tmf663-v4")]
+#[cfg(all(feature = "tmf663", feature = "build-V4"))]
 use tmflib::tmf663::shopping_cart::ShoppingCart;
-#[cfg(feature = "tmf663-v4")]
+#[cfg(all(feature = "tmf663", feature = "build-V4"))]
 use tmflib::tmf663::cart_item::CartItem;
-#[cfg(feature = "tmf622-v4")]
+#[cfg(all(feature = "tmf622", feature = "build-V4"))]
 use tmflib::tmf622::product_order_v4::ProductOrder;
-#[cfg(feature = "tmf622-v5")]
+#[cfg(all(feature = "tmf622", feature = "build-V5"))]
 use tmflib::tmf622::product_order_v5::ProductOrder;
 
 fn main() {
-    #[cfg(feature = "tmf663-v4")]
+    #[cfg(all(feature = "tmf663", feature = "build-V4"))]
     {
         let mut cart = ShoppingCart::new();
         let offer = ProductOffering::new("MyProductOffer");

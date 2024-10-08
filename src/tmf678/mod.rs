@@ -21,8 +21,8 @@
 
 const MOD_PATH : &str = "tmf678/v5";
 
-#[cfg(feature = "tmf678-v4")]
+#[cfg(all(feature = "tmf678", feature = "build-V4"))]
 pub mod customer_bill_v4;
 
-#[cfg(feature = "tmf678-v5")]
+#[cfg(all(feature = "tmf678", feature = "build-V5"))]
 pub mod customer_bill_v5;

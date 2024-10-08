@@ -3,9 +3,9 @@
 // This should just be relatedplace, not orvalue.
 use crate::common::related_place::RelatedPlaceRefOrValue;
 use super::{characteristic::Characteristic, risk_assessment_result::RiskAssessmentResult};
-#[cfg(feature = "tmf622-v4")]
+#[cfg(all(feature = "tmf622", feature = "build-V4"))]
 use crate::tmf622::product_order_v4::ProductOrderRef;
-#[cfg(feature = "tmf622-v5")]
+#[cfg(all(feature = "tmf622", feature = "build-V5"))]
 use crate::tmf622::product_order_v5::ProductOrderRef;
 use crate::{
     HasId,

@@ -5,10 +5,11 @@
 
 use serde::{Deserialize, Serialize};
 use std::convert::From;
+#[cfg(all(feature = "tmf673",feature = "build-V4"))]
 use crate::tmf673::geographic_address::GeographicAddress;
-#[cfg(feature = "tmf674-v4")]
+#[cfg(all(feature = "tmf674",feature = "build-V4"))]
 use crate::tmf674::geographic_site_v4::GeographicSite;
-#[cfg(feature = "tmf674-v5")]
+#[cfg(all(feature = "tmf674",feature = "build-V5"))]
 use crate::tmf674::geographic_site_v5::GeographicSite;
 use crate::{HasId,HasName};
 

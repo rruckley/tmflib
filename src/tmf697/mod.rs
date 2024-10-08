@@ -3,9 +3,9 @@
 //! - V4 Supported
 //! - V5 Supported
 
-#[cfg(feature = "tmf697-v4")]
+#[cfg(all(feature = "tmf697", feature = "build-V4"))]
 pub mod v4;
 
-#[cfg(feature = "tmf697-v5")]
+#[cfg(all(feature = "tmf697", feature = "build-V5"))]
 pub mod v5;
 

@@ -4,9 +4,9 @@
 
 use super::{shipping_instruction::ShippingInstruction, shipping_order_item::ShippingOrderItem};
 use crate::{common::note::Note, DateTime};
-#[cfg(feature = "tmf622-v4")]
+#[cfg(all(feature = "tmf622", feature = "build-V4"))]
 use crate::tmf622::product_order_v4::ProductOrderRef;
-#[cfg(feature = "tmf622-v5")]
+#[cfg(all(feature = "tmf622", feature = "build-V5"))]
 use crate::tmf622::product_order_v5::ProductOrderRef;
 
 use super::MOD_PATH;

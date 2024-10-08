@@ -68,7 +68,10 @@ pub trait EventPayload<T> {
 
 #[cfg(test)]
 mod test {
+    #[cfg(all(feature = "tmf632", feature = "build-V4"))]
     use crate::tmf632::organization_v4::Organization;
+    #[cfg(all(feature = "tmf632", feature = "build-V5"))]
+    use crate::tmf632::organization_v5::Organization;
     use crate::tmf629::customer::{Customer,CustomerEventType};
     use super::EventPayload;
     use super::Event;
