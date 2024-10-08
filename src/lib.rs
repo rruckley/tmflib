@@ -361,9 +361,11 @@ pub mod tmf629;
 pub mod tmf632;
 #[cfg(feature = "tmf633")]
 pub mod tmf633;
+#[cfg(feature = "tmf634")]
 pub mod tmf634;
 #[cfg(feature = "tmf637")]
 pub mod tmf637;
+#[cfg(feature = "tmf638")]
 pub mod tmf638;
 #[cfg(feature = "tmf639")]
 pub mod tmf639;
@@ -377,6 +379,7 @@ pub mod tmf648;
 pub mod tmf651;
 #[cfg(feature = "tmf653")]
 pub mod tmf653;
+#[cfg(feature = "tmf663")]
 pub mod tmf663;
 #[cfg(feature = "tmf666")]
 pub mod tmf666;
@@ -386,6 +389,7 @@ pub mod tmf667;
 pub mod tmf669;
 #[cfg(feature = "tmf672")]
 pub mod tmf672;
+#[cfg(feature = "tmf673")]
 pub mod tmf673;
 #[cfg(feature = "tmf674")]
 pub mod tmf674;
@@ -393,6 +397,7 @@ pub mod tmf674;
 pub mod tmf678;
 #[cfg(feature = "tmf679")]
 pub mod tmf679;
+#[cfg(feature = "tmf681")]
 pub mod tmf681;
 #[cfg(feature = "tmf687")]
 pub mod tmf687;
@@ -404,7 +409,9 @@ pub mod tmf696;
 pub mod tmf699;
 #[cfg(feature = "tmf700")]
 pub mod tmf700;
+#[cfg(feature = "tmf724")]
 pub mod tmf724;
+#[cfg(feature = "tmf760")]
 pub mod tmf760;
 
 #[cfg(test)]
