@@ -8,11 +8,12 @@ repository = "https://github.com/rruckley/tmflib"
 license = "Apache-2.0"
 
 [features]
-tmf620 = ["tmf633","tmf651"]
+tmf620 = ["tmf633","tmf634","tmf651"]
 tmf622 = ["tmf641"]
 tmf629 = []
 tmf632 = []
 tmf633 = []
+tmf634 = []
 tmf637 = []
 tmf638 = []
 tmf639 = []
@@ -29,14 +30,16 @@ tmf667 = []
 tmf669 = []
 tmf672 = []
 tmf673 = []
-tmf674 = []
+tmf674 = ["tmf673","build-V4"]
 tmf678 = []
 tmf679 = []
+tmf681 = []
 tmf687 = []
 tmf696 = []
 tmf697 = []
 tmf699 = []
 tmf700 = []
+tmf724 = []
 tmf760 = []
 
 # Build all V4 APIs
@@ -46,21 +49,32 @@ all-v4 = [
     "tmf629",
     "tmf632",
     "tmf633",
+    "tmf634",
     "tmf637",
+    "tmf638",
+    "tmf639",
     "tmf641",
     "tmf646",
     "tmf648",
     "tmf653",
+    "tmf663",
     "tmf666",
     "tmf667",
+    "tmf669",
+    "tmf672",
+    "tmf673",
+    "tmf674",
     "tmf679",
+    "tmf681",
     "tmf674",
     "tmf678",
     "tmf687",
     "tmf696",
     "tmf697",
     "tmf699",
-    "tmf700"
+    "tmf700",
+    "tmf724",
+    "tmf760"
 ]
 
 # Build V5 APIs
@@ -81,130 +95,130 @@ build-V4 = []
 build-V5 = []
 
 # Specifications referenced from common module
-common = ["tmf620","tmf629","tmf632","tmf666","tmf667","tmf674"]
+common = ["tmf620","tmf629","tmf632","tmf666","tmf667","tmf669","tmf674"]
 
 # ODA Component features
 # Product Catalog Management
-TMFC001-v4 = ["tmf620","common"]
+TMFC001 = ["tmf620","common"]
 # Product Order Capture and Validation
-TMFC002-v4 = ["tmf622","common"]
+TMFC002 = ["tmf622","common"]
 # Product Order Delivery Orchestration and Management
-TMFC003-v4 = ["common"]
-TMFC004-v4 = ["common"]
+TMFC003 = ["common"]
+TMFC004 = ["common"]
 # Product Inventory
-TMFC005-v4 = ["tmf620","common"]
+TMFC005 = ["tmf620","common"]
 # Service Catalog Management
-TMFC006-v4 = ["common"]
+TMFC006 = ["common"]
 # Service Order Management
-TMFC007-v4 = ["tmf641"]
+TMFC007 = ["tmf641"]
 # Service Inventory
-TMFC008-v4 = ["tmf638"]
+TMFC008 = ["tmf638"]
 # Servicve Qualification Management
-TMFC009-v4 = ["tmf645"]
+TMFC009 = ["tmf645"]
 # Resource Catalog Management
-TMFC010-v4 = ["common"]
+TMFC010 = ["common"]
 # Resource Order Management
-TMFC011-v4 = ["tmf652"]
+TMFC011 = ["tmf652"]
 # Resource Inventory
-TMFC012-v4 = ["tmf639"]
+TMFC012 = ["tmf639"]
 # Service Balance Management
-TMFC013-v4 = ["common"]
+TMFC013 = ["common"]
 # Location Management
-TMFC014-v4 = ["tmf673","tmf674","common"]
+TMFC014 = ["tmf673","tmf674","common"]
 # Service Usage Management
-TMFC015-v4 = ["common"]
+TMFC015 = ["common"]
 # Resource Usage Management
-TMFC016-v4 = ["common"]
+TMFC016 = ["common"]
 # API Management
-TMFC017-v4 = ["common"]
+TMFC017 = ["common"]
 # Enterprise Integration
-TMFC018-v4 = ["common"]
+TMFC018 = ["common"]
 # Event Management
-TMFC019-v4 = ["common"]
+TMFC019 = ["common"]
 # Digital Identity Management
-TMFC020-v4 = ["common"]
+TMFC020 = ["common"]
 # Party Privacy Management
-TMFC022-v4 = ["common"]
+TMFC022 = ["common"]
 # Party Interaction Management
-TMFC023-v4 = ["common"]
+TMFC023 = ["common"]
 # Billing Account Management
-TMFC024-v4 = ["tmf666","common"]
+TMFC024 = ["tmf666","common"]
 # Billing Inquiries Management
-TMFC025-v4 = ["common"]
+TMFC025 = ["common"]
 # Debt Collection Management
-TMFC026-v4 = ["common"]
+TMFC026 = ["common"]
 # Product Configurator
-TMFC027-v4 = ["tmf679","tmf760","common"]
+TMFC027 = ["tmf679","tmf760","common"]
 # Party Management
-TMFC028-v4 = ["common"]
+TMFC028 = ["common"]
 # Payment Management
-TMFC029-v4 = ["common"]
+TMFC029 = ["common"]
 # Bill Generation Management
-TMFC030-v4 = ["tmf678","common"]
+TMFC030 = ["tmf678","common"]
 # Bill Calculation Management
-TMFC031-v4 = ["tmf678","common"]
+TMFC031 = ["tmf678","common"]
 # Supply Chain Management
-TMFC032-v4 = ["common"]
+TMFC032 = ["common"]
 # Purchase Management
-TMFC033-v4 = ["common"]
+TMFC033 = ["common"]
 # Party Roles Permissions Management
-TMFC035-v4 = ["tmf672","tmf669","common"]
+TMFC035 = ["tmf672","tmf669","common"]
 # Lead and Opportunity Management
-TMFC036-v4 = ["tmf699","common"]
+TMFC036 = ["tmf699","common"]
 # Service Performance Management
-TMFC037-v4 = ["common"]
+TMFC037 = ["common"]
 # Resource Performance Management
-TMFC038-v4 = ["common"]
+TMFC038 = ["common"]
 # Agreement Management
-TMFC039-v4 = ["tmf651","common"]
+TMFC039 = ["tmf651","common"]
 # Product Usage Management
-TMFC040-v4 = ["common"]
+TMFC040 = ["common"]
 # Anomaly Detector
-TMFC041-v4 = ["common"]
+TMFC041 = ["common"]
 # Anomaly Predictor
-TMFC042-v4 = ["common"]
+TMFC042 = ["common"]
 # Anomaly Mitigator
-TMFC043-v4 = ["common"]
+TMFC043 = ["common"]
 # Strategic Resource Planning
-TMFC044-v4 = ["common"]
+TMFC044 = ["common"]
 # Resource Discovery and Reconciliation
-TMFC045-v4 = ["common"]
+TMFC045 = ["common"]
 # Workforce Management
-TMFC046-v4 = ["tmf646"]
+TMFC046 = ["tmf646"]
 # Party Problem Management
-TMFC047-v4 = ["common"]
+TMFC047 = ["common"]
 # Sales Strategy & Planning
-TMFC048-v4 = ["common"]
+TMFC048 = ["common"]
 # Marketing Communications
-TMFC049-v4 = ["common"]
+TMFC049 = ["common"]
 # Recommendation Management
-TMFC050-v4 = ["common"]
+TMFC050 = ["common"]
 # Document Management
-TMFC051-v4 = ["common"]
+TMFC051 = ["common"]
 # IT and Network Infrastructure Management
-TMFC052-v4 = ["common"]
+TMFC052 = ["common"]
 # Service Quality Management
-TMFC053-v4 = ["common"]
+TMFC053 = ["common"]
 # Product Test Management
-TMFC054-v4 = ["common"]
+TMFC054 = ["common"]
 # Service Test Management
-TMFC055-v4 = ["common"]
-# Resource Test Management
-TMFC056-v4 = ["common"]
+TMFC055 = ["common"]
+# Resouce Test Management
+TMFC056 = ["common"]
 # Campaign Management
-TMFC057-v4 = ["common"]
+TMFC057 = ["common"]
 # Product/Sales Performance Management
-TMFC058-v4 = ["common"]
+TMFC058 = ["common"]
 # Commission Management
-TMFC059-v4 = ["common"]
+TMFC059 = ["common"]
 # Knowledge Management
-TMFC060-v4 = ["common"]
+TMFC060 = ["common"]
 # Work Order Management
-TMFC061-v4 = ["common"]
+TMFC061 = ["common"]
 # Resource Configuration and Activation
-TMFC062-v4 = ["common"]
+TMFC062 = ["common"]
 
-default = ["TMFC035-v4","build-V4"]
+default = ["TMFC001","build-V4"]
 
 [dependencies]
 chrono = "0.4.38"
