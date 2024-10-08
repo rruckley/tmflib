@@ -8,146 +8,111 @@ repository = "https://github.com/rruckley/tmflib"
 license = "Apache-2.0"
 
 [features]
-tmf620-v4 = ["tmf633-v4","tmf651-v4"]
-tmf620-v5 = []
+tmf620 = ["tmf633","tmf651"]
+tmf622 = ["tmf641"]
+tmf629 = []
+tmf632 = []
+tmf633 = []
+tmf637 = []
+tmf638 = []
+tmf639 = []
+tmf641 = ["tmf646"]
+tmf645 = []
+tmf646 = []
+tmf648 = ["tmf620"]
+tmf651 = ["tmf648"]
+tmf652 = []
+tmf653 = []
+tmf663 = []
+tmf666 = []
+tmf667 = []
+tmf669 = []
+tmf672 = []
+tmf673 = []
+tmf674 = []
+tmf678 = []
+tmf679 = []
+tmf687 = []
+tmf696 = []
+tmf697 = []
+tmf699 = []
+tmf700 = []
+tmf760 = []
 
-tmf622-v4 = ["tmf641-v4"]
-tmf622-v5 = []
-
-tmf629-v4 = []
-tmf629-v5 = []
-
-tmf632-v4 = []
-tmf632-v5 = []
-
-tmf633-v4 = []
-
-tmf637-v4 = []
-tmf637-v5 = []
-
-tmf638-v4 = []
-
-tmf639-v4 = []
-
-tmf641-v4 = ["tmf646-v4"]
-
-tmf645-v4 = []
-
-tmf646-v4 = []
-
-tmf648-v4 = ["tmf620-v4"]
-
-tmf651-v4 = ["tmf648-v4"]
-
-tmf652-v4 = []
-
-tmf653-v4 = []
-
-tmf663-v4 = []
-
-tmf666-v4 = []
-
-tmf667-v4 = []
-tmf667-v5 = []
-
-tmf669-v4 = []
-
-tmf672-v4 = []
-
-tmf673-v4 = []
-
-tmf674-v4 = []
-tmf674-v5 = []
-
-tmf679-v4 = []
-
-tmf678-v4 = []
-tmf678-v5 = []
-
-tmf687-v4 = []
-
-tmf696-v4 = []
-tmf696-v5 = []
-
-tmf697-v4 = []
-tmf697-v5 = []
-
-tmf699-v4 = []
-tmf699-v5 = []
-
-tmf700-v4 = []
-
-tmf760-v5 = []
-
-v4 = [
-    "tmf620-v4",
-    "tmf622-v4",
-    "tmf629-v4",
-    "tmf632-v4",
-    "tmf633-v4",
-    "tmf637-v4",
-    "tmf641-v4",
-    "tmf646-v4",
-    "tmf648-v4",
-    "tmf653-v4",
-    "tmf666-v4",
-    "tmf667-v4",
-    "tmf679-v4",
-    "tmf674-v4",
-    "tmf678-v4",
-    "tmf687-v4",
-    "tmf696-v4",
-    "tmf697-v4",
-    "tmf699-v4",
-    "tmf700-v4"
+# Build all V4 APIs
+all-v4 = [
+    "tmf620",
+    "tmf622",
+    "tmf629",
+    "tmf632",
+    "tmf633",
+    "tmf637",
+    "tmf641",
+    "tmf646",
+    "tmf648",
+    "tmf653",
+    "tmf666",
+    "tmf667",
+    "tmf679",
+    "tmf674",
+    "tmf678",
+    "tmf687",
+    "tmf696",
+    "tmf697",
+    "tmf699",
+    "tmf700"
 ]
-v5 = [
-    "tmf620-v5",
-    "tmf622-v5",
-    "tmf629-v5",
-    "tmf632-v5",
-    "tmf637-v5",
-    "tmf667-v4",
-    "tmf674-v5",
-    "tmf678-v5",
-    "tmf687-v4",
-    "tmf696-v5",
-    "tmf697-v4",
-    "tmf699-v5",
-    "tmf760-v5"
+
+# Build V5 APIs
+all-v5 = [
+    "tmf620",
+    "tmf622",
+    "tmf629",
+    "tmf632",
+    "tmf637",
+    "tmf674",
+    "tmf678",
+    "tmf696",
+    "tmf699",
+    "tmf760"
 ]
+
+# V4
+V4 = []
+# V5
+V5 = []
 
 # Specifications referenced from common module
-common = ["tmf620-v4","tmf629-v4","tmf632-v4","tmf666-v4","tmf667-v4","tmf674-v4"]
+common = ["tmf620","tmf629","tmf632","tmf666","tmf667","tmf674"]
 
 # ODA Component features
 # Product Catalog Management
-TMFC001-v4 = ["tmf620-v4","common"]
+TMFC001-v4 = ["tmf620","common"]
 # Product Order Capture and Validation
-TMFC002-v4 = ["tmf622-v4","common"]
+TMFC002-v4 = ["tmf622","common"]
 # Product Order Delivery Orchestration and Management
 TMFC003-v4 = ["common"]
 TMFC004-v4 = ["common"]
 # Product Inventory
-TMFC005-v4 = ["tmf620-v4","common"]
+TMFC005-v4 = ["tmf620","common"]
 # Service Catalog Management
 TMFC006-v4 = ["common"]
 # Service Order Management
-TMFC007-v4 = ["tmf641-v4"]
+TMFC007-v4 = ["tmf641"]
 # Service Inventory
-TMFC008-v4 = ["tmf638-v4"]
+TMFC008-v4 = ["tmf638"]
 # Servicve Qualification Management
-TMFC009-v4 = ["tmf645-v4"]
+TMFC009-v4 = ["tmf645"]
 # Resource Catalog Management
 TMFC010-v4 = ["common"]
 # Resource Order Management
-TMFC011-v4 = ["tmf652-v4"]
+TMFC011-v4 = ["tmf652"]
 # Resource Inventory
-TMFC012-v4 = ["tmf639-v4"]
+TMFC012-v4 = ["tmf639"]
 # Service Balance Management
 TMFC013-v4 = ["common"]
 # Location Management
-TMFC014-v4 = ["tmf673-v4","tmf674-v4","common"]
+TMFC014-v4 = ["tmf673","tmf674","common"]
 # Service Usage Management
 TMFC015-v4 = ["common"]
 # Resource Usage Management
@@ -165,35 +130,35 @@ TMFC022-v4 = ["common"]
 # Party Interaction Management
 TMFC023-v4 = ["common"]
 # Billing Account Management
-TMFC024-v4 = ["tmf666-v4","common"]
+TMFC024-v4 = ["tmf666","common"]
 # Billing Inquiries Management
 TMFC025-v4 = ["common"]
 # Debt Collection Management
 TMFC026-v4 = ["common"]
 # Product Configurator
-TMFC027-v4 = ["tmf679-v4","tmf760-v5","common"]
+TMFC027-v4 = ["tmf679","tmf760","common"]
 # Party Management
 TMFC028-v4 = ["common"]
 # Payment Management
 TMFC029-v4 = ["common"]
 # Bill Generation Management
-TMFC030-v4 = ["tmf678-v4","common"]
+TMFC030-v4 = ["tmf678","common"]
 # Bill Calculation Management
-TMFC031-v4 = ["tmf678-v4","common"]
+TMFC031-v4 = ["tmf678","common"]
 # Supply Chain Management
 TMFC032-v4 = ["common"]
 # Purchase Management
 TMFC033-v4 = ["common"]
 # Party Roles Permissions Management
-TMFC035-v4 = ["tmf672-v4","tmf669-v4","common"]
+TMFC035-v4 = ["tmf672","tmf669","common"]
 # Lead and Opportunity Management
-TMFC036-v4 = ["tmf699-v4","common"]
+TMFC036-v4 = ["tmf699","common"]
 # Service Performance Management
 TMFC037-v4 = ["common"]
 # Resource Performance Management
 TMFC038-v4 = ["common"]
 # Agreement Management
-TMFC039-v4 = ["tmf651-v4","common"]
+TMFC039-v4 = ["tmf651","common"]
 # Product Usage Management
 TMFC040-v4 = ["common"]
 # Anomaly Detector
@@ -207,7 +172,7 @@ TMFC044-v4 = ["common"]
 # Resource Discovery and Reconciliation
 TMFC045-v4 = ["common"]
 # Workforce Management
-TMFC046-v4 = ["tmf646-v4"]
+TMFC046-v4 = ["tmf646"]
 # Party Problem Management
 TMFC047-v4 = ["common"]
 # Sales Strategy & Planning
