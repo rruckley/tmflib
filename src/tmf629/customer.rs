@@ -3,9 +3,9 @@
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use crate::tmf632::organization_v4::Organization;
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use crate::tmf632::organization_v5::Organization;
 
 use super::characteristic::Characteristic;
@@ -57,9 +57,9 @@ impl Customer {
     /// Create new customer object against an [Organization] (legal entity)
     /// ```
     /// # use tmflib::tmf629::customer::Customer;
-    /// #[cfg(feature = "tmf632-v4")]
+    /// #[cfg(all(feature = "tmf632", feature = "build-V4"))]
     /// # use tmflib::tmf632::organization_v4::Organization;
-    /// #[cfg(feature = "tmf632-v5")]
+    /// #[cfg(all(feature = "tmf632", feature = "build-V5"))]
     /// # use tmflib::tmf632::organization_v5::Organization;
     /// let org = Organization::new("Legal Entity");
     /// let cust = Customer::new(org);

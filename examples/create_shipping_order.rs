@@ -3,15 +3,15 @@
 
 #![allow(unused_imports)]
 
-#[cfg(feature="tmf700-v4")]
+#[cfg(all(feature = "tmf700", feature = "build-V4"))]
 use tmflib::tmf700::shipping_instruction::SignatureRequiredByType;
-#[cfg(feature="tmf700-v4")]
+#[cfg(all(feature = "tmf700", feature = "build-V4"))]
 use tmflib::tmf700::{shipping_order::ShippingOrder,shipping_order_item::ShippingOrderItem,shipping_instruction::ShippingInstruction};
 use tmflib::common::note::Note;
 use tmflib::HasNote;
 
 fn main() {
-    #[cfg(feature = "tmf700-v4")]
+    #[cfg(all(feature = "tmf700", feature = "build-V4"))]
     {
         let item = ShippingOrderItem::new()
         .instruction(ShippingInstruction::new("An Instruction"));

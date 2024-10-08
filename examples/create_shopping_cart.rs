@@ -2,13 +2,13 @@
 
 use tmflib::common::related_party::RelatedParty;
 use tmflib::common::note::Note;
-#[cfg(feature = "tmf620-v4")]
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use tmflib::tmf620::product_offering::{ProductOffering,ProductOfferingRef};
-#[cfg(feature = "tmf620-v5")]
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use tmflib::tmf620::product_offering_v5::{ProductOffering,ProductOfferingRef};
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use tmflib::tmf632::individual_v4::Individual;
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use tmflib::tmf632::individual_v5::Individual;
 use tmflib::tmf663::shopping_cart::ShoppingCart;
 use tmflib::tmf663::cart_item::CartItem;

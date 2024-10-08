@@ -29,9 +29,9 @@ impl PartyRole {
     /// ```
     /// # use tmflib::tmf669::party_role::PartyRole;
     /// use tmflib::common::related_party::RelatedParty;
-    /// #[cfg(feature = "tmf632-v4")]
+    /// #[cfg(all(feature = "tmf632", feature = "build-V4"))]
     /// use tmflib::tmf632::individual_v4::Individual;
-    /// #[cfg(feature = "tmf632-v5")]
+    /// #[cfg(all(feature = "tmf632", feature = "build-V5"))]
     /// use tmflib::tmf632::individual_v5::Individual;
     /// let individual = Individual::new("John Smith");
     /// let role = PartyRole::new("Account Manager",RelatedParty::from(&individual));

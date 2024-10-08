@@ -2,18 +2,18 @@
 
 #![allow(unused_imports)]
 
-#[cfg(feature = "tmf639-v4")]
+#[cfg(all(feature = "tmf639", feature = "build-V4"))]
 use tmflib::tmf639::resource::Resource;
 use tmflib::tmf629::customer::Customer;
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use tmflib::tmf632::organization_v4::Organization;
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use tmflib::tmf632::organization_v5::Organization;
 use tmflib::common::related_party::RelatedParty;
 use tmflib::HasRelatedParty;
 
 fn main() {
-    #[cfg(feature = "tmf639-v4")]
+    #[cfg(all(feature = "tmf639", feature = "build-V4"))]
     {
     // Create an organisation
     let organisation = Organization::new("An Organisation");

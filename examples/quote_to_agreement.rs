@@ -1,8 +1,8 @@
 //! Create Quote Example
 
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use tmflib::tmf632::organization_v4::Organization;
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use tmflib::tmf632::organization_v5::Organization;
 use tmflib::tmf648::{quote::Quote, quote_item::QuoteItem, quote_price::QuotePrice};
 use tmflib::common::price::Price;

@@ -1,8 +1,8 @@
 //! Category Module
 
-#[cfg(feature = "tmf620-v4")]
+#[cfg(all(feature = "tmf620",feature = "build-V4"))]
 use crate::tmf620::product_offering::ProductOfferingRef;
-#[cfg(feature = "tmf620-v5")]
+#[cfg(all(feature = "tmf620",feature = "build-V5"))]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
 use serde::{Deserialize, Serialize};
