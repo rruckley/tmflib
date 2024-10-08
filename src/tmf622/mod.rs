@@ -16,11 +16,11 @@
 
 const MOD_PATH: &str = "productOrderingManagement/v4";
 
-#[cfg(feature = "tmf622-v4")]
+#[cfg(all(feature = "tmf622", feature = "build-V4"))]
 pub mod product_order_v4;
-#[cfg(feature = "tmf622-v5")]
+#[cfg(all(feature = "tmf622", feature = "build-V5"))]
 pub mod product_order_v5;
 
 pub mod product_order_item;
-#[cfg(feature = "tmf622-v5")]
+#[cfg(all(feature = "tmf622", feature = "build-V5"))]
 pub mod milestone;

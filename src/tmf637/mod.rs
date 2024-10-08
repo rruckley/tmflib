@@ -14,7 +14,7 @@
 
 //! TMF637 Product Inventory Management
 
-#[cfg(feature = "tmf637-v4")]
+#[cfg(all(feature = "tmf637", feature = "build-V4"))]
 pub mod v4;
-#[cfg(feature = "tmf637-v5")]
+#[cfg(all(feature = "tmf637", feature = "build-V5"))]
 pub mod v5;

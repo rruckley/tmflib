@@ -20,7 +20,7 @@ use tmflib::tmf663::shopping_cart::ShoppingCart;
 use tmflib::tmf663::cart_item::CartItem;
 #[cfg(all(feature = "tmf622", feature = "build-V4"))]
 use tmflib::tmf622::product_order_v4::ProductOrder;
-#[cfg(all(feature = "tmf622", feature = "build-V4"))]
+#[cfg(all(feature = "tmf622", feature = "build-V5"))]
 use tmflib::tmf622::product_order_v5::ProductOrder;
 
 fn main() {

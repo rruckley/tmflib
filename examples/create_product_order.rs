@@ -17,7 +17,7 @@ use tmflib::tmf620::product_offering_v5::ProductOffering;
 use tmflib::tmf629::customer::Customer;
 #[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use tmflib::tmf632::individual_v4::Individual;
-#[cfg(all(feature = "tmf632", feature = "build-V5"))]
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use tmflib::tmf632::organization_v4::Organization;
 #[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use tmflib::tmf632::individual_v5::Individual;

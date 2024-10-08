@@ -18,6 +18,7 @@ use crate::tmf632::individual_v5::Individual;
 use crate::tmf632::organization_v4::{Organization,OrganizationRef};
 #[cfg(all(feature = "tmf632",feature = "build-V5"))]
 use crate::tmf632::organization_v5::{Organization,OrganizationRef};
+#[cfg(feature = "tmf669")]
 use crate::tmf669::party_role::PartyRole;
 use crate::{HasId,HasName,Uri};
 

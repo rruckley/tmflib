@@ -17,16 +17,16 @@
 //! - V4 Supported
 //! - V5 Supported
 
-#[cfg(feature = "tmf699-v4")]
+#[cfg(all(feature = "tmf699", feature = "build-V4"))]
 const MOD_PATH : &str = "tmf699/v4";
-#[cfg(feature = "tmf699-v5")]
+#[cfg(all(feature = "tmf699", feature = "build-V5"))]
 const MOD_PATH : &str = "tmf699/v5";
 
-#[cfg(feature = "tmf699-v4")]
+#[cfg(all(feature = "tmf699", feature = "build-V4"))]
 pub mod sales_lead_v4;
-#[cfg(feature = "tmf674-v5")]
+#[cfg(all(feature = "tmf699", feature = "build-V5"))]
 pub mod sales_lead_v5;
-#[cfg(feature = "tmf674-v5")]
+#[cfg(all(feature = "tmf699", feature = "build-V5"))]
 pub mod sales_opportunity_v5;
-#[cfg(feature = "tmf674-v5")]
+#[cfg(all(feature = "tmf699", feature = "build-V5"))]
 pub mod sales_opportunity_item_v5;

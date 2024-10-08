@@ -53,7 +53,10 @@ impl PartyRole {
 
 #[cfg(test)]
 mod test {
+    #[cfg(all(feature = "tmf632", feature = "build-V4"))]
     use crate::tmf632::individual_v4::Individual;
+    #[cfg(all(feature = "tmf632", feature = "build-V5"))]
+    use crate::tmf632::individual_v5::Individual;
     use crate::common::related_party::RelatedParty;
 
     use super::*;
