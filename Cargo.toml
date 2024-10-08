@@ -77,10 +77,8 @@ all-v5 = [
     "tmf760"
 ]
 
-# V4
-V4 = []
-# V5
-V5 = []
+build-V4 = []
+build-V5 = []
 
 # Specifications referenced from common module
 common = ["tmf620","tmf629","tmf632","tmf666","tmf667","tmf674"]
@@ -206,7 +204,7 @@ TMFC061-v4 = ["common"]
 # Resource Configuration and Activation
 TMFC062-v4 = ["common"]
 
-default = ["TMFC035-v4"]
+default = ["TMFC035-v4","build-V4"]
 
 [dependencies]
 chrono = "0.4.38"
