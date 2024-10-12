@@ -24,6 +24,7 @@ pub mod money;
 pub mod note;
 pub mod price;
 pub mod product;
+pub mod related_entity;
 pub mod related_party;
 pub mod related_place;
 pub mod tax_item;
