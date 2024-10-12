@@ -32,3 +32,26 @@ impl<T : HasName> From<T> for RelatedEntity {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use crate::tmf651::agreement::Agreement;
+    use crate::{HasId,HasName};
+
+    use super::RelatedEntity;
+
+    const AGREEMENT_NAME : &str = "AnAgreement";
+
+    #[test]
+    fn test_relatedentity_from() {
+        let agreement = Agreement::new(AGREEMENT_NAME);
+        let agree_ref = &agreement;
+
+        let entity = RelatedEntity::from(agreement.clone());
+
+        assert_eq!(entity.name,agree_ref.get_name());
+        assert_eq!(entity.id,agree_ref.get_id().as_str());
+        assert_eq!(entity.href,agree_ref.get_href().as_str());
+        assert_eq!(entity.referred_type,Agreement::get_class());
+    }
+}

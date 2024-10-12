@@ -120,6 +120,7 @@ impl From<AttachmentRefOrValue> for Document {
 #[cfg(test)]
 mod test {
     use crate::common::attachment::AttachmentRefOrValue;
+    use crate::tmf651::agreement::Agreement;
     use super::DocumentStatusType;
     use super::DOC_VERSION;
 
@@ -129,6 +130,7 @@ mod test {
     const DOC_NAME : &str  = "A Document";
     const DOC_TYPE : &str = "PDF";
     const DOC_STATE: &str = "\"Created\"";
+    const AGREEMENT_NAME : &str = "AnAgreement";
 
     #[test]
     fn test_document_new() {
@@ -175,5 +177,16 @@ mod test {
         let doc = Document::from(attachref.clone());
 
         assert_eq!(doc.get_name(),attachref.get_name());
+    }
+
+    #[test]
+    fn test_document_link() {
+        let agreement = Agreement::new(AGREEMENT_NAME);
+
+        let document = Document::new(AGREEMENT_NAME)
+            .link(agreement);
+
+        assert_eq!(document.related_entity.is_some(),true);
+        assert_eq!(document.related_entity.unwrap().first().is_some(),true);
     }
 }
