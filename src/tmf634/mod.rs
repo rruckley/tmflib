@@ -14,7 +14,10 @@
 
 //! TMF634 Resource Catalogue Management
 
+#[cfg(feature = "build-V4")]
 const MOD_PATH : &str = "resourceCatalog/v4";
+#[cfg(feature = "build-V5")]
+const MOD_PATH : &str = "resourceCatalog/v5";
 
 pub mod catalog;
 pub mod resource_category;
