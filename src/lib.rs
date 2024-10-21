@@ -18,16 +18,31 @@
 //! It does not define any persistence nor provide a REST interface (at this stage)
 //! but simply provides definitions of all the schema and helpful functions and traits to create and maniuplate compliant objects
 //! that can then be seriliased into or from JSON as required.
-//! 
-//! # Crate Features
-//! 
-//! ### API Version Features
-//! 
+//! ### API Version Features 
 //! By default this crate will compile v4 versions of APIs. 
-//! * **v4**
+//! * **build-V4**
 //! This is the default version compiled
-//! * **v5**
-//! This flag can optionally be enabled to compile v5 APIs where available
+//! * **build-V5**
+//! This flag can be enabled to compile v5 APIs where available, mutually exclusive with build-V4.
+
+//! ### Common Feature ###
+//! Within the library is a set of common modules. These modules refer to other TMF modules and thus all
+//! modules referenced by the common module are included under this feature.
+//! Specifically:
+//! - [tmf620]
+//! - [tmf629]
+//! - [tmf632]
+//! - [tmf666]
+//! - [tmf667]
+//! - [tmf669]
+//! - [tmf674]
+
+//! ### ODA Component Features
+//! 
+//! All [ODA Component](https://www.tmforum.org/oda/directory/components-map) identifiers, e.g. TMFC001 have been mapped onto features to enable building the library
+//! to support a specific component.
+
+//! *NB: For components that dont' have any defined APIs, a common set of APIs are included under the **[common]** feature*
 
 #![warn(missing_docs)]
 
@@ -42,7 +57,7 @@ use base32::encode;
 
 /// Primary path for the whole library, All paths generated will start with this.
 pub const LIB_PATH: &str = "tmf-api";
-/// Default code length used by [`gen_code`] if no length is supplied.
+/// Default code length used by [gen_code] if no length is supplied.
 pub const CODE_DEFAULT_LENGTH : usize = 6;
 
 /// Standard cardinality type for library
@@ -351,48 +366,67 @@ pub trait HasDescription {
 }
 
 pub mod common;
-#[cfg(any(feature = "tmf620-v4" , feature = "tmf620-v5"))]
+#[cfg(feature = "tmf620")]
 pub mod tmf620;
-#[cfg(any(feature = "tmf622-v4" , feature = "tmf622-v5"))]
+#[cfg(feature = "tmf622")]
 pub mod tmf622;
-#[cfg(any(feature = "tmf629-v4" , feature = "tmf629-v5"))]
+#[cfg(feature = "tmf629")]
 pub mod tmf629;
-#[cfg(any(feature = "tmf632-v4" , feature = "tmf632-v5"))]
+#[cfg(feature = "tmf632")]
 pub mod tmf632;
+#[cfg(feature = "tmf633")]
 pub mod tmf633;
+#[cfg(feature = "tmf634")]
 pub mod tmf634;
-#[cfg(any(feature = "tmf637-v4" , feature = "tmf637-v5"))]
+#[cfg(feature = "tmf637")]
 pub mod tmf637;
+#[cfg(feature = "tmf638")]
 pub mod tmf638;
+#[cfg(feature = "tmf639")]
 pub mod tmf639;
+#[cfg(feature = "tmf641")]
 pub mod tmf641;
+#[cfg(feature = "tmf646")]
 pub mod tmf646;
+#[cfg(feature = "tmf648")]
 pub mod tmf648;
+#[cfg(feature = "tmf651")]
 pub mod tmf651;
+#[cfg(feature = "tmf653")]
 pub mod tmf653;
+#[cfg(feature = "tmf663")]
 pub mod tmf663;
+#[cfg(feature = "tmf666")]
 pub mod tmf666;
-#[cfg(any(feature = "tmf667-v4" , feature = "tmf667-v5"))]
+#[cfg(feature = "tmf667")]
 pub mod tmf667;
+#[cfg(feature = "tmf669")]
 pub mod tmf669;
+#[cfg(feature = "tmf672")]
 pub mod tmf672;
+#[cfg(feature = "tmf673")]
 pub mod tmf673;
-#[cfg(any(feature = "tmf674-v4" , feature = "tmf674-v5"))]
+#[cfg(feature = "tmf674")]
 pub mod tmf674;
-#[cfg(any(feature = "tmf678-v4" , feature = "tmf678-v5"))]
+#[cfg(feature = "tmf678")]
 pub mod tmf678;
+#[cfg(feature = "tmf679")]
 pub mod tmf679;
+#[cfg(feature = "tmf681")]
 pub mod tmf681;
-#[cfg(feature = "tmf687-v4")]
+#[cfg(feature = "tmf687")]
 pub mod tmf687;
-#[cfg(any(feature = "tmf697-v4" , feature = "tmf697-v5"))]
+#[cfg(feature = "tmf697")]
 pub mod tmf697;
-#[cfg(any(feature = "tmf696-v4" , feature = "tmf696-v5"))]
+#[cfg(feature = "tmf696")]
 pub mod tmf696;
-#[cfg(any(feature = "tmf699-v4" , feature = "tmf699-v5"))]
+#[cfg(feature = "tmf699")]
 pub mod tmf699;
+#[cfg(feature = "tmf700")]
 pub mod tmf700;
+#[cfg(feature = "tmf724")]
 pub mod tmf724;
+#[cfg(feature = "tmf760")]
 pub mod tmf760;
 
 #[cfg(test)]

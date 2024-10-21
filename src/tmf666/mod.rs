@@ -37,21 +37,28 @@ const MOD_PATH : &str = "accountManagement/v4";
 #[derive( Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AccountRef {
-    description: Option<String>,
-    href: String,
-    id: String,
-    name : String,
+    /// Referenced Account Description
+    pub description: Option<String>,
+    /// Referenced Account HREF
+    pub href: String,
+    /// Referenced Account Unique Id
+    pub id: String,
+    /// Referenced Account Name
+    pub name : String,
 }
 
 /// Account Relationship
 #[derive( Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AccountRelationship {
-    relationship_type: String,
+    /// Account Relationship Type
+    pub relationship_type: String,
+    /// Account Relationship Validity
     #[serde(skip_serializing_if = "Option::is_none")]
-    valid_for: Option<TimePeriod>,
+    pub valid_for: Option<TimePeriod>,
+    /// Linked Account 
     #[serde(skip_serializing_if = "Option::is_none")]
-    account: Option<AccountRef>,
+    pub account: Option<AccountRef>,
 }
 
 /// Account Balance

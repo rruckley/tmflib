@@ -10,14 +10,15 @@ use std::convert::From;
 use serde::{Deserialize,Serialize};
 
 use crate::tmf629::customer::Customer;
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632",feature = "build-V4"))]
 use crate::tmf632::individual_v4::Individual;
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632",feature = "build-V5"))]
 use crate::tmf632::individual_v5::Individual;
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632",feature = "build-V4"))]
 use crate::tmf632::organization_v4::{Organization,OrganizationRef};
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632",feature = "build-V5"))]
 use crate::tmf632::organization_v5::{Organization,OrganizationRef};
+#[cfg(feature = "tmf669")]
 use crate::tmf669::party_role::PartyRole;
 use crate::{HasId,HasName,Uri};
 
@@ -150,9 +151,9 @@ impl From<&PartyRole> for RelatedParty {
 #[cfg(test)]
 mod test {
     use crate::{tmf629::customer::Customer, tmf632::organization_v4::OrganizationRef};
-    #[cfg(feature = "tmf632-v4")]
+    #[cfg(all(feature = "tmf632",feature = "build-V4"))]
     use crate::tmf632::organization_v4::Organization;
-    #[cfg(feature = "tmf632-v5")]
+    #[cfg(all(feature = "tmf632",feature = "build-V5"))]
     use crate::tmf632::organization_v5::Organization;
     use crate::tmf669::party_role::PartyRole;
     use crate::{HasId, HasName};

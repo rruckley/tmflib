@@ -2,14 +2,18 @@
 //! 
 
 
-#[cfg(feature = "tmf678-v4")]
+#[cfg(all(feature = "tmf678", feature = "build-V4"))]
 use tmflib::tmf678::customer_bill_v4::CustomerBill;
-#[cfg(feature = "tmf678-v5")]
+#[cfg(all(feature = "tmf678", feature = "build-V5"))]
 use tmflib::tmf678::customer_bill_v5::CustomerBill;
 
 fn main() {
 
-    let bill = CustomerBill::new();
+    #[cfg(all(feature = "tmf678", feature = "build-V4"))]
+    {
+        let bill = CustomerBill::new();
 
-    dbg!(bill);
+        dbg!(bill);
+    
+    }
 }

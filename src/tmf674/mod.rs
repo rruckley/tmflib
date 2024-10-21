@@ -19,12 +19,12 @@
 //! - V4 Supported
 //! - V5 Supported
 
-#[cfg(feature = "tmf674-v4")]
+#[cfg(all(feature = "tmf674", feature = "build-V4"))]
 pub mod geographic_site_v4;
-#[cfg(feature = "tmf674-v5")]
+#[cfg(all(feature = "tmf674", feature = "build-V5"))]
 pub mod geographic_site_v5;
 
-#[cfg(feature = "tmf674-v4")]
+#[cfg(all(feature = "tmf674", feature = "build-V4"))]
 const MOD_PATH : &str = "geographicSiteManagement/v4";
-#[cfg(feature = "tmf674-v5")]
+#[cfg(all(feature = "tmf674", feature = "build-V5"))]
 const MOD_PATH : &str = "geographicSiteManagement/v5";

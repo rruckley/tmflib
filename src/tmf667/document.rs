@@ -5,6 +5,8 @@ use crate::{
 };
 use tmflib_derive::{HasId,HasName,HasLastUpdate,HasRelatedParty,HasDescription};
 use crate::common::related_party::RelatedParty;
+use crate::common::related_entity::RelatedEntity;
+use crate::vec_insert;
 use serde::{Deserialize,Serialize};
 
 const CLASS_PATH : &str = "document";
@@ -56,7 +58,10 @@ pub struct Document {
     #[serde(skip_serializing_if = "Option::is_none")]
     creation_date: Option<DateTime>,
     // Referenced objects
+    /// Parties
     related_party: Option<Vec<RelatedParty>>,
+    /// Related Entities
+    related_entity : Option<Vec<RelatedEntity>>,
     /// Attachement
     attachment : AttachmentRefOrValue,
 }
@@ -88,6 +93,17 @@ impl Document {
         self.document_type = Some(r#type.into());
         self
     }
+
+    /// Link another TMF entity during creation
+    pub fn link<T : HasName>(mut self, entity : T) -> Document {
+        self.link_entity(entity);
+        self
+    }
+
+    /// Link another TMF entity into this document
+    pub fn link_entity<T : HasName>(&mut self, entity : T) {
+        vec_insert(&mut self.related_entity,RelatedEntity::from(entity));
+    }
 }
 
 impl From<AttachmentRefOrValue> for Document {
@@ -104,6 +120,7 @@ impl From<AttachmentRefOrValue> for Document {
 #[cfg(test)]
 mod test {
     use crate::common::attachment::AttachmentRefOrValue;
+    use crate::tmf651::agreement::Agreement;
     use super::DocumentStatusType;
     use super::DOC_VERSION;
 
@@ -113,6 +130,7 @@ mod test {
     const DOC_NAME : &str  = "A Document";
     const DOC_TYPE : &str = "PDF";
     const DOC_STATE: &str = "\"Created\"";
+    const AGREEMENT_NAME : &str = "AnAgreement";
 
     #[test]
     fn test_document_new() {
@@ -159,5 +177,16 @@ mod test {
         let doc = Document::from(attachref.clone());
 
         assert_eq!(doc.get_name(),attachref.get_name());
+    }
+
+    #[test]
+    fn test_document_link() {
+        let agreement = Agreement::new(AGREEMENT_NAME);
+
+        let document = Document::new(AGREEMENT_NAME)
+            .link(agreement);
+
+        assert_eq!(document.related_entity.is_some(),true);
+        assert_eq!(document.related_entity.unwrap().first().is_some(),true);
     }
 }

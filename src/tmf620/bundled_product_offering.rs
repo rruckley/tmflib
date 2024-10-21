@@ -1,9 +1,9 @@
 //! Bundled Product Offering Module
 
 const CLASS_PATH: &str = "bundle";
-#[cfg(feature = "v4")]
+#[cfg(all(feature = "tmf620",feature = "build-V4"))]
 use super::product_offering::ProductOffering;
-#[cfg(feature = "v5")]
+#[cfg(all(feature = "tmf674",feature = "build-V5"))]
 use super::product_offering_v5::ProductOffering;
 
 use super::MOD_PATH;

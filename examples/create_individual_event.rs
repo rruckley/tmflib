@@ -1,8 +1,8 @@
 //! Create Event rfor Individual
 
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use tmflib::tmf632::individual_v4::{Individual, IndividualEventType};
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use tmflib::tmf632::individual_v5::{Individual, IndividualEventType};
 use tmflib::common::event::EventPayload;
 

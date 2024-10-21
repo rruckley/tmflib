@@ -13,9 +13,9 @@ use super::MOD_PATH;
 use super::product_offering_qualification_item::ProductOfferingQualificationItem;
 use crate::common::related_party::RelatedParty;
 use crate::tmf620::category::CategoryRef;
-#[cfg(feature = "v4")]
+#[cfg(all(feature = "tmf620", feature = "build-V4"))]
 use crate::tmf620::product_offering::ProductOfferingRef;
-#[cfg(feature = "v5")]
+#[cfg(all(feature = "tmf620", feature = "build-V5"))]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
 const CLASS_PATH : &str = "productOfferingQualification";

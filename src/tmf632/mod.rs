@@ -18,19 +18,19 @@
 
 use serde::{Deserialize,Serialize};
 
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632",feature = "build-V4"))]
 const MOD_PATH : &str = "partyManagement/v4";
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632",feature = "build-V5"))]
 const MOD_PATH : &str = "partyManagement/v5";
 
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632",feature = "build-V4"))]
 pub mod individual_v4;
-#[cfg(feature = "tmf632-v4")]
+#[cfg(all(feature = "tmf632",feature = "build-V4"))]
 pub mod organization_v4;
 
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632",feature = "build-V5"))]
 pub mod individual_v5;
-#[cfg(feature = "tmf632-v5")]
+#[cfg(all(feature = "tmf632",feature = "build-V5"))]
 pub mod organization_v5;
 
 /// General Party characteristic
