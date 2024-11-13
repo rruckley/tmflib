@@ -25,7 +25,7 @@ const LEAD_VALID :u64 = 30;
 /// Sales Lead Priorities
 #[derive(Clone,Debug,Default,Deserialize,Serialize)]
 #[serde(rename_all = "camelCase")]
-pub enum SalesLeadPrioityType {
+pub enum SalesLeadPriorityType {
     /// Low Priority
     Low,
     #[default]
@@ -80,7 +80,7 @@ pub struct SalesLead {
     #[serde(skip_serializing_if = "Option::is_none")]
     estimated_revenue: Option<Money>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    priority : Option<SalesLeadPrioityType>,
+    priority : Option<SalesLeadPriorityType>,
     status: Option<SalesLeadStateType>,
     #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
@@ -108,7 +108,7 @@ impl SalesLead {
         let mut sl = SalesLead::create();
         sl.name = name.into();
         sl.status = Some(SalesLeadStateType::default());
-        sl.priority = Some(SalesLeadPrioityType::default());
+        sl.priority = Some(SalesLeadPriorityType::default());
         sl.valid_for = Some(TimePeriod::period_days(LEAD_VALID));
         sl
     }
