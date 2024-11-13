@@ -1,7 +1,14 @@
 //! Money Module
 //! 
+//! # Math Functions
+//! This module implements the TMF Money type and provides simple maths functions to make
+//! calculations easier. These maths functions only work if the currenct is the same on both sides of the operator. 
+//! If there is a difference, the LHS is returned unaltered as these functions cannot fail.
 
 use serde::{Deserialize,Serialize};
+use std::ops::{Add,Sub,Mul,Div};
+
+const MONEY_DEFAULT_UNIT : &str = "AUD";
 
 /// Money sub-resource
 #[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
@@ -49,6 +56,84 @@ impl Money {
     }
 }
 
+impl From<i32> for Money {
+    fn from(value: i32) -> Self {
+        Money {
+            value: value as f32,
+            unit: MONEY_DEFAULT_UNIT.to_string(),
+        }
+    }
+}
+
+impl From<f32> for Money {
+    fn from(value: f32) -> Self {
+        Money {
+            value,
+            unit: MONEY_DEFAULT_UNIT.to_string(),
+        }
+    }
+}
+
+impl Add for Money {
+    type Output = Money;
+    fn add(self, rhs: Self) -> Self::Output {
+        if self.unit == rhs.unit {
+            Self {
+                unit: self.unit.clone(),
+                value: self.value + rhs.value,
+            }
+        } else {
+            self
+        }
+    }
+}
+
+impl Sub for Money {
+    type Output = Money;
+    fn sub(self, rhs: Self) -> Self::Output {
+        if self.unit == rhs.unit {
+            Self {
+                unit: self.unit.clone(),
+                value: self.value - rhs.value,
+            }
+        } else {
+            self
+        }
+    }
+}
+
+impl Mul for Money {
+    type Output = Money;
+    fn mul(self, rhs: Self) -> Self::Output {    
+
+        if self.unit == rhs.unit {
+            Self {
+                unit: self.unit.clone(),
+                value: self.value * rhs.value,
+            }
+        } else {
+            self
+        }
+    }
+}
+
+impl Div for Money {
+    type Output = Money;
+
+    fn div(self, rhs: Self) -> Self::Output {
+        if self.unit == rhs.unit && rhs.value != 0.0 {
+            Self {
+                unit: self.unit.clone(),
+                value: self.value / rhs.value,
+            } 
+        } else {
+                self
+            
+        }
+    }
+}
+
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -80,5 +165,46 @@ mod test {
 
         assert_eq!(money.unit.as_str(),"AUD");
         assert_eq!(money.value,12.34);
+    }
+
+    #[test]
+    fn test_money_add() {
+        let money1 = Money::from(10);
+        let money2 = Money::from(37);
+
+        let money_sum = money1 + money2;
+
+        assert_eq!(money_sum.value,Money::from(47).value);
+    }
+
+    #[test]
+    fn test_money_sub() {
+        let money1 = Money::from(37);
+        let money2 = Money::from(10);
+
+        let money_sub = money1 - money2;
+
+        assert_eq!(money_sub.value,Money::from(27).value);
+
+    }
+
+    #[test]
+    fn test_money_mul() {
+        let money1 = Money::from(16);
+        let money2 = Money::from(3);
+
+        let money_mul = money1 * money2;
+
+        assert_eq!(money_mul.value,Money::from(48).value);       
+    }
+
+    #[test]
+    fn test_money_div() {
+        let money1 = Money::from(48);
+        let money2 = Money::from(3);
+
+        let money_div = money1 / money2;
+
+        assert_eq!(money_div.value,Money::from(16).value);       
     }
 }
