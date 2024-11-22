@@ -2,6 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 use super::money::Money;
+use std::ops::{Add,Sub,Mul,Div};
 
 /// Default tax rate for Australian market.
 const AUS_TAX_RATE : f32 = 0.10;
@@ -66,6 +67,26 @@ impl Price {
     }
 }
 
+impl Add for Price {
+    type Output = Price;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        // Tax included amount must have the same currency
+        // We could also validate ex tax amount but they are 
+        // set to gether with set_currency() function
+        if self.tax_included_amount.unit == rhs.tax_included_amount.unit {
+            Price {
+                percentage: self.percentage,
+                tax_rate: self.tax_rate,
+                tax_included_amount: self.tax_included_amount + rhs.tax_included_amount,
+                duty_free_amount: self.duty_free_amount + rhs.duty_free_amount,
+            }
+        } else {
+            self   
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -96,5 +117,14 @@ mod test {
         assert_eq!(price.percentage, 30.0);
         assert_eq!(price.tax_rate,10.0);
    
+    }
+
+    #[test]
+    fn test_price_add() {
+        let price1 = Price::new_inc(110.0);
+        let price2 = Price::new_inc(220.0);
+        let price_add = price1 + price2;
+
+        assert_eq!(price_add.duty_free_amount,Money::from(300.0));
     }
 }
