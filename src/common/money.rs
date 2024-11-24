@@ -117,6 +117,26 @@ impl Mul for Money {
     }
 }
 
+impl Mul<f32> for Money {
+    type Output = Money;
+    fn mul(self, rhs: f32) -> Self::Output {
+        Self {
+            unit: self.unit.clone(),
+            value: self.value * rhs,
+        }
+    }
+}
+
+impl Mul<u32> for Money {
+    type Output = Money;
+    fn mul(self, rhs: u32) -> Self::Output {
+        Self {
+            unit: self.unit.clone(),
+            value: self.value * rhs as f32,
+        }
+    }
+}
+
 impl Div for Money {
     type Output = Money;
 
@@ -129,6 +149,36 @@ impl Div for Money {
         } else {
                 self
             
+        }
+    }
+}
+
+impl Div<f32> for Money {
+    type Output = Money;
+
+    fn div(self, rhs: f32) -> Self::Output {
+        if rhs != 0.0 {
+            Self {
+                unit: self.unit.clone(),
+                value: self.value / rhs,
+            } 
+        } else {
+            self
+        }
+    }
+}
+
+impl Div<i32> for Money {
+    type Output = Money;
+
+    fn div(self, rhs: i32) -> Self::Output {
+        if rhs != 0 {
+            Self {
+                unit: self.unit.clone(),
+                value: self.value / rhs as f32,
+            } 
+        } else {
+            self
         }
     }
 }
@@ -199,11 +249,37 @@ mod test {
     }
 
     #[test]
-    fn test_money_div() {
-        let money1 = Money::from(48);
-        let money2 = Money::from(3);
+    fn test_money_mul_f32() {
+        let money1 = Money::from(16);
 
-        let money_div = money1 / money2;
+        let money_mul = money1 * 3.0;
+
+        assert_eq!(money_mul.value,Money::from(48).value);       
+    }
+
+    #[test]
+    fn test_money_mul_i32() {
+        let money1 = Money::from(16);
+
+        let money_mul = money1 * 3;
+
+        assert_eq!(money_mul.value,Money::from(48).value);       
+    }
+
+    #[test]
+    fn test_money_div_f32() {
+        let money1 = Money::from(48);
+        
+        let money_div = money1 / 3.0;
+
+        assert_eq!(money_div.value,Money::from(16).value);       
+    }
+
+    #[test]
+    fn test_money_div_i32() {
+        let money1 = Money::from(48);
+        
+        let money_div = money1 / 3;
 
         assert_eq!(money_div.value,Money::from(16).value);       
     }
