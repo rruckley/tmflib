@@ -2,8 +2,21 @@
 //! 
 //! # Math Functions
 //! This module implements the TMF Money type and provides simple maths functions to make
-//! calculations easier. These maths functions only work if the currenct is the same on both sides of the operator. 
+//! calculations easier. 
+//! # Add / Sub Limitations
+//! These maths functions only work for Add and Substract if the currency is the same on both sides of the operator. 
 //! If there is a difference, the LHS is returned unaltered as these functions cannot fail.
+//! # Mul / Div types
+//! Multiplication and Division has been implemented for both f32 and i32 types. Division by zero is not permitted
+//! and will result in the LHS being returned unaltered.
+//! ```
+//! use tmflib::common::money::Money;
+//! 
+//! let unit = Money::from(10.0);
+//! let qty = 5;
+//! let total = unit * qty;
+//! assert_eq!(total.value,50.0);
+//! ```
 
 use serde::{Deserialize,Serialize};
 use std::ops::{Add,Sub,Mul,Div};
