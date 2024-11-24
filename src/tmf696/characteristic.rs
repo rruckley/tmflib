@@ -17,7 +17,7 @@ pub struct Characteristic {
     #[serde(rename = "@baseType")]
     base_type: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(rename = "@baseType")]
+    #[serde(rename = "@schemaLocation")]
     schema_location: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@type")]
