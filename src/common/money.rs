@@ -20,6 +20,7 @@
 
 use serde::{Deserialize,Serialize};
 use std::ops::{Add,Sub,Mul,Div};
+use rust_decimal::Decimal;
 
 const MONEY_DEFAULT_UNIT : &str = "AUD";
 
@@ -29,7 +30,8 @@ pub struct Money {
    /// ISO4217 currency code
    pub unit : String,
    /// Value
-   pub value : f32, 
+//    pub value : f32,
+   pub value : Decimal,
 }
 
 impl Money {
@@ -72,7 +74,7 @@ impl Money {
 impl From<i32> for Money {
     fn from(value: i32) -> Self {
         Money {
-            value: value as f32,
+            value: value as Decimal,
             unit: MONEY_DEFAULT_UNIT.to_string(),
         }
     }
