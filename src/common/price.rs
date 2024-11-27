@@ -55,7 +55,7 @@ impl Price {
     pub fn set_inc_price(&mut self, inc_price : f32, currency_code : Option<&str>) {
         let inc_dec = Decimal::from_f32(inc_price).unwrap_or_default();
         self.tax_included_amount.value = inc_dec;
-        self.duty_free_amount.value = inc_dec / Decimal::from_f32_retain(1.0 + self.tax_rate).unwrap_or_default();
+        self.duty_free_amount.value = inc_dec / Decimal::from_f32(1.0 + self.tax_rate).unwrap_or_default();
         let currency_code = currency_code.unwrap_or(AUS_CURRENCY);
         let _result = self.set_currency(currency_code);
     }
@@ -64,7 +64,7 @@ impl Price {
     pub fn set_ex_price(&mut self, ex_price : f32, currency_code : Option<&str>) {
         let ex_dec = Decimal::from_f32(ex_price).unwrap_or_default();
         self.duty_free_amount.value = ex_dec;
-        self.tax_included_amount.value = ex_dec * Decimal::from_f32_retain(1.0+self.tax_rate).unwrap_or_default();
+        self.tax_included_amount.value = ex_dec * Decimal::from_f32(1.0+self.tax_rate).unwrap_or_default();
         let currency_code = currency_code.unwrap_or(AUS_CURRENCY);
         let _result = self.set_currency(currency_code);
     }
