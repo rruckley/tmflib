@@ -5,6 +5,7 @@ use serde::{Deserialize,Serialize};
 
 use crate::tmf620::product_offering_price::ProductOfferingPriceRef;
 use crate::common::price::Price;
+use rust_decimal::Decimal;
 
 /// Quote Price Structure
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -38,17 +39,17 @@ impl QuotePrice {
         }    
     }
     /// Return the price inclusive of Tax
-    pub fn inc_tax(&self) -> f32 {
+    pub fn inc_tax(&self) -> Decimal {
         match self.price.as_ref() {
             Some(p) => p.tax_included_amount.value,
-            None => 0.0,
+            None => Decimal::ZERO,
         }
     }
     /// Return the price exclusive of Tax
-    pub fn ex_tax(&self) -> f32 {
+    pub fn ex_tax(&self) -> Decimal {
         match self.price.as_ref() {
             Some(p) => p.duty_free_amount.value,
-            None => 0.0,
+            None => Decimal::ZERO,
         }
     }
 
@@ -69,9 +70,11 @@ impl QuotePrice {
 mod test {
 
     use super::*;
+    use rust_decimal::{prelude::FromPrimitive, Decimal};
+    use rust_decimal_macros::dec;
 
     const QUOTE_PERIOD : &str = "period";
-    const QUOTE_PRICE : f32 = 3600.0;
+    const QUOTE_PRICE : Decimal = dec!(3600);
 
     const QUOTE_PRICE_JSON : &str = "{
         \"name\" : \"QuotePrice\",
@@ -83,33 +86,33 @@ mod test {
         let quote_price = QuotePrice::new("MyQuotePrice");
 
         assert_eq!(quote_price.price.is_none(),true);
-        assert_eq!(quote_price.inc_tax(),0.0);
-        assert_eq!(quote_price.ex_tax(),0.0);
+        assert_eq!(quote_price.inc_tax(),Decimal::ZERO);
+        assert_eq!(quote_price.ex_tax(),Decimal::ZERO);
     }
 
     #[test]
     fn test_quote_price_inc() {
-        let price = Price::new_inc(QUOTE_PRICE);
+        let price = Price::new_inc(3600.0);
         let quote_price = QuotePrice::new("IncPrice")
             .price(price.clone());
         assert_eq!(quote_price.inc_tax(),QUOTE_PRICE);
-        assert_eq!(quote_price.ex_tax(),QUOTE_PRICE/(1.0+price.tax_rate));
+        assert_eq!(quote_price.ex_tax(),QUOTE_PRICE/ Decimal::from_f32(1.0+price.tax_rate).unwrap_or_default());
     }
 
     #[test]
     fn test_quote_price_ex() {
         
-        let price = Price::new_ex(QUOTE_PRICE);
+        let price = Price::new_ex(3600.0);
         let quote_price = QuotePrice::new("IncPrice")
             .price(price.clone());
         assert_eq!(quote_price.ex_tax(),QUOTE_PRICE);
-        assert_eq!(quote_price.inc_tax(),QUOTE_PRICE*(1.0+price.tax_rate));
+        assert_eq!(quote_price.inc_tax(),QUOTE_PRICE*Decimal::from_f32(1.0+price.tax_rate).unwrap_or_default());
     }
 
     #[test]
     fn test_quote_price_period() {
         
-        let price = Price::new_ex(QUOTE_PRICE);
+        let price = Price::new_ex(3600.0);
         let quote_price = QuotePrice::new("IncPrice")
             .price(price.clone())
             .period(QUOTE_PERIOD); 

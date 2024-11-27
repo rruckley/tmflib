@@ -3,6 +3,7 @@
 use serde::{Deserialize, Serialize};
 use super::money::Money;
 use std::ops::{Add,Sub,Mul,Div};
+use rust_decimal::{prelude::FromPrimitive, Decimal};
 
 /// Default tax rate for Australian market.
 const AUS_TAX_RATE : f32 = 0.10;
@@ -52,16 +53,18 @@ impl Price {
 
     /// Set the tax inclusive price
     pub fn set_inc_price(&mut self, inc_price : f32, currency_code : Option<&str>) {
-        self.tax_included_amount.value = inc_price;
-        self.duty_free_amount.value = inc_price / (1.0 + self.tax_rate);
+        let inc_dec = Decimal::from_f32(inc_price).unwrap_or_default();
+        self.tax_included_amount.value = inc_dec;
+        self.duty_free_amount.value = inc_dec / Decimal::from_f32_retain(1.0 + self.tax_rate).unwrap_or_default();
         let currency_code = currency_code.unwrap_or(AUS_CURRENCY);
         let _result = self.set_currency(currency_code);
     }
 
     /// Set the tax exclusive price
     pub fn set_ex_price(&mut self, ex_price : f32, currency_code : Option<&str>) {
-        self.duty_free_amount.value = ex_price;
-        self.tax_included_amount.value = ex_price * (1.0+self.tax_rate);
+        let ex_dec = Decimal::from_f32(ex_price).unwrap_or_default();
+        self.duty_free_amount.value = ex_dec;
+        self.tax_included_amount.value = ex_dec * Decimal::from_f32_retain(1.0+self.tax_rate).unwrap_or_default();
         let currency_code = currency_code.unwrap_or(AUS_CURRENCY);
         let _result = self.set_currency(currency_code);
     }
@@ -196,13 +199,13 @@ mod test {
     #[test]
     fn test_price_inc() {
         let price = Price::new_inc(100.0);
-        assert_eq!(price.duty_free_amount.value,100.0/(1.0+price.tax_rate));
+        assert_eq!(price.duty_free_amount.value,Decimal::from(100)/Decimal::from_f32(1.0+price.tax_rate).unwrap_or_default());
     }
 
     #[test]
     fn test_price_ex() {
         let price = Price::new_ex(100.0);
-        assert_eq!(price.tax_included_amount.value,100.0*(1.0+price.tax_rate));
+        assert_eq!(price.tax_included_amount.value,Decimal::from(100)*Decimal::from_f32(1.0+price.tax_rate).unwrap_or_default());
     }
 
     #[test]
