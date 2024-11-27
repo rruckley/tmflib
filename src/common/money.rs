@@ -10,12 +10,13 @@
 //! Multiplication and Division has been implemented for both f32 and i32 types. Division by zero is not permitted
 //! and will result in the LHS being returned unaltered.
 //! ```
+//! use rust_decimal::Decimal;
 //! use tmflib::common::money::Money;
 //! 
 //! let unit = Money::from(10.0);
 //! let qty = 5;
 //! let total = unit * qty;
-//! assert_eq!(total.value,50.0);
+//! assert_eq!(total.value,Decimal::from(50));
 //! ```
 
 use serde::{Deserialize,Serialize};
@@ -41,10 +42,10 @@ impl Money {
     /// Err is returned instead.
     /// ```
     /// use tmflib::common::money::Money;
+    /// use rust_decimal::Decimal;
     /// 
-    /// let mut money = Money::default();
+    /// let mut money = Money::from(100);
     /// money.currency("AUD");
-    /// money.value = 100.0;
     /// ```
     
     #[cfg(not(target_arch = "wasm32"))]
@@ -179,7 +180,7 @@ impl Div<f32> for Money {
     type Output = Money;
 
     fn div(self, rhs: f32) -> Self::Output {
-        let dec_val = Decimal::from_f32_retain(rhs).unwrap_or_default();
+        let dec_val = Decimal::from_f32(rhs).unwrap_or_default();
         if dec_val != Decimal::ZERO {
             Self {
                 unit: self.unit.clone(),
