@@ -10,16 +10,18 @@
 //! Multiplication and Division has been implemented for both f32 and i32 types. Division by zero is not permitted
 //! and will result in the LHS being returned unaltered.
 //! ```
+//! use rust_decimal::Decimal;
 //! use tmflib::common::money::Money;
 //! 
 //! let unit = Money::from(10.0);
 //! let qty = 5;
 //! let total = unit * qty;
-//! assert_eq!(total.value,50.0);
+//! assert_eq!(total.value,Decimal::from(50));
 //! ```
 
 use serde::{Deserialize,Serialize};
-use std::ops::{Add,Sub,Mul,Div};
+use std::ops::{Add,Sub,Mul,Div,AddAssign};
+use rust_decimal::{prelude::FromPrimitive, Decimal};
 
 const MONEY_DEFAULT_UNIT : &str = "AUD";
 
@@ -29,7 +31,9 @@ pub struct Money {
    /// ISO4217 currency code
    pub unit : String,
    /// Value
-   pub value : f32, 
+//    pub value : f32,
+//    #[serde(with = "rust_decimal::serde::float")]
+   pub value : Decimal,
 }
 
 impl Money {
@@ -38,10 +42,10 @@ impl Money {
     /// Err is returned instead.
     /// ```
     /// use tmflib::common::money::Money;
+    /// use rust_decimal::Decimal;
     /// 
-    /// let mut money = Money::default();
+    /// let mut money = Money::from(100);
     /// money.currency("AUD");
-    /// money.value = 100.0;
     /// ```
     
     #[cfg(not(target_arch = "wasm32"))]
@@ -72,7 +76,7 @@ impl Money {
 impl From<i32> for Money {
     fn from(value: i32) -> Self {
         Money {
-            value: value as f32,
+            value: Decimal::from(value),
             unit: MONEY_DEFAULT_UNIT.to_string(),
         }
     }
@@ -81,7 +85,7 @@ impl From<i32> for Money {
 impl From<f32> for Money {
     fn from(value: f32) -> Self {
         Money {
-            value,
+            value : Decimal::from_f32(value).unwrap_or_default(),
             unit: MONEY_DEFAULT_UNIT.to_string(),
         }
     }
@@ -98,6 +102,12 @@ impl Add for Money {
         } else {
             self
         }
+    }
+}
+
+impl AddAssign for Money {
+    fn add_assign(&mut self, rhs: Self) {
+        self.value += rhs.value;
     }
 }
 
@@ -135,7 +145,7 @@ impl Mul<f32> for Money {
     fn mul(self, rhs: f32) -> Self::Output {
         Self {
             unit: self.unit.clone(),
-            value: self.value * rhs,
+            value: self.value * Decimal::from_f32(rhs).unwrap_or_default(),
         }
     }
 }
@@ -145,7 +155,7 @@ impl Mul<u32> for Money {
     fn mul(self, rhs: u32) -> Self::Output {
         Self {
             unit: self.unit.clone(),
-            value: self.value * rhs as f32,
+            value: self.value * Decimal::from(rhs),
         }
     }
 }
@@ -154,7 +164,7 @@ impl Div for Money {
     type Output = Money;
 
     fn div(self, rhs: Self) -> Self::Output {
-        if self.unit == rhs.unit && rhs.value != 0.0 {
+        if self.unit == rhs.unit && rhs.value != Decimal::ZERO {
             Self {
                 unit: self.unit.clone(),
                 value: self.value / rhs.value,
@@ -170,10 +180,11 @@ impl Div<f32> for Money {
     type Output = Money;
 
     fn div(self, rhs: f32) -> Self::Output {
-        if rhs != 0.0 {
+        let dec_val = Decimal::from_f32(rhs).unwrap_or_default();
+        if dec_val != Decimal::ZERO {
             Self {
                 unit: self.unit.clone(),
-                value: self.value / rhs,
+                value: self.value / dec_val,
             } 
         } else {
             self
@@ -185,10 +196,11 @@ impl Div<i32> for Money {
     type Output = Money;
 
     fn div(self, rhs: i32) -> Self::Output {
-        if rhs != 0 {
+        let dec_val = Decimal::from(rhs);
+        if dec_val != Decimal::ZERO {
             Self {
                 unit: self.unit.clone(),
-                value: self.value / rhs as f32,
+                value: self.value / dec_val,
             } 
         } else {
             self
@@ -199,6 +211,8 @@ impl Div<i32> for Money {
 
 #[cfg(test)]
 mod test {
+    use rust_decimal::prelude::FromPrimitive;
+
     use super::*;
 
     const MONEY_JSON : &str = "{
@@ -227,7 +241,7 @@ mod test {
             .expect("MONEY_JSON");
 
         assert_eq!(money.unit.as_str(),"AUD");
-        assert_eq!(money.value,12.34);
+        assert_eq!(money.value,Decimal::from_f32(12.34).unwrap_or_default());
     }
 
     #[test]

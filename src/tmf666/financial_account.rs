@@ -74,23 +74,19 @@ impl FinancialAccount {
     pub fn get_balance(&self) -> AccountBalance {
         let total = match self.account_balance.as_ref() {
             Some(v) => {
-                let mut out = 0.0;
+                let mut out = Money::from(0.0);
                 v.iter().for_each(|ab| {
                     out += match ab.amount.as_ref() {
-                        Some(m) => m.value,
-                        None => 0.0,
+                        Some(m) => m.clone(),
+                        None => Money::default(),
                     }
                 });
                 out
             },
-            None => 0.0,
-        };
-        let money = Money {
-            value : total,
-            unit : String::from("unknown"),
+            None => Money::from(0.0),
         };
         AccountBalance {
-            amount : Some(money),
+            amount : Some(total),
             balance_type: String::from("total"),
             valid_for: None,
         }
