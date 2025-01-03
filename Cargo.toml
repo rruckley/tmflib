@@ -207,16 +207,16 @@ TMFC062 = ["common"]
 default = ["all","build-V4"]
 
 [dependencies]
-chrono = "0.4.38"
+chrono = "0.4.39"
 rust_iso4217 = "0.1.1"
-serde = { version = "1.0.215", features = ["derive"]}
-serde_json = "1.0.133"
+serde = { version = "1.0.217", features = ["derive"]}
+serde_json = "1.0.134"
 sha256 = { version = "1.5", default-features = false }
 uuid = { version = "1.11.0", features = ["v4"]}
 tmflib-derive = { version = "0.1.28" }
 # tmflib-derive = { path = "tmflib-derive"}
 hex = "0.4.3"
-base32 = "0.5.0"
+base32 = "0.5.1"
 openapiv3 = "2.0.0"
 rust_decimal = "1.36.0"
 rust_decimal_macros = "1.36.0"

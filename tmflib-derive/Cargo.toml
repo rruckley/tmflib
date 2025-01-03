@@ -11,6 +11,6 @@ repository = "https://github.com/rruckley/tmflib"
 proc-macro = true
 
 [dependencies]
-proc-macro2 = "1.0.86"
-quote = "1.0.37"
-syn = "2.0.79"
+proc-macro2 = "1.0.92"
+quote = "1.0.38"
+syn = "2.0.94"
