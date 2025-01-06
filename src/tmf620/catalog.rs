@@ -320,5 +320,30 @@ mod tests {
         println!("{:?}",catalogeventtype);
     }
 
+    #[test]
+    fn test_catalog_getpartybyrole() {
+        let mut cat = Catalog::new(CAT_NAME);
+
+        let org = Organization::new("An Organisation");
+
+        cat.add_party(RelatedParty::from(&org));
+
+        let party = cat.get_by_role(Organization::get_class());
+
+        assert_eq!(party.is_some(),true);
+
+        let party_vec = party.unwrap();
+
+        assert_eq!(party_vec.len(),1);
+
+        let party_vec_first = party_vec.first();
+
+        assert_eq!(party_vec_first.is_some(),true);
+
+        let related_party = party_vec_first.unwrap();
+
+        assert_eq!(related_party.name,Some("An Organisation".to_string()));
+    }
+
 
 }
