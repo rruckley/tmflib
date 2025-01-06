@@ -331,6 +331,8 @@ pub trait HasRelatedParty : HasId {
     fn add_party(&mut self, party : RelatedParty);
     /// Remote a party
     fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String>;
+    /// Get a list of RelatedParty entries by role
+    fn get_by_role(&self, role : String) -> Option<Vec<&RelatedParty>>;
 }
 
 /// Trait for generating an event

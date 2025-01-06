@@ -261,6 +261,18 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
             fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String> {
                 Ok(self.related_party.as_mut().unwrap().remove(idx))  
             }
+            fn get_by_role(&self, role : String) -> Option<Vec<&RelatedParty>> {
+                match &self.related_party {
+                    Some(rp) => {
+                        let out = rp.iter()
+                            .filter(|p| p.role.is_some())
+                            .filter(|p| p.role.clone().unwrap() == role)
+                            .collect();
+                        Some(out)
+                    },
+                    None => None,
+                }    
+            }
         }
     };
     out.into()

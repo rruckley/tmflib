@@ -71,6 +71,39 @@ pub struct Catalog {
     r#type : Option<String>,
 }
 
+// impl HasRelatedParty for Catalog {
+//     fn add_party(&mut self, party : RelatedParty) {
+//         match self.related_party.as_mut() {
+//             Some(v) => v.push(party),
+//             None => self.related_party = Some(vec![party]),
+//         }    
+//     }
+//     fn get_by_role(&self, role : String) -> Option<Vec<&RelatedParty>> {
+//         match &self.related_party {
+//             Some(rp) => {
+//                 let out = rp.iter()
+//                     .filter(|p| p.role.is_some())
+//                     .filter(|p| p.role.clone().unwrap() == role)
+//                     .collect();
+//                 Some(out)
+//             },
+//             None => None,
+//         }    
+//     }
+//     fn get_party(&self, idx : usize ) -> Option<&RelatedParty> {
+//         match self.related_party.as_ref() {
+//             Some(rp) => {
+//                 // Simple return results of get()
+//                 rp.get(idx)
+//             },
+//             None => None,
+//         }    
+//     }
+//     fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String> {
+//         Ok(self.related_party.as_mut().unwrap().remove(idx))    
+//     }
+// }
+
 impl Catalog {
     /// Create a new instance of catalog struct
     pub fn new(name : impl Into<String>) -> Catalog {
@@ -285,6 +318,31 @@ mod tests {
         let catalogeventtype = CatalogEventType::CatalogDeleteEvent;
 
         println!("{:?}",catalogeventtype);
+    }
+
+    #[test]
+    fn test_catalog_getpartybyrole() {
+        let mut cat = Catalog::new(CAT_NAME);
+
+        let org = Organization::new("An Organisation");
+
+        cat.add_party(RelatedParty::from(&org));
+
+        let party = cat.get_by_role(Organization::get_class());
+
+        assert_eq!(party.is_some(),true);
+
+        let party_vec = party.unwrap();
+
+        assert_eq!(party_vec.len(),1);
+
+        let party_vec_first = party_vec.first();
+
+        assert_eq!(party_vec_first.is_some(),true);
+
+        let related_party = party_vec_first.unwrap();
+
+        assert_eq!(related_party.name,Some("An Organisation".to_string()));
     }
 
 
