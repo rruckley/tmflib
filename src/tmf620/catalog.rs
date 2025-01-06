@@ -29,7 +29,7 @@ const CLASS_PATH: &str = "catalog";
 const CAT_VERS: &str = "1.0";
 
 /// Catalogue
-#[derive(Clone, Default, Debug, Deserialize,HasLastUpdate, HasId, HasName, HasValidity, HasRelatedParty, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize,HasLastUpdate, HasId, HasName, HasValidity, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Catalog {
     /// Non-optional fields
@@ -69,6 +69,39 @@ pub struct Catalog {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@type")]
     r#type : Option<String>,
+}
+
+impl HasRelatedParty for Catalog {
+    fn add_party(&mut self, party : RelatedParty) {
+        match self.related_party.as_mut() {
+            Some(v) => v.push(party),
+            None => self.related_party = Some(vec![party]),
+        }    
+    }
+    fn get_by_role(&self, role : String) -> Option<Vec<&RelatedParty>> {
+        match &self.related_party {
+            Some(rp) => {
+                let out = rp.iter()
+                    .filter(|p| p.role.is_some())
+                    .filter(|p| p.role.clone().unwrap() == role)
+                    .collect();
+                Some(out)
+            },
+            None => None,
+        }    
+    }
+    fn get_party(&self, idx : usize ) -> Option<&RelatedParty> {
+        match self.related_party.as_ref() {
+            Some(rp) => {
+                // Simple return results of get()
+                rp.get(idx)
+            },
+            None => None,
+        }    
+    }
+    fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String> {
+        Ok(self.related_party.as_mut().unwrap().remove(idx))    
+    }
 }
 
 impl Catalog {
