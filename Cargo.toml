@@ -1,3 +1,6 @@
+[workspace]
+allow_dirty = true
+
 [package]
 name = "tmflib"
 version = "0.1.24"
@@ -6,6 +9,7 @@ authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Interface library for processing TMF payloads"
 repository = "https://github.com/rruckley/tmflib"
 license = "Apache-2.0"
+allow_dirty = true
 
 [features]
 tmf620 = ["tmf633","tmf634","tmf651"]
@@ -216,7 +220,7 @@ uuid = { version = "1.11.0", features = ["v4"]}
 tmflib-derive = { version = "0.1.29" }
 # tmflib-derive = { path = "tmflib-derive"}
 hex = "0.4.3"
-base32 = "0.5.0"
+base32 = "0.5.1"
 openapiv3 = "2.0.0"
 rust_decimal = "1.36.0"
 rust_decimal_macros = "1.36.0"
