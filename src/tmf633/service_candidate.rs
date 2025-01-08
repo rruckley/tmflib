@@ -21,9 +21,10 @@ pub struct ServiceCandidate {
 impl ServiceCandidate {
     /// Create new instance of Service Candidate
     pub fn new(name : impl Into<String>) -> ServiceCandidate {
-        let mut sc = ServiceCandidate::create_with_time();
-        sc.name = Some(name.into());
-        sc
+        ServiceCandidate {
+            name: Some(name.into()),
+            ..ServiceCandidate::create_with_time()
+        }
     }
 }
 
