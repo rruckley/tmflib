@@ -68,7 +68,7 @@ impl ServiceCatalog {
     pub fn category(mut self, category : ServiceCategoryRef) -> ServiceCatalog {
         vec_insert(&mut self.category, category);   
         self 
-    }    
+    }
 }
 
 #[cfg(test)]
