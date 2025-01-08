@@ -10,6 +10,8 @@ use super::MOD_PATH;
 use crate::LIB_PATH;
 
 const CLASS_PATH : &str = "serviceSpecification";
+const SPEC_NEW_VERSION : &str = "1.0";
+const SPEC_NEW_STATUS : &str = "new";
 
 use super::characteristic_specification::CharacteristicSpecification;
 
@@ -54,12 +56,18 @@ pub struct ServiceSpecification {
 impl ServiceSpecification {
     /// Create a new specification
     pub fn new(name : impl Into<String>) -> ServiceSpecification {
-        let mut ss = ServiceSpecification::create_with_time();
-        ss.name = Some(name.into());
-        ss.spec_characteristics = Some(vec![]);
-        ss.is_bundle = Some(false);
-        ss.lifecycle_status = Some("New".to_string());
-        ss
+        // let mut ss = ServiceSpecification::create_with_time();
+        // ss.name = Some(name.into());
+        // ss.spec_characteristics = Some(vec![]);
+        // ss.is_bundle = Some(false);
+        // ss.lifecycle_status = Some("New".to_string());
+        // ss
+        ServiceSpecification {
+            name : Some(name.into()),
+            lifecycle_status : Some(SPEC_NEW_STATUS.into()),
+            version : Some(SPEC_NEW_VERSION.into()),
+            ..ServiceSpecification::create_with_time()
+        }
     }
 
     /// Add a characteristic to this service specification
@@ -103,10 +111,10 @@ mod test {
         let spec = ServiceSpecification::new(SPEC_NAME);
 
         assert_eq!(spec.get_name().as_str(),SPEC_NAME);
-        assert_eq!(spec.is_bundle.is_some(),true);
-        assert_eq!(spec.is_bundle.unwrap(),false);
+        // assert_eq!(spec.is_bundle.is_some(),true);
+        // assert_eq!(spec.is_bundle.unwrap(),false);
         assert_eq!(spec.lifecycle_status.is_some(),true);
-        assert_eq!(spec.lifecycle_status.unwrap().as_str(),"New");
+        assert_eq!(spec.lifecycle_status.unwrap().as_str(),SPEC_NEW_STATUS);
     }
 
     #[test]
@@ -118,6 +126,6 @@ mod test {
         assert_eq!(spec.get_name(),spec_ref.name);
         assert_eq!(spec.get_id(),spec_ref.id);
         assert_eq!(spec.get_href(),spec_ref.href);
-        assert_eq!(spec_ref.version.is_none(),true);
+        assert_eq!(spec_ref.version.is_none(),false);
     }
 }
