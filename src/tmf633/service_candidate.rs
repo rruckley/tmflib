@@ -70,7 +70,10 @@ mod test {
     const CANDIDATE_NAME : &str = "CandidateName";
     #[test]
     fn test_servicecandidate_new() {
-        let candidate = ServiceCandidate::new(CANDIDATE_NAME);
+        // Since new() requires a specification, using deafult then setting name via set_name()
+        let mut candidate = ServiceCandidate::default();
+        candidate.generate_id();
+        candidate.set_name(CANDIDATE_NAME);
 
         assert_eq!(candidate.get_name().as_str(),CANDIDATE_NAME);
         assert_eq!(candidate.id.is_some(),true);
@@ -79,7 +82,10 @@ mod test {
 
     #[test]
     fn test_servicecandidate_from_string() {
-        let candidate = ServiceCandidate::from(CANDIDATE_NAME.to_string());  
+        // Since new() requires a specification, using deafult then setting name via set_name()
+        let mut candidate = ServiceCandidate::default();
+        candidate.generate_id();
+        candidate.set_name(CANDIDATE_NAME); 
 
         assert_eq!(candidate.get_name().as_str(),CANDIDATE_NAME);
         assert_eq!(candidate.id.is_some(),true);
@@ -88,7 +94,10 @@ mod test {
 
     #[test]
     fn test_candidateref_from_candidate() {
-        let candidate = ServiceCandidate::from(CANDIDATE_NAME.to_string()); 
+        // Since new() requires a specification, using deafult then setting name via set_name()
+        let mut candidate = ServiceCandidate::default();
+        candidate.generate_id();
+        candidate.set_name(CANDIDATE_NAME);
 
         let candidate_ref = ServiceCandidateRef::from(candidate.clone());
 
