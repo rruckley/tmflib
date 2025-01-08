@@ -18,6 +18,8 @@ use tmflib_derive::{HasId, HasLastUpdate, HasDescription, HasName, HasValidity};
 
 use super::{service_candidate::ServiceCandidate, MOD_PATH};
 const CLASS_PATH : &str = "serviceCategory";
+const CAT_STATUS_NEW : &str = "new";
+const CAT_VERS_NEW : &str = "1.0";
 
 /// Service Category Reference
 /// # Description
@@ -91,6 +93,8 @@ impl ServiceCategory {
     pub fn new(name : impl Into<String>) -> ServiceCategory {
         ServiceCategory {
             name: Some(name.into()),
+            lifecycle_status: Some(CAT_STATUS_NEW.into()),
+            version : Some(CAT_VERS_NEW.into()),
             ..ServiceCategory::create_with_time()
         }
     }
