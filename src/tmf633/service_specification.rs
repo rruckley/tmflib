@@ -9,7 +9,7 @@ use tmflib_derive::{HasId,HasName,HasLastUpdate,HasDescription};
 use super::MOD_PATH;
 use crate::LIB_PATH;
 
-const CLASS_PATH : &str = "service";
+const CLASS_PATH : &str = "serviceSpecification";
 
 use super::characteristic_specification::CharacteristicSpecification;
 
