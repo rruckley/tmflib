@@ -13,10 +13,11 @@ use crate::{
     TimePeriod,
     LIB_PATH,
     Uri,
+    vec_insert,
 };
 use tmflib_derive::{HasId, HasLastUpdate, HasDescription, HasName, HasValidity};
 
-use super::{service_candidate::ServiceCandidate, MOD_PATH};
+use super::{service_candidate::{ServiceCandidate, ServiceCandidateRef}, MOD_PATH};
 const CLASS_PATH : &str = "serviceCategory";
 const CAT_STATUS_NEW : &str = "new";
 const CAT_VERS_NEW : &str = "1.0";
@@ -85,7 +86,7 @@ pub struct ServiceCategory {
     #[serde(skip_serializing_if = "Option::is_none")]
     category : Option<Vec<ServiceCategoryRef>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    service_candidate: Option<Vec<ServiceCandidate>>,
+    service_candidate: Option<Vec<ServiceCandidateRef>>,
 }
 
 impl ServiceCategory {
@@ -98,6 +99,18 @@ impl ServiceCategory {
             ..ServiceCategory::create_with_time()
         }
     }
+
+    /// Add a child category to this category
+    pub fn child_category(mut self, category: ServiceCategoryRef) -> ServiceCategory {
+        vec_insert(&mut self.category, category);
+        self
+    }
+
+    /// Add a ServiceCandidate to this category
+    pub fn candidate(mut self, candidate: ServiceCandidateRef) -> ServiceCategory {
+        vec_insert(&mut self.service_candidate,candidate);
+        self
+    }
 }
 
 #[cfg(test)]
@@ -106,6 +119,8 @@ mod test {
     use super::*;
 
     const CAT_NAME : &str = "CAT_NAME";
+    const CHILD_CAT : &str = "CHILD_CAT";
+    const CANDIDATE_NAME : &str = "CANDIDATE_NAME";
 
     #[test]
     fn test_servicecategory_create() {
@@ -122,5 +137,33 @@ mod test {
 
         // name in ref should match input name of cat
         assert_eq!(CAT_NAME.to_string(),cat_ref.name);
+    }
+
+    #[test]
+    fn test_category_addchild() {
+        let child_cat = ServiceCategory::new(CHILD_CAT);
+        let parent_cat = ServiceCategory::new(CAT_NAME)
+            .child_category(ServiceCategoryRef::from(child_cat));
+
+        // Vec should have been created
+        assert_eq!(parent_cat.category.is_some(),true);
+        // Vec should only have a single entry
+        assert_eq!(parent_cat.category.unwrap().len(),1);
+    }
+
+    #[test]
+    fn test_category_addcandidate() {
+        let mut candidate = ServiceCandidate::default();
+        // Need to generate an id here eles the conversion to Ref will panic
+        candidate.generate_id();
+        candidate.set_name(CANDIDATE_NAME);
+
+        let category = ServiceCategory::new(CAT_NAME)
+            .candidate(ServiceCandidateRef::from(candidate));
+
+        // Vec should have been created
+        assert_eq!(category.service_candidate.is_some(),true);
+        // Vec should only have a single entry
+        assert_eq!(category.service_candidate.unwrap().len(),1);
     }
 }
