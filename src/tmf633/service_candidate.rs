@@ -3,34 +3,45 @@
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 
-use crate::{HasId,HasLastUpdate, HasName, LIB_PATH};
+use crate::{HasId, HasLastUpdate, HasName, TimeStamp, LIB_PATH, Uri, TimePeriod,vec_insert};
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
-use super::MOD_PATH;
+use super::{service_specification::ServiceSpecificationRef, MOD_PATH,service_category::ServiceCategoryRef};
 const CLASS_PATH : &str = "serviceCandidate";
+const CANDIDATE_NEW_VERS : &str = "1.0";
+const CANDIDATE_NEW_STATUS : &str = "new";
 
 /// Service Candidate 
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasLastUpdate, HasName, Serialize)]
 pub struct ServiceCandidate {
     id: Option<String>,
-    href: Option<String>,
+    href: Option<Uri>,
     name: Option<String>,
-    last_update: Option<String>,
+    last_update: Option<TimeStamp>,
+    lifecycle_status: Option<String>,
+    valid_for: Option<TimePeriod>,
+    version: Option<String>,
+    // References
+    service_specification: ServiceSpecificationRef,
+    category : Option<Vec<ServiceCategoryRef>>,
 }
 
 impl ServiceCandidate {
     /// Create new instance of Service Candidate
-    pub fn new(name : impl Into<String>) -> ServiceCandidate {
+    pub fn new(name : impl Into<String>, specification_ref : ServiceSpecificationRef) -> ServiceCandidate {
         ServiceCandidate {
             name: Some(name.into()),
+            lifecycle_status: Some(CANDIDATE_NEW_STATUS.into()),
+            version: Some(CANDIDATE_NEW_VERS.into()),
+            service_specification : specification_ref,
             ..ServiceCandidate::create_with_time()
         }
     }
-}
 
-impl From<String> for ServiceCandidate {
-    fn from(value: String) -> Self {
-        ServiceCandidate::new(value)
+    /// Add a category to this Service Candidate by passing in a Category reference
+    pub fn category(mut self, category : ServiceCategoryRef) -> ServiceCandidate {
+        vec_insert(&mut self.category, category);   
+        self 
     }
 }
 
