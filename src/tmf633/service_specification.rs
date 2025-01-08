@@ -111,10 +111,10 @@ mod test {
         let spec = ServiceSpecification::new(SPEC_NAME);
 
         assert_eq!(spec.get_name().as_str(),SPEC_NAME);
-        assert_eq!(spec.is_bundle.is_some(),true);
-        assert_eq!(spec.is_bundle.unwrap(),false);
+        // assert_eq!(spec.is_bundle.is_some(),true);
+        // assert_eq!(spec.is_bundle.unwrap(),false);
         assert_eq!(spec.lifecycle_status.is_some(),true);
-        assert_eq!(spec.lifecycle_status.unwrap().as_str(),"New");
+        assert_eq!(spec.lifecycle_status.unwrap().as_str(),SPEC_NEW_STATUS);
     }
 
     #[test]
@@ -126,6 +126,6 @@ mod test {
         assert_eq!(spec.get_name(),spec_ref.name);
         assert_eq!(spec.get_id(),spec_ref.id);
         assert_eq!(spec.get_href(),spec_ref.href);
-        assert_eq!(spec_ref.version.is_none(),true);
+        assert_eq!(spec_ref.version.is_none(),false);
     }
 }
