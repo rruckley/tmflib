@@ -13,6 +13,7 @@ fn main() {
     customer.set_id("1");
     customer.generate_code(None);
     customer.generate_href();
+    customer.set_market_segment("Health Industry");
     dbg!(&customer);
 
     customer.upgrade_to_code(None);

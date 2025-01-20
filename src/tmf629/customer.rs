@@ -30,6 +30,7 @@ const CLASS_PATH : &str = "customer";
 const CUST_ID_SIZE : usize = 5;
 /// Default customer status
 pub const CUST_STATUS : &str = "New";
+const CUST_SEGMENT_CHAR : &str = "marketSegment";
 
 /// Customer object
 #[derive(Clone, Default, Debug, Deserialize, HasId, HasName, HasValidity, Serialize)]
@@ -173,6 +174,18 @@ impl Customer {
         self.name = Some(name.clone());
     }
 
+    /// Set the market segment
+    pub fn set_market_segment(&mut self, segment : impl Into<String>) -> Option<String> {
+        let segment_char = Characteristic::new(CUST_SEGMENT_CHAR, segment);
+        let old = self.replace_characteristic(segment_char);
+        old.map(|c| c.value)
+    }
+
+    /// Get the market segment
+    pub fn get_market_segment(&self) -> Option<String> {
+        self.get_characteristic(CUST_SEGMENT_CHAR).map(|c| c.value)    
+    }
+
     /// Upgrade the customer to a cryptographic code to replace a sequential Id.
     /// Will return the newly generated cryptographic code.
     /// Takes the following steps:
@@ -280,6 +293,7 @@ mod test {
     const CUSTOMER : &str = "ACustomer";
     const CUSTOMER_BAD : &str = " ACustomer ";
     const CUSTOMER_UID : u16 = 174;
+    const CUSTOMER_SEGMENT : &str = "MarketSegment";
 
     #[test]
     fn test_customer_new_name() {
@@ -401,6 +415,19 @@ mod test {
         assert_eq!(code,char.unwrap().value);
         // Simlarly, the id should match the code
         assert_eq!(code,customer.get_id());
+    }
+
+    #[test]
+    fn test_customer_marketsegment() {
+        let mut customer = Customer::default();
+        let old_segment = customer.set_market_segment(CUSTOMER_SEGMENT.to_string());
+
+        assert_eq!(old_segment.is_none(),true);
+
+        let segment = customer.get_market_segment();
+
+        assert_eq!(segment.is_some(),true);
+        assert_eq!(segment.unwrap(),CUSTOMER_SEGMENT);
     }
 }
 
