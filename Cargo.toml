@@ -13,6 +13,7 @@ allow_dirty = true
 
 [features]
 tmf620 = ["tmf633","tmf634","tmf651"]
+tmf621 = []
 tmf622 = ["tmf641"]
 tmf629 = []
 tmf632 = []
@@ -49,6 +50,7 @@ tmf760 = []
 # Build all V4 APIs
 all = [
     "tmf620",
+    "tmf621",
     "tmf622",
     "tmf629",
     "tmf632",
