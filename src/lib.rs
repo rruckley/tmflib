@@ -370,6 +370,8 @@ pub trait HasDescription {
 pub mod common;
 #[cfg(feature = "tmf620")]
 pub mod tmf620;
+#[cfg(feature = "tmf621")]
+pub mod tmf621;
 #[cfg(feature = "tmf622")]
 pub mod tmf622;
 #[cfg(feature = "tmf629")]

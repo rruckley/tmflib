@@ -36,11 +36,19 @@ pub mod product_specification;
 
 /// Channel Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct ChannelRef {}
+pub struct ChannelRef {
+    href: String,
+    id: String,
+    name: String,
+}
 
 /// Market Segment Refefence
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct MarketSegmentRef {}
+pub struct MarketSegmentRef {
+    id : String,
+    name : String,
+    href: String,
+}
 
 /// Place Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -55,6 +63,11 @@ mod test {
     use super::*;
 
     const EMPTY_JSON: &str = "{}";
+    const REF_JSON : &str = "{
+    \"id\" : \"id123\",
+    \"href\" : \"href123\",
+    \"name\" : \"namew123\"
+    }";
 
     #[test]
     fn test_channelref_deserialise() {
@@ -94,12 +107,12 @@ mod test {
 
     #[test]
     fn test_channelref_deserialize() {
-        let _channelref : ChannelRef = serde_json::from_str(EMPTY_JSON).expect("Could not parse Empty JSON");
+        let _channelref : ChannelRef = serde_json::from_str(REF_JSON).expect("Could not parse Empty JSON");
     }
 
     #[test]
     fn test_marketsegmentref_deserialize() {
-        let _marketsegmentref : MarketSegmentRef  = serde_json::from_str(EMPTY_JSON).expect("Could not parse Emoty JSON");
+        let _marketsegmentref : MarketSegmentRef  = serde_json::from_str(REF_JSON).expect("Could not parse Emoty JSON");
     }
 
     #[test]

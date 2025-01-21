@@ -17,7 +17,7 @@ use crate::{
 };
 use tmflib_derive::{HasId, HasLastUpdate, HasDescription, HasName, HasValidity};
 
-use super::{service_candidate::{ServiceCandidate, ServiceCandidateRef}, MOD_PATH};
+use super::{service_candidate::ServiceCandidateRef, MOD_PATH};
 const CLASS_PATH : &str = "serviceCategory";
 const CAT_STATUS_NEW : &str = "new";
 const CAT_VERS_NEW : &str = "1.0";
@@ -117,6 +117,7 @@ impl ServiceCategory {
 mod test {
 
     use super::*;
+    use crate::tmf633::service_candidate::ServiceCandidate;
 
     const CAT_NAME : &str = "CAT_NAME";
     const CHILD_CAT : &str = "CHILD_CAT";

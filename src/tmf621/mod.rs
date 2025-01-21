@@ -12,15 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF622 Product Order Management
+//! TMF621 Trouble Ticket Management Schema
 
-const MOD_PATH: &str = "productOrderingManagement/v4";
+#[cfg(feature = "build-V4")]
+const MOD_PATH: &str = "troubleTicket/v4";
+#[cfg(feature = "build-V5")]
+const MOD_PATH: &str = "troubleTicket/v5";
 
-#[cfg(all(feature = "tmf622", feature = "build-V4"))]
-pub mod product_order_v4;
-#[cfg(all(feature = "tmf622", feature = "build-V5"))]
-pub mod product_order_v5;
-
-pub mod product_order_item;
-#[cfg(all(feature = "tmf622", feature = "build-V5"))]
-pub mod milestone;
+pub mod trouble_ticket;
