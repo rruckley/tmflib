@@ -36,11 +36,19 @@ pub mod product_specification;
 
 /// Channel Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct ChannelRef {}
+pub struct ChannelRef {
+    href: String,
+    id: String,
+    name: String,
+}
 
 /// Market Segment Refefence
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct MarketSegmentRef {}
+pub struct MarketSegmentRef {
+    id : String,
+    name : String,
+    href: String,
+}
 
 /// Place Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
