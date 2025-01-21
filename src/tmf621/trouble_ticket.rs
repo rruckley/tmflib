@@ -98,3 +98,35 @@ impl From<TroubleTicket> for TroubleTicketRelationship {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::{TroubleTicket, TroubleTicketRelationship};
+    use crate::{
+        HasId,
+        HasName
+    };
+
+    const TICKET_NAME:&str = "TroubleTicket";
+    const TICKET_REL: &str = "TroubleTicketRelationshipType";
+
+    #[test]
+    fn test_troubleticket_new() {
+        let ticket = TroubleTicket::new(TICKET_NAME);
+
+        assert_eq!(ticket.name.is_some(),true);
+        assert_eq!(ticket.get_name(),TICKET_NAME.to_string());
+    }
+
+    #[test]
+    fn test_troubleticketrelationship_from() {
+        let ticket = TroubleTicket::new(TICKET_NAME);
+
+        let relationship = TroubleTicketRelationship::from(ticket.clone())
+            .relationship(TICKET_REL);
+
+        assert_eq!(ticket.get_id(),relationship.id);
+        assert_eq!(ticket.get_name(),relationship.name);
+        assert_eq!(relationship.relationship_type,TICKET_REL.to_string());
+    }
+}
