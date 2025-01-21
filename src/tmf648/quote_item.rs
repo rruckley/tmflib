@@ -61,7 +61,7 @@ pub struct ProductRefOrValue {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_customer_visible : Option<bool>,
     /// Product Name
-    pub name : String,
+    pub name : Option<String>,
     /// Product serial number (if known)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_serial_number : Option<String>,
@@ -84,7 +84,7 @@ impl From<ProductOffering> for ProductRefOrValue {
         ProductRefOrValue {
             id : value.id.clone(),
             href: value.href.clone(),
-            name : value.get_name(),
+            name : Some(value.get_name()),
             description: value.description.clone(),
             product_specification: value.product_specification.clone(),
             is_bundle: value.is_bundle.clone(),
