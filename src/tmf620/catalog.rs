@@ -4,6 +4,7 @@
 use crate::{
     HasId, 
     HasName,
+    HasDescription,
     HasLastUpdate, 
     HasValidity,
     HasRelatedParty, 
@@ -16,7 +17,14 @@ use crate::{
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
 use crate::common::event::{Event,EventPayload};
-use tmflib_derive::{HasLastUpdate,HasId,HasName,HasValidity,HasRelatedParty};
+use tmflib_derive::{
+    HasLastUpdate,
+    HasId,
+    HasName,
+    HasDescription,
+    HasValidity,
+    HasRelatedParty
+};
 
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
@@ -29,7 +37,7 @@ const CLASS_PATH: &str = "catalog";
 const CAT_VERS: &str = "1.0";
 
 /// Catalogue
-#[derive(Clone, Default, Debug, Deserialize,HasLastUpdate, HasId, HasName, HasValidity, HasRelatedParty, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize,HasLastUpdate, HasId, HasName, HasDescription, HasValidity, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Catalog {
     /// Non-optional fields
@@ -194,6 +202,7 @@ pub struct CatalogBatchEvent {}
 mod tests {
 
     const CAT_NAME : &str = "A Catalog";
+    const CAT_DESC : &str = "A Description";
 
     use crate::common::event::EventPayload;
     use crate::common::related_party::RelatedParty;
@@ -202,7 +211,7 @@ mod tests {
 
     use super::{Catalog, CatalogEvent, CatalogEventType};
     use crate::tmf620::category::{Category, CategoryRef};
-    use crate::{HasId,HasName, HasValidity,HasRelatedParty,TimePeriod};
+    use crate::{HasDescription, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod};
 
     const CAT_JSON : &str = "{
         \"name\" : \"CatalogueName\",
@@ -343,6 +352,15 @@ mod tests {
         let related_party = party_vec_first.unwrap();
 
         assert_eq!(related_party.name,Some("An Organisation".to_string()));
+    }
+
+    #[test]
+    fn test_catalog_description() {
+        let cat = Catalog::new(CAT_NAME)
+            .description(CAT_DESC);
+
+        assert_eq!(cat.description.is_some(),true);
+        assert_eq!(cat.get_description(),CAT_DESC.to_string());    
     }
 
 

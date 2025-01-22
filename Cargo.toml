@@ -3,7 +3,7 @@ allow_dirty = true
 
 [package]
 name = "tmflib"
-version = "0.1.25"
+version = "0.1.26"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Interface library for processing TMF payloads"
@@ -216,10 +216,10 @@ default = ["all","build-V4"]
 chrono = "0.4.39"
 rust_iso4217 = "0.1.1"
 serde = { version = "1.0.217", features = ["derive"]}
-serde_json = "1.0.135"
+serde_json = "1.0.137"
 sha256 = { version = "1.5", default-features = false }
-uuid = { version = "1.11.0", features = ["v4"]}
-tmflib-derive = { version = "0.1.29" }
+uuid = { version = "1.12.1", features = ["v4"]}
+tmflib-derive = { version = "0.1.30" }
 # tmflib-derive = { path = "tmflib-derive"}
 hex = "0.4.3"
 base32 = "0.5.1"
