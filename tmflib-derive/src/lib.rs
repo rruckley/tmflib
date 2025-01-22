@@ -212,13 +212,22 @@ pub fn hasnote_derive(input: TokenStream) -> TokenStream {
     let out = quote! {
         impl HasNote for #name {
             fn add_note(&mut self, note : Note) {
-                self.note.as_mut().unwrap().push(note);    
+                match self.note.as_mut() {
+                    Some(v) => v.push(note),
+                    None => self.note = Some(vec![note]),
+                }  
             }
             fn get_note(&self, idx : usize) -> Option<&Note> {
-                self.note.as_ref().unwrap().get(idx)
+                match self.note.as_ref() {
+                    Some(n) => n.get(idx),
+                    None => None,
+                }
             }
             fn remove_note(&mut self, idx: usize) -> Result<Note,String> {
-                Ok(self.note.as_mut().unwrap().remove(idx))  
+                match self.note.as_mut() {
+                    Some(n) => Ok(n.remove(idx)),
+                    None => Err(String::from("No notes present")),
+                }  
             }
         }
     };
