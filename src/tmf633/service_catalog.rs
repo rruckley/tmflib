@@ -20,7 +20,7 @@ use super::service_category::ServiceCategoryRef;
 use tmflib_derive::{HasId, HasLastUpdate, HasDescription, HasName, HasValidity};
 
 use super::MOD_PATH;
-const CLASS_PATH : &str = "serviceCategory";
+const CLASS_PATH : &str = "serviceCatalog";
 const CAT_STATUS_NEW : &str = "new";
 const CAT_VERS_NEW : &str = "1.0";
 
@@ -110,5 +110,15 @@ mod test {
 
         assert_eq!(catalog.description.is_some(),true);
         assert_eq!(catalog.description.unwrap(),CAT_DESC.to_string());
+    }
+
+    #[test]
+    fn test_servicecatalog_classpath() {
+
+        let path = ServiceCatalog::get_class(); 
+
+        assert_eq!(path,CLASS_PATH.to_string());
+        // This feels silly but we should test since it was a bug
+        assert_eq!(path.contains("Catalog"),true);
     }
 }
