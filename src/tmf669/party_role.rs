@@ -2,26 +2,65 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId,HasName, HasRelatedParty, LIB_PATH, common::related_party::RelatedParty};
-use tmflib_derive::{HasId,HasName,HasRelatedParty};
+use crate::{
+    common::{contact::ContactMedium, related_party::RelatedParty}, tmf632::Characteristic, tmf651::agreement::AgreementRef, tmf666::{AccountRef,PaymentMethodRef}, DateTime, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod, Uri, LIB_PATH
+};
+use tmflib_derive::{
+    HasId,
+    HasName,
+    HasRelatedParty,
+    HasValidity,
+};
 
 use super::MOD_PATH;
 
 const CLASS_PATH : &str = "partyRole";
 
+/// Party Role - Credit Profile
+#[derive(Clone, Debug, Default, Deserialize, HasValidity, Serialize)]
+pub struct CreditProfile {
+    /// Credit Profile Date
+    pub credit_profile_date: Option<DateTime>,
+    /// Credit Risk Rating
+    pub credit_risk_rating: Option<u32>,
+    /// Credit Score
+    pub credit_score: Option<u32>,
+    /// Profile Validity
+    pub valid_for: Option<TimePeriod>,
+}
+
 /// Party Role
-#[derive(Clone, Debug, Default, Deserialize, HasId, HasName, HasRelatedParty, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasName, HasRelatedParty, HasValidity, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PartyRole {
     /// Id of the Party Role
    pub id: Option<String>,
    /// HTML link
-   pub href: Option<String>,
+   pub href: Option<Uri>,
    /// Name of Role
    pub name: Option<String>,
+   /// Role Status
+   pub status : Option<String>,
+   /// Reason for current status
+   pub status_reason: Option<String>,
+   /// Validity Period
+   pub valid_for: Option<TimePeriod>,
    /// Entity that is associated with this role
-   engaged_party: Option<RelatedParty>,
+   pub engaged_party: Option<RelatedParty>,
    /// Other related parties
-   related_party: Option<Vec<RelatedParty>>,
+   pub related_party: Option<Vec<RelatedParty>>,
+   /// Credit Profiles
+   pub credit_profile : Option<Vec<CreditProfile>>,
+   /// Agreements
+   pub agreement : Option<Vec<AgreementRef>>,
+   /// Accounts
+   pub account : Option<Vec<AccountRef>>,
+   /// Payment Methods
+   pub payment_method: Option<Vec<PaymentMethodRef>>,
+   /// Contact Media
+   pub contact_medium : Option<Vec<ContactMedium>>,
+   /// Party Role Characteristics
+   pub characteristic : Option<Vec<Characteristic>>,
 }
 
 impl PartyRole {
@@ -48,6 +87,30 @@ impl PartyRole {
     pub fn engaged_party(mut self, related_party: RelatedParty) -> PartyRole {
         self.engaged_party = Some(related_party);
         self
+    }
+
+    /// Add a new credit profile
+    pub fn add_profile(&mut self, profile : CreditProfile) {
+        match self.credit_profile.as_mut() {
+            Some(cp) => cp.push(profile),
+            None => self.credit_profile = Some(vec![profile]),
+        }
+    }
+
+    /// Get Profile by index
+    pub fn get_profile(&self, idx : usize) -> Option<&CreditProfile> {
+        match self.credit_profile.as_ref() {
+            Some(cp) => cp.get(idx),
+            None => None        
+        }
+    }
+
+    /// Add new payment method to this Party Role
+    pub fn add_payment(&mut self, payment : PaymentMethodRef) {
+        match self.payment_method.as_mut() {
+            Some(pm) => pm.push(payment),
+            None => self.payment_method = Some(vec![payment]),
+        }
     }
 }
 
