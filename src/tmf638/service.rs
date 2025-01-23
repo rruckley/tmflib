@@ -22,10 +22,9 @@ enum ServiceStateType {
     Terminated,
 }
 
+/// Service Features
 #[derive(Clone,Debug,Default,Deserialize,PartialEq,Serialize)]
 #[serde(rename_all = "camelCase")]
-
-/// Service Features
 pub struct Feature {
     id : String,
     is_bundle: bool,

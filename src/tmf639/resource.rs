@@ -79,9 +79,11 @@ pub enum ResourceStatusType {
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasName, HasAttachment, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Resource {
-    administrative_state: ResourceAdministrativeStateType,
+    /// Administrative Status
+    pub administrative_state: ResourceAdministrativeStateType,
+    /// Attachments
     #[serde(skip_serializing_if = "Option::is_none")]
-    attachment: Option<Vec<AttachmentRefOrValue>>,
+    pub attachment: Option<Vec<AttachmentRefOrValue>>,
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
@@ -91,14 +93,23 @@ pub struct Resource {
     /// Resource Name
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
-    operational_state: ResourceOperationalStateType,
-    resource_characteristic: Vec<Characteristic>,
-    resource_status: ResourceStatusType,
+    /// Operational Status
+    pub operational_state: ResourceOperationalStateType,
+    /// Characteristics
     #[serde(skip_serializing_if = "Option::is_none")]
-    resource_version: Option<String>,
+    pub resource_characteristic: Option<Vec<Characteristic>>,
+    /// Status
     #[serde(skip_serializing_if = "Option::is_none")]
-    related_party: Option<Vec<RelatedParty>>,
-    usage_state: ResourceUsageStateType,
+    pub resource_status: Option<ResourceStatusType>,
+    /// Version
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub resource_version: Option<String>,
+    /// Related Parties
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub related_party: Option<Vec<RelatedParty>>,
+    /// Usage Status
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub usage_state: Option<ResourceUsageStateType>,
 }
 
 impl Resource {
@@ -182,7 +193,7 @@ mod test {
         assert_eq!(resource.resource_version.unwrap().as_str(),"1.0");
         assert_eq!(resource.administrative_state,ResourceAdministrativeStateType::Unlocked);
         assert_eq!(resource.operational_state,ResourceOperationalStateType::Enable);
-        assert_eq!(resource.usage_state,ResourceUsageStateType::Idle);
+        assert_eq!(resource.usage_state,Some(ResourceUsageStateType::Idle));
     }
 
     #[test]

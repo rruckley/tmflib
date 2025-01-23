@@ -21,8 +21,9 @@
 //! ### API Version Features 
 //! By default this crate will compile v4 versions of APIs. 
 //! * **build-V4**
-//! This is the default version compiled
+//!   This is the default version compiled
 //! * **build-V5**
+//! 
 //! This flag can be enabled to compile v5 APIs where available, mutually exclusive with build-V4.
 
 //! ### Common Feature ###

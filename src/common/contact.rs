@@ -112,8 +112,8 @@ impl Contact {
 
 impl From<&Individual> for Contact {
     fn from(value: &Individual) -> Self {
-        let contact = Contact::new(value.get_name());
-        contact
+        
+        Contact::new(value.get_name())
     }
 }
 
