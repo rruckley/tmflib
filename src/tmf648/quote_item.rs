@@ -87,7 +87,7 @@ impl From<ProductOffering> for ProductRefOrValue {
             name : Some(value.get_name()),
             description: value.description.clone(),
             product_specification: value.product_specification.clone(),
-            is_bundle: value.is_bundle.clone(),
+            is_bundle: value.is_bundle,
             ..Default::default()
         }
     }
