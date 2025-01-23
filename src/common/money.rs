@@ -47,7 +47,6 @@ impl Money {
     /// let mut money = Money::from(100);
     /// money.currency("AUD");
     /// ```
-
     #[cfg(not(target_arch = "wasm32"))]
     pub fn currency(&mut self, currency_code : &str) -> Result<String,String> {
         let c = rust_iso4217::from_code(currency_code);
