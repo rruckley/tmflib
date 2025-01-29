@@ -11,6 +11,19 @@ use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use std::convert::From;
 use uuid::Uuid;
 
+/// Shopping Cart Item Reference
+#[derive(Clone,Default,Debug,Serialize,Deserialize)]
+pub struct ItemRef {
+    id : String,
+}
+
+impl From<CartItem> for ItemRef {
+    fn from(value: CartItem) -> Self {
+        ItemRef {
+            id : value.id.unwrap_or_default().clone(),
+        }
+    }
+}
 /// Shopping Cart Item
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
