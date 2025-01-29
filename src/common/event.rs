@@ -3,7 +3,6 @@
 use serde::{Deserialize, Serialize};
 use crate::{
     HasId,
-    HasName,
     TMFEvent
 };
 
@@ -59,7 +58,7 @@ impl<T,U> Event<T,U> {
 /// Trait for types that can generate an event
 pub trait EventPayload<T> {
     /// Object the event pertains to
-    type Subject : HasId + HasName + TMFEvent<T>;
+    type Subject : HasId + TMFEvent<T>;
     /// Type of event generated
     type EventType;
     /// Convert the item into an event
