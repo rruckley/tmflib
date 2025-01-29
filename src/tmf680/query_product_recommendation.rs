@@ -106,11 +106,14 @@ mod test {
     use super::*;
 
     const REC_NAME : &str = "Recommendation Name";
+    const REC_DESC : &str = "Recommendation Description";
 
     #[test]
     fn test_recommendation_create() {
-        let recommendation = QueryProductRecommendation::new(REC_NAME);
+        let recommendation = QueryProductRecommendation::new(REC_NAME)
+            .description(REC_DESC);
 
         assert_eq!(recommendation.get_name(),REC_NAME.to_string());
+        assert_eq!(recommendation.get_description(),REC_DESC.to_string());
     }
 }
