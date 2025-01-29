@@ -59,7 +59,7 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
                 }
             }
             fn get_href(&self) -> String {
-                match self.href().as_ref() {
+                match self.href.as_ref() {
                     Some(h) => h.clone(),
                     None => String::default(),
                 }
