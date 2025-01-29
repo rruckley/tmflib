@@ -1,4 +1,4 @@
-// Copyright [2024] [Ryan Ruckley]
+// Copyright [2025] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,10 +53,16 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
                 self.href = href.into();
             }
             fn get_id(&self) -> String {
-                self.id.as_ref().unwrap().clone()
+                match self.id.as_ref() {
+                    Some(i) => i.clone(),
+                    None => String::default(),
+                }
             }
             fn get_href(&self) -> String {
-                self.href.as_ref().unwrap().clone()
+                match self.href.as_ref() {
+                    Some(h) => h.clone(),
+                    None => String::default(),
+                }
             }
             fn get_class() -> String {
                 CLASS_PATH.to_string()

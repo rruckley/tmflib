@@ -429,5 +429,13 @@ mod test {
         assert_eq!(segment.is_some(),true);
         assert_eq!(segment.unwrap(),CUSTOMER_SEGMENT);
     }
+
+    #[test]
+    fn test_customer_noid() {
+        let customer = Customer::default();
+
+        assert_eq!(customer.get_id(),String::default());
+        assert_eq!(customer.get_href(),String::default());
+    }
 }
 
