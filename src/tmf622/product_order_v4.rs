@@ -1,6 +1,7 @@
 //! Product Order Module
 
 use serde::{Deserialize, Serialize};
+use chrono::Utc;
 use tmflib_derive::{
     HasId,
     HasDescription,
@@ -10,6 +11,7 @@ use tmflib_derive::{
 use crate::tmf641::service_order::ServiceOrder;
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
+use crate::common::event::{Event,EventPayload};
 use crate::tmf651::agreement::AgreementRef;
 use crate::{
     DateTime,
@@ -19,6 +21,7 @@ use crate::{
     HasNote, 
     HasRelatedParty,
     Uri,
+    TMFEvent,
     vec_insert,
     LIB_PATH,
 };
@@ -84,6 +87,56 @@ impl From<&ProductOrder> for ProductOrderRef {
             ..Default::default()
         }
     }
+}
+
+/// Product Order Event Type
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub enum ProductOrderEventType {
+    /// Order Created
+    #[default]
+    ProductOrderCreateEvent,
+    /// Order Updated
+    ProductOrderAttributeValueChangeEvent,
+    /// Order Deleted
+    ProductOrderDeleteEvent,
+    /// Order Status Change
+    ProductOrderStateChangeEvent,
+    /// Order Pending Information
+    ProductOrderInformationRequiredEvent,
+}
+
+/// Product Order Event Container
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct ProductOrderEvent {
+    /// Impacted Product Order
+    pub order : ProductOrder,
+}
+
+impl TMFEvent<ProductOrderEvent> for ProductOrder {
+    fn event(&self) -> ProductOrderEvent {
+        ProductOrderEvent {
+            order: self.clone(),
+        }
+    }
+}
+
+impl EventPayload<ProductOrderEvent> for ProductOrder {
+    type Subject = ProductOrder;
+    type EventType = ProductOrderEventType;
+
+    fn to_event(&self,event_type : Self::EventType) -> Event<ProductOrderEvent,Self::EventType> {
+        let desc = format!("{:?} for order {}",event_type,self.get_id());
+        let now = Utc::now();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        Event {
+            id: Some(self.get_id()),
+            href: Some(self.get_href()),
+            description: Some(desc),
+            event_time: event_time.to_string(),
+            event: self.event(),
+            ..Default::default()
+        }
+    }    
 }
 
 /// ProductOrder
