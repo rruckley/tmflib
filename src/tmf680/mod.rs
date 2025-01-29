@@ -17,4 +17,5 @@
 pub mod query_product_recommendation;
 
 /// Module Path
-pub const MOD_PATH : &str = "modpath";
+
+pub const MOD_PATH : &str = "recommendation/v4";
