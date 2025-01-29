@@ -210,7 +210,7 @@ TMFC061 = ["common"]
 # Resource Configuration and Activation
 TMFC062 = ["common"]
 
-default = ["TMFC002","build-V4"]
+default = ["all","build-V4"]
 
 [dependencies]
 chrono = "0.4.39"
