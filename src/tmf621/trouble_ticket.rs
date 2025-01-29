@@ -1,6 +1,7 @@
 //! Trouble Ticket Module
 
 use serde::{Deserialize, Serialize};
+use chrono::Utc;
 use tmflib_derive::{
     HasId,
     HasName,
@@ -14,18 +15,9 @@ use tmflib_derive::{
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
+use crate::common::event::{Event,EventPayload};
 use crate::{
-    DateTime,
-    HasName,
-    HasDescription,
-    HasId, 
-    HasLastUpdate, 
-    HasNote, 
-    HasRelatedParty,
-    HasAttachment,
-    Uri,
-    // vec_insert,
-    LIB_PATH,
+    DateTime, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasNote, HasRelatedParty, TMFEvent, Uri, LIB_PATH
 };
 
 // URL Path components
@@ -62,6 +54,60 @@ impl TroubleTicket {
         TroubleTicket {
             name: Some(name.into()),
             ..TroubleTicket::create_with_time()
+        }
+    }
+}
+
+/// Trouble Ticket Event Type
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub enum TroubleTicketEventType {
+    /// Ticket Created
+    #[default]
+    TroubleTicketCreateEvent,
+    /// Ticket Updated
+    TroubleTicketAttributeValueChangeEvent,
+    /// Ticket Status Change
+    TroubleTicketStatusChangeEvent,
+    /// Ticket Deleted
+    TroubleTicketDeleteEvent,
+    /// Ticket Resolved
+    TroubleTicketResolvedEvent,
+    /// Ticket Pending Information
+    TroubleTicketInformationRequiredEvent,
+}
+
+/// Trouble Ticket Event Holder
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct TroubleTicketEvent {
+    /// Impacted ticket
+    pub ticket : TroubleTicket,
+}
+
+impl TMFEvent<TroubleTicketEvent> for TroubleTicket {
+    fn event(&self) -> TroubleTicketEvent {
+        TroubleTicketEvent {
+            ticket : self.clone(),
+        }    
+    }
+}
+
+impl EventPayload<TroubleTicketEvent> for TroubleTicket {
+    type Subject = TroubleTicket;
+    type EventType = TroubleTicketEventType;
+
+    fn to_event(&self,event_type : Self::EventType) -> crate::common::event::Event<TroubleTicketEvent,Self::EventType> {
+        let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
+        let now = Utc::now();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        Event {
+            id: Some(self.get_id()),
+            href: Some(self.get_href()),
+            description: Some(desc),
+            domain: Some(TroubleTicket::get_class()),
+            title: Some(self.get_name()),
+            time_occurred: Some(event_time.to_string()),
+            event: self.event(),
+            ..Default::default()
         }
     }
 }
