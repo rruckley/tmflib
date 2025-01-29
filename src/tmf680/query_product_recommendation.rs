@@ -46,7 +46,7 @@ use tmflib_derive::{
     HasValidity,
 };
 
-const CLASS_PATH : &str = "recommendation";
+const CLASS_PATH : &str = "queryProductRecommendation";
 
 /// Recommendation Item
 #[derive(Clone,Default,Debug,Serialize,Deserialize)]
@@ -85,4 +85,32 @@ pub struct QueryProductRecommendation {
     pub product_order : Option<Vec<ProductOrderRef>>,
     /// Recommandation Item
     pub recommendation_item : Option<Vec<RecommentationItem>>,
+    /// Shopping Cart
+    pub shopping_cart : Option<Vec<ShoppingCartRef>>,
+    /// Shopping Cart Item
+    pub shopping_cart_item : Option<Vec<ItemRef>>,
+}
+
+impl QueryProductRecommendation {
+    /// Create a new Product Recommendation
+    pub fn new(name : impl Into<String>) -> QueryProductRecommendation {
+        QueryProductRecommendation {
+            name : Some(name.into()),
+            ..QueryProductRecommendation::create()
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const REC_NAME : &str = "Recommendation Name";
+
+    #[test]
+    fn test_recommendation_create() {
+        let recommendation = QueryProductRecommendation::new(REC_NAME);
+
+        assert_eq!(recommendation.get_name(),REC_NAME.to_string());
+    }
 }
