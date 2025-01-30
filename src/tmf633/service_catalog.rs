@@ -2,6 +2,7 @@
 
 
 use serde::{Deserialize, Serialize};
+use chrono::Utc;
 
 use crate::{
     HasId, 
@@ -12,10 +13,12 @@ use crate::{
     TimeStamp, 
     TimePeriod,
     LIB_PATH,
+    TMFEvent,
     Uri,
     vec_insert,
 };
 use crate::common::related_party::RelatedParty;
+use crate::common::event::{Event,EventPayload};
 use super::service_category::ServiceCategoryRef;
 use tmflib_derive::{HasId, HasLastUpdate, HasDescription, HasName, HasValidity};
 
@@ -23,6 +26,60 @@ use super::MOD_PATH;
 const CLASS_PATH : &str = "serviceCatalog";
 const CAT_STATUS_NEW : &str = "new";
 const CAT_VERS_NEW : &str = "1.0";
+
+/// Service Catalog Event Type
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub enum ServiceCatalogEventType {
+    /// Catalog Created
+    #[default]
+    ServiceCatalogCreateEvent,
+    /// Catalog Updated
+    ServiceCatalogChangeEvent,
+    /// Catalog Batch Completed
+    ServiceCatalogBatchEvent,
+    /// Catalog Deteled
+    ServiceCatalogDeleteEvent,
+}
+
+/// Service Catalot Event Container
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub struct ServiceCatalogEvent {
+    /// Impacted Service Catalog
+    catalog : ServiceCatalog,
+}
+
+impl TMFEvent<ServiceCatalogEvent> for ServiceCatalog {
+    fn event(&self) -> ServiceCatalogEvent {
+        ServiceCatalogEvent {
+            catalog : self.clone()
+        }
+    }
+}
+
+impl EventPayload<ServiceCatalogEvent> for ServiceCatalog {
+    type Subject = ServiceCatalog;
+    type EventType = ServiceCatalogEvent;
+
+    fn to_event(&self,event_type : Self::EventType) -> Event<ServiceCatalogEvent,Self::EventType> {
+        let now = Utc::now();
+        let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+
+        Event {
+            domain: Some(ServiceCatalog::get_class()),
+            description: Some(desc),
+            event_type,
+            event_time: event_time.to_string(),
+            event: self.event(),
+            id : self.id.clone(),
+            href: self.href.clone(),
+            // More efficient to clone the option ? 
+            title: self.name.clone(),
+            time_occurred: Some(event_time.to_string()),
+            ..Default::default()
+        }
+    }
+}
 
 /// Service Catalog
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasName, HasDescription, HasLastUpdate, HasValidity, Serialize)]
