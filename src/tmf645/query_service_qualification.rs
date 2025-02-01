@@ -15,7 +15,10 @@ use tmflib_derive::{
 };
 
 const CLASS_PATH : &str = "queryServiceQualification";
-use super::MOD_PATH;
+use super::{
+    MOD_PATH,
+    TaskStateType,
+};
 
 /// Query Service Qualification
 #[derive(Clone,Debug,Default,HasId,HasDescription,Deserialize,Serialize)]
@@ -26,4 +29,6 @@ pub struct QueryServiceQualification {
     pub href: Option<Uri>,
     /// Description
     pub description: Option<String>,
+    /// Status
+    pub state : Option<TaskStateType>,
 }
