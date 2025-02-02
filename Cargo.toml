@@ -1,6 +1,6 @@
 [package]
 name = "tmflib"
-version = "0.1.26"
+version = "0.1.27"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Interface library for processing TMF payloads"
@@ -20,7 +20,7 @@ tmf637 = []
 tmf638 = []
 tmf639 = []
 tmf641 = ["tmf646"]
-tmf645 = []
+tmf645 = ["tmf633","tmf641"]
 tmf646 = []
 tmf648 = ["tmf620"]
 tmf651 = ["tmf648"]
@@ -57,6 +57,7 @@ all = [
     "tmf638",
     "tmf639",
     "tmf641",
+    "tmf645",
     "tmf646",
     "tmf648",
     "tmf653",
