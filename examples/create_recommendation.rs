@@ -3,8 +3,8 @@
 #[cfg(feature = "tmf680")]
 use tmflib::tmf680::query_product_recommendation::QueryProductRecommendation;
 use tmflib::{
-    HasId,
-    HasName,
+    // HasId,
+    // HasName,
     HasDescription,
 };
 
