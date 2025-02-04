@@ -323,6 +323,11 @@ impl HasName for Individual {
         self.full_name = Some(name);
         self.legal_name.clone_from(&self.full_name);
     }
+    
+    fn name(mut self, name : impl Into<String>) -> Self {
+        self.set_name(name);
+        self
+    }
 }
 
 /// Individual Event Types
