@@ -6,7 +6,6 @@ authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Interface library for processing TMF payloads"
 repository = "https://github.com/rruckley/tmflib"
 license = "Apache-2.0"
-allow_dirty = true
 
 [features]
 tmf620 = ["tmf633","tmf634","tmf651"]
@@ -20,7 +19,7 @@ tmf637 = []
 tmf638 = []
 tmf639 = []
 tmf641 = ["tmf646"]
-tmf645 = []
+tmf645 = ["tmf633","tmf641"]
 tmf646 = []
 tmf648 = ["tmf620"]
 tmf651 = ["tmf648"]
@@ -58,6 +57,7 @@ all = [
     "tmf638",
     "tmf639",
     "tmf641",
+    "tmf645",
     "tmf646",
     "tmf648",
     "tmf653",
@@ -218,7 +218,7 @@ serde = { version = "1.0.217", features = ["derive"]}
 serde_json = "1.0.138"
 sha256 = { version = "1.5", default-features = false }
 uuid = { version = "1.12.1", features = ["v4"]}
-tmflib-derive = { version = "0.1.31" }
+tmflib-derive = { version = "0.1.32" }
 # tmflib-derive = { path = "tmflib-derive"}
 hex = "0.4.3"
 base32 = "0.5.1"

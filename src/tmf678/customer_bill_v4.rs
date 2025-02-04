@@ -147,6 +147,11 @@ impl HasAttachment for CustomerBill {
     fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue> {
         self.bill_document.as_mut().map(|v| v.remove(position))
     }
+
+    fn attachment(mut self, attachment : AttachmentRefOrValue) -> Self {
+        self.add(&attachment);
+        self
+    }
 }
 
 #[cfg(test)]

@@ -2,7 +2,7 @@
 
 [package]
 name = "tmflib-derive"
-version = "0.1.31"
+version = "0.1.32"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Derive macro for the tmflib::HasId trait"
@@ -15,4 +15,4 @@ proc-macro = true
 [dependencies]
 proc-macro2 = "1.0.93"
 quote = "1.0.38"
-syn = "2.0.96"
+syn = "2.0.98"

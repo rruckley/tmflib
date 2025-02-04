@@ -12,11 +12,16 @@ use tmflib_derive::{HasId, HasName};
 /// Resource Candidate (Catalog Entry)
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasName, Serialize)]
 pub struct ResourceCandidate {
-    id: Option<String>,
-    href: Option<String>,
-    last_update: Option<String>,
-    name: Option<String>,
-    description: Option<String>,
+    /// Unique Id
+    pub id: Option<String>,
+    /// HTTP Uri
+    pub href: Option<String>,
+    /// Last Update Timestamp
+    pub last_update: Option<String>,
+    /// Name
+    pub name: Option<String>,
+    /// Description
+    pub description: Option<String>,
 }
 
 impl ResourceCandidate {
@@ -37,6 +42,14 @@ impl ResourceCandidate {
 impl HasLastUpdate for ResourceCandidate {
     fn set_last_update(&mut self, time : impl Into<String>) {
         self.last_update = Some(time.into());
+    }
+
+    fn last_update(mut self, time : Option<String>) -> Self {
+        match time {
+            Some(t) => self.set_last_update(t),
+            None => self.set_last_update(ResourceCandidate::get_timestamp()),
+        };
+        self
     }
 }
 

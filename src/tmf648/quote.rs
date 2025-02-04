@@ -174,6 +174,11 @@ impl HasName for Quote {
     fn set_name(&mut self, name : impl Into<String>) {
         self.description = Some(name.into())    
     }
+
+    fn name(mut self, name : impl Into<String>) -> Self {
+        self.set_name(name);
+        self
+    }
 }
 
 /// Container for the Quote
