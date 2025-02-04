@@ -69,6 +69,8 @@ pub type TimeStamp = String;
 pub type DateTime = String;
 /// Type alias for Uri
 pub type Uri = String;
+/// Priority Type
+pub type Priority = u16;
 
 /// Standard TMF TimePeriod structure
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
