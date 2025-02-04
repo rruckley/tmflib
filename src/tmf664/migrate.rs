@@ -6,7 +6,7 @@ use crate::{HasId,HasName, LIB_PATH,Uri};
 use tmflib_derive::{HasId,HasName};
 
 
-use super::MOD_PATH;
+use super::{TaskStateType, MOD_PATH};
 
 const CLASS_PATH : &str = "migrate";
 use super::resource_function::ResourceFunctionRef;
@@ -20,6 +20,19 @@ pub struct Migrate {
     pub href: Option<Uri>,
     /// Migration Task Name
     pub name : Option<String>,
+    /// SubState required before migration is carried out.
+    pub admin_state_modification : Option<String>,
+    /// Reason why migration is being requested.
+    pub cause : Option<String>,
+    /// In what mode is the migrate operation to be performed
+    pub completion_mode : Option<String>,
+    /// Priority
+    pub priority : Option<u16>,
+    /// The time when the migration needs to commence. This allows a delay to be added.
+    pub start_time : Option<String>,
+    /// Tracks the lifecycle status of the migrate request.
+    pub state : Option<TaskStateType>,
+
     // Referenced modules
     /// Resource Function
     resource_function : ResourceFunctionRef,
