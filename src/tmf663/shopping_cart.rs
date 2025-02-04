@@ -26,6 +26,22 @@ pub struct CartPrice {
     price: Option<Price>,
 }
 
+/// Shopping Cart Refernce
+#[derive(Clone,Default,Debug,Serialize,Deserialize)]
+pub struct ShoppingCartRef {
+    id : String,
+    href : String,
+}
+
+impl From<ShoppingCart> for ShoppingCartRef {
+    fn from(value: ShoppingCart) -> Self {
+        ShoppingCartRef {
+            id : value.get_id(),
+            href: value.get_href(),
+        }
+    }
+}
+
 /// Shopping Cart
 #[derive(Clone, Debug, Default, Deserialize, HasId,HasValidity,HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
