@@ -21,6 +21,7 @@ use crate::{
     HasName,
     HasDescription,
     HasValidity,
+    HasRelatedParty,
     Uri,
     TimePeriod,
     LIB_PATH,
@@ -44,6 +45,7 @@ use tmflib_derive::{
     HasName,
     HasDescription,
     HasValidity,
+    HasRelatedParty,
 };
 
 const CLASS_PATH : &str = "queryProductRecommendation";
@@ -62,7 +64,7 @@ pub struct RecommentationItem {
 }
 
 /// Query Product Recommendations
-#[derive(Clone,Default,Debug,HasId,HasName,HasDescription,HasValidity,Deserialize,Serialize)]
+#[derive(Clone,Default,Debug,HasId,HasName,HasDescription,HasValidity,HasRelatedParty,Deserialize,Serialize)]
 pub struct QueryProductRecommendation {
     /// Unique Identifier
     pub id : Option<String>,
