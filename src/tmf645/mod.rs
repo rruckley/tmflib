@@ -13,7 +13,7 @@ pub mod check_service_qualification;
 pub mod query_service_qualification;
 
 /// Task State Type
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone,Debug,Default,Deserialize,Serialize,PartialEq)]
 pub enum TaskStateType {
     /// Acknowledged
     #[default]
