@@ -51,7 +51,7 @@ impl From<ServiceRefOrValue> for AlternateServiceProposal {
 /// Check Service Qualification
 #[derive(Clone,Debug,Default,HasId,HasDescription,HasRelatedParty, Deserialize,Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CheckServiceQualificaitonItem {
+pub struct CheckServiceQualificationItem {
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id : Option<String>,
@@ -79,7 +79,7 @@ pub struct CheckServiceQualificaitonItem {
     pub alternate_service_proposal : Option<Vec<AlternateServiceProposal>>,
 }
 
-impl CheckServiceQualificaitonItem {
+impl CheckServiceQualificationItem {
     /// Add an alternative service proposal
     pub fn alternate(&mut self, service : ServiceRefOrValue) {
         vec_insert(&mut self.alternate_service_proposal,AlternateServiceProposal::from(service));
@@ -104,7 +104,7 @@ pub struct CheckServiceQualification {
     pub state : Option<TaskStateType>,
         // Referenced modules
     /// Service Qualification Items
-    pub service_qualification_item : Option<Vec<CheckServiceQualificaitonItem>>,
+    pub service_qualification_item : Option<Vec<CheckServiceQualificationItem>>,
 
     // Dates
     check_service_qualification_date : Option<DateTime>,
@@ -142,7 +142,7 @@ impl CheckServiceQualification {
     }
 
     /// Add item to SQ Check
-    pub fn item(mut self, item : CheckServiceQualificaitonItem) -> CheckServiceQualification{
+    pub fn item(mut self, item : CheckServiceQualificationItem) -> CheckServiceQualification{
         vec_insert(&mut self.service_qualification_item,item);
         self
     }
@@ -160,5 +160,37 @@ mod test {
 
         assert_eq!(sq.description.is_some(),true);
         assert_eq!(sq.description.unwrap(),SQ_DESC.to_string());
+    }
+
+    #[test]
+    fn test_sq_item() {
+        let mut item = CheckServiceQualificationItem::default();
+        item.reason("code", "label");
+        let sq = CheckServiceQualification::new("Qualification")
+            .item(item);
+
+        assert_eq!(sq.service_qualification_item.is_some(),true);
+        assert_eq!(sq.service_qualification_item.unwrap().len(),1);
+    }
+
+    #[test]
+    fn test_sq_alternative() {
+        let mut alternate = ServiceRefOrValue::default();
+        alternate.description = Some("Alternate Service".to_string());
+        let mut item = CheckServiceQualificationItem::default();
+        item.reason("code", "label");
+        item.alternate(alternate);
+
+        assert_eq!(item.alternate_service_proposal.is_some(),true);
+        assert_eq!(item.alternate_service_proposal.unwrap().len(),1);
+    }
+
+    #[test]
+    fn test_sq_state() {
+        let sq = CheckServiceQualification::new("Qualification")
+            .state(TaskStateType::InProgress);
+
+        assert_eq!(sq.state.is_some(),true);
+        assert_eq!(sq.state.unwrap(),TaskStateType::InProgress);
     }
 }
