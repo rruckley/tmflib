@@ -114,7 +114,7 @@ mod test {
 
     #[test]
     fn test_placeref_deserialize() {
-        let _placeref : PlaceRef  = serde_json::from_str(EMPTY_JSON).expect("Could not parse Emoty JSON");
+        let _placeref : PlaceRef  = serde_json::from_str(REF_JSON).expect("Could not parse Empty JSON");
     }
 
     #[test]
