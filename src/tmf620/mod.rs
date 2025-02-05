@@ -17,6 +17,7 @@
 //! Structs associated with product catalogue management
 
 use serde::{Deserialize, Serialize};
+use crate::common::related_place::PlaceRef;
 
 #[cfg(all(feature = "tmf620",feature = "build-V4"))]
 const MOD_PATH: &str = "productCatalogManagement/v4";
