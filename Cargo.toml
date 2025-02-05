@@ -26,6 +26,7 @@ tmf651 = ["tmf648"]
 tmf652 = []
 tmf653 = []
 tmf663 = []
+tmf664 = []
 tmf666 = []
 tmf667 = []
 tmf669 = []
@@ -62,6 +63,7 @@ all = [
     "tmf648",
     "tmf653",
     "tmf663",
+    "tmf664",
     "tmf666",
     "tmf667",
     "tmf669",
@@ -207,7 +209,7 @@ TMFC060 = ["common"]
 # Work Order Management
 TMFC061 = ["common"]
 # Resource Configuration and Activation
-TMFC062 = ["common"]
+TMFC062 = ["tmf664"]
 
 default = ["all","build-V4"]
 
