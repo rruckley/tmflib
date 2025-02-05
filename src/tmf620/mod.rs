@@ -50,10 +50,6 @@ pub struct MarketSegmentRef {
     href: String,
 }
 
-/// Place Reference
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct PlaceRef {}
-
 /// Service Level Agreement Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct SLARef {}

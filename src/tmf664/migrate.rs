@@ -3,6 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{HasId,HasName, LIB_PATH,Uri};
+use crate::common::related_place::PlaceRef;
 use tmflib_derive::{HasId,HasName};
 
 
@@ -10,6 +11,20 @@ use super::{TaskStateType, MOD_PATH};
 
 const CLASS_PATH : &str = "migrate";
 use super::resource_function::ResourceFunctionRef;
+
+/// External connection points of the resource function. These are the service access points
+/// (SAP) where inputs and outputs of the function are available.
+#[derive(Clone,Debug,Default,HasId,HasName,Deserialize,Serialize)]
+pub struct ConnectionPointRef {
+    /// Unique Id
+    id : Option<String>,
+    /// HTTP Uri
+    href: Option<Uri>,
+    /// Name
+    name : Option<String>,
+    /// Version
+    version: Option<String>,
+}
 
 /// Migrate a Resource Function
 #[derive(Clone,Debug,Default,HasId,HasName,Deserialize,Serialize)]
@@ -36,4 +51,22 @@ pub struct Migrate {
     // Referenced modules
     /// Resource Function
     resource_function : ResourceFunctionRef,
+    /// Place Reference
+    place : Option<PlaceRef>,
+}
+
+impl Migrate {
+
+    /// Create a new migrate task
+    pub fn new(name : impl Into<String>) -> Migrate {
+        Migrate {
+            ..Migrate::create()
+        }.name(name)
+    }
+
+    /// Builder function to set place on create
+    pub fn place(mut self, place : PlaceRef) -> Self {
+        self.place = Some(place);
+        self
+    }
 }
