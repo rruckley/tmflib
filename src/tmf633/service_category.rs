@@ -2,6 +2,7 @@
 
 
 use serde::{Deserialize, Serialize};
+use chrono::Utc;
 
 use crate::{
     HasId, 
@@ -11,11 +12,13 @@ use crate::{
     HasValidity,
     TimeStamp, 
     TimePeriod,
+    TMFEvent,
     LIB_PATH,
     Uri,
     vec_insert,
 };
 use tmflib_derive::{HasId, HasLastUpdate, HasDescription, HasName, HasValidity};
+use crate::common::event::{Event,EventPayload};
 
 use super::{service_candidate::ServiceCandidateRef, MOD_PATH};
 const CLASS_PATH : &str = "serviceCategory";
@@ -40,6 +43,57 @@ impl From<ServiceCategory> for ServiceCategoryRef {
             id: value.get_id(),
             name: value.get_name(),
             version: value.version.clone(),
+        }
+    }
+}
+
+/// Service Category Event Type
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub enum ServiceCategoryEventType {
+    /// Category Created
+    #[default]
+    ServiceCategoryCreateEvent,
+    /// Category Updated
+    ServiceCategoryChangeEvent,
+    /// Category Deleted
+    ServiceCategoryDeleteEvent,
+}
+
+/// Service Category Container
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub struct ServiceCategoryEvent {
+    /// Impacted Category
+    category : ServiceCategory,
+}
+
+impl TMFEvent<ServiceCategoryEvent> for ServiceCategory {
+    fn event(&self) -> ServiceCategoryEvent {
+        ServiceCategoryEvent {
+            category: self.clone(),
+        }
+    }    
+}
+
+impl EventPayload<ServiceCategoryEvent> for ServiceCategory {
+    type Subject = ServiceCategory;
+    type EventType = ServiceCategoryEventType;
+
+    fn to_event(&self,event_type : Self::EventType) -> Event<ServiceCategoryEvent,Self::EventType> {
+        let now = Utc::now();
+        let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+
+        Event {
+            id : self.id.clone(),
+            href: self.href.clone(),
+            description: Some(desc),
+            title: self.name.clone(),
+            domain: Some(ServiceCategory::get_class()),
+            event_type,
+            event_time: event_time.to_string(),
+            event: self.event(),
+            time_occurred: Some(event_time.to_string()),
+            ..Default::default()
         }
     }
 }

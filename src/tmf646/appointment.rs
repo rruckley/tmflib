@@ -1,11 +1,14 @@
 //! Appointment Booking Module
 
 use serde::{Deserialize, Serialize};
+use chrono::Utc;
+use uuid::Uuid;
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasLastUpdate, LIB_PATH, HasValidity, TimePeriod, DateTime};
-use tmflib_derive::{HasId,HasLastUpdate, HasValidity};
+use crate::{HasId, HasLastUpdate, LIB_PATH, HasDescription, HasValidity, TimePeriod, DateTime,TMFEvent};
+use tmflib_derive::{HasId,HasDescription, HasLastUpdate, HasValidity};
+use crate::common::event::{Event,EventPayload};
 
 const CLASS_PATH : &str = "appointment";
 
@@ -25,8 +28,60 @@ pub enum AppointmentStateType {
     Failed,
 }
 
+/// Appointment Event Type
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub enum AppointmentEventType {
+    /// Appointment Created
+    #[default]
+    AppointmentCreateEvent,
+    /// Appointment Updated
+    AppointmentAttributeValueChangeEvent,
+    /// Apointment State Changed
+    AppointmentStateChangeEvent,
+    /// Apointment Deleted
+    AppointmentDeleteEvent,
+}
+
+/// Appointment Event Container
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub struct AppointmentEvent {
+    appointment: Appointment,
+}
+
+impl TMFEvent<AppointmentEvent> for Appointment {
+    fn event(&self) -> AppointmentEvent {
+        AppointmentEvent {
+            appointment: self.clone()
+        }
+    }
+}
+
+impl EventPayload<AppointmentEvent> for Appointment {
+    type Subject = Appointment;
+    type EventType = AppointmentEvent;
+
+    fn to_event(&self,event_type : Self::EventType) -> Event<AppointmentEvent,Self::EventType> {
+        let now = Utc::now();
+        let desc = format!("{:?} for {} [{}]",event_type,self.get_description(),self.get_id());
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        Event {
+            description: Some(desc),
+            domain: Some(Appointment::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            href: Some(self.get_href()),
+            id: Some(self.get_id()),
+            event_time: event_time.to_string(),
+            time_occurred: Some(event_time.to_string()),
+            title: Some(self.get_description()),
+            event_type,
+            event: self.event(),
+            ..Default::default()
+        }
+    }
+}
+
 /// Appointment booking
-#[derive(Clone, Debug, Default, Deserialize, HasId, HasLastUpdate, HasValidity, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasDescription, HasLastUpdate, HasValidity, Serialize)]
 pub struct Appointment {
     #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,

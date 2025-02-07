@@ -5,7 +5,9 @@ use crate::tmf620::product_offering::ProductOfferingRef;
 #[cfg(all(feature = "tmf620",feature = "build-V5"))]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 use super::MOD_PATH;
 use crate::{
@@ -17,8 +19,10 @@ use crate::{
     HasDescription,
     TimePeriod,
     LIB_PATH,
+    TMFEvent,
     Uri,
 };
+use crate::common::event::{Event,EventPayload};
 use tmflib_derive::{
     HasDescription,
     HasId,
@@ -149,6 +153,52 @@ impl Category {
         self.is_root = Some(root);
         self
     }
+}
+
+/// Container for the payload that generated the event
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub struct CategoryEvent {
+    /// Impacted Category
+    pub category: Category,
+}
+
+impl TMFEvent<CategoryEvent> for Category {
+    fn event(&self) -> CategoryEvent {
+        CategoryEvent {
+            category: self.clone(),
+        }
+    }
+}
+
+impl EventPayload<CategoryEvent> for Category {
+    type Subject = Category;
+    type EventType = CategoryEventType;
+
+    fn to_event(&self,event_type : Self::EventType) -> Event<CategoryEvent,Self::EventType> {
+        let now = Utc::now();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        Event {
+            domain: Some(Category::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            href: self.href.clone(),
+            id: self.id.clone(),
+            title: self.name.clone(),
+            event_time: event_time.to_string(),
+            event_type,
+            event: self.event(),
+            ..Event::default()
+        }        
+    }
+}
+
+/// Category Event Type
+#[derive(Clone,Default,Debug)]
+pub enum CategoryEventType {
+    /// Category Created
+    #[default]
+    CategoryCreateEvent,
+    /// Category Deleted
+    CategoryDeleteEvent,
 }
 
 #[cfg(test)]

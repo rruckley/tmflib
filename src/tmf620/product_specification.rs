@@ -1,7 +1,9 @@
 //! Product Specification Module
 //!
 
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 use super::MOD_PATH;
 
@@ -13,8 +15,10 @@ use crate::{
     HasValidity, 
     TimePeriod, 
     HasLastUpdate,
+    TMFEvent,
     Cardinality
 };
+use crate::common::event::{Event,EventPayload};
 use tmflib_derive::{
     HasDescription,
     HasId,
@@ -274,6 +278,53 @@ impl From<&ServiceSpecification> for ProductSpecification {
         ps.lifecycle_status.clone_from(&value.lifecycle_status);
         ps
     }
+}
+
+// Events
+/// Product Specification Event Container
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub struct ProductSpecificationEvent {
+    product_specification: ProductSpecification,
+}
+
+impl TMFEvent<ProductSpecificationEvent> for ProductSpecification {
+    fn event(&self) -> ProductSpecificationEvent {
+        ProductSpecificationEvent {
+            product_specification: self.clone(),
+        }
+    }
+}
+
+impl EventPayload<ProductSpecificationEvent> for ProductSpecification {
+    type Subject = ProductSpecification;
+    type EventType = ProductSpecificationEventType;
+    fn to_event(&self,event_type : Self::EventType) -> Event<ProductSpecificationEvent,Self::EventType> {
+        let now = Utc::now();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let desc = format!("{:?} for {}",event_type,self.get_name());
+        Event {
+            description: Some(desc),
+            domain: Some(ProductSpecification::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            href: self.href.clone(),
+            id: self.id.clone(),
+            title: self.name.clone(),
+            event_time: event_time.to_string(),
+            event_type,
+            event: self.event(),
+            ..Event::default()
+        }    
+    }
+}
+
+/// Product Specification Event Type
+#[derive(Clone,Default,Debug)]
+pub enum ProductSpecificationEventType {
+    /// Product Specification Created
+    #[default]
+    ProductSpecificationCreateEvent,
+    /// Product Specification Deleted
+    ProductSpecificationDeleteEvent,
 }
 
 /// Enum to cover value with many types

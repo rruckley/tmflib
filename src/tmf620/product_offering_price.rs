@@ -1,11 +1,14 @@
 //! Product Offering Price Module
 
-use serde::{Deserialize,Serialize};
+use chrono::Utc;
+use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 use super::MOD_PATH;
-use crate::{HasId,HasName, HasLastUpdate, LIB_PATH, HasValidity, TimePeriod};
+use crate::{HasId,HasName, HasLastUpdate, LIB_PATH,TMFEvent,HasValidity, TimePeriod};
 use crate::common::money::Money;
 use crate::common::tax_item::TaxItem;
+use crate::common::event::{Event,EventPayload};
 use tmflib_derive::{HasId,HasLastUpdate,HasName, HasValidity};
 
 const CLASS_PATH : &str = "productOfferingPrice";
@@ -104,6 +107,60 @@ impl ProductOfferingPrice {
         pop.name = Some(name.into());
         pop
     }
+}
+
+/// Container for the payload that generated the event
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub struct ProductOfferingPriceEvent {
+    /// Struct that this event relates to
+    pub pop: ProductOfferingPrice,
+}
+
+impl TMFEvent<ProductOfferingPriceEvent> for ProductOfferingPrice {
+    fn event(&self) -> ProductOfferingPriceEvent {
+        ProductOfferingPriceEvent {
+            pop : self.clone(),
+        }
+    }
+}
+
+impl EventPayload<ProductOfferingPriceEvent> for ProductOfferingPrice {
+    type Subject = ProductOfferingPrice;
+    type EventType = ProductOfferingPriceEventType;
+    fn to_event(&self,event_type : ProductOfferingPriceEventType) -> Event<ProductOfferingPriceEvent,ProductOfferingPriceEventType> {       
+        let now = Utc::now();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let desc = format!("{:?} for {}",event_type,self.get_name());
+        Event {
+            correlation_id: None,
+            description: Some(desc),
+            domain: Some(ProductOfferingPrice::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: self.href.clone(),
+            id: self.id.clone(),
+            title: self.name.clone(),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: None,
+            event_type,
+            event: self.event(),
+        }
+    }
+}
+
+/// Product Offering Price Event Type
+#[derive(Clone,Default,Debug,Deserialize,PartialEq, Serialize)]
+pub enum ProductOfferingPriceEventType {
+    /// POP Created
+    #[default]
+    ProductOfferingPriceCreateEvent,
+    /// POP Attribute Value Changed
+    ProductOfferingPriceAttributeValueChangeEvent,
+    /// POP State Changed
+    ProductOfferingPriceStateChangeEvent,
+    /// POP Deleted
+    ProductOfferingPriceDeleteEvent,
 }
 
 #[cfg(test)]

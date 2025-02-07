@@ -354,7 +354,7 @@ pub trait HasRelatedParty : HasId {
 }
 
 /// Trait for generating an event
-pub trait TMFEvent<T> : HasId + HasName {
+pub trait TMFEvent<T> : HasId {
     /// Geneate container for an TMF payload to be used in an event
     fn event(&self) -> T;
 }
