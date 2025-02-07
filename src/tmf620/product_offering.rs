@@ -21,16 +21,19 @@ use crate::{
     TimePeriod, 
     DateTime,
     Uri,
+    TMFEvent,
     vec_insert,
     LIB_PATH,
 };
 
 use super::product_offering_price::ProductOfferingPriceRef;
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 use super::{ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
 use crate::tmf651::agreement::AgreementRef;
-
+use crate::common::event::{Event,EventPayload};
 use tmflib_derive::{
     HasId,
     HasDescription,
@@ -267,6 +270,57 @@ impl ProductOffering {
             None => self.product_offering_relationship = Some(vec![offer_rel]),
         };
     }
+}
+
+// Events
+/// Product Specification Event Container
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub struct ProductOfferingEvent {
+    product_specification: ProductOffering,
+}
+
+impl TMFEvent<ProductOfferingEvent> for ProductOffering {
+    fn event(&self) -> ProductOfferingEvent {
+        ProductOfferingEvent {
+            product_specification: self.clone(),
+        }
+    }
+}
+
+impl EventPayload<ProductOfferingEvent> for ProductOffering {
+    type Subject = ProductOffering;
+    type EventType = ProductOfferingEvent;
+    fn to_event(&self,event_type : Self::EventType) -> Event<ProductOfferingEvent,Self::EventType> {
+        let now = Utc::now();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let desc = format!("{:?} for {}",event_type,self.get_name());
+        Event {
+            description: Some(desc),
+            domain: Some(ProductOffering::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            href: self.href.clone(),
+            id: self.id.clone(),
+            title: self.name.clone(),
+            event_time: event_time.to_string(),
+            event_type,
+            event: self.event(),
+            ..Event::default()
+        }    
+    }
+}
+
+/// Product Offering Event Type
+#[derive(Clone,Default,Debug)]
+pub enum ProductOfferingEventType {
+    /// Product Offering Created
+    #[default]
+    ProductOfferingCreateEvent,
+    /// Product Offering Attributed Changed
+    ProductOfferingAttributeValueChangeEvent,
+    /// Product Offering Status Changed
+    ProductOfferingStateChangeEvent,
+    /// Product Offering Deleted
+    ProductOfferingDeleteEvent,
 }
 
 #[cfg(test)]
