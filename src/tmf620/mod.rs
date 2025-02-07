@@ -1,4 +1,4 @@
-// Copyright [2024] [Ryan Ruckley]
+// Copyright [2025] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 //! Structs associated with product catalogue management
 
 use serde::{Deserialize, Serialize};
+use crate::common::related_place::PlaceRef;
 
 #[cfg(all(feature = "tmf620",feature = "build-V4"))]
 const MOD_PATH: &str = "productCatalogManagement/v4";
@@ -49,10 +50,6 @@ pub struct MarketSegmentRef {
     name : String,
     href: String,
 }
-
-/// Place Reference
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct PlaceRef {}
 
 /// Service Level Agreement Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -117,7 +114,7 @@ mod test {
 
     #[test]
     fn test_placeref_deserialize() {
-        let _placeref : PlaceRef  = serde_json::from_str(EMPTY_JSON).expect("Could not parse Emoty JSON");
+        let _placeref : PlaceRef  = serde_json::from_str(REF_JSON).expect("Could not parse Empty JSON");
     }
 
     #[test]

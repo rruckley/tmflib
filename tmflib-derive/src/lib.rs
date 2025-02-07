@@ -78,6 +78,11 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
                 // Since we have changed the Id, the href will be invalid.
                 self.generate_href();
             }
+
+            fn id(mut self, id : impl Into<String>) -> Self {
+                self.set_id(id);
+                self
+            }
         }
     };
     out.into()
@@ -143,6 +148,11 @@ pub fn hasattachment_derive(input : TokenStream) -> TokenStream {
                     None => None,
                 }
             }
+
+            fn attachment(mut self, attachment : AttachmentRefOrValue) -> Self {
+                self.add(&attachment);
+                self
+            }
         }
     };
     out.into()
@@ -166,6 +176,14 @@ pub fn haslastupdate_derive(input: TokenStream) -> TokenStream {
         impl HasLastUpdate for #name {
             fn set_last_update(&mut self, time : impl Into<String>) {
                 self.last_update = Some(time.into());
+            }
+
+            fn last_update(mut self, time : Option<String>) -> Self {
+                match time {
+                    Some(t) => self.set_last_update(t),
+                    None => self.set_last_update(Self::get_timestamp()),
+                };
+                self
             }
         }
     };
@@ -194,6 +212,10 @@ pub fn hasname_derive(input: TokenStream) -> TokenStream {
             }
             fn set_name(&mut self, name : impl Into<String>) {
                 self.name = Some(name.into().trim().to_string());
+            }
+            fn name(mut self, name :impl Into<String>) -> Self {
+                self.set_name(name);
+                self
             }
         }
     };
@@ -234,6 +256,10 @@ pub fn hasnote_derive(input: TokenStream) -> TokenStream {
                     Some(n) => Ok(n.remove(idx)),
                     None => Err(String::from("No notes present")),
                 }  
+            }
+            fn note(mut self, note : Note) -> Self {
+                self.add_note(note);
+                self
             }
         }
     };
@@ -287,6 +313,11 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
                     },
                     None => None,
                 }    
+            }
+
+            fn party(mut self, party : RelatedParty) -> Self {
+                self.add_party(party);
+                self
             }
         }
     };
@@ -394,6 +425,11 @@ pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
                     },
                     None => false
                 }
+            }
+
+            fn validity(mut self, validity : TimePeriod) -> Self {
+                self.set_validity(validity);
+                self
             }
         }
     };

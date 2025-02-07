@@ -12,14 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! TMF634 Resource Catalogue Management
+//! Recommendation Management Module
 
-#[cfg(feature = "build-V4")]
-const MOD_PATH : &str = "resourceCatalog/v4";
-#[cfg(feature = "build-V5")]
-const MOD_PATH : &str = "resourceCatalog/v5";
+pub mod query_product_recommendation;
 
-pub mod catalog;
-pub mod resource_category;
-pub mod resource_candidate;
-pub mod resource_specification;
+/// Module Path
+
+pub const MOD_PATH : &str = "recommendation/v4";

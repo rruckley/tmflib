@@ -1,4 +1,4 @@
-// Copyright [2024] [Ryan Ruckley]
+// Copyright [2025] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -69,6 +69,8 @@ pub type TimeStamp = String;
 pub type DateTime = String;
 /// Type alias for Uri
 pub type Uri = String;
+/// Priority Type
+pub type Priority = u16;
 
 /// Standard TMF TimePeriod structure
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
@@ -257,6 +259,9 @@ pub trait HasId : Default {
         item.generate_id();
         item
     }
+    /// Builder pattern to set id on create()
+    /// NB: This can be used to set an explicit id on create instead of auto-generate via [create()]
+    fn id(self, id : impl Into<String>) -> Self;
 }
 
 /// Trait indicating a TMF sturct has a last_update or similar timestamp field.
@@ -279,6 +284,10 @@ pub trait HasLastUpdate : HasId {
         item.set_last_update(Self::get_timestamp());
         item
     }
+
+    /// Builder pattern for setting lastUpdate on create
+    /// If time is None, current time is used via ['get_timestamp()']
+    fn last_update(self, time : Option<String>) -> Self;
 }
 
 /// Trait for classes with a valid_for object covering validity periods.
@@ -300,6 +309,8 @@ pub trait HasValidity {
     /// - If end is set and start is in the past and end is in the future, return true.
     /// - Otherwise return false.
     fn is_valid(&self) -> bool;
+    /// Builder pattern function to add validity on create
+    fn validity(self, validity : TimePeriod) -> Self;
 }
 
 /// Does an object have a name field?
@@ -312,6 +323,8 @@ pub trait HasName : HasId {
     }
     /// Set the name, trimming any whitespace
     fn set_name(&mut self, name : impl Into<String>);
+    /// Builder pattern to set name on create, usually coverered by new()
+    fn name(self, name : impl Into<String>) -> Self;
 }
 
 /// Trait for classes with notes
@@ -322,6 +335,8 @@ pub trait HasNote : HasId {
     fn add_note(&mut self, note : Note);
     /// Remove a note by index
     fn remove_note(&mut self, idx: usize) -> Result<Note,String>;
+    /// Builder pattern to add note on create
+    fn note(self, note : Note) -> Self;
 }
 
 /// Trait for classes with Related Parties
@@ -334,6 +349,8 @@ pub trait HasRelatedParty : HasId {
     fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String>;
     /// Get a list of RelatedParty entries by role
     fn get_by_role(&self, role : String) -> Option<Vec<&RelatedParty>>;
+    /// Builder pattern to add a party on create
+    fn party(self, party : RelatedParty) -> Self;
 }
 
 /// Trait for generating an event
@@ -355,6 +372,8 @@ pub trait HasAttachment {
     fn get(&self, position: usize) -> Option<AttachmentRefOrValue>;
     /// Remove an attachment at a particular position
     fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue>;
+    /// builder pattern function to add attachment on create
+    fn attachment(self, attachment : AttachmentRefOrValue) -> Self;
 }
 
 /// Trait for managing a description field. Description field must be defined as Option<String>
@@ -391,6 +410,8 @@ pub mod tmf638;
 pub mod tmf639;
 #[cfg(feature = "tmf641")]
 pub mod tmf641;
+#[cfg(feature = "tmf645")]
+pub mod tmf645;
 #[cfg(feature = "tmf646")]
 pub mod tmf646;
 #[cfg(feature = "tmf648")]
@@ -401,6 +422,8 @@ pub mod tmf651;
 pub mod tmf653;
 #[cfg(feature = "tmf663")]
 pub mod tmf663;
+#[cfg(feature = "tmf664")]
+pub mod tmf664;
 #[cfg(feature = "tmf666")]
 pub mod tmf666;
 #[cfg(feature = "tmf667")]
@@ -417,6 +440,8 @@ pub mod tmf674;
 pub mod tmf678;
 #[cfg(feature = "tmf679")]
 pub mod tmf679;
+#[cfg(feature = "tmf680")]
+pub mod tmf680;
 #[cfg(feature = "tmf681")]
 pub mod tmf681;
 #[cfg(feature = "tmf687")]

@@ -13,6 +13,34 @@ use crate::tmf674::geographic_site_v4::GeographicSite;
 use crate::tmf674::geographic_site_v5::GeographicSite;
 use crate::{HasId,HasName};
 
+/// Place Reference
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct PlaceRef {
+    id : String,
+    href : String,
+    name : String,
+}
+
+impl From<GeographicSite> for PlaceRef {
+    fn from(value: GeographicSite) -> Self {
+        PlaceRef {
+            id : value.get_id(),
+            href: value.get_href(),
+            name: value.get_name(),
+        }
+    }
+}
+
+impl From<GeographicAddress> for PlaceRef {
+    fn from(value: GeographicAddress) -> Self {
+        PlaceRef {
+            id : value.get_id(),
+            href: value.get_href(),
+            name : value.get_name(),
+        }
+    }
+}
+
 /// Reference to a place (TMF673, TMF674, TMF674)
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
