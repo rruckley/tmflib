@@ -127,9 +127,10 @@ impl EventPayload<CatalogEvent> for Catalog {
     fn to_event(&self,event_type : CatalogEventType) -> Event<CatalogEvent,CatalogEventType> {       
         let now = Utc::now();
         let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let desc = format!("{:?} for {}",event_type,self.get_name());
         Event {
             correlation_id: None,
-            description: None,
+            description: Some(desc),
             domain: Some(Catalog::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
