@@ -93,35 +93,50 @@ impl CheckServiceQualificationItem {
 
 /// Check Service Qualification 
 #[derive(Clone,Debug,Default,HasId,HasDescription,HasRelatedParty,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct CheckServiceQualification {
     /// Unique Id
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id : Option<String>,
     /// HTTP Uri
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href : Option<Uri>,
     /// Description
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub description : Option<String>,
     /// SQ Status
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub state : Option<TaskStateType>,
         // Referenced modules
     /// Service Qualification Items
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub service_qualification_item : Option<Vec<CheckServiceQualificationItem>>,
 
     // Dates
+    #[serde(skip_serializing_if = "Option::is_none")]
     check_service_qualification_date : Option<DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     effective_qualification_date : Option<DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     estimated_response_date : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     estimated_qualification_date : Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     expiration_date : Option<String>,
 
     // Flags
     /// Quick Qualification
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub instant_sync_qualification : Option<bool>,
     /// Add Alternatives
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub provide_alternative : Option<bool>,
     /// Provide failure reason
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub provide_unavailability_reason : Option<bool>,
 
     /// Related Parties
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party : Option<Vec<RelatedParty>>,
 }
 
