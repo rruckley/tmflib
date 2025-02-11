@@ -34,6 +34,8 @@ const CLASS_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
 const CHAR_VALUE_MIN_CARD : Cardinality = 0;
 const CHAR_VALUE_MAX_CARD : Cardinality = 1;
+/// Verb to tag converted ServiceSpecifications with.
+pub const SPEC_CONV_VERB : &str = "Imported"; 
 
 /// Product Specification Characteristic
 #[derive(Clone, Debug, Default, Deserialize, Serialize, HasValidity)]
@@ -254,9 +256,11 @@ impl From<&ServiceSpecificationRef> for ProductSpecificationRef {
 // used as part of the import process.
 impl From<&ServiceSpecification> for ProductSpecification {
     fn from(value: &ServiceSpecification) -> Self {
-        let mut ps = ProductSpecification::new(format!("{} [Converted from Service Spec]",value.get_name()));
+        let mut ps = ProductSpecification::new(value.get_name());
+        // get_description() is a method on the ServiceSpecification that always returns a string
+        ps.description = Some(format!("{} [{}]",value.get_description(),SPEC_CONV_VERB));
         if value.description.is_some() {
-            ps.description = Some(value.description.as_ref().unwrap().clone());
+            ps.description = Some(format!("{} [{}]",value.get_description(),SPEC_CONV_VERB));
         }
         ps.is_bundle = value.is_bundle;
         if value.last_update.is_some() {
