@@ -260,7 +260,7 @@ pub trait HasId : Default {
         item
     }
     /// Builder pattern to set id on create()
-    /// NB: This can be used to set an explicit id on create instead of auto-generate via [create()]
+    /// NB: This can be used to set an explicit id on create instead of auto-generate via `[create`]
     fn id(self, id : impl Into<String>) -> Self;
 }
 
@@ -376,7 +376,7 @@ pub trait HasAttachment {
     fn attachment(self, attachment : AttachmentRefOrValue) -> Self;
 }
 
-/// Trait for managing a description field. Description field must be defined as Option<String>
+/// Trait for managing a description field. Description field must be defined as `Option<String>`
 pub trait HasDescription {
     /// Builder pattern function to set the description on object creation
     fn description(self, description : impl Into<String>) -> Self;
