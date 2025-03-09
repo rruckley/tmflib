@@ -1,4 +1,4 @@
-//! Resource Function Activation
+//! TMF664 Resource Function Activation
 
 use serde::{Deserialize, Serialize};
 

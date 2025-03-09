@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Recommendation Management Module
+//! TMF680 Recommendation Management Module
 
 pub mod query_product_recommendation;
 

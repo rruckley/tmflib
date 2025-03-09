@@ -46,6 +46,8 @@
 //! *NB: For components that dont' have any defined APIs, a common set of APIs are included under the **[common]** feature*
 
 #![warn(missing_docs)]
+// #![warn(rustdoc::missing_doc_code_examples)]
+#![warn(rustdoc::private_doc_tests)]
 
 use chrono::{Utc,Days};
 use common::{attachment::AttachmentRefOrValue, related_party::RelatedParty};
