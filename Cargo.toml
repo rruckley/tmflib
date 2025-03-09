@@ -8,16 +8,22 @@ repository = "https://github.com/rruckley/tmflib"
 license = "Apache-2.0"
 
 [features]
+# TMF620 Product Catalogue Module
 tmf620 = ["tmf633","tmf634","tmf651"]
+# TMF621 Trouble Ticket Module
 tmf621 = []
+# TMF622 Product Order Module
 tmf622 = ["tmf641"]
+# TMF629 Customer Module
 tmf629 = []
 tmf632 = []
+# TMF633 Service Catalogue Module
 tmf633 = []
 tmf634 = []
 tmf637 = []
 tmf638 = []
 tmf639 = []
+# TMF641 Service Order Module
 tmf641 = ["tmf646"]
 tmf645 = ["tmf633","tmf641"]
 tmf646 = []
@@ -45,12 +51,14 @@ tmf688 = []
 tmf696 = []
 tmf697 = []
 tmf699 = []
+# TMF700 Shipping Order Module
 tmf700 = []
 tmf701 = []
 tmf724 = []
 tmf760 = []
+tmf921 = []
 
-# Build all V4 APIs
+# Build all APIs
 all = [
     "tmf620",
     "tmf621",
@@ -90,7 +98,9 @@ all = [
     "tmf760"
 ]
 
+# Build V4 version of APIs
 build-V4 = []
+# Build V5 version of APIs
 build-V5 = []
 
 # Specifications referenced from common module
@@ -101,7 +111,7 @@ common = ["tmf620","tmf629","tmf632","tmf666","tmf667","tmf669","tmf674"]
 TMFC001 = ["common","tmf620","tmf633","tmf669","tmf632","tmf634","tmf651","tmf673","tmf674","tmf675","tmf672","tmf662","tmf701","tmf671","tmf688"]
 # Product Order Capture and Validation
 TMFC002 = ["tmf622","tmf648","tmf663","common"]
-# Product Order Delivery Orchestration and Management
+## Product Order Delivery Orchestration and Management
 TMFC003 = ["common"]
 TMFC004 = ["common"]
 # Product Inventory
@@ -147,7 +157,7 @@ TMFC025 = ["common"]
 # Debt Collection Management
 TMFC026 = ["common"]
 # Product Configurator
-TMFC027 = ["tmf679","tmf760","common"]
+TMFC027 = ["tmf679","tmf760","tmf637","tmf622","tmf673","tmf662","tmf921","common"]
 # Party Management
 TMFC028 = ["common"]
 # Payment Management
