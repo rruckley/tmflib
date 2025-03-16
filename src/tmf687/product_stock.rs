@@ -3,13 +3,7 @@
 
 use super::MOD_PATH;
 use crate::{
-    LIB_PATH,
-    HasId,
-    HasName,
-    HasLastUpdate,
-    HasRelatedParty,
-    Uri,
-    DateTime,
+    HasId, HasLastUpdate, HasName, HasRelatedParty,TMFEvent, Uri, LIB_PATH,DateTime,
 };
 use tmflib_derive::{
     HasId,
@@ -20,7 +14,12 @@ use tmflib_derive::{
 use crate::common::related_party::RelatedParty;
 use crate::common::related_place::RelatedPlaceRefOrValue;
 use crate::common::product::ProductRefOrValue;
-use serde::{Deserialize,Serialize};
+use crate::common::event::{Event,EventPayload};
+
+// External
+use chrono::Utc;
+use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 const CLASS_PATH : &str = "productStock";
 
@@ -79,6 +78,94 @@ impl ProductStock {
         }
     }
 }
+
+/// Product Stock Class
+#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+pub enum ProductStockEventType {
+    /// Default Event
+    #[default]
+    /// Product Stock Event
+    ProductStockCreateEvent,
+    /// Product Stock Attribute Value Change Event
+    ProductStockAttributeValueChangeEvent,
+    /// Product Stock State Change Event
+    ProductStockStateChangeEvent,
+    /// Product Stock Batch Event
+    ProductStockBatchEvent,
+    /// Adjust Product Stock Create Event
+    ProductStockDeleteEvent,
+    /// Adjust Product Stock Attribute Value Change Event
+    AdjustProductStockCreateEvent,
+    /// Adjust Product Stock Attribute Value Change Event
+    AdjustProductStockAttributeValueChangeEvent,
+    /// Adjust Product Stock State Change Event
+    AdjustProductStockStateChangeEvent,
+    /// Adjust Product Stock Batch Event
+    AdjustProductStockBatchEvent,
+    /// Check Product Stock Create Event
+    CheckProductStockCreateEvent,
+    /// Check Product Stock Attribute Value Change Event
+    CheckProductStockAttributeValueChangeEvent,
+    /// Check Product Stock State Change Event
+    CheckProductStockStateChangeEvent,
+    /// Check Product Stock Batch Event
+    CheckProductStockBatchEvent,
+    /// Reserve Product Stock Create Event
+    ReserveProductStockCreateEvent,
+    /// Reserve Product Stock Attribute Value Change Event
+    ReserveProductStockAttributeValueChangeEvent,
+    /// Reserve Product Stock State Change Event
+    ReserveProductStockStateChangeEvent,
+    /// Reserve Product Stock Batch Event
+    ReserveProductStockBatchEvent,
+    /// Query Product Stock Create Event
+    QueryProductStockCreateEvent,
+    /// Query Product Stock Attribute Value Change Event
+    QueryProductStockAttributeValueChangeEvent,
+    /// Query Product Stock State Change Event
+    QueryProductStockStateChangeEvent,
+    /// Query Product Stock Batch Event
+    QueryProductStockBatchEvent,
+}
+
+// Events
+/// Product Stock Event
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+pub struct ProductStockEvent {
+    /// Product Stock
+    pub product_stock: ProductStock,
+}
+
+impl TMFEvent<ProductStockEvent> for ProductStock {
+   fn event(&self) -> ProductStockEvent {
+         ProductStockEvent {
+              product_stock: self.clone(),
+         }
+    }
+}
+
+impl EventPayload<ProductStockEvent> for ProductStock {
+    type Subject = ProductStock;
+    type EventType = ProductStockEvent;
+    fn to_event(&self,event_type : Self::EventType) -> Event<ProductStockEvent,Self::EventType> {
+        let now = Utc::now();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let desc = format!("{:?} for {}",event_type,self.get_name());
+        Event {
+            description: Some(desc),
+            domain: Some(ProductStock::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            href: self.href.clone(),
+            id: self.id.clone(),
+            title: self.name.clone(),
+            event_time: event_time.to_string(),
+            event_type,
+            event: self.event(),
+            ..Event::default()
+        }
+    }
+}
+
 
 #[cfg(test)]
 mod test {
