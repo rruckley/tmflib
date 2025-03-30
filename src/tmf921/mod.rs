@@ -16,5 +16,7 @@
 
 
 pub mod intent;
+pub mod characteristic;
+pub mod expression;
 
 const MOD_PATH : &str = "intentManagement/v5";

@@ -1,10 +1,15 @@
 
 //! Intent Module
 
-use crate::{DateTime, HasDescription, HasId, HasName, TimePeriod, LIB_PATH};
+use crate::{DateTime, HasDescription, HasId, HasName, HasAttachment, HasRelatedParty, TimePeriod, LIB_PATH};
 use serde::{Deserialize, Serialize};
-use tmflib_derive::{HasName,HasId,HasDescription};
+use tmflib_derive::{HasName,HasId,HasDescription,HasAttachment,HasRelatedParty};
 use super::MOD_PATH;
+use super::characteristic::Characteristic;
+use super::expression::IntentExpression;
+use crate::common::attachment::AttachmentRefOrValue;
+use crate::common::related_party::RelatedParty;
+
 
 const CLASS_PATH : &str = "intent";
 
@@ -19,7 +24,7 @@ const CLASS_PATH : &str = "intent";
 /// * `version` - The version of the intent.
 /// * `status` - The current status of the intent.
 /// * `valid_for` - An optional time period during which the intent is valid.
-#[derive(Clone, Debug, Default, Deserialize, Serialize, HasId,HasName, HasDescription)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, HasId,HasName, HasDescription, HasAttachment, HasRelatedParty)]
 #[serde(rename_all = "camelCase")]
 pub struct Intent {
     /// An optional unique identifier for the intent.
@@ -46,5 +51,17 @@ pub struct Intent {
     /// The version of the intent.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
+    /// An optional list of characteristics associated with the intent.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub characteristic: Option<Vec<Characteristic>>,
+    /// An optional expressions associated with the intent.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub expression: Option<IntentExpression>,
+    /// An optional list of attachments associated with the intent.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    attachment: Option<Vec<AttachmentRefOrValue>>,
+    /// An optional list of related parties associated with the intent.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    related_party: Option<Vec<RelatedParty>>,
 }
 
