@@ -389,6 +389,27 @@ pub trait HasDescription {
     fn set_description(&mut self, description : impl Into<String>) -> Option<String>;
 }
 
+/// Trait for objects that have a reference version object or can be converted into an EneityRef
+pub trait HasReference : HasId + HasName {
+    /// Reference type assocaited with Self.
+    type RefType : Serialize;
+    /// Get object as an EntityRef
+    fn as_entity_ref(&self) -> crate::common::related_entity::RelatedEntity {
+        crate::common::related_entity::RelatedEntity {
+            id: self.get_id(),
+            href: self.get_href(),
+            name: self.get_name(),
+            referred_type: Self::get_class(),
+            role: None,
+        }
+    }
+
+    /// Return a reference version of an object, if non exists, return None.
+    fn as_ref(&self) -> Option<Self::RefType> {
+        None
+    }
+}
+
 pub mod common;
 #[cfg(feature = "tmf620")]
 pub mod tmf620;

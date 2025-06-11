@@ -17,6 +17,7 @@ use crate::{
     DateTime,
     HasValidity,
     HasDescription,
+    HasReference,
     TimePeriod,
     LIB_PATH,
     TMFEvent,
@@ -305,6 +306,13 @@ impl From<&Category> for CategoryRef {
             schema_location: None,
             referred_type: Some(Category::get_class()),
         }
+    }
+}
+
+impl HasReference for Category {
+    type RefType = CategoryRef;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(CategoryRef::from(self))
     }
 }
 
