@@ -404,7 +404,7 @@ pub trait HasReference : HasId + HasName {
         }
     }
 
-    /// Return a reference version of an object, if non exists, return None.
+    /// Return a reference version of an object, if none exists, return None.
     fn as_ref(&self) -> Option<Self::RefType> {
         None
     }
