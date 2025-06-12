@@ -94,7 +94,8 @@ all = [
     "tmf700",
     "tmf701",
     "tmf724",
-    "tmf760"
+    "tmf760",
+    "tmf921"
 ]
 
 # Build V4 version of APIs
