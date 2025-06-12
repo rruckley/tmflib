@@ -16,6 +16,7 @@ use crate::{
     HasId,
     HasName,
     HasValidity,
+    HasReference,
     TimePeriod,
     TMFEvent,
     gen_code,
@@ -230,6 +231,13 @@ impl From<&Organization> for Customer {
     }
 }
 
+impl HasReference for Customer {
+    type RefType = RelatedParty;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(RelatedParty::from(self))  
+    }
+}
+
 /// Customer Event Type
 #[derive(Clone,Debug,Deserialize,Serialize)]
 pub enum CustomerEventType {
@@ -436,6 +444,18 @@ mod test {
 
         assert_eq!(customer.get_id(),String::default());
         assert_eq!(customer.get_href(),String::default());
+    }
+
+    #[test]
+    fn test_customer_asref() {
+        let org = Organization::new(CUSTOMER);
+        let customer = Customer::from(&org);
+
+        let ref_party = customer.as_ref().unwrap();
+
+        assert_eq!(ref_party.name.unwrap(),CUSTOMER.to_string());
+        assert_eq!(ref_party.id,customer.get_id());
+        assert_eq!(ref_party.href,customer.get_href());
     }
 }
 

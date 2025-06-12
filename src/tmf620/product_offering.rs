@@ -18,6 +18,7 @@ use crate::{
     HasId, 
     HasName, 
     HasValidity, 
+    HasReference,
     TimePeriod, 
     DateTime,
     Uri,
@@ -67,6 +68,13 @@ impl From<ProductOffering> for ProductOfferingRef {
             href: po.href.unwrap_or("MISSING".to_string()).clone(), 
             name: po.name.unwrap_or("MISSING".to_string()).clone() 
         }
+    }
+}
+
+impl HasReference for ProductOffering {
+    type RefType = ProductOfferingRef;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(ProductOfferingRef::from(self.clone()))
     }
 }
 
@@ -497,4 +505,14 @@ mod test {
 
     #[test]
     fn test_por_hasvalidity() {}
+
+    #[test]
+    fn test_offering_asref() {
+        let po = ProductOffering::new(PO_NAME);
+        let po_ref = po.as_ref().unwrap();
+
+        assert_eq!(po_ref.id, po.get_id());
+        assert_eq!(po_ref.href, po.get_href());
+        assert_eq!(po_ref.name, po.get_name());
+    }
 }

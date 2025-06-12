@@ -15,6 +15,7 @@ use crate::{
     HasValidity, 
     TimePeriod, 
     HasLastUpdate,
+    HasReference,
     TMFEvent,
     Cardinality
 };
@@ -235,6 +236,13 @@ impl From<ProductSpecification> for ProductSpecificationRef {
             name: ps.name.clone(),
             version: ps.version.clone(),
         }
+    }
+}
+
+impl HasReference for ProductSpecification {
+    type RefType = ProductSpecificationRef;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(ProductSpecificationRef::from(self.clone()))
     }
 }
 
@@ -609,5 +617,16 @@ mod test {
         let pscv = ProductSpecificationCharacteristicValue::new(ValueEnum::from("Value"));
 
         assert_eq!(enum_to_type(pscv.value),"Str");
+    }
+
+    #[test]
+    fn test_prodspec_asref() {
+        let ps = ProductSpecification::new(SPEC_NAME);
+        let ps_ref = ps.as_ref().unwrap();
+
+        assert_eq!(ps_ref.id, ps.get_id());
+        assert_eq!(ps_ref.href, ps.get_href());
+        assert_eq!(ps_ref.name, ps.name);
+        assert_eq!(ps_ref.version, ps.version);
     }
 }

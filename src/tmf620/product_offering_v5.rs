@@ -13,6 +13,7 @@ use crate::{
     HasDescription,
     HasId, 
     HasName, 
+    HasReference,
     TimePeriod
 };
 use tmflib_derive::{
@@ -51,6 +52,14 @@ impl From<ProductOffering> for ProductOfferingRef {
             href: po.get_href(), 
             name: po.get_name() 
         }
+    }
+}
+
+impl HasReference for ProductOffering {
+    type RefType = ProductOfferingRef;
+    /// Convert from ProductOffering into ProductOfferingRef
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(ProductOfferingRef::from(self.clone()))
     }
 }
 

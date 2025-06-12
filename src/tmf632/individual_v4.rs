@@ -10,6 +10,7 @@ use crate::{
     HasId, 
     HasName, 
     HasRelatedParty,
+    HasReference,
     DateTime,
     TMFEvent,
     gen_code,
@@ -330,6 +331,13 @@ impl HasName for Individual {
     }
 }
 
+
+impl HasReference for Individual {
+    type RefType = RelatedParty;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(RelatedParty::from(self))
+    }
+}
 /// Individual Event Types
 #[derive(Clone,Debug,Deserialize,Serialize)]
 pub enum IndividualEventType {
@@ -388,6 +396,7 @@ impl EventPayload<IndividualEvent> for Individual {
 #[cfg(test)]
 mod test {
     use super::Individual;
+    use crate::{HasId,HasName,HasReference,HasRelatedParty};
 
     const IND_TITLE: &str = "A Title";
     const IND_GENDER: &str = "A Gender";
@@ -497,5 +506,17 @@ mod test {
 
         assert_eq!(mobile.is_some(),true);    
         assert_eq!(mobile.unwrap(),IND_MOBILE.to_string());
+    }
+
+    #[test]
+    fn test_individual_asref() {
+        use crate::HasName;
+        let ind = Individual::new("John Bagford Smith")
+            .mobile(IND_MOBILE);
+        let ref_ind = ind.as_ref();
+
+        assert_eq!(ref_ind.is_some(),true);
+        assert_eq!(ref_ind.unwrap().name.unwrap(),ind.get_name());
+        // assert_eq!(ref_ind.unwrap().id,ind.get_id());
     }
 }

@@ -8,6 +8,7 @@ use crate::{
     HasLastUpdate, 
     HasValidity,
     HasRelatedParty, 
+    HasReference,
     TimePeriod, 
     DateTime,
     TMFEvent,
@@ -112,6 +113,11 @@ pub struct CatalogEvent {
     /// Struct that this event relates to
     pub catalog: Catalog,
 }
+
+impl HasReference for Catalog {
+    type RefType = Catalog;
+}
+
 
 impl TMFEvent<CatalogEvent> for Catalog {
     fn event(&self) -> CatalogEvent {
