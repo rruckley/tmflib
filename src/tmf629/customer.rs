@@ -445,5 +445,17 @@ mod test {
         assert_eq!(customer.get_id(),String::default());
         assert_eq!(customer.get_href(),String::default());
     }
+
+    #[test]
+    fn test_customer_asref() {
+        let org = Organization::new(CUSTOMER);
+        let customer = Customer::from(&org);
+
+        let ref_party = customer.as_ref().unwrap();
+
+        assert_eq!(ref_party.name.unwrap(),CUSTOMER.to_string());
+        assert_eq!(ref_party.id,customer.get_id());
+        assert_eq!(ref_party.href,customer.get_href());
+    }
 }
 

@@ -505,4 +505,14 @@ mod test {
 
     #[test]
     fn test_por_hasvalidity() {}
+
+    #[test]
+    fn test_offering_asref() {
+        let po = ProductOffering::new(PO_NAME);
+        let po_ref = po.as_ref().unwrap();
+
+        assert_eq!(po_ref.id, po.get_id());
+        assert_eq!(po_ref.href, po.get_href());
+        assert_eq!(po_ref.name, po.get_name());
+    }
 }

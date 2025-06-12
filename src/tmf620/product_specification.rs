@@ -618,4 +618,15 @@ mod test {
 
         assert_eq!(enum_to_type(pscv.value),"Str");
     }
+
+    #[test]
+    fn test_prodspec_asref() {
+        let ps = ProductSpecification::new(SPEC_NAME);
+        let ps_ref = ps.as_ref().unwrap();
+
+        assert_eq!(ps_ref.id, ps.get_id());
+        assert_eq!(ps_ref.href, ps.get_href());
+        assert_eq!(ps_ref.name, ps.name);
+        assert_eq!(ps_ref.version, ps.version);
+    }
 }
