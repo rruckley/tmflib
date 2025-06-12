@@ -10,6 +10,7 @@ use crate::{
     HasId, 
     HasName, 
     HasRelatedParty,
+    HasReference,
     DateTime,
     TMFEvent,
     gen_code,
@@ -330,6 +331,13 @@ impl HasName for Individual {
     }
 }
 
+
+impl HasReference for Individual {
+    type RefType = RelatedParty;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(RelatedParty::from(self))
+    }
+}
 /// Individual Event Types
 #[derive(Clone,Debug,Deserialize,Serialize)]
 pub enum IndividualEventType {

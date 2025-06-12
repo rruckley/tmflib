@@ -16,6 +16,7 @@ use crate::{
     HasId,
     HasName,
     HasValidity,
+    HasReference,
     TimePeriod,
     TMFEvent,
     gen_code,
@@ -227,6 +228,13 @@ impl From<&Organization> for Customer {
         let mut customer = Customer::new(value.to_owned());
         customer.generate_code(None);
         customer
+    }
+}
+
+impl HasReference for Customer {
+    type RefType = RelatedParty;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(RelatedParty::from(self))  
     }
 }
 

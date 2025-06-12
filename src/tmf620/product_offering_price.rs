@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use super::MOD_PATH;
-use crate::{HasId,HasName, HasLastUpdate, LIB_PATH,TMFEvent,HasValidity, TimePeriod};
+use crate::{HasId,HasName, HasLastUpdate, LIB_PATH,TMFEvent,HasValidity, TimePeriod, HasReference};
 use crate::common::money::Money;
 use crate::common::tax_item::TaxItem;
 use crate::common::event::{Event,EventPayload};
@@ -52,6 +52,13 @@ impl From<ProductOfferingPrice> for ProductOfferingPriceRef {
             href: pop.href.clone(), 
             name: pop.get_name(),
         }
+    }
+}
+
+impl HasReference for ProductOfferingPrice {
+    type RefType = ProductOfferingPriceRef;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(ProductOfferingPriceRef::from(self.clone()))
     }
 }
 

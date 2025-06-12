@@ -10,6 +10,7 @@ use crate::{
     HasId, 
     HasName,
     HasRelatedParty,
+    HasReference,
     DateTime, 
     TMFEvent, 
     TimePeriod, 
@@ -296,6 +297,13 @@ impl Individual {
                 },
             }
         }
+}
+
+impl HasReference for Individual {
+    type RefType = RelatedParty;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(RelatedParty::from(self))
+    }
 }
 
 impl HasName for Individual {

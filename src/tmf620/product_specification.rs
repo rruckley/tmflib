@@ -15,6 +15,7 @@ use crate::{
     HasValidity, 
     TimePeriod, 
     HasLastUpdate,
+    HasReference,
     TMFEvent,
     Cardinality
 };
@@ -235,6 +236,13 @@ impl From<ProductSpecification> for ProductSpecificationRef {
             name: ps.name.clone(),
             version: ps.version.clone(),
         }
+    }
+}
+
+impl HasReference for ProductSpecification {
+    type RefType = ProductSpecificationRef;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(ProductSpecificationRef::from(self.clone()))
     }
 }
 
