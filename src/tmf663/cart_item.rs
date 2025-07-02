@@ -36,7 +36,7 @@ pub struct CartItem {
     /// Quantity
     pub quantity: u16,
     /// Item Price
-    pub item_price: Vec<CartPrice>,
+    pub item_price: Option<Vec<CartPrice>>,
 }
 
 impl CartItem {

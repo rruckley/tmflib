@@ -60,7 +60,7 @@ pub struct ShoppingCart {
     pub valid_for: Option<TimePeriod>,
     // Referenced objects
     /// Cart Price (Total)
-    cart_total_price : Vec<CartPrice>,
+    cart_total_price : Option<Vec<CartPrice>>,
     /// Cart Items
     #[serde(skip_serializing_if = "Option::is_none")]
     pub cart_item : Option<Vec<CartItem>>,
@@ -72,12 +72,16 @@ pub struct ShoppingCart {
 impl ShoppingCart {
     /// Create a new shopping cart
     pub fn new() -> ShoppingCart {
-        let mut cart = ShoppingCart::create();
-        cart.cart_item = Some(vec![]);
-        cart.related_party = Some(vec![]);
-        cart.valid_for = Some(TimePeriod::period_days(CART_DEFAULT_VALID.into()));
-        cart.cart_total_price = vec![];
-        cart
+        // let mut cart = ShoppingCart::create();
+        // cart.cart_item = Some(vec![]);
+        // cart.related_party = Some(vec![]);
+        // cart.valid_for = Some(TimePeriod::period_days(CART_DEFAULT_VALID.into()));
+        // cart.cart_total_price = None;
+        // cart
+        ShoppingCart {
+            valid_for:  Some(TimePeriod::period_days(CART_DEFAULT_VALID.into())),
+            ..Default::default()
+        }
     }
     /// Add item to shopping cart
     /// This function will calculate a total price and add it if not present
