@@ -1,6 +1,6 @@
 [package]
 name = "tmflib"
-version = "0.1.30"
+version = "0.1.31"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Interface library for processing TMF payloads"
@@ -241,7 +241,7 @@ tmflib-derive = { version = "0.1.32" }
 hex = "0.4.3"
 base32 = "0.5.1"
 openapiv3 = "2.2.0"
-rust_decimal = "1.37.1"
+rust_decimal = "1.37.2"
 rust_decimal_macros = "1.37.1"
 
 [dev-dependencies]

@@ -396,7 +396,7 @@ impl EventPayload<IndividualEvent> for Individual {
 #[cfg(test)]
 mod test {
     use super::Individual;
-    use crate::{HasId,HasName,HasReference,HasRelatedParty};
+    use crate::HasReference;
 
     const IND_TITLE: &str = "A Title";
     const IND_GENDER: &str = "A Gender";
