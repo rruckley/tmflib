@@ -5,8 +5,8 @@ use serde::{Deserialize,Serialize};
 use super::MOD_PATH;
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
-use crate::{DateTime, HasId, HasName, TimePeriod, HasNote, LIB_PATH};
-use tmflib_derive::{HasId, HasName, HasNote};
+use crate::{DateTime, HasId, HasName, HasDescription, TimePeriod, HasNote, LIB_PATH, vec_insert};
+use tmflib_derive::{HasId, HasName, HasNote, HasDescription};
 
 const CLASS_PATH : &str = "service";
 
@@ -43,20 +43,54 @@ pub struct FeatureRelationship {
     valid_for: TimePeriod,
 }
 
+/// Service Characteristics
+/// Characteristics are used to describe the service in more detail.
+#[derive(Clone,Debug,Default,Deserialize,PartialEq,Serialize)]
+pub struct Characteristic {
+    id: String,
+    name: String,
+    value: Option<String>,
+    value_type: Option<String>,
+}   
+
+/// Service Relationships
+/// Relationships are used to describe how services relate to each other.
+/// For example, a service may depend on another service or be a part of a bundle.
+
+#[derive(Clone,Debug,Default,Deserialize,PartialEq,Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ServiceRelationship {
+    /// Service Relationship Type
+    pub relationship_type: String,
+    /// Service Relationship Characteristic
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub service_relationship_characteristic: Option<Vec<Characteristic>>,
+}
+
 /// Service record from the Service Inventory
-#[derive(Clone,Debug,Default,Deserialize, HasId, HasName, HasNote, Serialize)]
+#[derive(Clone,Debug,Default,Deserialize, HasId, HasName,HasDescription, HasNote, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Service {
-    category: Option<String>,
-    description: Option<String>,
+    /// Service Category
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub category: Option<String>,
+    /// Service Description
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     end_date: Option<DateTime>,
     has_started: Option<bool>,
-    id: Option<String>,
-    href: Option<String>,
+    /// Service ID  
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
+    /// Service Href
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub href: Option<String>,
     is_bundle: Option<bool>,
     is_service_enabled: Option<bool>,
     is_stateful: Option<bool>,
-    name: Option<String>,
+    /// Service Name    
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     service_date: Option<DateTime>,
     service_type: Option<String>,
     start_date: Option<DateTime>,
@@ -64,8 +98,18 @@ pub struct Service {
     state : ServiceStateType,
     // Referenced fields
     related_party: Option<Vec<RelatedParty>>,
-    note: Option<Vec<Note>>,
+    /// Service Notes
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub note: Option<Vec<Note>>,
+    /// Service Features
+    #[serde(skip_serializing_if = "Option::is_none")]
     feature: Option<Vec<Feature>>,
+    /// Service Ch aracteristics
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub service_characteristic: Option<Vec<Characteristic>>,
+    /// Service Relationships
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub service_relationship: Option<Vec<ServiceRelationship>>,
 }
 
 impl Service {
@@ -75,6 +119,33 @@ impl Service {
         service.name = Some(name.into());
         service.is_bundle = Some(false);
         service
+    }
+
+    /// Add a characterisitic during create
+    pub fn with_characteristic(mut self, characteristic: Characteristic) -> Service {
+        vec_insert(&mut self.service_characteristic, characteristic);
+        self
+    }
+
+    /// Add relationships during create
+    pub fn with_relationship(mut self, relationship: ServiceRelationship) -> Service {
+        vec_insert(&mut self.service_relationship, relationship);
+        self
+    }
+
+    /// Get a characteristic by name
+    pub fn get_characteristics(&self, name : impl Into<String>) -> Option<Vec<Characteristic>> {
+        match self.service_characteristic {
+            Some(ref characteristics) => {
+                let name : String = name.into();
+                let out = characteristics.iter()
+                    .filter(|c| c.name == name)
+                    .cloned()
+                    .collect();
+                Some(out)
+            },
+            None => None,
+        }
     }
 }
 
@@ -105,5 +176,53 @@ mod test {
         let service = Service::new(SERVICE);
 
         assert_eq!(service.is_bundle,Some(false));
+    }
+
+    #[test]
+    fn test_service_characteristic_add() {
+        let characteristic = super::Characteristic {
+            id: "char1".to_string(),
+            name: "Characteristic1".to_string(),
+            value: Some("Value1".to_string()),
+            value_type: Some("String".to_string()),
+        };
+
+        let service = Service::new(SERVICE).with_characteristic(characteristic);
+
+        // assert_eq!(service.service_characteristic.unwrap().len(), 1);
+        assert_eq!(service.service_characteristic.unwrap()[0].name, "Characteristic1");
+    }   
+
+    #[test]
+    fn test_service_characteristic_get() {
+        let characteristic = super::Characteristic {
+            id: "char1".to_string(),
+            name: "Characteristic1".to_string(),
+            value: Some("Value1".to_string()),
+            value_type: Some("String".to_string()),
+        };
+        let service = Service::new(SERVICE).with_characteristic(characteristic);   
+        let characteristics = service.get_characteristics("Characteristic1");
+        assert!(characteristics.is_some());
+        let characteristics = characteristics.unwrap();
+        assert_eq!(characteristics.len(), 1);
+        assert_eq!(characteristics[0].name, "Characteristic1");
+    }
+
+    #[test]
+    fn test_service_relationship_add() {
+        let relationship = super::ServiceRelationship {
+            relationship_type: "DependsOn".to_string(),
+            service_relationship_characteristic: Some(vec![super::Characteristic {
+                id: "rel1".to_string(),
+                name: "Relationship1".to_string(),
+                value: Some("Value1".to_string()),
+                value_type: Some("String".to_string()),
+            }]),
+        }; 
+        let service = Service::new(SERVICE).with_relationship(relationship);
+        assert!(service.service_relationship.is_some());
+        assert_eq!(service.service_relationship.unwrap().len(), 1);
+        // assert_eq!(service.service_relationship.unwrap()[0].relationship_type, "DependsOn");
     }
 }
