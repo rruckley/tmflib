@@ -49,7 +49,7 @@ pub struct FeatureRelationship {
 pub struct Characteristic {
     id: String,
     name: String,
-    value: Option<String>,
+    value: Option<serde_json::Value>,
     value_type: Option<String>,
 }   
 
@@ -183,7 +183,7 @@ mod test {
         let characteristic = super::Characteristic {
             id: "char1".to_string(),
             name: "Characteristic1".to_string(),
-            value: Some("Value1".to_string()),
+            value: Some("Value1".into()),
             value_type: Some("String".to_string()),
         };
 
@@ -198,7 +198,7 @@ mod test {
         let characteristic = super::Characteristic {
             id: "char1".to_string(),
             name: "Characteristic1".to_string(),
-            value: Some("Value1".to_string()),
+            value: Some("Value1".into()),
             value_type: Some("String".to_string()),
         };
         let service = Service::new(SERVICE).with_characteristic(characteristic);   
@@ -216,7 +216,7 @@ mod test {
             service_relationship_characteristic: Some(vec![super::Characteristic {
                 id: "rel1".to_string(),
                 name: "Relationship1".to_string(),
-                value: Some("Value1".to_string()),
+                value: Some("Value1".into()),
                 value_type: Some("String".to_string()),
             }]),
         }; 

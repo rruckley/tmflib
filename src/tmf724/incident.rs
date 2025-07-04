@@ -81,7 +81,7 @@ pub struct Characteristic {
     /// Name
     pub name : String,
     /// Value
-    pub value : String,
+    pub value : serde_json::Value,
     /// Value type
     pub value_type: String,
 }
@@ -307,7 +307,7 @@ mod test {
 
         assert_eq!(characteristic.id.as_str(),"CHAR123");
         assert_eq!(characteristic.name.as_str(),"CharacteristicName");
-        assert_eq!(characteristic.value.as_str(),"Value");
+        assert_eq!(characteristic.value.as_str(),"Value".into()  );
         assert_eq!(characteristic.value_type.as_str(), "ValueType");
     }
 }
