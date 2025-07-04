@@ -8,7 +8,7 @@ pub struct Characteristic {
     id: Option<String>,
     /// Characteristic Name
     pub name: String,
-    value: Option<String>,
+    value: Option<serde_json::Value>,
     value_type: Option<String>,
 }
 

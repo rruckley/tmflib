@@ -11,15 +11,16 @@ pub struct Characteristic {
     /// Type of characteristic
     pub value_type: String,
     /// Value of characteristic
-    pub value: String,
+    pub value: serde_json::Value,
 }
 
 impl Characteristic {
     /// Create a new characteristic from name / value
     pub fn new(name : impl Into<String>, value : impl Into<String>) -> Characteristic {
+        let val_str : String = value.into();
         Characteristic {
             name : name.into(),
-            value: value.into(),
+            value: val_str.into(),
             value_type : String::from("String"),
         }
     }
@@ -49,6 +50,6 @@ mod test {
 
         assert_eq!(characteristic.name.as_str(),"ABN");
         assert_eq!(characteristic.value_type.as_str(),"string");
-        assert_eq!(characteristic.value.as_str(),"123.456.789");
+        assert_eq!(characteristic.value.as_str(),"123.456.789".into());
     }
 }
