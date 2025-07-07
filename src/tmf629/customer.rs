@@ -96,12 +96,12 @@ impl Customer {
         let code = Characteristic {
             name: String::from("code"),
             value_type: String::from("string"),
-            value: code,
+            value: code.into(),
         };
         let hash = Characteristic {
             name: String::from("hash"),
             value_type: String::from("string"),
-            value: hash,
+            value: hash.into(),
         };
         // Create vec if it doesn't exist
         if self.characteristic.is_none() {
@@ -176,15 +176,15 @@ impl Customer {
     }
 
     /// Set the market segment
-    pub fn set_market_segment(&mut self, segment : impl Into<String>) -> Option<String> {
+    pub fn set_market_segment(&mut self, segment : impl Into<String>) -> Option<Characteristic> {
         let segment_char = Characteristic::new(CUST_SEGMENT_CHAR, segment);
         let old = self.replace_characteristic(segment_char);
-        old.map(|c| c.value)
+        old
     }
 
     /// Get the market segment
-    pub fn get_market_segment(&self) -> Option<String> {
-        self.get_characteristic(CUST_SEGMENT_CHAR).map(|c| c.value)    
+    pub fn get_market_segment(&self) -> Option<Characteristic> {
+        self.get_characteristic(CUST_SEGMENT_CHAR).map(|c| c)    
     }
 
     /// Upgrade the customer to a cryptographic code to replace a sequential Id.
@@ -205,21 +205,22 @@ impl Customer {
     /// cust.set_id("1");
     /// let char = cust.upgrade_to_code(None);
     /// ```
-    pub fn upgrade_to_code(&mut self,offset : Option<u32>) -> Option<String> {
+    pub fn upgrade_to_code(&mut self,offset : Option<u32>) -> Option<Characteristic> {
         // Step 1, Create new Characteristic for old Id
         let old_id = Characteristic {
             name: String::from("Id"),
             value_type: String::from("string"),
-            value: self.get_id(),
+            value: self.get_id().into(),
         };
         self.replace_characteristic(old_id);
         // Step 2, generate new code
         self.generate_code(offset);
         let code = self.get_characteristic("code")?;
         // Step 3, We can only set the id if code was found
-        self.set_id(code.value.clone());
+        let code_val = code.value.as_str()?;
+        self.set_id(code_val.to_string());
         // Step 4, return new code
-        Some(code.value)
+        Some(code)
     }
 }
 
@@ -277,7 +278,7 @@ impl EventPayload<CustomerEvent> for Customer {
         let code = self.get_characteristic("code");
         let code = code.map(|f| f.value);
         Event {
-            correlation_id : code,
+            correlation_id : Some(code.unwrap_or_default().to_string()),
             description: Some(desc),
             domain: Some(Customer::get_class()),
             event_id: Uuid::new_v4().to_string(),
@@ -420,9 +421,9 @@ mod test {
         let char = customer.get_characteristic("code");
 
         // Returned value should match "code" characteristic
-        assert_eq!(code,char.unwrap().value);
+        assert_eq!(code.value,char.unwrap().value);
         // Simlarly, the id should match the code
-        assert_eq!(code,customer.get_id());
+        assert_eq!(code.value,customer.get_id());
     }
 
     #[test]
@@ -435,7 +436,7 @@ mod test {
         let segment = customer.get_market_segment();
 
         assert_eq!(segment.is_some(),true);
-        assert_eq!(segment.unwrap(),CUSTOMER_SEGMENT);
+        assert_eq!(segment.unwrap().value,CUSTOMER_SEGMENT);
     }
 
     #[test]

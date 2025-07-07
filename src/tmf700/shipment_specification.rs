@@ -129,7 +129,7 @@ pub struct CharacteristicValueSpecification {
     regex: String,
     unit_of_measure: String,
     valid_for: Option<TimePeriod>,
-    value: String,
+    value: serde_json::Value,
     value_from: u16,
     value_to: u16,
     value_type: String,
@@ -233,11 +233,12 @@ mod test {
     fn test_charvalspec_deserialize() {
         let charvalspec : CharacteristicValueSpecification = serde_json::from_str(CHARVALSPEC_JSON).unwrap();
 
+        let two_str : String = "2".to_string();
         assert_eq!(charvalspec.is_default,false);
         assert_eq!(charvalspec.range_interval.as_str(),"1");
         assert_eq!(charvalspec.regex.as_str(),"Regex");
         assert_eq!(charvalspec.unit_of_measure.as_str(),"Units");
-        assert_eq!(charvalspec.value.as_str(),"2");
+        assert_eq!(charvalspec.value,two_str);
         assert_eq!(charvalspec.value_from,3);
         assert_eq!(charvalspec.value_to,4);
         assert_eq!(charvalspec.value_type.as_str(),"ValueType");

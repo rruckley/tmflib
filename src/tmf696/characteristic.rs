@@ -11,7 +11,7 @@ pub struct Characteristic {
     /// Characteristic Name
     pub name: String,
     /// Characteristic Value
-    pub value: String,
+    pub value: serde_json::Value,
     value_type: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@baseType")]
@@ -27,9 +27,10 @@ pub struct Characteristic {
 impl Characteristic {
     /// Create a new characteristic
     pub fn new(name: impl Into<String>,value: impl Into<String>) -> Characteristic {
+        let val_str : String = value.into();
         Characteristic {
             name : name.into(),
-            value : value.into(),
+            value : val_str.into(),
             value_type: "String".to_string(),
             ..Default::default()
         }
@@ -84,7 +85,7 @@ mod test {
         let characteristic : Characteristic = serde_json::from_str(CHAR_JSON).unwrap();
 
         assert_eq!(characteristic.name.as_str(),"CharacteristicName");
-        assert_eq!(characteristic.value.as_str(),"CharacteristicValue");
+        assert_eq!(characteristic.value.as_str(),"CharacteristicValue".into());
         assert_eq!(characteristic.value_type.as_str(),"string");
     }
 }
