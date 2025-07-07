@@ -7,6 +7,39 @@ use crate::{Cardinality, TimePeriod};
 use crate::HasDescription;
 use tmflib_derive::HasDescription;
 
+/// Characteristic Value Specification
+#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CharacteristicValueSpecification {
+    /// Is this the default value
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub is_default: Option<bool>,
+    /// Interval for a range
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub range_interval: Option<String>,
+    /// Pattern to match value
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub regex : Option<String>,
+    /// Units for this value
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub unit_of_measure: Option<String>,
+    /// Validity time period
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub valid_for: Option<TimePeriod>,
+    /// Value 
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub value: Option<serde_json::Value>,
+    /// Start of value range
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub value_from: Option<u32>,
+    /// End of value range
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub value_to: Option<u32>,
+    /// Value Type, e.g. String, Integer etc.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub value_type: Option<String>,
+}   
+
 /// Service Specification Characteristics
 #[derive(Clone,Default,Debug,Deserialize,HasDescription, Serialize)]
 pub struct CharacteristicSpecification {
@@ -40,6 +73,9 @@ pub struct CharacteristicSpecification {
     /// Type for this characteristic, e.g. String, Integer etc.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub value_type: Option<String>,
+    /// Characterisitc Value
+    #[serde(skip_serializing_if = "Option::is_none")]
+    characteristic_value_specification: Option<Vec<CharacteristicValueSpecification>>,
 }
 
 impl CharacteristicSpecification {
