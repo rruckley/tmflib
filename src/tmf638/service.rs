@@ -27,7 +27,8 @@ enum ServiceStateType {
 #[serde(rename_all = "camelCase")]
 pub struct Feature {
     id : String,
-    is_bundle: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    is_bundle: Option<bool>,
     is_enabled: bool,
     name: String,
     feature_relationship: Option<Vec<FeatureRelationship>>,
