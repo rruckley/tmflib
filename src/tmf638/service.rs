@@ -48,7 +48,7 @@ pub struct FeatureRelationship {
 /// Characteristics are used to describe the service in more detail.
 #[derive(Clone,Debug,Default,Deserialize,PartialEq,Serialize)]
 pub struct Characteristic {
-    id: String,
+    id: Option<String>,
     name: String,
     value: Option<serde_json::Value>,
     value_type: Option<String>,
@@ -182,7 +182,7 @@ mod test {
     #[test]
     fn test_service_characteristic_add() {
         let characteristic = super::Characteristic {
-            id: "char1".to_string(),
+            id: "char1".to_string().into(),
             name: "Characteristic1".to_string(),
             value: Some("Value1".into()),
             value_type: Some("String".to_string()),
@@ -197,7 +197,7 @@ mod test {
     #[test]
     fn test_service_characteristic_get() {
         let characteristic = super::Characteristic {
-            id: "char1".to_string(),
+            id: "char1".to_string().into(),
             name: "Characteristic1".to_string(),
             value: Some("Value1".into()),
             value_type: Some("String".to_string()),
@@ -215,7 +215,7 @@ mod test {
         let relationship = super::ServiceRelationship {
             relationship_type: "DependsOn".to_string(),
             service_relationship_characteristic: Some(vec![super::Characteristic {
-                id: "rel1".to_string(),
+                id: "rel1".to_string().into(),
                 name: "Relationship1".to_string(),
                 value: Some("Value1".into()),
                 value_type: Some("String".to_string()),
