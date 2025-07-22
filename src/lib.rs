@@ -207,6 +207,18 @@ pub fn gen_code(name : String, id : String, offset : Option<u32>, prefix : Optio
     (format!("{}{}",prefix.unwrap_or_default(),sha_slice),base32)
 }
 
+/// Return type for a serde_json Value
+pub fn serde_value_to_type(value : &serde_json::Value) -> &str {
+    match value {
+        serde_json::Value::Null => "Null",
+        serde_json::Value::Bool(_) => "Bool",
+        serde_json::Value::Number(_) => "Number",
+        serde_json::Value::String(_) => "String",
+        serde_json::Value::Array(_) => "Array",
+        serde_json::Value::Object(_) => "Object",
+    }
+}
+
 /// Perform an safe insert operation on a optional vector of TMF objects
 /// # Actions
 /// - If Option is Some(v) then item is inserted into v
