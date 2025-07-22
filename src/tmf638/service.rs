@@ -5,7 +5,7 @@ use serde::{Deserialize,Serialize};
 use super::MOD_PATH;
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
-use crate::{DateTime, HasId, HasName, HasDescription, TimePeriod, HasNote, LIB_PATH, vec_insert};
+use crate::{DateTime, HasId, HasName, HasDescription, TimePeriod, HasNote, LIB_PATH, vec_insert,serde_value_to_type};
 use tmflib_derive::{HasId, HasName, HasNote, HasDescription};
 
 const CLASS_PATH : &str = "service";
@@ -53,6 +53,14 @@ pub struct Characteristic {
     value: Option<serde_json::Value>,
     value_type: Option<String>,
 }   
+
+impl Characteristic {
+    /// Create a new characteristic with a given name and value, value_type is determined automatically based on value enum.
+    pub fn new(name : String, value : serde_json::Value) -> Characteristic {
+        let val_type = serde_value_to_type(&value);
+        Characteristic { id: None, name: name, value: Some(value.clone()), value_type: Some(val_type.to_string()) }
+    }
+}
 
 /// Service Relationships
 /// Relationships are used to describe how services relate to each other.
