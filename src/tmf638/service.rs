@@ -48,17 +48,36 @@ pub struct FeatureRelationship {
 /// Characteristics are used to describe the service in more detail.
 #[derive(Clone,Debug,Default,Deserialize,PartialEq,Serialize)]
 pub struct Characteristic {
+    /// Characteristic ID
+    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
     name: String,
-    value: Option<serde_json::Value>,
-    value_type: Option<String>,
+    /// Value of the characteristic, can be any JSON value.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub value: Option<serde_json::Value>,
+    /// Type of the value, determined automatically based on the value enum.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub value_type: Option<String>,
 }   
 
 impl Characteristic {
     /// Create a new characteristic with a given name and value, value_type is determined automatically based on value enum.
     pub fn new(name : String, value : serde_json::Value) -> Characteristic {
         let val_type = serde_value_to_type(&value);
-        Characteristic { id: None, name: name, value: Some(value.clone()), value_type: Some(val_type.to_string()) }
+        Characteristic { id: None, name, value: Some(value.clone()), value_type: Some(val_type.to_string()) }
+    }
+
+    
+}
+
+impl From<(&str, &str)> for Characteristic {
+    fn from(tuple: (&str, &str)) -> Self {
+        Characteristic {
+            id: None,
+            name: tuple.0.to_string(),
+            value: Some(serde_json::Value::String(tuple.1.to_string())),
+            value_type: Some("String".to_string()),
+        }
     }
 }
 
@@ -156,6 +175,53 @@ impl Service {
             None => None,
         }
     }
+
+    /// Replace a characteristic returning the old value if found. 
+    /// Creates the characteristic array if it doesn't exist.
+    /// Creates the characteristic entry if it doesn't exist.
+    /// Replaces the characteristic entry if it does exist.
+    /// 
+    /// # Returns
+    /// Will return the previous value if it existed.
+    /// This 
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf638::service::{Characteristic,Service};
+    /// let mut service = Service::default();
+    /// let char = Characteristic::from(("Validated","NotYet"));
+    /// let old_char = service.replace_characteristic(char);
+    /// 
+    /// assert_eq!(old_char.is_none(),true);
+    /// ```
+    pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
+        match self.service_characteristic.as_mut() {
+            Some(c) => {
+                // Characteristic array exist
+                let pos = c.iter().position(|c| c.name == characteristic.name);
+                match pos {
+                    Some(u) => {
+                        // Clone old value for return
+                        let old = c[u].clone();
+                        // Replace
+                        c[u] = characteristic;
+                        Some(old)
+                    },
+                    None => {
+                        // This means the characteristic could not be found, instead we insert it
+                        // Additional we return None to indicate that no old value was found
+                        c.push(characteristic);
+                        None
+                    },
+                }
+            }
+            None => {
+                // Characteristic Vec was not created yet, create it now.
+                self.service_characteristic = Some(vec![characteristic]);
+                // Return None to show no previous value existed.
+                None
+            },
+        }
+    }
 }
 
 #[cfg(test)]
@@ -233,5 +299,18 @@ mod test {
         assert!(service.service_relationship.is_some());
         assert_eq!(service.service_relationship.unwrap().len(), 1);
         // assert_eq!(service.service_relationship.unwrap()[0].relationship_type, "DependsOn");
+    }
+
+    #[test]
+    fn test_service_replace_characteristic() {
+        let mut service = Service::default();
+        let char = super::Characteristic::from(("Validated","NotYet"));
+        let old_char = service.replace_characteristic(char); 
+        assert!(old_char.is_none());
+        let char2 = super::Characteristic::from(("Validated","Now"));
+        let old_char2 = service.replace_characteristic(char2);
+        assert!(old_char2.is_some());
+        assert_eq!(old_char2.unwrap().value.unwrap(), serde_json::Value::String("NotYet".to_string()));
+        // assert_eq!(service.service_characteristic.unwrap()[0].value.unwrap(), serde_json::Value::String("Now".to_string()));
     }
 }
