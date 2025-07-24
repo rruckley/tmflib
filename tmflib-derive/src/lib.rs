@@ -251,10 +251,10 @@ pub fn hasnote_derive(input: TokenStream) -> TokenStream {
                     None => None,
                 }
             }
-            fn remove_note(&mut self, idx: usize) -> Result<Note,String> {
+            fn remove_note(&mut self, idx: usize) -> Result<Note,TMFError> {
                 match self.note.as_mut() {
                     Some(n) => Ok(n.remove(idx)),
-                    None => Err(String::from("No notes present")),
+                    None => Err(TMFError::NoDataError("No notes present".to_string())),
                 }  
             }
             fn note(mut self, note : Note) -> Self {
@@ -299,8 +299,13 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
                 }
                   
             }
-            fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String> {
-                Ok(self.related_party.as_mut().unwrap().remove(idx))  
+            fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,TMFError> {
+                match self.related_party.as_mut() {
+                    None => Err(TMFError::NoDataError("No related parties present".to_string())),
+                    Some(rp) => {
+                        Ok(rp.remove(idx))
+                    }
+                }
             }
             fn get_by_role(&self, role : String) -> Option<Vec<&RelatedParty>> {
                 match &self.related_party {
