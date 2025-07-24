@@ -48,7 +48,7 @@ impl Price {
     fn set_currency(&mut self, currency_code : &str) -> Result<String,String> {
         let inc_result = self.tax_included_amount.currency(currency_code)?;
         let ex_result = self.duty_free_amount.currency(currency_code)?;
-        Ok(format!("INC: {}, EX: {}",inc_result,ex_result))
+        Ok(format!("INC: {inc_result}, EX: {ex_result}"))
     }
 
     /// Set the tax inclusive price

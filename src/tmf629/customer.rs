@@ -178,13 +178,12 @@ impl Customer {
     /// Set the market segment
     pub fn set_market_segment(&mut self, segment : impl Into<String>) -> Option<Characteristic> {
         let segment_char = Characteristic::new(CUST_SEGMENT_CHAR, segment);
-        let old = self.replace_characteristic(segment_char);
-        old
+        self.replace_characteristic(segment_char)
     }
 
     /// Get the market segment
     pub fn get_market_segment(&self) -> Option<Characteristic> {
-        self.get_characteristic(CUST_SEGMENT_CHAR).map(|c| c)    
+        self.get_characteristic(CUST_SEGMENT_CHAR)    
     }
 
     /// Upgrade the customer to a cryptographic code to replace a sequential Id.
