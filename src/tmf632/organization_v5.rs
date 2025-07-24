@@ -6,7 +6,8 @@ use uuid::Uuid;
 
 use crate::{ 
     HasId, 
-    HasName, 
+    HasName,
+    HasReference,
     TimePeriod,
     TMFEvent,
     LIB_PATH,
@@ -176,6 +177,13 @@ impl From<String> for Organization {
     fn from(value: String) -> Self {
         // Generate an Organization from a given string, treating String as name
         Organization::new(value)
+    }
+}
+
+impl HasReference for Organization {
+    type RefType = RelatedParty;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(RelatedParty::from(self))
     }
 }
 
