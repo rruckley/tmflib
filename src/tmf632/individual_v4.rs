@@ -27,6 +27,7 @@ use super::{
 use crate::common::related_party::RelatedParty;
 use crate::common::contact::ContactMedium;
 use crate::common::event::{Event, EventPayload};
+use crate::common::tmf_error::TMFError;
 
 const CLASS_PATH : &str = "individual";
 const CODE_PREFIX : &str = "I-";

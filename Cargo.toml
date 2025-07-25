@@ -233,16 +233,17 @@ default = ["all","build-V4"]
 chrono = "0.4.41"
 rust_iso4217 = "0.1.1"
 serde = { version = "1.0.219", features = ["derive"]}
-serde_json = "1.0.140"
+serde_json = "1.0.141"
 sha256 = { version = "1.6.0", default-features = false }
 uuid = { version = "1.17.0", features = ["v4"]}
-tmflib-derive = { version = "0.1.32" }
+tmflib-derive = { version = "0.1.33" }
 # tmflib-derive = { path = "tmflib-derive"}
 hex = "0.4.3"
 base32 = "0.5.1"
 openapiv3 = "2.2.0"
 rust_decimal = "1.37.2"
 rust_decimal_macros = "1.37.1"
+thiserror = "2.0.12"
 
 [dev-dependencies]
 

@@ -19,6 +19,7 @@ use tmflib_derive::{
     HasId,
     HasNote
 };
+use crate::common::tmf_error::TMFError;
 
 use serde::{Deserialize,Serialize};
 

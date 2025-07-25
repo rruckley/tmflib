@@ -1,6 +1,8 @@
 //! Price Module
 
 use serde::{Deserialize, Serialize};
+use crate::common::tmf_error::TMFError;
+
 use super::money::Money;
 use std::ops::{Add,Sub,Mul,Div};
 use rust_decimal::{prelude::FromPrimitive, Decimal};
@@ -45,7 +47,7 @@ impl Price {
         price
     }
 
-    fn set_currency(&mut self, currency_code : &str) -> Result<String,String> {
+    fn set_currency(&mut self, currency_code : &str) -> Result<String,TMFError> {
         let inc_result = self.tax_included_amount.currency(currency_code)?;
         let ex_result = self.duty_free_amount.currency(currency_code)?;
         Ok(format!("INC: {inc_result}, EX: {ex_result}"))

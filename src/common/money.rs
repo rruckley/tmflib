@@ -22,6 +22,7 @@
 use serde::{Deserialize,Serialize};
 use std::ops::{Add,Sub,Mul,Div,AddAssign};
 use rust_decimal::{prelude::FromPrimitive, Decimal};
+use crate::common::tmf_error::TMFError;
 
 const MONEY_DEFAULT_UNIT : &str = "AUD";
 
@@ -48,26 +49,26 @@ impl Money {
     /// money.currency("AUD");
     /// ```
     #[cfg(not(target_arch = "wasm32"))]
-    pub fn currency(&mut self, currency_code : &str) -> Result<String,String> {
+    pub fn currency(&mut self, currency_code : &str) -> Result<String,TMFError> {
         let c = rust_iso4217::from_code(currency_code);
         match c {
             Some (c) => {
                 self.unit = c.code.into();
                 Ok(self.unit.clone())
             },
-            None => Err("Currency Code not found".into())
+            None => Err(TMFError::CurrencyError(format!("Currency Code not found: {}", currency_code)))
         }
     }
 
     #[cfg(target_arch = "wasm32")]
-    pub fn currency(&mut self, currency_code : &str) -> Result<String,String> {
+    pub fn currency(&mut self, currency_code : &str) -> Result<String,TMFError> {
         let c = rust_iso4217::from_code(currency_code);
         match c {
             Some (c) => {
                 self.unit = c.code();
                 Ok(self.unit.clone())
             },
-            None => Err("Currency Code not found".into())
+            None => Err(TMFError::CurrencyError(format!("Currency Code not found: {}", currency_code)))
         }
     }
 }

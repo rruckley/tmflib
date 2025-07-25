@@ -17,6 +17,7 @@ use crate::{
 };
 use crate::tmf620::category::CategoryRef;
 use crate::common::related_party::RelatedParty;
+use crate::common::tmf_error::TMFError;
 use crate::common::event::{Event,EventPayload};
 use tmflib_derive::{
     HasLastUpdate,

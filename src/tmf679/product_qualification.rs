@@ -8,6 +8,7 @@ use tmflib_derive::{
     HasId,
     HasRelatedParty
 };
+use crate::common::tmf_error::TMFError;
 
 use super::MOD_PATH;
 use super::product_offering_qualification_item::ProductOfferingQualificationItem;

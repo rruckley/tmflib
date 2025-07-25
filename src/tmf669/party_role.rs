@@ -11,6 +11,7 @@ use tmflib_derive::{
     HasRelatedParty,
     HasValidity,
 };
+use crate::common::tmf_error::TMFError;
 
 use super::MOD_PATH;
 
