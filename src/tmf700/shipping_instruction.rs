@@ -9,6 +9,7 @@ use crate::{
 };
 use crate::common::money::Money;
 use crate::common::note::Note;
+use crate::common::tmf_error::TMFError;
 use tmflib_derive::{HasId,HasNote};
 use serde::{Deserialize,Serialize};
 

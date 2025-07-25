@@ -3,6 +3,7 @@
 use crate::common::contact::ContactMedium;
 use crate::common::money::Money;
 use crate::common::note::Note;
+use crate::common::tmf_error::TMFError;
 use crate::common::related_party::RelatedParty;
 
 use crate::tmf620::{ChannelRef,MarketSegmentRef};

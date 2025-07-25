@@ -24,6 +24,7 @@ use crate::common::{
     related_party::RelatedParty,
     contact::Contact,
 };
+use crate::common::tmf_error::TMFError;
 use super::{
     AccountBalance,
     AccountRef,

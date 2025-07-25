@@ -6,6 +6,7 @@ use super::MOD_PATH;
 use crate::{HasId,HasNote,HasRelatedParty,HasDescription, DateTime};
 use tmflib_derive::{HasId,HasNote,HasRelatedParty,HasDescription};
 use crate::common::note::Note;
+use crate::common::tmf_error::TMFError;
 use super::service_order_item::ServiceOrderItem;
 use crate::common::related_party::RelatedParty;
 

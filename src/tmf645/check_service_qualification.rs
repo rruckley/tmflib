@@ -8,6 +8,7 @@ use crate::{
 
 use crate::tmf633::service_category::ServiceCategoryRef;
 use crate::tmf641::service_order_item::ServiceRefOrValue;
+use crate::common::tmf_error::TMFError;
 
 use tmflib_derive::{
     HasId,

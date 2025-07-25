@@ -4,6 +4,7 @@ use serde::{Deserialize,Serialize};
 
 use crate::common::related_party::RelatedParty;
 use crate::common::attachment::AttachmentRefOrValue;
+use crate::common::tmf_error::TMFError;
 use super::MOD_PATH;
 use super::characteristic::Characteristic;
 use crate::{

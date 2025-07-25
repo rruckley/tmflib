@@ -6,6 +6,7 @@ use crate::{HasId, HasName, LIB_PATH,HasDescription,HasRelatedParty,HasNote,HasV
 use tmflib_derive::{HasId,HasName,HasDescription,HasRelatedParty,HasValidity,HasNote};
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
+use crate::common::tmf_error::TMFError;
 
 use super::MOD_PATH;
 

@@ -15,6 +15,7 @@ use crate::common::related_party::RelatedParty;
 use crate::common::related_place::RelatedPlaceRefOrValue;
 use crate::common::product::ProductRefOrValue;
 use crate::common::event::{Event,EventPayload};
+use crate::common::tmf_error::TMFError;
 
 // External
 use chrono::Utc;

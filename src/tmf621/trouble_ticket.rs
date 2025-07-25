@@ -16,6 +16,7 @@ use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::related_party::RelatedParty;
 use crate::common::note::Note;
 use crate::common::event::{Event,EventPayload};
+use crate::common::tmf_error::TMFError;
 use crate::{
     DateTime, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasNote, HasRelatedParty, TMFEvent, Uri, LIB_PATH
 };

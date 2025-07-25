@@ -6,6 +6,7 @@ use crate::{
 use tmflib_derive::{HasId,HasName,HasLastUpdate,HasRelatedParty,HasDescription};
 use crate::common::related_party::RelatedParty;
 use crate::common::related_entity::RelatedEntity;
+use crate::common::tmf_error::TMFError;
 use crate::vec_insert;
 use serde::{Deserialize,Serialize};
 

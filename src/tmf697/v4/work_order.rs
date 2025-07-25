@@ -10,6 +10,7 @@ use crate::{
 use super::{work_order_item::WorkOrderItem, MOD_PATH};
 use crate::common::{
     note::Note,
+    tmf_error::TMFError,
     related_party::RelatedParty,
 };
 use crate::tmf646::appointment::AppointmentRef;

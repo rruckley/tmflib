@@ -9,6 +9,7 @@ use super::characteristic::Characteristic;
 use super::expression::IntentExpression;
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::related_party::RelatedParty;
+use crate::common::tmf_error::TMFError;
 
 
 const CLASS_PATH : &str = "intent";

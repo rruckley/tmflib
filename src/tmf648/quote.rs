@@ -8,6 +8,7 @@ use super::MOD_PATH;
 use super::quote_price::QuotePrice;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
+use crate::common::tmf_error::TMFError;
 use crate::{
     DateTime, 
     HasId,
@@ -131,7 +132,7 @@ impl Quote {
     }
 
     /// Add a quote item into a product quote
-    pub fn add_quote_item(&mut self, item: QuoteItem) -> Result<String, String> {
+    pub fn add_quote_item(&mut self, item: QuoteItem) -> Result<String, TMFError> {
         match self.quote_item.as_mut() {
             Some(v) => {
                 v.push(item);

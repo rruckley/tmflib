@@ -50,7 +50,7 @@
 #![warn(rustdoc::private_doc_tests)]
 
 use chrono::{Utc,Days};
-use common::{attachment::AttachmentRefOrValue, related_party::RelatedParty};
+use common::{attachment::AttachmentRefOrValue, related_party::RelatedParty,tmf_error::TMFError};
 use uuid::Uuid;
 use serde::{Deserialize, Serialize};
 use crate::common::note::Note;
@@ -348,7 +348,7 @@ pub trait HasNote : HasId {
     /// Add a new note
     fn add_note(&mut self, note : Note);
     /// Remove a note by index
-    fn remove_note(&mut self, idx: usize) -> Result<Note,String>;
+    fn remove_note(&mut self, idx: usize) -> Result<Note,TMFError>;
     /// Builder pattern to add note on create
     fn note(self, note : Note) -> Self;
 }
@@ -360,7 +360,7 @@ pub trait HasRelatedParty : HasId {
     /// Add a new party
     fn add_party(&mut self, party : RelatedParty);
     /// Remote a party
-    fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String>;
+    fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,TMFError>;
     /// Get a list of RelatedParty entries by role
     fn get_by_role(&self, role : String) -> Option<Vec<&RelatedParty>>;
     /// Builder pattern to add a party on create

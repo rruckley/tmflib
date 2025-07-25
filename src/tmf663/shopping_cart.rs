@@ -7,7 +7,7 @@ use tmflib_derive::{HasId,HasValidity,HasRelatedParty};
 use crate::common::contact::ContactMedium;
 use crate::common::related_party::RelatedParty;
 use crate::common::price::Price;
-
+use crate::common::tmf_error::TMFError;
 
 use super::MOD_PATH;
 use super::cart_item::CartItem;
