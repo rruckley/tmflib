@@ -14,7 +14,10 @@
 
 //! TMF622 Product Order Management
 
+#[cfg(feature = "build-V4")]
 const MOD_PATH: &str = "productOrderingManagement/v4";
+#[cfg(feature = "build-V5")]
+const MOD_PATH: &str = "productOrderingManagement/v5";
 
 #[cfg(all(feature = "tmf622", feature = "build-V4"))]
 pub mod product_order_v4;
