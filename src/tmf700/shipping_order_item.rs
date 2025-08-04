@@ -1,17 +1,17 @@
 //! Shipping Order Item Module
 
-use crate::{LIB_PATH,HasId,Uri};
-use crate::common::related_place::RelatedPlaceRefOrValue;
 use super::shipping_instruction::ShippingInstruction;
+use crate::common::related_place::RelatedPlaceRefOrValue;
+use crate::{HasId, Uri, LIB_PATH};
+use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
-use serde::{Deserialize,Serialize};
 
 use super::MOD_PATH;
-const CLASS_PATH : &str = "shippingOrderItem";
-const NEW_STATUS : &str = "New";
+const CLASS_PATH: &str = "shippingOrderItem";
+const NEW_STATUS: &str = "New";
 
 /// Shipping Item Action Type
-#[derive(Clone,Default,Debug,Deserialize,PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
 pub enum ShippingOrderItemActionType {
     /// Add new item
     #[default]
@@ -20,12 +20,12 @@ pub enum ShippingOrderItemActionType {
     Modify,
     /// Delte item
     Delete,
-    /// No change 
+    /// No change
     NoChange,
 }
 
 /// Shipping Order Item
-#[derive(Clone,Default,Debug,Deserialize,HasId,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShippingOrderItem {
     /// Shipping Item Action Type
@@ -48,17 +48,16 @@ pub struct ShippingOrderItem {
 impl ShippingOrderItem {
     /// Create a new shipping order item
     pub fn new() -> ShippingOrderItem {
-        ShippingOrderItem::create()
-            .status(NEW_STATUS)
+        ShippingOrderItem::create().status(NEW_STATUS)
     }
-    
-    fn status(mut self, status : impl Into<String>) -> ShippingOrderItem {
+
+    fn status(mut self, status: impl Into<String>) -> ShippingOrderItem {
         self.status = status.into();
         self
     }
 
     /// Set shipping instructions for this order item
-    pub fn instruction (mut self, instruction : ShippingInstruction) -> ShippingOrderItem {
+    pub fn instruction(mut self, instruction: ShippingInstruction) -> ShippingOrderItem {
         self.shipping_instruction = Some(instruction);
         self
     }
@@ -69,10 +68,10 @@ mod test {
 
     use crate::tmf700::shipping_instruction::ShippingInstruction;
 
-    use super::{ShippingOrderItem, ShippingOrderItemActionType , NEW_STATUS};
+    use super::{ShippingOrderItem, ShippingOrderItemActionType, NEW_STATUS};
 
-    const ITEMACTION_JSON : &str = "\"Add\"";
-    const ORDERITEM_JSON : &str = "{
+    const ITEMACTION_JSON: &str = "\"Add\"";
+    const ORDERITEM_JSON: &str = "{
         \"action\" : \"Add\",
         \"quantity\" : \"1\",
         \"status\" : \"Status\"
@@ -87,26 +86,34 @@ mod test {
 
     #[test]
     fn test_itemaction_deserialize() {
-        let itemaction : ShippingOrderItemActionType  = serde_json::from_str(ITEMACTION_JSON).unwrap();
+        let itemaction: ShippingOrderItemActionType =
+            serde_json::from_str(ITEMACTION_JSON).unwrap();
 
-        assert_eq!(itemaction,ShippingOrderItemActionType::Add);
+        assert_eq!(itemaction, ShippingOrderItemActionType::Add);
     }
 
     #[test]
     fn test_orderitem_deserialize() {
-        let orderitem : ShippingOrderItem = serde_json::from_str(ORDERITEM_JSON).unwrap();
+        let orderitem: ShippingOrderItem = serde_json::from_str(ORDERITEM_JSON).unwrap();
 
-        assert_eq!(orderitem.action,ShippingOrderItemActionType::Add);
-        assert_eq!(orderitem.quantity.as_str(),"1");
-        assert_eq!(orderitem.status.as_str(),"Status");
+        assert_eq!(orderitem.action, ShippingOrderItemActionType::Add);
+        assert_eq!(orderitem.quantity.as_str(), "1");
+        assert_eq!(orderitem.status.as_str(), "Status");
     }
 
     #[test]
     fn test_orderitem_instruction() {
-        let orderitem = ShippingOrderItem::new()
-            .instruction(ShippingInstruction::new("SomeInstruction"));
+        let orderitem =
+            ShippingOrderItem::new().instruction(ShippingInstruction::new("SomeInstruction"));
 
-        assert_eq!(orderitem.shipping_instruction.is_some(),true);
-        assert_eq!(orderitem.shipping_instruction.unwrap().label_message.is_some(),true);
+        assert_eq!(orderitem.shipping_instruction.is_some(), true);
+        assert_eq!(
+            orderitem
+                .shipping_instruction
+                .unwrap()
+                .label_message
+                .is_some(),
+            true
+        );
     }
 }

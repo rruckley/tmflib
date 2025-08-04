@@ -15,10 +15,10 @@
 //! TMF700 Shipping Order Management
 
 /// Common path for TMF700
-pub const MOD_PATH : &str = "shippingOrder/v4";
+pub const MOD_PATH: &str = "shippingOrder/v4";
 
-pub mod shipping_order;
-pub mod shipping_order_item;
-pub mod shipping_instruction;
 pub mod shipment;
 pub mod shipment_specification;
+pub mod shipping_instruction;
+pub mod shipping_order;
+pub mod shipping_order_item;

@@ -21,6 +21,6 @@ pub mod product_order_v4;
 #[cfg(all(feature = "tmf622", feature = "build-V5"))]
 pub mod product_order_v5;
 
-pub mod product_order_item;
 #[cfg(all(feature = "tmf622", feature = "build-V5"))]
 pub mod milestone;
+pub mod product_order_item;

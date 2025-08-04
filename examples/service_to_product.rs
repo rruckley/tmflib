@@ -2,12 +2,8 @@
 
 #![allow(unused_imports)]
 
-#[cfg(all(feature = "tmf633", feature = "build-V4"))]
-use tmflib::tmf633::service_specification::{ServiceSpecification, ServiceSpecificationRef};
-#[cfg(all(feature = "tmf633", feature = "build-V4"))]
-use tmflib::tmf633::characteristic_specification::CharacteristicSpecification;
-#[cfg(all(feature = "tmf641", feature = "build-V4"))]
-use tmflib::tmf641::service_order::ServiceOrder;
+use tmflib::common::note::Note;
+use tmflib::common::related_party::RelatedParty;
 #[cfg(all(feature = "tmf622", feature = "build-V4"))]
 use tmflib::tmf622::product_order_v4::ProductOrder;
 #[cfg(all(feature = "tmf622", feature = "build-V5"))]
@@ -16,11 +12,15 @@ use tmflib::tmf622::product_order_v5::ProductOrder;
 use tmflib::tmf632::individual_v4::Individual;
 #[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use tmflib::tmf632::individual_v5::Individual;
-use tmflib::common::note::Note;
-use tmflib::common::related_party::RelatedParty;
+#[cfg(all(feature = "tmf633", feature = "build-V4"))]
+use tmflib::tmf633::characteristic_specification::CharacteristicSpecification;
+#[cfg(all(feature = "tmf633", feature = "build-V4"))]
+use tmflib::tmf633::service_specification::{ServiceSpecification, ServiceSpecificationRef};
 #[cfg(all(feature = "tmf641", feature = "build-V4"))]
-use tmflib::tmf641::service_order_item::{ServiceOrderItem,ServiceRefOrValue};
-use tmflib::{HasRelatedParty,HasNote};
+use tmflib::tmf641::service_order::ServiceOrder;
+#[cfg(all(feature = "tmf641", feature = "build-V4"))]
+use tmflib::tmf641::service_order_item::{ServiceOrderItem, ServiceRefOrValue};
+use tmflib::{HasNote, HasRelatedParty};
 
 fn main() {
     let mut ss = ServiceSpecification::new("Access");
@@ -41,9 +41,9 @@ fn main() {
         soi.quantity = 1;
         let mut service = ServiceRefOrValue::default();
         service.service_specification = Some(ssr);
-        soi.service= service;  
+        soi.service = service;
 
-         // Create new ServiceOrder
+        // Create new ServiceOrder
         let mut so = ServiceOrder::new();
         // Add a sample note
         so.add_note(Note::new("This is a Note."));
@@ -63,7 +63,7 @@ fn main() {
         let po = ProductOrder::from(so);
 
         //dbg!(ps);
-    
+
         dbg!(po);
     }
 }

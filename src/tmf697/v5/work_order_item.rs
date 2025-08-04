@@ -1,13 +1,13 @@
 //! Work Order Item Module
-//! 
+//!
 //! Covers the container object for inclusion in a [`WorkOrder`]
 
-use serde::{Deserialize,Serialize};
 use super::work::WorkRefOrValue;
 use crate::gen_code;
+use serde::{Deserialize, Serialize};
 
 /// Work Order Item
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct WorkOrderItem {
     /// Metadata: Type of schema, same as [`base_type`] if aligned to TMF specification.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -43,10 +43,19 @@ impl WorkOrderItem {
     /// let work = Work::new("Some Work");
     /// let woi = WorkOrderItem::with(WorkRefOrValue::from(work));
     /// ```
-    pub fn with(work : WorkRefOrValue) -> WorkOrderItem {
+    pub fn with(work: WorkRefOrValue) -> WorkOrderItem {
         WorkOrderItem {
-            id : Some(gen_code(work.get_name(), work.get_id(), None, Some("WI-".to_string()), Some(7)).0),
-            work : Some(work),
+            id: Some(
+                gen_code(
+                    work.get_name(),
+                    work.get_id(),
+                    None,
+                    Some("WI-".to_string()),
+                    Some(7),
+                )
+                .0,
+            ),
+            work: Some(work),
             ..Default::default()
         }
     }

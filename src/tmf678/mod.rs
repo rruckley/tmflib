@@ -19,7 +19,7 @@
 //! - V4 Supported
 //! - V5 Supported
 
-const MOD_PATH : &str = "tmf678/v5";
+const MOD_PATH: &str = "tmf678/v5";
 
 #[cfg(all(feature = "tmf678", feature = "build-V4"))]
 pub mod customer_bill_v4;

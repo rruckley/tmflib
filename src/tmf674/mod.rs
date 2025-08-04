@@ -25,6 +25,6 @@ pub mod geographic_site_v4;
 pub mod geographic_site_v5;
 
 #[cfg(all(feature = "tmf674", feature = "build-V4"))]
-const MOD_PATH : &str = "geographicSiteManagement/v4";
+const MOD_PATH: &str = "geographicSiteManagement/v4";
 #[cfg(all(feature = "tmf674", feature = "build-V5"))]
-const MOD_PATH : &str = "geographicSiteManagement/v5";
+const MOD_PATH: &str = "geographicSiteManagement/v5";

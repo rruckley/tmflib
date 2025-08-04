@@ -1,21 +1,18 @@
 //! Sales Opportunity Item
 
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
-use crate::{common::{
-    money::Money, 
-    note::Note, 
-    related_party::RelatedParty
-}, TimePeriod,
-HasRelatedParty,
+use crate::tmf629::customer::Customer;
+use crate::{
+    common::{money::Money, note::Note, related_party::RelatedParty},
+    HasRelatedParty, TimePeriod,
 };
 use tmflib_derive::HasRelatedParty;
-use crate::tmf629::customer::Customer;
 
 use super::{sales_lead_v5::SalesLeadRef, sales_opportunity_v5::SalesOpportunityPriorityType};
 
 /// Sales Opportunity Item
-#[derive(Clone,Debug,Default,Deserialize, HasRelatedParty, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SalesOpportunityItem {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -25,9 +22,9 @@ pub struct SalesOpportunityItem {
     #[serde(skip_serializing_if = "Option::is_none")]
     estimated_revenue: Option<Money>,
     /// Notes
-    pub note : Vec<Note>,
+    pub note: Vec<Note>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    related_party : Option<Vec<RelatedParty>>,
+    related_party: Option<Vec<RelatedParty>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     sales_lead: Option<SalesLeadRef>,
 }
@@ -43,7 +40,7 @@ impl SalesOpportunityItem {
     }
 
     /// Add customer to opportunity item
-    pub fn for_customer(mut self, cust : Customer) -> SalesOpportunityItem {
+    pub fn for_customer(mut self, cust: Customer) -> SalesOpportunityItem {
         self.add_party(RelatedParty::from(&cust));
         self
     }

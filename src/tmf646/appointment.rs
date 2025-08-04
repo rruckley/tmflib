@@ -1,16 +1,18 @@
 //! Appointment Booking Module
 
-use serde::{Deserialize, Serialize};
 use chrono::Utc;
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasLastUpdate, LIB_PATH, HasDescription, HasValidity, TimePeriod, DateTime,TMFEvent};
-use tmflib_derive::{HasId,HasDescription, HasLastUpdate, HasValidity};
-use crate::common::event::{Event,EventPayload};
+use crate::common::event::{Event, EventPayload};
+use crate::{
+    DateTime, HasDescription, HasId, HasLastUpdate, HasValidity, TMFEvent, TimePeriod, LIB_PATH,
+};
+use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasValidity};
 
-const CLASS_PATH : &str = "appointment";
+const CLASS_PATH: &str = "appointment";
 
 /// Appointment booking status
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -29,7 +31,7 @@ pub enum AppointmentStateType {
 }
 
 /// Appointment Event Type
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum AppointmentEventType {
     /// Appointment Created
     #[default]
@@ -43,7 +45,7 @@ pub enum AppointmentEventType {
 }
 
 /// Appointment Event Container
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct AppointmentEvent {
     appointment: Appointment,
 }
@@ -51,7 +53,7 @@ pub struct AppointmentEvent {
 impl TMFEvent<AppointmentEvent> for Appointment {
     fn event(&self) -> AppointmentEvent {
         AppointmentEvent {
-            appointment: self.clone()
+            appointment: self.clone(),
         }
     }
 }
@@ -60,10 +62,15 @@ impl EventPayload<AppointmentEvent> for Appointment {
     type Subject = Appointment;
     type EventType = AppointmentEvent;
 
-    fn to_event(&self,event_type : Self::EventType) -> Event<AppointmentEvent,Self::EventType> {
+    fn to_event(&self, event_type: Self::EventType) -> Event<AppointmentEvent, Self::EventType> {
         let now = Utc::now();
-        let desc = format!("{:?} for {} [{}]",event_type,self.get_description(),self.get_id());
-        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let desc = format!(
+            "{:?} for {} [{}]",
+            event_type,
+            self.get_description(),
+            self.get_id()
+        );
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
         Event {
             description: Some(desc),
             domain: Some(Appointment::get_class()),
@@ -81,7 +88,9 @@ impl EventPayload<AppointmentEvent> for Appointment {
 }
 
 /// Appointment booking
-#[derive(Clone, Debug, Default, Deserialize, HasId, HasDescription, HasLastUpdate, HasValidity, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, HasId, HasDescription, HasLastUpdate, HasValidity, Serialize,
+)]
 pub struct Appointment {
     #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
@@ -103,7 +112,7 @@ pub struct Appointment {
 }
 
 /// Reference to an appointment
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct AppointmentRef {
     description: String,
     href: String,
@@ -123,7 +132,7 @@ impl From<Appointment> for AppointmentRef {
 impl Appointment {
     /// Create new appointment record
     pub fn new() -> Appointment {
-        //let appointment = 
+        //let appointment =
         Appointment::create_with_time()
         //appointment
     }
@@ -133,13 +142,13 @@ impl Appointment {
 mod test {
     use super::*;
 
-    const APPOINTMENT_JSON : &str = "{
+    const APPOINTMENT_JSON: &str = "{
         \"description\" : \"AppointmentDescription\",
         \"id\" : \"AP123\",
         \"href\" : \"http://example.com/tmf646/appointment/AP123\",
         \"status\" : \"Initialized\"
     }";
-    const APPOINTMENTREF_JSON : &str = "{
+    const APPOINTMENTREF_JSON: &str = "{
         \"description\" : \"AppointmentDescription\",
         \"id\" : \"AP123\",
         \"href\" : \"http://example.com/tmf646/appointment/AP123\"
@@ -150,8 +159,8 @@ mod test {
     fn test_create_appointment_id() {
         let appointment = Appointment::new();
 
-        assert_eq!(appointment.id.is_some(),true);
-        assert_eq!(appointment.href.is_some(),true);
+        assert_eq!(appointment.id.is_some(), true);
+        assert_eq!(appointment.href.is_some(), true);
     }
 
     #[test]
@@ -167,34 +176,44 @@ mod test {
 
         let appoint_ref = AppointmentRef::from(appointment.clone());
 
-        assert_eq!(appointment.get_id(),appoint_ref.id);
-        assert_eq!(appointment.get_href(),appoint_ref.href); 
+        assert_eq!(appointment.get_id(), appoint_ref.id);
+        assert_eq!(appointment.get_href(), appoint_ref.href);
     }
 
     #[test]
     fn test_appointmentstate_deserialize() {
-        let appointmentstate : AppointmentStateType = serde_json::from_str(APPOINTMENTTYPE_JSON).unwrap();
+        let appointmentstate: AppointmentStateType =
+            serde_json::from_str(APPOINTMENTTYPE_JSON).unwrap();
 
-        assert_eq!(appointmentstate,AppointmentStateType::Initialized);
+        assert_eq!(appointmentstate, AppointmentStateType::Initialized);
     }
 
     #[test]
     fn test_appointment_deserialize() {
-        let appointment : Appointment = serde_json::from_str(APPOINTMENT_JSON).unwrap();
+        let appointment: Appointment = serde_json::from_str(APPOINTMENT_JSON).unwrap();
 
-        assert_eq!(appointment.get_id(),"AP123");
-        assert_eq!(appointment.description.unwrap().as_str(),"AppointmentDescription");
+        assert_eq!(appointment.get_id(), "AP123");
+        assert_eq!(
+            appointment.description.unwrap().as_str(),
+            "AppointmentDescription"
+        );
         // assert_eq!(appointment.get_href(),"http://example.com/tmf646/appointment/AP123");
-        assert_eq!(appointment.status,AppointmentStateType::Initialized);
+        assert_eq!(appointment.status, AppointmentStateType::Initialized);
     }
 
     #[test]
     fn test_appointmentref_deserialize() {
-        let appointmentref : AppointmentRef = serde_json::from_str(APPOINTMENTREF_JSON).unwrap();
+        let appointmentref: AppointmentRef = serde_json::from_str(APPOINTMENTREF_JSON).unwrap();
 
-        assert_eq!(appointmentref.id.as_str(),"AP123");
-        assert_eq!(appointmentref.description.as_str(),"AppointmentDescription");
-        assert_eq!(appointmentref.href.as_str(),"http://example.com/tmf646/appointment/AP123");
+        assert_eq!(appointmentref.id.as_str(), "AP123");
+        assert_eq!(
+            appointmentref.description.as_str(),
+            "AppointmentDescription"
+        );
+        assert_eq!(
+            appointmentref.href.as_str(),
+            "http://example.com/tmf646/appointment/AP123"
+        );
     }
 
     #[test]
@@ -203,10 +222,9 @@ mod test {
 
         appointment.set_validity(TimePeriod::period_30days());
 
-        assert_eq!(appointment.valid_for.is_some(),true);
+        assert_eq!(appointment.valid_for.is_some(), true);
         let validity = appointment.get_validity().unwrap();
-        assert_eq!(validity.started(),true);
-        assert_eq!(validity.finished(),false);
+        assert_eq!(validity.started(), true);
+        assert_eq!(validity.finished(), false);
     }
 }
-

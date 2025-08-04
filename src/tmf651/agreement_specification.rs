@@ -1,14 +1,16 @@
 //! Agreement Specification Module
 
-use serde::{Deserialize,Serialize};
-use crate::{LIB_PATH,HasId,HasLastUpdate,HasName,HasValidity,TimePeriod, DateTime};
-use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
+use crate::{DateTime, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod, LIB_PATH};
+use serde::{Deserialize, Serialize};
+use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
 
 use super::MOD_PATH;
-const CLASS_PATH : &str = "specification";
+const CLASS_PATH: &str = "specification";
 
 /// Agreement Specification
-#[derive(Clone,Debug,Default,Deserialize,HasId,HasName,HasLastUpdate,HasValidity,Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasValidity, Serialize,
+)]
 pub struct AgreementSpecification {
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
@@ -31,9 +33,9 @@ pub struct AgreementSpecification {
 }
 
 /// Reference to external specification
-#[derive(Clone,Default,Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct AgreementSpecificationRef {
-    description : String,
+    description: String,
     href: String,
     id: String,
     name: String,
@@ -43,10 +45,9 @@ impl From<AgreementSpecification> for AgreementSpecificationRef {
     fn from(value: AgreementSpecification) -> Self {
         AgreementSpecificationRef {
             description: value.description.as_ref().unwrap().clone(),
-            id : value.get_id(),
+            id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-
         }
     }
 }
@@ -57,10 +58,10 @@ mod test {
 
     use super::{AgreementSpecification, AgreementSpecificationRef};
 
-    const AGREESPEC_ID : &str = "AS123";
-    const AGREESPEC_NAME: &str= "AgreementSpecificationName";
+    const AGREESPEC_ID: &str = "AS123";
+    const AGREESPEC_NAME: &str = "AgreementSpecificationName";
 
-    const AGREESPECREF_JSON : &str = "{
+    const AGREESPECREF_JSON: &str = "{
         \"description\" : \"Description\",
         \"href\" : \"http://example.com/tmf651/specification/AS123\",
         \"id\" : \"AS123\",
@@ -76,22 +77,19 @@ mod test {
     fn test_agreespec_hasname() {}
 
     #[test]
-    fn test_agreespec_haslastupdate() {
-
-    }
+    fn test_agreespec_haslastupdate() {}
 
     #[test]
-    fn test_agreespec_hasvalidity() {
-
-    }
+    fn test_agreespec_hasvalidity() {}
 
     #[test]
     fn test_agreespecref_deserialize() {
-        let agreespecref : AgreementSpecificationRef = serde_json::from_str(AGREESPECREF_JSON).unwrap();
+        let agreespecref: AgreementSpecificationRef =
+            serde_json::from_str(AGREESPECREF_JSON).unwrap();
 
-        assert_eq!(agreespecref.description.as_str(),"Description");
-        assert_eq!(agreespecref.id.as_str(),"AS123");
-        assert_eq!(agreespecref.name.as_str(),"AgreementSpecificationName")
+        assert_eq!(agreespecref.description.as_str(), "Description");
+        assert_eq!(agreespecref.id.as_str(), "AS123");
+        assert_eq!(agreespecref.name.as_str(), "AgreementSpecificationName")
     }
 
     #[test]
@@ -103,10 +101,12 @@ mod test {
 
         let agreespecref = AgreementSpecificationRef::from(agreespec.clone());
 
-        assert_eq!(agreespec.get_id().as_str(),agreespecref.id);
-        assert_eq!(agreespec.get_name().as_str(),agreespecref.name);
-        assert_eq!(agreespec.description.is_some(),true);
-        assert_eq!(agreespec.description.unwrap().as_str(),agreespecref.description);
-
+        assert_eq!(agreespec.get_id().as_str(), agreespecref.id);
+        assert_eq!(agreespec.get_name().as_str(), agreespecref.name);
+        assert_eq!(agreespec.description.is_some(), true);
+        assert_eq!(
+            agreespec.description.unwrap().as_str(),
+            agreespecref.description
+        );
     }
 }

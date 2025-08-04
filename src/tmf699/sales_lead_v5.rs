@@ -1,38 +1,29 @@
 //! Sales Lead Module
-//! 
+//!
 use crate::common::contact::ContactMedium;
 use crate::common::money::Money;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
 
-use crate::tmf620::{ChannelRef,MarketSegmentRef};
 use crate::tmf620::category::CategoryRef;
 #[cfg(feature = "tmf620-v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
 #[cfg(feature = "tmf620-v5")]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf620::product_specification::ProductSpecificationRef;
+use crate::tmf620::{ChannelRef, MarketSegmentRef};
 
 use super::MOD_PATH;
-use crate::{
-    HasId,
-    HasValidity,
-    HasNote,
-    HasName, 
-    LIB_PATH, 
-    TimePeriod, 
-    DateTime,
-    Uri
-};
-use tmflib_derive::{HasId,HasValidity,HasNote,HasName};
+use crate::{DateTime, HasId, HasName, HasNote, HasValidity, TimePeriod, Uri, LIB_PATH};
+use tmflib_derive::{HasId, HasName, HasNote, HasValidity};
 
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
-const CLASS_PATH : &str = "salesLead";
-const LEAD_VALID :u64 = 30;
+const CLASS_PATH: &str = "salesLead";
+const LEAD_VALID: u64 = 30;
 
 /// Sales Lead Priorities
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum SalesLeadPrioityType {
     /// Low Priority
@@ -45,7 +36,7 @@ pub enum SalesLeadPrioityType {
 }
 
 /// Sales Lead Status
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum SalesLeadStateType {
     /// Accepted (default)
@@ -64,7 +55,7 @@ pub enum SalesLeadStateType {
 }
 
 /// Sales Lead - for tracking potential sales.
-#[derive(Clone,Debug,Default,Deserialize, HasId, HasValidity, HasNote, HasName, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasValidity, HasNote, HasName, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SalesLead {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -77,7 +68,7 @@ pub struct SalesLead {
     description: Option<String>,
     name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    rating : Option<String>,
+    rating: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     referred_date: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -89,7 +80,7 @@ pub struct SalesLead {
     #[serde(skip_serializing_if = "Option::is_none")]
     estimated_revenue: Option<Money>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    priority : Option<SalesLeadPrioityType>,
+    priority: Option<SalesLeadPrioityType>,
     status: Option<SalesLeadStateType>,
     #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
@@ -113,7 +104,7 @@ pub struct SalesLead {
 
 impl SalesLead {
     /// Create a new sales lead under a given names
-    pub fn new(name : impl Into<String>) -> SalesLead {
+    pub fn new(name: impl Into<String>) -> SalesLead {
         let mut sl = SalesLead::create();
         sl.name = Some(name.into());
         sl.status = Some(SalesLeadStateType::default());
@@ -124,18 +115,18 @@ impl SalesLead {
 }
 
 /// Sales Lead Reference
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SalesLeadRef {
-    href : Uri,
+    href: Uri,
     id: String,
-    name : String,
+    name: String,
 }
 
 impl From<SalesLead> for SalesLeadRef {
     fn from(value: SalesLead) -> Self {
         SalesLeadRef {
-            href : value.get_href(),
+            href: value.get_href(),
             id: value.get_id(),
             name: value.get_name(),
         }
@@ -144,15 +135,15 @@ impl From<SalesLead> for SalesLeadRef {
 
 #[cfg(test)]
 mod test {
-    use super::SalesLead;
     use super::HasId;
-    const SL_NAME : &str = "My Sales Lead";
+    use super::SalesLead;
+    const SL_NAME: &str = "My Sales Lead";
     #[test]
     fn sales_lead_create_id() {
         // Generate shipping order, test id
         let sl = SalesLead::new(SL_NAME);
 
-        assert_eq!(sl.id.is_some(),true);
+        assert_eq!(sl.id.is_some(), true);
     }
 
     #[test]
@@ -175,6 +166,6 @@ mod test {
     fn sales_lead_create_name() {
         let sl = SalesLead::new(SL_NAME);
 
-        assert_eq!(sl.get_name(),SL_NAME.to_string());
+        assert_eq!(sl.get_name(), SL_NAME.to_string());
     }
 }

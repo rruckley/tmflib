@@ -2,28 +2,21 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasLastUpdate, HasName,HasDescription, LIB_PATH, DateTime};
-use tmflib_derive::{HasId, HasName, HasLastUpdate,HasDescription};
-use crate::common::{
-    money::Money,
-    related_party::RelatedParty,
-    contact::Contact,
-};
+use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
+use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName, LIB_PATH};
+use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::{
-    AccountRef, 
-    AccountBalance, 
-    AccountTaxExemption,
-    financial_account::FinancialAccountRef,
-    MOD_PATH,
-    PaymentPlan,
-    PaymentMethodRef,
+    financial_account::FinancialAccountRef, AccountBalance, AccountRef, AccountTaxExemption,
+    PaymentMethodRef, PaymentPlan, MOD_PATH,
 };
 
-const CLASS_PATH : &str = "account";
+const CLASS_PATH: &str = "account";
 
 /// Billing Account
-#[derive( Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasDescription, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasDescription, Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct SettlementAccount {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -50,7 +43,7 @@ pub struct SettlementAccount {
     #[serde(skip_serializing_if = "Option::is_none")]
     state: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    last_update : Option<DateTime>,
+    last_update: Option<DateTime>,
     related_party: Vec<RelatedParty>,
     #[serde(skip_serializing_if = "Option::is_none")]
     contact: Option<Vec<Contact>>,
@@ -68,7 +61,7 @@ pub struct SettlementAccount {
 
 impl SettlementAccount {
     /// Create new Billing Account
-    pub fn new(name :impl Into<String>) -> SettlementAccount {
+    pub fn new(name: impl Into<String>) -> SettlementAccount {
         SettlementAccount {
             name: Some(name.into()),
             ..SettlementAccount::create()
@@ -79,16 +72,16 @@ impl SettlementAccount {
 impl From<SettlementAccount> for AccountRef {
     fn from(value: SettlementAccount) -> Self {
         AccountRef {
-            id : value.get_id(),
+            id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            description : value.description.clone(),
+            description: value.description.clone(),
         }
     }
 }
 
 /// Billing Account Reference
-#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct BillingAccountRef {
     /// Referenced Id
     id: String,
@@ -103,13 +96,13 @@ mod test {
     use super::*;
     use crate::HasId;
 
-    const ACCOUNT_NAME : &str = "SettlementAccount";
+    const ACCOUNT_NAME: &str = "SettlementAccount";
 
     #[test]
     fn test_settlement_account_new_name() {
         let account = SettlementAccount::new(ACCOUNT_NAME);
 
-        assert_eq!(account.name,Some(ACCOUNT_NAME.into()));
+        assert_eq!(account.name, Some(ACCOUNT_NAME.into()));
     }
 
     #[test]
@@ -118,8 +111,8 @@ mod test {
 
         let accountref = AccountRef::from(settlementaccount.clone());
 
-        assert_eq!(accountref.id,settlementaccount.get_id());
-        assert_eq!(accountref.href,settlementaccount.get_href());
-        assert_eq!(accountref.name,settlementaccount.get_name());
+        assert_eq!(accountref.id, settlementaccount.get_id());
+        assert_eq!(accountref.href, settlementaccount.get_href());
+        assert_eq!(accountref.name, settlementaccount.get_name());
     }
 }

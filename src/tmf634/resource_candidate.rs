@@ -1,12 +1,11 @@
 //! Resource Candidate Module
 
-
 use serde::{Deserialize, Serialize};
 
-const CLASS_PATH : &str = "resourceCandidate";
+const CLASS_PATH: &str = "resourceCandidate";
 
 use super::MOD_PATH;
-use crate::{LIB_PATH, HasId, HasName, HasLastUpdate};
+use crate::{HasId, HasLastUpdate, HasName, LIB_PATH};
 use tmflib_derive::{HasId, HasName};
 
 /// Resource Candidate (Catalog Entry)
@@ -26,7 +25,7 @@ pub struct ResourceCandidate {
 
 impl ResourceCandidate {
     /// Create a new ResourceCandidate instance
-    pub fn new(name : impl Into<String>) -> ResourceCandidate {
+    pub fn new(name: impl Into<String>) -> ResourceCandidate {
         let mut rc = ResourceCandidate::create_with_time();
         rc.name = Some(name.into());
         rc
@@ -40,11 +39,11 @@ impl ResourceCandidate {
 }
 
 impl HasLastUpdate for ResourceCandidate {
-    fn set_last_update(&mut self, time : impl Into<String>) {
+    fn set_last_update(&mut self, time: impl Into<String>) {
         self.last_update = Some(time.into());
     }
 
-    fn last_update(mut self, time : Option<String>) -> Self {
+    fn last_update(mut self, time: Option<String>) -> Self {
         match time {
             Some(t) => self.set_last_update(t),
             None => self.set_last_update(ResourceCandidate::get_timestamp()),
@@ -63,9 +62,9 @@ pub struct ResourceCandidateRef {
 
 impl From<ResourceCandidate> for ResourceCandidateRef {
     fn from(value: ResourceCandidate) -> Self {
-        ResourceCandidateRef { 
-            id: value.get_id(), 
-            href: value.get_href(), 
+        ResourceCandidateRef {
+            id: value.get_id(),
+            href: value.get_href(),
             name: value.get_name(),
         }
     }
@@ -76,23 +75,22 @@ mod test {
     use super::*;
     use crate::HasName;
 
-    const CANDIDATE_NAME : &str = "ResourceCandidateName";
-    const CANDIDATE_DESC : &str = "CandidateDescription";
+    const CANDIDATE_NAME: &str = "ResourceCandidateName";
+    const CANDIDATE_DESC: &str = "CandidateDescription";
 
     #[test]
     fn test_resourcecandidate_new() {
         let candidate = ResourceCandidate::new(CANDIDATE_NAME);
 
-        assert_eq!(candidate.get_name().as_str(),CANDIDATE_NAME);
+        assert_eq!(candidate.get_name().as_str(), CANDIDATE_NAME);
     }
 
     #[test]
     fn test_resourcecandidate_desc() {
-        let candidate = ResourceCandidate::new(CANDIDATE_NAME)
-        .description(CANDIDATE_DESC);
+        let candidate = ResourceCandidate::new(CANDIDATE_NAME).description(CANDIDATE_DESC);
 
-        assert_eq!(candidate.description.is_some(),true);
-        assert_eq!(candidate.description.unwrap().as_str(),CANDIDATE_DESC);
+        assert_eq!(candidate.description.is_some(), true);
+        assert_eq!(candidate.description.unwrap().as_str(), CANDIDATE_DESC);
     }
 
     #[test]
@@ -101,8 +99,8 @@ mod test {
 
         let candidate_ref = ResourceCandidateRef::from(candidate.clone());
 
-        assert_eq!(candidate.get_id(),candidate_ref.id);
-        assert_eq!(candidate.get_href(),candidate_ref.href);
-        assert_eq!(candidate.get_name(),candidate_ref.name);
+        assert_eq!(candidate.get_id(), candidate_ref.id);
+        assert_eq!(candidate.get_href(), candidate_ref.href);
+        assert_eq!(candidate.get_name(), candidate_ref.name);
     }
 }

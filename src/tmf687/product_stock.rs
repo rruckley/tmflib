@@ -1,38 +1,29 @@
 //! Product Stock Module
 
-
 use super::MOD_PATH;
-use crate::{
-    HasId, HasLastUpdate, HasName, HasRelatedParty,TMFEvent, Uri, LIB_PATH,DateTime,
-};
-use tmflib_derive::{
-    HasId,
-    HasName,
-    HasLastUpdate,
-    HasRelatedParty,
-};
+use crate::common::event::{Event, EventPayload};
+use crate::common::product::ProductRefOrValue;
 use crate::common::related_party::RelatedParty;
 use crate::common::related_place::RelatedPlaceRefOrValue;
-use crate::common::product::ProductRefOrValue;
-use crate::common::event::{Event,EventPayload};
 use crate::common::tmf_error::TMFError;
+use crate::{DateTime, HasId, HasLastUpdate, HasName, HasRelatedParty, TMFEvent, Uri, LIB_PATH};
+use tmflib_derive::{HasId, HasLastUpdate, HasName, HasRelatedParty};
 
 // External
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-const CLASS_PATH : &str = "productStock";
+const CLASS_PATH: &str = "productStock";
 
 /// Product Stock Relationship
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct ProductStockRelationship {
-    relationship_type : String,
-
+    relationship_type: String,
 }
 
 /// Product Stock Reference
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct ProductStockRef {
     href: Uri,
     id: String,
@@ -50,7 +41,9 @@ impl From<ProductStock> for ProductStockRef {
 }
 
 /// Product Stock Record
-#[derive(Clone,Default,Debug,Deserialize,HasId,HasName,HasLastUpdate,HasRelatedParty,Serialize)]
+#[derive(
+    Clone, Default, Debug, Deserialize, HasId, HasName, HasLastUpdate, HasRelatedParty, Serialize,
+)]
 pub struct ProductStock {
     #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
@@ -72,7 +65,7 @@ pub struct ProductStock {
 
 impl ProductStock {
     /// Create a new ProductStock instance
-    pub fn new(name : impl Into<String>) -> ProductStock {
+    pub fn new(name: impl Into<String>) -> ProductStock {
         ProductStock {
             name: Some(name.into()),
             ..ProductStock::create()
@@ -81,7 +74,7 @@ impl ProductStock {
 }
 
 /// Product Stock Class
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum ProductStockEventType {
     /// Default Event
     #[default]
@@ -131,27 +124,27 @@ pub enum ProductStockEventType {
 
 // Events
 /// Product Stock Event
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct ProductStockEvent {
     /// Product Stock
     pub product_stock: ProductStock,
 }
 
 impl TMFEvent<ProductStockEvent> for ProductStock {
-   fn event(&self) -> ProductStockEvent {
-         ProductStockEvent {
-              product_stock: self.clone(),
-         }
+    fn event(&self) -> ProductStockEvent {
+        ProductStockEvent {
+            product_stock: self.clone(),
+        }
     }
 }
 
 impl EventPayload<ProductStockEvent> for ProductStock {
     type Subject = ProductStock;
     type EventType = ProductStockEvent;
-    fn to_event(&self,event_type : Self::EventType) -> Event<ProductStockEvent,Self::EventType> {
+    fn to_event(&self, event_type: Self::EventType) -> Event<ProductStockEvent, Self::EventType> {
         let now = Utc::now();
-        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
-        let desc = format!("{:?} for {}",event_type,self.get_name());
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
+        let desc = format!("{:?} for {}", event_type, self.get_name());
         Event {
             description: Some(desc),
             domain: Some(ProductStock::get_class()),
@@ -167,19 +160,18 @@ impl EventPayload<ProductStockEvent> for ProductStock {
     }
 }
 
-
 #[cfg(test)]
 mod test {
     use super::*;
 
-    const STOCK_NAME : &str = "ProductStock";
+    const STOCK_NAME: &str = "ProductStock";
 
     #[test]
     fn test_product_stock_new() {
         let stock = ProductStock::new(STOCK_NAME);
 
-        assert_eq!(stock.name.is_some(),true);
-        assert_eq!(stock.get_name().as_str(),STOCK_NAME);
+        assert_eq!(stock.name.is_some(), true);
+        assert_eq!(stock.get_name().as_str(), STOCK_NAME);
     }
 
     #[test]
@@ -187,8 +179,8 @@ mod test {
         let stock = ProductStock::new(STOCK_NAME);
         let stock_ref = ProductStockRef::from(stock.clone());
 
-        assert_eq!(stock_ref.id,stock.get_id());
-        assert_eq!(stock_ref.href,stock.get_href());
-        assert_eq!(stock_ref.name,stock.get_name());
+        assert_eq!(stock_ref.id, stock.get_id());
+        assert_eq!(stock_ref.href, stock.get_href());
+        assert_eq!(stock_ref.name, stock.get_name());
     }
 }

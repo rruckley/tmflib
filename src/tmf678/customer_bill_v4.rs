@@ -1,32 +1,21 @@
 //! Customer Bill Management V4
-//! 
+//!
 
 use super::MOD_PATH;
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
-use crate::{
-    LIB_PATH,
-    HasId, 
-    HasAttachment,
-    HasLastUpdate,
-    DateTime,
-    TimePeriod,
-    Uri
-};
-use tmflib_derive::{
-    HasId,
-    HasLastUpdate
-};
-use crate::tmf666::billing_account::BillingAccountRef;
+use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::money::Money;
 use crate::common::related_party::RelatedParty;
-use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::tax_item::TaxItem;
+use crate::tmf666::billing_account::BillingAccountRef;
+use crate::{DateTime, HasAttachment, HasId, HasLastUpdate, TimePeriod, Uri, LIB_PATH};
+use tmflib_derive::{HasId, HasLastUpdate};
 
-const CLASS_PATH : &str = "customer_bill";
+const CLASS_PATH: &str = "customer_bill";
 
 /// Customer Bill Run Type
-#[derive(Clone,Debug,Default,Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub enum CustomerBillRunType {
     /// Inside regular bill cycle
     #[default]
@@ -36,7 +25,7 @@ pub enum CustomerBillRunType {
 }
 
 /// Customer Bill Status
-#[derive(Clone,Debug,Default,Deserialize,PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub enum CustomerBillStateType {
     /// New Bill
     #[default]
@@ -54,7 +43,7 @@ pub enum CustomerBillStateType {
 }
 
 /// Customer Bill
-#[derive(Clone,Debug,Default,Deserialize,HasId,HasLastUpdate,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasLastUpdate, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CustomerBill {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -92,7 +81,7 @@ pub struct CustomerBill {
     pub bill_document: Option<Vec<AttachmentRefOrValue>>,
     /// Billing Account References
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub billing_account : Option<Vec<BillingAccountRef>>,
+    pub billing_account: Option<Vec<BillingAccountRef>>,
     /// Tax Items
     #[serde(skip_serializing_if = "Option::is_none")]
     pub tax_item: Option<Vec<TaxItem>>,
@@ -108,7 +97,7 @@ impl CustomerBill {
 }
 
 impl HasAttachment for CustomerBill {
-    fn add(&mut self, attachment : &AttachmentRefOrValue) {
+    fn add(&mut self, attachment: &AttachmentRefOrValue) {
         match self.bill_document.as_mut() {
             Some(v) => {
                 v.push(attachment.clone());
@@ -116,39 +105,37 @@ impl HasAttachment for CustomerBill {
             None => {
                 self.bill_document = Some(vec![attachment.clone()]);
             }
-        }    
+        }
     }
-    fn position(&self, name : impl Into<String>) -> Option<usize> {
+    fn position(&self, name: impl Into<String>) -> Option<usize> {
         match self.bill_document.as_ref() {
             Some(v) => {
-                let pattern : String = name.into();
+                let pattern: String = name.into();
                 v.iter().position(|a| a.name == Some(pattern.clone()))
             }
             None => None,
         }
     }
-    fn find(&self, name : impl Into<String>) -> Option<&AttachmentRefOrValue> {
+    fn find(&self, name: impl Into<String>) -> Option<&AttachmentRefOrValue> {
         match self.bill_document.as_ref() {
             Some(v) => {
-                let pattern : String = name.into();
-                v.iter().find(|a| a.name == Some(pattern.clone()))               
-            },
+                let pattern: String = name.into();
+                v.iter().find(|a| a.name == Some(pattern.clone()))
+            }
             None => None,
         }
     }
     fn get(&self, position: usize) -> Option<AttachmentRefOrValue> {
         match self.bill_document.as_ref() {
-            Some(v) => {
-                v.get(position).cloned()
-            },
+            Some(v) => v.get(position).cloned(),
             None => None,
-        }    
+        }
     }
-    fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue> {
+    fn remove(&mut self, position: usize) -> Option<AttachmentRefOrValue> {
         self.bill_document.as_mut().map(|v| v.remove(position))
     }
 
-    fn attachment(mut self, attachment : AttachmentRefOrValue) -> Self {
+    fn attachment(mut self, attachment: AttachmentRefOrValue) -> Self {
         self.add(&attachment);
         self
     }
@@ -159,8 +146,8 @@ mod test {
     use super::*;
     use crate::HasName;
 
-    const ATTACH_NAME : &str = "AttachmentName";
-    const RUNTYPE_JSON : &str = "\"OnCycle\"";
+    const ATTACH_NAME: &str = "AttachmentName";
+    const RUNTYPE_JSON: &str = "\"OnCycle\"";
     const STATETYPE_JSON: &str = "\"New\"";
     const CUSTOMERBILL_JSON: &str = "{
         \"billNo\" : \"1\",
@@ -189,29 +176,29 @@ mod test {
     fn test_customer_bill_new_state() {
         let bill = CustomerBill::new();
 
-        assert_eq!(bill.state,Some(CustomerBillStateType::default()));
+        assert_eq!(bill.state, Some(CustomerBillStateType::default()));
     }
 
     #[test]
     fn test_runtype_deserialize() {
-        let runtype : CustomerBillRunType = serde_json::from_str(RUNTYPE_JSON).unwrap();
+        let runtype: CustomerBillRunType = serde_json::from_str(RUNTYPE_JSON).unwrap();
 
-        assert_eq!(runtype,CustomerBillRunType::OnCycle);
+        assert_eq!(runtype, CustomerBillRunType::OnCycle);
     }
 
     #[test]
     fn test_statetype_deserialize() {
-        let statetype : CustomerBillStateType = serde_json::from_str(STATETYPE_JSON).unwrap();
+        let statetype: CustomerBillStateType = serde_json::from_str(STATETYPE_JSON).unwrap();
 
-        assert_eq!(statetype,CustomerBillStateType::New);
+        assert_eq!(statetype, CustomerBillStateType::New);
     }
 
     #[test]
     fn test_customerbill_deserialize() {
-        let customerbill : CustomerBill = serde_json::from_str(CUSTOMERBILL_JSON).unwrap();
+        let customerbill: CustomerBill = serde_json::from_str(CUSTOMERBILL_JSON).unwrap();
 
-        assert_eq!(customerbill.bill_no.as_str(),"1");
-        assert_eq!(customerbill.category.as_str(),"Category");
+        assert_eq!(customerbill.bill_no.as_str(), "1");
+        assert_eq!(customerbill.category.as_str(), "Category");
     }
 
     #[test]
@@ -220,8 +207,8 @@ mod test {
 
         customerbill.add(&AttachmentRefOrValue::new());
 
-        assert_eq!(customerbill.bill_document.is_some(),true);
-        assert_eq!(customerbill.bill_document.unwrap().len(),1);
+        assert_eq!(customerbill.bill_document.is_some(), true);
+        assert_eq!(customerbill.bill_document.unwrap().len(), 1);
     }
 
     #[test]
@@ -234,8 +221,8 @@ mod test {
 
         let pos = customerbill.position(ATTACH_NAME);
 
-        assert_eq!(pos.is_some(),true);
-        assert_eq!(pos.unwrap(),0);
+        assert_eq!(pos.is_some(), true);
+        assert_eq!(pos.unwrap(), 0);
     }
 
     #[test]
@@ -248,7 +235,7 @@ mod test {
 
         let found_attach = customerbill.find(ATTACH_NAME);
 
-        assert_eq!(found_attach.as_ref().is_some(),true);
-        assert_eq!(found_attach.cloned().unwrap().name.unwrap(),ATTACH_NAME);    
+        assert_eq!(found_attach.as_ref().is_some(), true);
+        assert_eq!(found_attach.cloned().unwrap().name.unwrap(), ATTACH_NAME);
     }
 }

@@ -17,4 +17,4 @@
 pub mod service_test;
 pub mod service_test_specification;
 
-const MOD_PATH : &str = "serviceTestManagement/v4";
+const MOD_PATH: &str = "serviceTestManagement/v4";

@@ -2,33 +2,18 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    HasId, 
-    HasLastUpdate, 
-    HasName, 
-    LIB_PATH, 
-    DateTime,
-};
-use tmflib_derive::{HasId, HasName, HasLastUpdate};
+use crate::{DateTime, HasId, HasLastUpdate, HasName, LIB_PATH};
+use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
-use crate::common::{
-    money::Money,
-    related_party::RelatedParty,
-    contact::Contact,
-};
-use super::{
-    AccountBalance, 
-    AccountRelationship,
-    AccountTaxExemption,
-    MOD_PATH
-};
+use super::{AccountBalance, AccountRelationship, AccountTaxExemption, MOD_PATH};
+use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
 
-const CLASS_PATH : &str = "account";
+const CLASS_PATH: &str = "account";
 
 /// Financial Account Reference
-#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct FinancialAccountRef {
-    id : String,
+    id: String,
     href: String,
     name: String,
     account_balance: Option<AccountBalance>,
@@ -46,21 +31,21 @@ impl From<FinancialAccount> for FinancialAccountRef {
 }
 
 /// Finiancial Account
-#[derive( Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FinancialAccount {
     account_type: String,
     credit_limit: Option<Money>,
     description: Option<String>,
     /// HTTP URI
-    pub href : Option<String>,
+    pub href: Option<String>,
     /// Unique Id
-    pub id : Option<String>,
+    pub id: Option<String>,
     last_update: Option<DateTime>,
     /// Name of this account
-    pub name : Option<String>,
+    pub name: Option<String>,
     /// Status of this account
-    pub state : Option<String>,
+    pub state: Option<String>,
     // Referenced data
     related_party: Option<Vec<RelatedParty>>,
     contact: Option<Vec<Contact>>,
@@ -82,11 +67,11 @@ impl FinancialAccount {
                     }
                 });
                 out
-            },
+            }
             None => Money::from(0.0),
         };
         AccountBalance {
-            amount : Some(total),
+            amount: Some(total),
             balance_type: String::from("total"),
             valid_for: None,
         }
@@ -96,7 +81,7 @@ impl FinancialAccount {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{HasId,HasName};
+    use crate::{HasId, HasName};
     const ACC_NAME: &str = "Financial Account";
 
     #[test]
@@ -107,8 +92,8 @@ mod test {
 
         let fin_ref = FinancialAccountRef::from(financial.clone());
 
-        assert_eq!(fin_ref.id,financial.get_id());
-        assert_eq!(fin_ref.href,financial.get_href());
-        assert_eq!(fin_ref.name,financial.get_name());
+        assert_eq!(fin_ref.id, financial.get_id());
+        assert_eq!(fin_ref.href, financial.get_href());
+        assert_eq!(fin_ref.name, financial.get_name());
     }
 }

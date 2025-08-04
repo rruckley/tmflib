@@ -1,5 +1,5 @@
 //! Create Customer example
-//! 
+//!
 use tmflib::tmf629::customer::Customer;
 
 use tmflib::HasId;
