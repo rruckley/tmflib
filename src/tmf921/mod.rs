@@ -14,9 +14,8 @@
 
 //! TMF921 Intent Mangemnt API
 
-
-pub mod intent;
 pub mod characteristic;
 pub mod expression;
+pub mod intent;
 
-const MOD_PATH : &str = "intentManagement/v5";
+const MOD_PATH: &str = "intentManagement/v5";

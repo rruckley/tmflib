@@ -2,46 +2,45 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, LIB_PATH,Uri};
+use crate::{HasId, Uri, LIB_PATH};
 use tmflib_derive::HasId;
-
 
 use super::MOD_PATH;
 
-const CLASS_PATH : &str = "monitor";
+const CLASS_PATH: &str = "monitor";
 
-/// Request 
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+/// Request
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Request {
-    header : HeaderItem,
+    header: HeaderItem,
 }
 
 /// Response
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Response {
-    header : HeaderItem,
+    header: HeaderItem,
 }
 
 /// Header Item
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct HeaderItem {
-    name : String,
-    value : String,
+    name: String,
+    value: String,
 }
 
 /// Resource Function Monitoring
-#[derive(Clone,Debug,Default,HasId,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, HasId, Deserialize, Serialize)]
 pub struct Monitor {
     /// Unique Id
-    pub id : Option<String>,
+    pub id: Option<String>,
     /// HTTP URI
     pub href: Option<Uri>,
     /// Source URI
     pub source_href: Option<Uri>,
     /// Status
-    pub state : Option<String>,
+    pub state: Option<String>,
     /// Request
-    pub request : Option<Request>,
+    pub request: Option<Request>,
     /// Response
-    pub response : Option<Response>,
+    pub response: Option<Response>,
 }

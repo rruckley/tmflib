@@ -1,15 +1,14 @@
 //! Create Catalog
-//! 
+//!
 use tmflib::common::related_party::RelatedParty;
 use tmflib::tmf620::catalog::Catalog;
-use tmflib::tmf620::category::{Category,CategoryRef};
+use tmflib::tmf620::category::{Category, CategoryRef};
+use tmflib::tmf629::customer::Customer;
 #[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use tmflib::tmf632::organization_v4::Organization;
 #[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use tmflib::tmf632::organization_v5::Organization;
-use tmflib::tmf629::customer::Customer;
 use tmflib::HasRelatedParty;
-
 
 fn main() {
     let org = Organization::new("A Customer");

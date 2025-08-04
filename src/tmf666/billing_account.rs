@@ -2,28 +2,21 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasLastUpdate, HasName, HasDescription, LIB_PATH, DateTime};
-use tmflib_derive::{HasId, HasName, HasLastUpdate,HasDescription};
-use crate::common::{
-    money::Money,
-    related_party::RelatedParty,
-    contact::Contact,
-};
+use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
+use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName, LIB_PATH};
+use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::{
-    AccountRef, 
-    AccountBalance, 
-    AccountTaxExemption,
-    financial_account::FinancialAccountRef,
-    MOD_PATH,
-    PaymentPlan,
-    PaymentMethodRef,
+    financial_account::FinancialAccountRef, AccountBalance, AccountRef, AccountTaxExemption,
+    PaymentMethodRef, PaymentPlan, MOD_PATH,
 };
 
-const CLASS_PATH : &str = "account";
+const CLASS_PATH: &str = "account";
 
 /// Billing Account
-#[derive( Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasDescription, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasDescription, Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct BillingAccount {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -50,7 +43,7 @@ pub struct BillingAccount {
     #[serde(skip_serializing_if = "Option::is_none")]
     state: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    last_update : Option<DateTime>,
+    last_update: Option<DateTime>,
     related_party: Vec<RelatedParty>,
     #[serde(skip_serializing_if = "Option::is_none")]
     contact: Option<Vec<Contact>>,
@@ -68,7 +61,7 @@ pub struct BillingAccount {
 
 impl BillingAccount {
     /// Create new Billing Account
-    pub fn new(name :impl Into<String>) -> BillingAccount {
+    pub fn new(name: impl Into<String>) -> BillingAccount {
         let mut account = BillingAccount::create();
         account.name = Some(name.into());
         account
@@ -78,16 +71,16 @@ impl BillingAccount {
 impl From<BillingAccount> for AccountRef {
     fn from(value: BillingAccount) -> Self {
         AccountRef {
-            id : value.get_id(),
+            id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            description : value.description.clone(),
+            description: value.description.clone(),
         }
     }
 }
 
 /// Billing Account Reference
-#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct BillingAccountRef {
     /// Referenced Id
     id: String,
@@ -100,8 +93,8 @@ pub struct BillingAccountRef {
 impl From<BillingAccount> for BillingAccountRef {
     fn from(value: BillingAccount) -> Self {
         BillingAccountRef {
-            id : value.get_id(),
-            href : value.get_href(),
+            id: value.get_id(),
+            href: value.get_href(),
             name: value.get_name(),
         }
     }
@@ -111,13 +104,13 @@ impl From<BillingAccount> for BillingAccountRef {
 mod test {
     use super::*;
 
-    const ACCOUNT : &str = "BillingAccount";
+    const ACCOUNT: &str = "BillingAccount";
 
     #[test]
     fn test_billing_account_new_name() {
         let account = BillingAccount::new(ACCOUNT);
 
-        assert_eq!(account.name,Some(ACCOUNT.into()));
+        assert_eq!(account.name, Some(ACCOUNT.into()));
     }
 
     #[test]
@@ -126,9 +119,9 @@ mod test {
 
         let account_ref = AccountRef::from(account.clone());
 
-        assert_eq!(account_ref.id,account.get_id());
-        assert_eq!(account_ref.href,account.get_href());
-        assert_eq!(account_ref.name,account.get_name());
+        assert_eq!(account_ref.id, account.get_id());
+        assert_eq!(account_ref.href, account.get_href());
+        assert_eq!(account_ref.name, account.get_name());
     }
 
     #[test]
@@ -137,8 +130,8 @@ mod test {
 
         let account_ref = BillingAccountRef::from(account.clone());
 
-        assert_eq!(account_ref.id,account.get_id());
-        assert_eq!(account_ref.href,account.get_href());
-        assert_eq!(account_ref.name,account.get_name());    
+        assert_eq!(account_ref.id, account.get_id());
+        assert_eq!(account_ref.href, account.get_href());
+        assert_eq!(account_ref.name, account.get_name());
     }
 }

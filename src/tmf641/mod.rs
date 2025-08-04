@@ -18,6 +18,6 @@
 
 const MOD_PATH: &str = "serviceOrder/v4";
 
-/// Service Order 
+/// Service Order
 pub mod service_order;
 pub mod service_order_item;

@@ -16,6 +16,6 @@
 //! # Description
 //! Prodives schema for managing [`appointment::Appointment`]s.
 
-const MOD_PATH : &str = "appointment";
+const MOD_PATH: &str = "appointment";
 
 pub mod appointment;

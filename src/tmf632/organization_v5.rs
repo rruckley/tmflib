@@ -1,34 +1,22 @@
 //! Organization Module
 
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
-use chrono::{DateTime,Utc};
 use uuid::Uuid;
 
-use crate::{ 
-    HasId, 
-    HasName,
-    HasReference,
-    TimePeriod,
-    TMFEvent,
-    LIB_PATH,
-    gen_code,
-};
-use tmflib_derive::{HasId,HasName};
-
+use crate::{gen_code, HasId, HasName, HasReference, TMFEvent, TimePeriod, LIB_PATH};
+use tmflib_derive::{HasId, HasName};
 
 use crate::common::{
     contact::ContactMedium,
-    event::{Event,EventPayload},
+    event::{Event, EventPayload},
     related_party::RelatedParty,
 };
 
-use super::{
-    MOD_PATH,
-    Characteristic,
-};
+use super::{Characteristic, MOD_PATH};
 
-const CLASS_PATH : &str = "organization";
-const CODE_PREFIX : &str = "O-";
+const CLASS_PATH: &str = "organization";
+const CODE_PREFIX: &str = "O-";
 
 /// Organization Status
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -52,7 +40,7 @@ pub struct OrganizationRef {
     /// Referenced Org Uri
     pub href: String,
     /// Referenced Org Name
-    pub name : String,
+    pub name: String,
 }
 
 impl From<Organization> for OrganizationRef {
@@ -96,18 +84,18 @@ pub struct Organization {
     /// Existence Period
     #[serde(skip_serializing_if = "Option::is_none")]
     pub exists_during: Option<TimePeriod>,
-    
+
     /// Status
     #[serde(skip_serializing_if = "Option::is_none")]
     pub status: Option<OrganizationStateType>,
-    
+
     /// Contact medium for organization
     #[serde(skip_serializing_if = "Option::is_none")]
     pub contact_medium: Option<Vec<ContactMedium>>,
     /// Related Party
     #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
-    
+
     /// Party Characteristics
     #[serde(skip_serializing_if = "Option::is_none")]
     party_characteristic: Option<Vec<Characteristic>>,
@@ -115,13 +103,13 @@ pub struct Organization {
 
 impl Organization {
     /// Create a new organization record with a name
-    pub fn new(name : impl Into<String>) -> Organization {
+    pub fn new(name: impl Into<String>) -> Organization {
         let mut org = Organization::create();
 
         // Ensure name has been trimmed before settings
-        let name : String = name.into();
+        let name: String = name.into();
         let name = name.trim();
-        
+
         org.name = Some(name.to_string());
         org.status = Some(OrganizationStateType::default());
         org.related_party = Some(vec![]);
@@ -129,48 +117,57 @@ impl Organization {
         org
     }
 
-        /// Generate a new site code based on available fields
-        pub fn generate_code(&mut self, offset : Option<u32>) {
-            let (code,_hash) = gen_code(self.get_name(), self.get_id(), offset, Some(CODE_PREFIX.to_string()), None);
-            let characteristic = Characteristic {
-                name : String::from("code"),
-                name_type : String::from("String"),
-                value : code,
-                ..Default::default()
-            };
-            self.replace_characteristic(characteristic);
-        }
-    
-        /// Replace a characteristic returning the old value if found
-        pub fn replace_characteristic(&mut self, characteristic : Characteristic) -> Option<Characteristic> {
-            match self.party_characteristic.as_mut() {
-                Some(c) => {
-                    // Characteristic array exist
-                    let pos = c.iter().position(|c| c.name == characteristic.name);
-                    match pos {
-                        Some(u) => {
-                            // Clone old value for return
-                            let old = c[u].clone();
-                            // Replace
-                            c[u] = characteristic;
-                            Some(old)
-                        },
-                        None => {
-                            // This means the characteristic could not be found, instead we insert it
-                            // Additional we return None to indicate that no old value was found
-                            c.push(characteristic);
-                            None
-                        },
+    /// Generate a new site code based on available fields
+    pub fn generate_code(&mut self, offset: Option<u32>) {
+        let (code, _hash) = gen_code(
+            self.get_name(),
+            self.get_id(),
+            offset,
+            Some(CODE_PREFIX.to_string()),
+            None,
+        );
+        let characteristic = Characteristic {
+            name: String::from("code"),
+            name_type: String::from("String"),
+            value: code,
+            ..Default::default()
+        };
+        self.replace_characteristic(characteristic);
+    }
+
+    /// Replace a characteristic returning the old value if found
+    pub fn replace_characteristic(
+        &mut self,
+        characteristic: Characteristic,
+    ) -> Option<Characteristic> {
+        match self.party_characteristic.as_mut() {
+            Some(c) => {
+                // Characteristic array exist
+                let pos = c.iter().position(|c| c.name == characteristic.name);
+                match pos {
+                    Some(u) => {
+                        // Clone old value for return
+                        let old = c[u].clone();
+                        // Replace
+                        c[u] = characteristic;
+                        Some(old)
+                    }
+                    None => {
+                        // This means the characteristic could not be found, instead we insert it
+                        // Additional we return None to indicate that no old value was found
+                        c.push(characteristic);
+                        None
                     }
                 }
-                None => {
-                    // Characteristic Vec was not created yet, create it now.
-                    self.party_characteristic = Some(vec![characteristic]);
-                    // Return None to show no previous value existed.
-                    None
-                },
+            }
+            None => {
+                // Characteristic Vec was not created yet, create it now.
+                self.party_characteristic = Some(vec![characteristic]);
+                // Return None to show no previous value existed.
+                None
             }
         }
+    }
 }
 
 impl From<String> for Organization {
@@ -188,7 +185,7 @@ impl HasReference for Organization {
 }
 
 /// Organization Event Types
-#[derive(Clone,Debug,Deserialize,Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub enum OrganizationEventType {
     /// Organization Created
     OrganizationCreateEvent,
@@ -201,31 +198,36 @@ pub enum OrganizationEventType {
 }
 
 /// Organization Event
-#[derive(Clone,Debug,Deserialize,Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct OrganizationEvent {
     /// Organization impacted by event
-    pub organization : Organization,
+    pub organization: Organization,
 }
 
 impl TMFEvent<OrganizationEvent> for Organization {
     fn event(&self) -> OrganizationEvent {
         OrganizationEvent {
-            organization : self.clone(),
-        }    
-    }    
+            organization: self.clone(),
+        }
+    }
 }
 
 impl EventPayload<OrganizationEvent> for Organization {
     type Subject = Organization;
     type EventType = OrganizationEventType;
 
-    fn to_event(&self,event_type : Self::EventType) -> Event<OrganizationEvent,Self::EventType> {
+    fn to_event(&self, event_type: Self::EventType) -> Event<OrganizationEvent, Self::EventType> {
         let now = Utc::now();
-        let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
+        let desc = format!(
+            "{:?} for {} [{}]",
+            event_type,
+            self.get_name(),
+            self.get_id()
+        );
         //let event_time = NaiveDateTime::from_timestamp_opt(now.timestamp(), 0).unwrap();
-        let event_time = DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let event_time = DateTime::from_timestamp(now.timestamp(), 0).unwrap();
         Event {
-            correlation_id : None,
+            correlation_id: None,
             description: Some(desc),
             domain: Some(Organization::get_class()),
             event_id: Uuid::new_v4().to_string(),
@@ -238,7 +240,7 @@ impl EventPayload<OrganizationEvent> for Organization {
             time_occurred: Some(event_time.to_string()),
             event_type,
             event: self.event(),
-        } 
+        }
     }
 }
 
@@ -250,13 +252,13 @@ mod test {
     fn test_org_new_name() {
         let org = Organization::new("AnOrganization");
 
-        assert_eq!(org.name,Some("AnOrganization".into()));
+        assert_eq!(org.name, Some("AnOrganization".into()));
     }
 
     #[test]
     fn test_org_new_state() {
         let org = Organization::new("AnOrganization");
 
-        assert_eq!(org.status,Some(OrganizationStateType::default()));
+        assert_eq!(org.status, Some(OrganizationStateType::default()));
     }
 }

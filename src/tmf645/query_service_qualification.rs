@@ -1,34 +1,23 @@
 //! Query Service Qualification
 
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
-use crate::{
-    HasId,
-    HasDescription,
-    LIB_PATH,
-    Uri
-};
+use crate::{HasDescription, HasId, Uri, LIB_PATH};
 
-use tmflib_derive::{
-    HasId,
-    HasDescription
-};
+use tmflib_derive::{HasDescription, HasId};
 
-const CLASS_PATH : &str = "queryServiceQualification";
-use super::{
-    MOD_PATH,
-    TaskStateType,
-};
+const CLASS_PATH: &str = "queryServiceQualification";
+use super::{TaskStateType, MOD_PATH};
 
 /// Query Service Qualification
-#[derive(Clone,Debug,Default,HasId,HasDescription,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, HasId, HasDescription, Deserialize, Serialize)]
 pub struct QueryServiceQualification {
     /// Unique Id
-    pub id : Option<String>,
+    pub id: Option<String>,
     /// HTTP Uri
     pub href: Option<Uri>,
     /// Description
     pub description: Option<String>,
     /// Status
-    pub state : Option<TaskStateType>,
+    pub state: Option<TaskStateType>,
 }

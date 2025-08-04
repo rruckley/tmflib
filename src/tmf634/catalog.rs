@@ -1,36 +1,33 @@
 //! Resource Catalog Module
 
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
-const CLASS_PATH : &str = "catalog";
+const CLASS_PATH: &str = "catalog";
 
 use super::MOD_PATH;
 
 use crate::{
-    LIB_PATH,
-    HasId,
-    HasName,
-    HasValidity,
-    HasLastUpdate,
-    HasDescription,
-    Uri,
-    DateTime,
-    TimePeriod,
+    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod, Uri, LIB_PATH,
 };
 
-use tmflib_derive::{
-    HasId,
-    HasName,
-    HasLastUpdate,
-    HasDescription,
-    HasValidity,
-};
+use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
 /// Resource Catalog structure
-#[derive(Clone,Default,Debug,Deserialize,HasId,HasName,HasLastUpdate,HasDescription,HasValidity,Serialize)]
+#[derive(
+    Clone,
+    Default,
+    Debug,
+    Deserialize,
+    HasId,
+    HasName,
+    HasLastUpdate,
+    HasDescription,
+    HasValidity,
+    Serialize,
+)]
 pub struct Catalog {
     /// Cataloge Type
-    pub catalog_type : Option<String>,
+    pub catalog_type: Option<String>,
     /// Cataloge Description
     pub description: Option<String>,
     /// HTTP Reference
@@ -51,9 +48,9 @@ pub struct Catalog {
 
 impl Catalog {
     /// Create a new catalog
-    pub fn new(name : impl Into<String>) -> Catalog {
+    pub fn new(name: impl Into<String>) -> Catalog {
         Catalog {
-            name : Some(name.into()),
+            name: Some(name.into()),
             ..Catalog::create()
         }
     }
@@ -64,15 +61,14 @@ mod test {
     use super::Catalog;
     use crate::HasDescription;
 
-    const CATALOG_NAME : &str = "CatalogueName";
-    const CATALOG_DESC : &str = "CatalogueDescription";
+    const CATALOG_NAME: &str = "CatalogueName";
+    const CATALOG_DESC: &str = "CatalogueDescription";
 
     #[test]
     fn test_catalog_description() {
-        let catalog = Catalog::new(CATALOG_NAME)
-            .description(CATALOG_DESC);
+        let catalog = Catalog::new(CATALOG_NAME).description(CATALOG_DESC);
 
-        assert_eq!(catalog.description.is_some(),true);
-        assert_eq!(catalog.get_description().as_str(),CATALOG_DESC);
+        assert_eq!(catalog.description.is_some(), true);
+        assert_eq!(catalog.get_description().as_str(), CATALOG_DESC);
     }
 }

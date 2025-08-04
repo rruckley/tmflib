@@ -1,23 +1,23 @@
-
 //! Intent Module
 
-use crate::{DateTime, HasDescription, HasId, HasName, HasAttachment, HasRelatedParty, TimePeriod, LIB_PATH};
-use serde::{Deserialize, Serialize};
-use tmflib_derive::{HasName,HasId,HasDescription,HasAttachment,HasRelatedParty};
-use super::MOD_PATH;
 use super::characteristic::Characteristic;
 use super::expression::IntentExpression;
+use super::MOD_PATH;
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
+use crate::{
+    DateTime, HasAttachment, HasDescription, HasId, HasName, HasRelatedParty, TimePeriod, LIB_PATH,
+};
+use serde::{Deserialize, Serialize};
+use tmflib_derive::{HasAttachment, HasDescription, HasId, HasName, HasRelatedParty};
 
-
-const CLASS_PATH : &str = "intent";
+const CLASS_PATH: &str = "intent";
 
 /// Represents an Intent with various attributes such as id, href, name, description, version, status, and valid_for period.
-/// 
+///
 /// # Fields
-/// 
+///
 /// * `id` - An optional unique identifier for the intent.
 /// * `href` - An optional hyperlink reference to the intent.
 /// * `name` - An optional name for the intent.
@@ -25,7 +25,18 @@ const CLASS_PATH : &str = "intent";
 /// * `version` - The version of the intent.
 /// * `status` - The current status of the intent.
 /// * `valid_for` - An optional time period during which the intent is valid.
-#[derive(Clone, Debug, Default, Deserialize, Serialize, HasId,HasName, HasDescription, HasAttachment, HasRelatedParty)]
+#[derive(
+    Clone,
+    Debug,
+    Default,
+    Deserialize,
+    Serialize,
+    HasId,
+    HasName,
+    HasDescription,
+    HasAttachment,
+    HasRelatedParty,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct Intent {
     /// An optional unique identifier for the intent.
@@ -65,4 +76,3 @@ pub struct Intent {
     #[serde(skip_serializing_if = "Option::is_none")]
     related_party: Option<Vec<RelatedParty>>,
 }
-

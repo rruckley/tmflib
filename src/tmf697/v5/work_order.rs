@@ -1,24 +1,17 @@
 //! Work Order Module V5
 
-use crate::{
-    LIB_PATH,
-    HasId,
-    Uri,
-};
-use super::MOD_PATH;
 use super::work_order_item::WorkOrderItem;
-use serde::{Deserialize,Serialize};
-use tmflib_derive::HasId;
+use super::MOD_PATH;
+use crate::common::{note::Note, related_party::RelatedParty};
 use crate::tmf646::appointment::AppointmentRef;
-use crate::common::{
-    note::Note,
-    related_party::RelatedParty,
-};
+use crate::{HasId, Uri, LIB_PATH};
+use serde::{Deserialize, Serialize};
+use tmflib_derive::HasId;
 
-const CLASS_PATH : &str = "workorder";
+const CLASS_PATH: &str = "workorder";
 
 /// Work Order States
-#[derive(Clone,Debug,Default,Deserialize,PartialEq,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub enum WorkOrderStateType {
     #[default]
     /// Acknowledged
@@ -47,7 +40,7 @@ pub enum WorkOrderStateType {
 
 /// Work Order
 /// This module represents a collection of pieces of work to be performed to deliver an outcome, e.g. provision a service.
-#[derive(Clone,Debug,Default,Deserialize,HasId,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
 pub struct WorkOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@type")]
@@ -70,9 +63,9 @@ pub struct WorkOrder {
     // Referenced structures
     /// Appointment
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub appointment : Option<AppointmentRef>,
+    pub appointment: Option<AppointmentRef>,
     /// Work Order Items
-    pub work_order_item : Option<Vec<WorkOrderItem>>,
+    pub work_order_item: Option<Vec<WorkOrderItem>>,
     /// Work Order Notes
     #[serde(skip_serializing_if = "Option::is_none")]
     pub note: Option<Vec<Note>>,
@@ -86,9 +79,9 @@ impl WorkOrder {
     pub fn new() -> WorkOrder {
         // Use create() to define remainint fields
         WorkOrder {
-            state : Some(WorkOrderStateType::default()),
-            r#type : Some(WorkOrder::get_class()),
-            base_type : Some(WorkOrder::get_class()),
+            state: Some(WorkOrderStateType::default()),
+            r#type: Some(WorkOrder::get_class()),
+            base_type: Some(WorkOrder::get_class()),
             ..WorkOrder::create()
         }
     }
@@ -98,22 +91,21 @@ impl WorkOrder {
     /// use tmflib::tmf697::v5::work_order::WorkOrder;
     /// use tmflib::tmf697::v5::work_order_item::WorkOrderItem;
     /// use tmflib::tmf697::v5::work::{WorkRefOrValue,Work};
-    /// 
+    ///
     /// let mut wo = WorkOrder::new();
     /// let work = Work::new("Some Work");
     /// let work_item = WorkOrderItem::with(WorkRefOrValue::from(work));
     /// wo.add_item(work_item);
     /// ```
-    pub fn add_item(&mut self, item : WorkOrderItem) {
+    pub fn add_item(&mut self, item: WorkOrderItem) {
         // Safely add item
         match self.work_order_item.as_mut() {
             Some(woi) => {
                 woi.push(item);
-            },
+            }
             None => {
                 self.work_order_item = Some(vec![item]);
             }
         }
-        
     }
 }

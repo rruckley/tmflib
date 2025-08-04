@@ -1,6 +1,6 @@
 //! Characteristic Specification Module
 
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
 use crate::{Cardinality, TimePeriod};
 
@@ -8,7 +8,7 @@ use crate::HasDescription;
 use tmflib_derive::HasDescription;
 
 /// Characteristic Value Specification
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CharacteristicValueSpecification {
     /// Is this the default value
@@ -19,14 +19,14 @@ pub struct CharacteristicValueSpecification {
     pub range_interval: Option<String>,
     /// Pattern to match value
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub regex : Option<String>,
+    pub regex: Option<String>,
     /// Units for this value
     #[serde(skip_serializing_if = "Option::is_none")]
     pub unit_of_measure: Option<String>,
     /// Validity time period
     #[serde(skip_serializing_if = "Option::is_none")]
     pub valid_for: Option<TimePeriod>,
-    /// Value 
+    /// Value
     #[serde(skip_serializing_if = "Option::is_none")]
     pub value: Option<serde_json::Value>,
     /// Start of value range
@@ -38,10 +38,10 @@ pub struct CharacteristicValueSpecification {
     /// Value Type, e.g. String, Integer etc.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub value_type: Option<String>,
-}   
+}
 
 /// Service Specification Characteristics
-#[derive(Clone,Default,Debug,Deserialize,HasDescription, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasDescription, Serialize)]
 pub struct CharacteristicSpecification {
     /// Can this characteristic be configured?
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -80,17 +80,21 @@ pub struct CharacteristicSpecification {
 
 impl CharacteristicSpecification {
     /// Constructor
-    pub fn new(name : impl Into<String>) -> CharacteristicSpecification {
+    pub fn new(name: impl Into<String>) -> CharacteristicSpecification {
         CharacteristicSpecification {
-            name : Some(name.into()),
+            name: Some(name.into()),
             max_cardinality: Some(1),
             value_type: Some("String".into()),
-            is_unique : Some(false),
+            is_unique: Some(false),
             ..Default::default()
         }
     }
     /// Set maximum cardinality
-    pub fn cardinality(mut self, min_card : Cardinality, max_card : Cardinality) -> CharacteristicSpecification {
+    pub fn cardinality(
+        mut self,
+        min_card: Cardinality,
+        max_card: Cardinality,
+    ) -> CharacteristicSpecification {
         self.min_cardinality = Some(min_card);
         self.max_cardinality = Some(max_card);
         self
@@ -111,7 +115,7 @@ impl CharacteristicSpecification {
     }
 
     /// Set the description of this characteristic
-    pub fn description(mut self,description : impl Into<String>) -> CharacteristicSpecification {
+    pub fn description(mut self, description: impl Into<String>) -> CharacteristicSpecification {
         self.description = Some(description.into());
         self
     }
@@ -121,12 +125,12 @@ impl CharacteristicSpecification {
 mod test {
     use super::*;
 
-    const CHARSPEC_NAME : &str = "CharSpecName";
-    const CARD_MIN : u16 = 7;
-    const CARD_MAX : u16 = 8;
-    const CHARSPEC_DESC : &str = "CharSpecDescription";
+    const CHARSPEC_NAME: &str = "CharSpecName";
+    const CARD_MIN: u16 = 7;
+    const CARD_MAX: u16 = 8;
+    const CHARSPEC_DESC: &str = "CharSpecDescription";
 
-    const CHARSPEC_JSON : &str = "{
+    const CHARSPEC_JSON: &str = "{
         \"name\" : \"CharacteristicSpecification\",
         \"id\" : \"CS123\",
         \"href\" : \"http://example.com/tmf633/spec/CS123\"
@@ -134,48 +138,48 @@ mod test {
 
     #[test]
     fn test_charspec_cardinality() {
-        let charspec = CharacteristicSpecification::new(CHARSPEC_NAME)
-            .cardinality(CARD_MIN,CARD_MAX);
+        let charspec =
+            CharacteristicSpecification::new(CHARSPEC_NAME).cardinality(CARD_MIN, CARD_MAX);
 
-        assert_eq!(charspec.min_cardinality,Some(CARD_MIN));
-        assert_eq!(charspec.max_cardinality,Some(CARD_MAX));    
+        assert_eq!(charspec.min_cardinality, Some(CARD_MIN));
+        assert_eq!(charspec.max_cardinality, Some(CARD_MAX));
     }
 
     #[test]
     fn test_charspec_optional() {
-        let charspec = CharacteristicSpecification::new(CHARSPEC_NAME)
-            .optional();
-        assert_eq!(charspec.min_cardinality,Some(0));
-        assert_eq!(charspec.max_cardinality,Some(1));
+        let charspec = CharacteristicSpecification::new(CHARSPEC_NAME).optional();
+        assert_eq!(charspec.min_cardinality, Some(0));
+        assert_eq!(charspec.max_cardinality, Some(1));
     }
 
     #[test]
     fn test_charspec_mandatory() {
-        let charspec = CharacteristicSpecification::new(CHARSPEC_NAME)
-            .mandatory();
-        assert_eq!(charspec.min_cardinality,Some(1));
-        assert_eq!(charspec.max_cardinality,Some(1));
+        let charspec = CharacteristicSpecification::new(CHARSPEC_NAME).mandatory();
+        assert_eq!(charspec.min_cardinality, Some(1));
+        assert_eq!(charspec.max_cardinality, Some(1));
     }
 
     #[test]
     fn test_charspec_description() {
-        let charspec = CharacteristicSpecification::new(CHARSPEC_NAME)
-        .description(CHARSPEC_DESC);
+        let charspec = CharacteristicSpecification::new(CHARSPEC_NAME).description(CHARSPEC_DESC);
 
-        assert_eq!(charspec.description.is_some(),true);
-        assert_eq!(charspec.description.unwrap().as_str(),CHARSPEC_DESC);
+        assert_eq!(charspec.description.is_some(), true);
+        assert_eq!(charspec.description.unwrap().as_str(), CHARSPEC_DESC);
     }
 
     #[test]
     fn test_charspec_deserialization() {
-        let charspec : CharacteristicSpecification = serde_json::from_str(CHARSPEC_JSON).unwrap();
+        let charspec: CharacteristicSpecification = serde_json::from_str(CHARSPEC_JSON).unwrap();
 
-        assert_eq!(charspec.id.is_some(),true);
+        assert_eq!(charspec.id.is_some(), true);
         // assert_eq!(charspec.href.is_some(),true);
-        assert_eq!(charspec.name.is_some(),true);
+        assert_eq!(charspec.name.is_some(), true);
 
-        assert_eq!(charspec.id.unwrap().as_str(),"CS123");
+        assert_eq!(charspec.id.unwrap().as_str(), "CS123");
         // assert_eq!(charspec.href.unwrap().as_str(),"http://example.com/tmf633/spec/CS123");
-        assert_eq!(charspec.name.unwrap().as_str(),"CharacteristicSpecification");
+        assert_eq!(
+            charspec.name.unwrap().as_str(),
+            "CharacteristicSpecification"
+        );
     }
 }

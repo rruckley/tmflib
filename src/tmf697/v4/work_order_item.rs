@@ -1,14 +1,14 @@
 //! Work Order Item Module
-//! 
+//!
 //! This module defines an item as part of an overall [`super::work_order::WorkOrder`]
 
-use serde::{Deserialize,Serialize};
 use crate::gen_code;
+use serde::{Deserialize, Serialize};
 
 use super::work::WorkRefOrValue;
 
 /// Work Order Item
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WorkOrderItem {
     /// Metadata: Type of schema, same as [WorkOrderItem::base_type] if aligned to TMF specification.
@@ -39,10 +39,19 @@ impl WorkOrderItem {
     /// let work = Work::new("Some Work");
     /// let woi = WorkOrderItem::with(WorkRefOrValue::from(work));
     /// ```
-    pub fn with(work : WorkRefOrValue) -> WorkOrderItem {
+    pub fn with(work: WorkRefOrValue) -> WorkOrderItem {
         WorkOrderItem {
-            id : Some(gen_code(work.get_name(), work.get_id(), None, Some("WI-".to_string()), Some(7)).0),
-            work : Some(work),
+            id: Some(
+                gen_code(
+                    work.get_name(),
+                    work.get_id(),
+                    None,
+                    Some("WI-".to_string()),
+                    Some(7),
+                )
+                .0,
+            ),
+            work: Some(work),
             ..Default::default()
         }
     }
@@ -57,15 +66,11 @@ mod test {
         \"id\" : \"WI_123\"
     }";
 
-
-
     #[test]
     fn test_workorderitem_deserialize() {
-        let workorderitem : WorkOrderItem = serde_json::from_str(WORK_ITEM_JSON).unwrap();
+        let workorderitem: WorkOrderItem = serde_json::from_str(WORK_ITEM_JSON).unwrap();
 
-        assert_eq!(workorderitem.id.is_some(),true);
-        assert_eq!(workorderitem.id.unwrap().as_str(),"WI_123");
+        assert_eq!(workorderitem.id.is_some(), true);
+        assert_eq!(workorderitem.id.unwrap().as_str(), "WI_123");
     }
-
 }
-

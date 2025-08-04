@@ -16,4 +16,4 @@
 
 pub mod geographic_address;
 
-const MOD_PATH : &str = "geographicAddressManagement/v4";
+const MOD_PATH: &str = "geographicAddressManagement/v4";

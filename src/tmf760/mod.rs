@@ -14,6 +14,6 @@
 
 //! TMF760 Product Configurator
 
-const MOD_PATH : &str = "productConfiguration/v5";
+const MOD_PATH: &str = "productConfiguration/v5";
 
 pub mod check_product_configuration;

@@ -14,7 +14,7 @@
 
 //! TMF639 Resource Inventory Management
 
-const MOD_PATH : &str = "resourceInventoryManagement/v4";
+const MOD_PATH: &str = "resourceInventoryManagement/v4";
 
-pub mod resource;
 pub mod characteristic;
+pub mod resource;

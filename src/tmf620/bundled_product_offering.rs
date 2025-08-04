@@ -1,18 +1,14 @@
 //! Bundled Product Offering Module
 
 const CLASS_PATH: &str = "bundle";
-#[cfg(all(feature = "tmf620",feature = "build-V4"))]
+#[cfg(all(feature = "tmf620", feature = "build-V4"))]
 use super::product_offering::ProductOffering;
-#[cfg(all(feature = "tmf674",feature = "build-V5"))]
+#[cfg(all(feature = "tmf674", feature = "build-V5"))]
 use super::product_offering_v5::ProductOffering;
 
 use super::MOD_PATH;
-use crate::{
-    LIB_PATH,
-    HasId,
-    HasName,
-};
-use tmflib_derive::{HasId,HasName};
+use crate::{HasId, HasName, LIB_PATH};
+use tmflib_derive::{HasId, HasName};
 
 use serde::{Deserialize, Serialize};
 
@@ -20,7 +16,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Default, Debug, HasId, HasName, Deserialize, Serialize)]
 pub struct BundledProductOffering {
     /// Unique Id
-    pub id : Option<String>,
+    pub id: Option<String>,
     /// HTTP URI
     pub href: Option<String>,
     lifecycle_status: Option<String>,
@@ -28,7 +24,7 @@ pub struct BundledProductOffering {
     pub name: Option<String>,
     /// Options for bundled product offerings
     pub bundled_product_offering_option: Option<BundledProductOfferingOption>,
-    /// Product offering that is bundled 
+    /// Product offering that is bundled
     pub offer: ProductOffering,
 }
 
@@ -37,11 +33,11 @@ impl BundledProductOffering {
     pub fn new(name: impl Into<String>) -> BundledProductOffering {
         let offer = ProductOffering::new(name.into().clone());
         // Update href to point to bundle instead of standard offer path
-        
+
         BundledProductOffering {
             offer: offer.clone(),
             bundled_product_offering_option: None,
-            name : Some(offer.get_name()),
+            name: Some(offer.get_name()),
             ..BundledProductOffering::default()
         }
     }
@@ -99,15 +95,15 @@ mod test {
     const BPO_MIN: u8 = 0;
     const BPO_MAX: u8 = 100;
 
-    const OFFER_NAME : &str = "ProductOffer";
+    const OFFER_NAME: &str = "ProductOffer";
 
-    const BPO_JSON : &str = "{
+    const BPO_JSON: &str = "{
         \"id\" : \"BPO123\",
         \"name\" : \"BundleProductOffering\",
         \"offer\" : {}
     }";
 
-    const BPO_OPTION_JSON : &str = "{
+    const BPO_OPTION_JSON: &str = "{
         \"numberRelOfferDefault\" : 1,
         \"numberRelOfferLowerLimit\" : 2,
         \"numberRelOfferUpperLimit\" : 3
@@ -117,25 +113,24 @@ mod test {
     fn test_bpo_new() {
         let bpo = BundledProductOffering::new(BPO_NAME);
 
-        assert_eq!(bpo.get_name(),BPO_NAME.to_string());
+        assert_eq!(bpo.get_name(), BPO_NAME.to_string());
     }
 
     #[test]
     fn test_bpo_with_option() {
-        let bpo_option = BundledProductOfferingOption::new(BPO_DEFAULT,BPO_MIN,BPO_MAX);
-        let bpo = BundledProductOffering::new(BPO_NAME)
-            .with_option(bpo_option);
+        let bpo_option = BundledProductOfferingOption::new(BPO_DEFAULT, BPO_MIN, BPO_MAX);
+        let bpo = BundledProductOffering::new(BPO_NAME).with_option(bpo_option);
 
-        assert_eq!(bpo.bundled_product_offering_option.is_some(),true);
+        assert_eq!(bpo.bundled_product_offering_option.is_some(), true);
     }
 
     #[test]
     fn test_bpo_option() {
-        let bpo_option = BundledProductOfferingOption::new(BPO_DEFAULT,BPO_MIN,BPO_MAX);
+        let bpo_option = BundledProductOfferingOption::new(BPO_DEFAULT, BPO_MIN, BPO_MAX);
 
-        assert_eq!(bpo_option.number_rel_offer_default,BPO_DEFAULT);
-        assert_eq!(bpo_option.number_rel_offer_lower_limit,BPO_MIN);
-        assert_eq!(bpo_option.number_rel_offer_upper_limit,BPO_MAX);
+        assert_eq!(bpo_option.number_rel_offer_default, BPO_DEFAULT);
+        assert_eq!(bpo_option.number_rel_offer_lower_limit, BPO_MIN);
+        assert_eq!(bpo_option.number_rel_offer_upper_limit, BPO_MAX);
     }
 
     #[test]
@@ -144,27 +139,27 @@ mod test {
 
         let bpo = BundledProductOffering::from(offer.clone());
 
-        assert_eq!(bpo.offer.get_name().as_str(),OFFER_NAME);
+        assert_eq!(bpo.offer.get_name().as_str(), OFFER_NAME);
     }
 
     #[test]
     fn test_bpo_deserialize() {
-        let bpo : BundledProductOffering = serde_json::from_str(BPO_JSON)
-            .expect("Could not parse BPO_JSON");
+        let bpo: BundledProductOffering =
+            serde_json::from_str(BPO_JSON).expect("Could not parse BPO_JSON");
 
-        assert_eq!(bpo.id.is_some(),true);
-        assert_eq!(bpo.get_id(),"BPO123");
-        assert_eq!(bpo.name.is_some(),true);
-        assert_eq!(bpo.get_name().as_str(),"BundleProductOffering");
+        assert_eq!(bpo.id.is_some(), true);
+        assert_eq!(bpo.get_id(), "BPO123");
+        assert_eq!(bpo.name.is_some(), true);
+        assert_eq!(bpo.get_name().as_str(), "BundleProductOffering");
     }
 
     #[test]
     fn test_bpo_option_deserialize() {
-        let bpo_option : BundledProductOfferingOption = serde_json::from_str(BPO_OPTION_JSON)
-            .expect("Could not parse BPO_OPTION_JSON");
+        let bpo_option: BundledProductOfferingOption =
+            serde_json::from_str(BPO_OPTION_JSON).expect("Could not parse BPO_OPTION_JSON");
 
-        assert_eq!(bpo_option.number_rel_offer_default,1);
-        assert_eq!(bpo_option.number_rel_offer_lower_limit,2);
-        assert_eq!(bpo_option.number_rel_offer_upper_limit,3);
+        assert_eq!(bpo_option.number_rel_offer_default, 1);
+        assert_eq!(bpo_option.number_rel_offer_lower_limit, 2);
+        assert_eq!(bpo_option.number_rel_offer_upper_limit, 3);
     }
 }

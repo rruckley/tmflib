@@ -2,18 +2,18 @@
 //!
 use serde::{Deserialize, Serialize};
 
-use crate::tmf651::agreement::AgreementRef;
-use crate::tmf666::billing_account::BillingAccountRef;
-use crate::{HasId, HasName, LIB_PATH, DateTime,HasValidity, TimePeriod};
-use tmflib_derive::{HasId, HasName, HasValidity};
-use crate::common::related_place::RelatedPlaceRefOrValue;
-use crate::common::product::ProductStatusType;
-use crate::tmf620::product_offering_price::ProductOfferingPriceRef;
 use crate::common::price::Price;
+use crate::common::product::ProductStatusType;
+use crate::common::related_place::RelatedPlaceRefOrValue;
 #[cfg(feature = "tmf620-v4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
+use crate::tmf620::product_offering_price::ProductOfferingPriceRef;
 #[cfg(feature = "tmf620-v5")]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
+use crate::tmf651::agreement::AgreementRef;
+use crate::tmf666::billing_account::BillingAccountRef;
+use crate::{DateTime, HasId, HasName, HasValidity, TimePeriod, LIB_PATH};
+use tmflib_derive::{HasId, HasName, HasValidity};
 
 use super::MOD_PATH;
 
@@ -24,7 +24,7 @@ const CLASS_PATH: &str = "product";
 #[serde(rename_all = "camelCase")]
 pub struct ProductPrice {
     #[serde(skip_serializing_if = "Option::is_none")]
-    description : Option<String>,
+    description: Option<String>,
     name: String,
     price_type: String,
     recurring_charge_period: String,
@@ -39,16 +39,16 @@ pub struct ProductPrice {
     billing_account: Option<BillingAccountRef>,
 }
 
-/// Pricing alteration 
+/// Pricing alteration
 #[derive(Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PriceAlteration {
     application_duration: u32,
     description: String,
-    name : String,
+    name: String,
     price_type: String,
     priority: i16,
-    recurring_charge_period:  String,
+    recurring_charge_period: String,
     unit_of_measure: String,
     price: Option<Price>,
     product_offering_price: Option<ProductOfferingPriceRef>,
@@ -80,7 +80,7 @@ pub struct Product {
     status: ProductStatusType,
     // Referenced types
     #[serde(skip_serializing_if = "Option::is_none")]
-    product_price : Option<Vec<ProductPrice>>,
+    product_price: Option<Vec<ProductPrice>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     billing_account: Option<BillingAccountRef>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -103,7 +103,7 @@ impl Product {
 }
 
 /// Product Term
-#[derive(Clone,Debug,Default,Deserialize, HasValidity, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasValidity, Serialize)]
 pub struct ProductTerm {
     /// Term Description
     description: Option<String>,
@@ -120,19 +120,19 @@ mod test {
     use super::*;
     use crate::common::product::ProductStatusType;
 
-    const PRODUCT : &str = "AProduct";
+    const PRODUCT: &str = "AProduct";
 
     #[test]
     fn test_product_new_name() {
         let product = Product::new(PRODUCT);
 
-        assert_eq!(product.name,Some(PRODUCT.into()));
+        assert_eq!(product.name, Some(PRODUCT.into()));
     }
 
     #[test]
     fn test_product_new_status() {
         let product = Product::new(PRODUCT);
 
-        assert_eq!(product.status,ProductStatusType::Created);
+        assert_eq!(product.status, ProductStatusType::Created);
     }
 }

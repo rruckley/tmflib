@@ -1,5 +1,5 @@
 //! Create Individual EXample
-//! 
+//!
 #[cfg(all(feature = "tmf632", feature = "build-V4"))]
 use tmflib::tmf632::individual_v4::Individual;
 #[cfg(all(feature = "tmf632", feature = "build-V5"))]

@@ -1,14 +1,14 @@
 use serde::{Deserialize, Serialize};
 
 // URL Path components
-use crate::LIB_PATH;
-use super::MOD_PATH;
-use crate::{HasId,HasNote,HasRelatedParty,HasDescription, DateTime};
-use tmflib_derive::{HasId,HasNote,HasRelatedParty,HasDescription};
-use crate::common::note::Note;
-use crate::common::tmf_error::TMFError;
 use super::service_order_item::ServiceOrderItem;
+use super::MOD_PATH;
+use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
+use crate::common::tmf_error::TMFError;
+use crate::LIB_PATH;
+use crate::{DateTime, HasDescription, HasId, HasNote, HasRelatedParty};
+use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty};
 
 const CLASS_PATH: &str = "serviceOrder";
 
@@ -41,7 +41,9 @@ pub enum ServiceOrderStateType {
 }
 
 /// Service Order Object
-#[derive(Clone, Debug, Default, Deserialize, HasId, HasNote, HasRelatedParty, HasDescription, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, HasId, HasNote, HasRelatedParty, HasDescription, Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct ServiceOrder {
     /// Cancellation Date
@@ -51,7 +53,7 @@ pub struct ServiceOrder {
     pub cancellation_reason: Option<String>,
     /// Order Category
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub category : Option<String>,
+    pub category: Option<String>,
     /// Completion Date
     #[serde(skip_serializing_if = "Option::is_none")]
     pub completion_date: Option<DateTime>,
@@ -62,7 +64,7 @@ pub struct ServiceOrder {
     /// Expected Completion Date
     pub expected_completion_date: Option<DateTime>,
     /// External Id
-    pub external_id : Option<String>,
+    pub external_id: Option<String>,
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
@@ -98,7 +100,7 @@ pub struct ServiceOrder {
     pub service_order_item: Option<Vec<ServiceOrderItem>>,
     /// Related Parties
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub related_party : Option<Vec<RelatedParty>>,
+    pub related_party: Option<Vec<RelatedParty>>,
 }
 
 impl ServiceOrder {
@@ -123,24 +125,25 @@ impl ServiceOrder {
 mod test {
     use super::*;
 
-    const SERVICEORDERSTATE_JSON : &str = "\"Acknowledged\"";
-    const SERVICEORDER_JSON : &str = "{
+    const SERVICEORDERSTATE_JSON: &str = "\"Acknowledged\"";
+    const SERVICEORDER_JSON: &str = "{
         \"description\" : \"Description\"
     }";
-    const NOTE_TEXT : &str = "A Note";
+    const NOTE_TEXT: &str = "A Note";
     #[test]
     fn test_serviceorderstate_deserialize() {
-        let serviceorderstate : ServiceOrderStateType = serde_json::from_str(SERVICEORDERSTATE_JSON).unwrap();
+        let serviceorderstate: ServiceOrderStateType =
+            serde_json::from_str(SERVICEORDERSTATE_JSON).unwrap();
 
-        assert_eq!(serviceorderstate,ServiceOrderStateType::Acknowledged);
+        assert_eq!(serviceorderstate, ServiceOrderStateType::Acknowledged);
     }
 
     #[test]
     fn test_serviceorder_deserialize() {
-        let serviceorder : ServiceOrder = serde_json::from_str(SERVICEORDER_JSON).unwrap();
+        let serviceorder: ServiceOrder = serde_json::from_str(SERVICEORDER_JSON).unwrap();
 
-        assert_eq!(serviceorder.description.is_some(),true);
-        assert_eq!(serviceorder.description.unwrap().as_str(),"Description");
+        assert_eq!(serviceorder.description.is_some(), true);
+        assert_eq!(serviceorder.description.unwrap().as_str(), "Description");
     }
 
     #[test]
@@ -152,7 +155,7 @@ mod test {
         serviceorder.add_note(note1);
         serviceorder.add_note(note2);
 
-        assert_eq!(serviceorder.note.is_some(),true);
-        assert_eq!(serviceorder.note.unwrap().len(),2);
+        assert_eq!(serviceorder.note.is_some(), true);
+        assert_eq!(serviceorder.note.unwrap().len(), 2);
     }
 }

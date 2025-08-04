@@ -14,7 +14,6 @@
 
 //! TMF724 Incident Management
 
-
 pub mod incident;
 
-const MOD_PATH : &str = "tmf724";
+const MOD_PATH: &str = "tmf724";

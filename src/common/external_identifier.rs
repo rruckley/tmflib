@@ -1,10 +1,10 @@
 //! External Identifier Module
 
-use serde::{Deserialize,Serialize};
-use crate::{HasId,Uri,LIB_PATH};
+use crate::{HasId, Uri, LIB_PATH};
+use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
-const CLASS_PATH : &str = "external";
+const CLASS_PATH: &str = "external";
 use super::MOD_PATH;
 
 /// External Identifier Reference
@@ -36,15 +36,15 @@ mod test {
 
         let id = external.get_id();
 
-        assert_eq!(external.id,Some(id));
+        assert_eq!(external.id, Some(id));
     }
 
     #[test]
     fn test_external_deserialize() {
-        let external : ExternalIdentifier = serde_json::from_str(EXTERNAL_JSON)
-            .expect("Could not parse EXTERNAL_JSON");
+        let external: ExternalIdentifier =
+            serde_json::from_str(EXTERNAL_JSON).expect("Could not parse EXTERNAL_JSON");
 
-        assert_eq!(external.external_identifier_type.as_str(),"email");
-        assert_eq!(external.owner.as_str(),"customer");
+        assert_eq!(external.external_identifier_type.as_str(), "email");
+        assert_eq!(external.owner.as_str(), "customer");
     }
 }
