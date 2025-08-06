@@ -523,7 +523,10 @@ mod test {
     use super::gen_code;
     use super::vec_insert;
     use crate::common::related_party::RelatedParty;
+    #[cfg(all(feature = "tmf632", feature = "build-V4"))]
     use crate::tmf632::organization_v4::Organization;
+    #[cfg(all(feature = "tmf632", feature = "build-V5"))]
+    use crate::tmf632::organization_v5::Organization;
 
     const CODE: &str = "T-DXQR65";
     const HASH: &str = "DXQR656VE3FIKEZZWJX6C3WC27NSRTJVMYR7ILA5XNDLSJXQPDVQ";

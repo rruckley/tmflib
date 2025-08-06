@@ -10,6 +10,7 @@ use super::{Characteristic, MOD_PATH};
 use crate::common::contact::ContactMedium;
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
+use crate::common::tmf_error::TMFError;
 use crate::{
     gen_code, DateTime, HasId, HasName, HasReference, HasRelatedParty, TMFEvent, TimePeriod,
     LIB_PATH,
@@ -352,6 +353,11 @@ impl HasName for Individual {
         self.full_name = Some(name);
         self.legal_name.clone_from(&self.full_name);
     }
+    fn name(mut self, name: impl Into<String>) -> Self {
+        self.set_name(name);
+        self
+    }
+    
 }
 
 /// Individual Event Types

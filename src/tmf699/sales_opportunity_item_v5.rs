@@ -5,16 +5,26 @@ use serde::{Deserialize, Serialize};
 use crate::tmf629::customer::Customer;
 use crate::{
     common::{money::Money, note::Note, related_party::RelatedParty},
-    HasRelatedParty, TimePeriod,
+    HasId, HasRelatedParty, TimePeriod,
+    Uri, LIB_PATH,
 };
-use tmflib_derive::HasRelatedParty;
+use crate::common::tmf_error::TMFError;
+use tmflib_derive::{HasId, HasRelatedParty};
 
 use super::{sales_lead_v5::SalesLeadRef, sales_opportunity_v5::SalesOpportunityPriorityType};
 
+const CLASS_PATH: &str = "salesOpportunityItem";
+use super::MOD_PATH;
 /// Sales Opportunity Item
-#[derive(Clone, Debug, Default, Deserialize, HasRelatedParty, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SalesOpportunityItem {
+    /// Unique Id of Sales Opportunity Item
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
+    /// HREF for API use
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub href: Option<Uri>,
     #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -23,8 +33,9 @@ pub struct SalesOpportunityItem {
     estimated_revenue: Option<Money>,
     /// Notes
     pub note: Vec<Note>,
+    /// Related Parties
     #[serde(skip_serializing_if = "Option::is_none")]
-    related_party: Option<Vec<RelatedParty>>,
+    pub related_party: Option<Vec<RelatedParty>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     sales_lead: Option<SalesLeadRef>,
 }

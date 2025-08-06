@@ -5,10 +5,10 @@ use serde::{Deserialize, Serialize};
 use crate::common::price::Price;
 use crate::common::product::ProductStatusType;
 use crate::common::related_place::RelatedPlaceRefOrValue;
-#[cfg(feature = "tmf620-v4")]
+#[cfg(feature = "build-V4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
 use crate::tmf620::product_offering_price::ProductOfferingPriceRef;
-#[cfg(feature = "tmf620-v5")]
+#[cfg(feature = "build-V5")]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf651::agreement::AgreementRef;
 use crate::tmf666::billing_account::BillingAccountRef;

@@ -61,7 +61,10 @@ impl From<ProductOfferingRef> for CartItem {
 #[cfg(test)]
 mod test {
     use crate::common::note::Note;
+    #[cfg(feature = "build-V4")]
     use crate::tmf620::product_offering::{ProductOffering, ProductOfferingRef};
+    #[cfg(feature = "build-V5")]
+    use crate::tmf620::product_offering_v5::{ProductOffering, ProductOfferingRef};
 
     use super::CartItem;
 

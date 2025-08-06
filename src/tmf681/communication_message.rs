@@ -146,7 +146,10 @@ impl CommunicationMessage {
 
 #[cfg(test)]
 mod test {
+    #[cfg(feature = "build-V4")]
     use crate::tmf632::individual_v4::Individual;
+    #[cfg(feature = "build-V5")]
+    use crate::tmf632::individual_v5::Individual;
     use crate::{HasId, HasName};
 
     use super::{CommunicationMessage, Receiver, Sender};

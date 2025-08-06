@@ -26,8 +26,14 @@ use crate::tmf663::{cart_item::ItemRef, shopping_cart::ShoppingCartRef};
 use crate::common::product::ProductRefOrValue;
 use crate::common::related_party::RelatedParty;
 use crate::common::related_place::RelatedPlaceRefOrValue;
+#[cfg(feature = "build-V4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
+#[cfg(feature = "build-V5")]
+use crate::tmf620::product_offering_v5::ProductOfferingRef;
+#[cfg(feature = "build-V4")]
 use crate::tmf622::product_order_v4::ProductOrderRef;
+#[cfg(feature = "build-V5")]
+use crate::tmf622::product_order_v5::ProductOrderRef;
 
 use super::MOD_PATH;
 

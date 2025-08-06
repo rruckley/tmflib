@@ -167,7 +167,10 @@ mod tests {
     use crate::common::event::EventPayload;
     use crate::common::related_party::RelatedParty;
     use crate::tmf620::catalog::{CAT_VERS, CLASS_PATH};
+    #[cfg(all(feature = "tmf632", feature = "build-V4"))]
     use crate::tmf632::organization_v4::Organization;
+    #[cfg(all(feature = "tmf632", feature = "build-V5"))]
+    use crate::tmf632::organization_v5::Organization;
 
     use super::{Catalog, CatalogEvent, CatalogEventType};
     use crate::tmf620::category::{Category, CategoryRef};

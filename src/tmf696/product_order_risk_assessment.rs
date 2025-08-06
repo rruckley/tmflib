@@ -72,7 +72,10 @@ impl ProductOrderRiskAssessment {
 
 #[cfg(test)]
 mod test {
+    #[cfg(feature = "build-V4")]
     use crate::tmf622::product_order_v4::{ProductOrder, ProductOrderRef};
+    #[cfg(feature = "build-V5")]
+    use crate::tmf622::product_order_v5::{ProductOrder, ProductOrderRef};
     use crate::tmf696::characteristic::Characteristic;
     use crate::HasId;
 
@@ -98,7 +101,7 @@ mod test {
 
     #[test]
     fn test_pora_new() {
-        let order = ProductOrderRef::from(ProductOrder::new());
+        let order = ProductOrderRef::from(&ProductOrder::new());
         let pora = ProductOrderRiskAssessment::new(order.clone());
 
         assert_eq!(pora.product_order.id, order.id);
@@ -109,7 +112,7 @@ mod test {
         let char1 = Characteristic::new("Char", "Value1");
         let char2 = Characteristic::new("Char", "Value2");
 
-        let order = ProductOrderRef::from(ProductOrder::new());
+        let order = ProductOrderRef::from(&ProductOrder::new());
         let mut pora = ProductOrderRiskAssessment::new(order.clone());
 
         // Add char in new
