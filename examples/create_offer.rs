@@ -1,7 +1,7 @@
 //! Create a product template
 //!
 
-use tmflib::tmf620::category::Category;
+use tmflib::tmf620::category::{CategoryRef,Category};
 #[cfg(all(feature = "tmf620", feature = "build-V4"))]
 use tmflib::tmf620::product_offering::ProductOffering;
 #[cfg(all(feature = "tmf620", feature = "build-V5"))]
@@ -27,7 +27,7 @@ fn main() {
 
     let category = Category::new("Template");
     let offer = ProductOffering::new("ProductOffering")
-        .with_category(category)
+        .with_category(CategoryRef::from(&category))
         // .with_specification(spec.clone())
         .with_char_value_use(char_value_use);
 
