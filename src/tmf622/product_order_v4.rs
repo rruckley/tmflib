@@ -49,7 +49,7 @@ impl From<ProductOrder> for ProductOrderRef {
         let name = value
             .description
             .as_deref()
-            .unwrap_or({ "No Order Description" });
+            .unwrap_or("No Order Description");
         ProductOrderRef {
             href: value.get_href(),
             id: value.get_id(),
@@ -66,7 +66,7 @@ impl From<&ProductOrder> for ProductOrderRef {
         let name = value
             .description
             .as_deref()
-            .unwrap_or({ "No Order Description" });
+            .unwrap_or("No Order Description");
         ProductOrderRef {
             href: value.get_href(),
             id: value.get_id(),

@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
+use crate::common::tmf_error::TMFError;
 use crate::tmf641::service_order::ServiceOrder;
 use crate::tmf651::agreement::AgreementRef;
 use crate::tmf663::shopping_cart::ShoppingCart;
@@ -47,7 +48,7 @@ impl From<&ProductOrder> for ProductOrderRef {
         let name = value
             .description
             .as_deref()
-            .unwrap_or({ "No Order Description" });
+            .unwrap_or( "No Order Description" );
         ProductOrderRef {
             href: value.get_href(),
             id: value.get_id(),
@@ -111,6 +112,15 @@ impl HasLastUpdate for ProductOrder {
     fn set_last_update(&mut self, time: impl Into<String>) {
         self.order_date = Some(time.into());
     }
+
+    fn last_update(mut self, time: Option<String>) -> Self {
+        match time {
+            Some(t) => self.set_last_update(t),
+            None => self.set_last_update(Self::get_timestamp()),
+        }
+        self
+    }
+
 }
 
 impl ProductOrder {
@@ -148,7 +158,7 @@ impl From<ServiceOrder> for ProductOrder {
             .clone_from(&value.expected_completion_date);
 
         // Iterate through service order items
-        let items = match value.servce_order_item {
+        let items = match value.service_order_item {
             Some(i) => {
                 let mut out = vec![];
                 i.into_iter().for_each(|i| {

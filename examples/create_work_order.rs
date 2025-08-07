@@ -15,7 +15,7 @@ use tmflib::tmf697::v5::work_order::WorkOrder;
 use tmflib::tmf697::v5::work_order_item::WorkOrderItem;
 
 fn main() {
-    #[cfg(all(feature = "tmf697", feature = "build-V4"))]
+    #[cfg(feature = "tmf697")]
     {
         let mut wo = WorkOrder::new();
 

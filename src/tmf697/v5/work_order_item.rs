@@ -32,13 +32,13 @@ pub struct WorkOrderItem {
 impl WorkOrderItem {
     /// Create new WorkOrderItem based on some Work
     /// ```
-    /// #[cfg(feature = "tmf697-v4")]
+    /// #[cfg(feature = "build-V4")]
     /// use tmflib::tmf697::v4::work::{WorkRefOrValue,Work};
-    /// #[cfg(feature = "tmf697-v5")]
+    /// #[cfg(feature = "build-V5")]
     /// use tmflib::tmf697::v5::work::{WorkRefOrValue,Work};
-    /// #[cfg(feature = "tmf697-v4")]
+    /// #[cfg(feature = "build-V4")]
     /// use tmflib::tmf697::v4::work_order_item::WorkOrderItem;
-    /// #[cfg(feature = "tmf697-v5")]
+    /// #[cfg(feature = "build-V5")]
     /// use tmflib::tmf697::v5::work_order_item::WorkOrderItem;
     /// let work = Work::new("Some Work");
     /// let woi = WorkOrderItem::with(WorkRefOrValue::from(work));

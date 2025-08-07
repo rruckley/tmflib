@@ -3,22 +3,22 @@
 
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::tmf620::bundled_product_offering::BundledProductOffering;
-use crate::tmf620::category::CategoryRef;
+use crate::tmf620::category::{Category, CategoryRef};
 use crate::tmf620::product_specification::{
-    ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
+    ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
 
 use super::product_offering_price::ProductOfferingPriceRef;
 use crate::tmf633::service_candidate::ServiceCandidateRef;
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
-use crate::{HasDescription, HasId, HasLastUpdate, HasName, HasReference, TimePeriod};
+use crate::{HasDescription, HasId, HasLastUpdate, HasName, HasReference, TimePeriod,vec_insert};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::{ChannelRef, MarketSegmentRef, PlaceRef, SLARef};
 use crate::tmf651::agreement::AgreementRef;
 
-use super::LIB_PATH;
+use crate::LIB_PATH;
 use super::MOD_PATH;
 
 const PO_VERS_INIT: &str = "1.0";
@@ -27,9 +27,12 @@ const CLASS_PATH: &str = "productOffering";
 /// Product Offering Reference
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ProductOfferingRef {
-    id: String,
-    href: String,
-    name: String,
+    /// Unique Id of Product Offering
+    pub id: String,
+    /// HREF for API use
+    pub href: String,
+    /// Name of Product Offering
+    pub name: String,
 }
 
 impl From<ProductOffering> for ProductOfferingRef {
@@ -201,23 +204,11 @@ impl ProductOffering {
     /// # use tmflib::tmf620::category::{Category,CategoryRef};
     /// let po = ProductOffering::new(String::from("MyOffer"));
     /// let cat= Category::new(String::from("MyCategory"));
-    /// let result = po.with_category(CategoryRef::from(&cat));
+    /// let result = po.with_category(cat);
     /// ```
     pub fn with_category(mut self, category: Category) -> ProductOffering {
-        let cat_ref = CategoryRef::from(category);
-        self.category = upsert(self.category, category);
-        match self.category.as_mut() {
-            Some(v) => v.push(cat_ref),
-            None => self.category = Some(vec![cat_ref]),
-        }
+        vec_insert(&mut self.category,CategoryRef::from(&category));
         self
-    }
-
-    pub fn upsert<T: IntoIterator, U: HasId>(&i: Some(T), item: U) -> Option<T> {
-        match i.as_mut() {
-            Some(v) => v.push(U),
-            None => Some(vec![item]),
-        }
     }
 
     /// Add characteristic value uses into this Product Offering

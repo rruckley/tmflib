@@ -1,7 +1,10 @@
 use tmflib::tmf620::catalog::Catalog;
 /// Example to show use of trait HasReference to convert a value to a reference.
 use tmflib::tmf620::category::Category;
+#[cfg(feature = "build-V4")]
 use tmflib::tmf632::individual_v4::Individual;
+#[cfg(feature = "build-V5")]
+use tmflib::tmf632::individual_v5::Individual;
 use tmflib::HasReference;
 
 fn main() {

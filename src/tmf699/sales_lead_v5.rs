@@ -4,11 +4,12 @@ use crate::common::contact::ContactMedium;
 use crate::common::money::Money;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
+use crate::common::tmf_error::TMFError;
 
 use crate::tmf620::category::CategoryRef;
-#[cfg(feature = "tmf620-v4")]
+#[cfg(feature = "build-V4")]
 use crate::tmf620::product_offering::ProductOfferingRef;
-#[cfg(feature = "tmf620-v5")]
+#[cfg(feature = "build-V5")]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf620::product_specification::ProductSpecificationRef;
 use crate::tmf620::{ChannelRef, MarketSegmentRef};
@@ -135,7 +136,7 @@ impl From<SalesLead> for SalesLeadRef {
 
 #[cfg(test)]
 mod test {
-    use super::HasId;
+    use super::{HasId,HasName};
     use super::SalesLead;
     const SL_NAME: &str = "My Sales Lead";
     #[test]

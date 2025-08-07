@@ -73,7 +73,10 @@ impl From<CartItem> for ProductOrderItem {
 #[cfg(test)]
 mod test {
     use super::*;
+    #[cfg(feature = "build-V4")]
     use crate::tmf620::product_offering::ProductOffering;
+    #[cfg(feature = "build-V5")]
+    use crate::tmf620::product_offering_v5::ProductOffering;
     use crate::tmf641::service_order_item::ServiceOrderItem;
     use crate::tmf663::cart_item::CartItem;
     use crate::{HasId, HasName};

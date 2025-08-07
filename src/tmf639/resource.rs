@@ -117,7 +117,10 @@ impl Resource {
 #[cfg(test)]
 mod test {
     use crate::common::related_party::RelatedParty;
+    #[cfg(feature = "build-V4")]
     use crate::tmf632::individual_v4::Individual;
+    #[cfg(feature = "build-V5")]
+    use crate::tmf632::individual_v5::Individual;
 
     use super::*;
 

@@ -57,8 +57,7 @@ impl Money {
                 Ok(self.unit.clone())
             }
             None => Err(TMFError::CurrencyError(format!(
-                "Currency Code not found: {}",
-                currency_code
+                "Currency Code not found: {currency_code}"
             ))),
         }
     }
