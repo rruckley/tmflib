@@ -56,6 +56,7 @@ tmf700 = []
 tmf701 = []
 tmf724 = []
 tmf760 = []
+tmf909 = []
 tmf921 = []
 
 # Build all APIs
@@ -95,6 +96,7 @@ all = [
     "tmf701",
     "tmf724",
     "tmf760",
+    "tmf909",
     "tmf921"
 ]
 
