@@ -3,7 +3,7 @@
 use super::{work_order_item::WorkOrderItem, MOD_PATH};
 use crate::common::{note::Note, related_party::RelatedParty, tmf_error::TMFError};
 use crate::tmf646::appointment::AppointmentRef;
-use crate::{HasId, HasNote, HasRelatedParty, Uri, LIB_PATH};
+use crate::{HasId, HasNote, HasRelatedParty, Uri, LIB_PATH, vec_insert};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasNote, HasRelatedParty};
 
@@ -98,14 +98,7 @@ impl WorkOrder {
     /// ```
     pub fn add_item(&mut self, item: WorkOrderItem) {
         // Safely add item
-        match self.work_order_item.as_mut() {
-            Some(woi) => {
-                woi.push(item);
-            }
-            None => {
-                self.work_order_item = Some(vec![item]);
-            }
-        }
+        vec_insert(&mut self.work_order_item, item);
     }
 }
 
