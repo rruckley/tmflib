@@ -6,7 +6,7 @@ use tmflib_derive::{HasAttachment, HasDescription, HasId, HasLastUpdate, HasName
 
 use crate::{
     DateTime, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasValidity,
-    TimePeriod, Uri, LIB_PATH,
+    TimePeriod, Uri,
 };
 
 use super::MOD_PATH;

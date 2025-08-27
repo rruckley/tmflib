@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 
-use crate::{vec_insert, HasId, HasLastUpdate, HasName, TimePeriod, TimeStamp, Uri, LIB_PATH};
+use crate::{vec_insert, HasId, HasLastUpdate, HasName, TimePeriod, TimeStamp, Uri};
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
 use super::{

@@ -7,7 +7,7 @@ use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
 use crate::{
     DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, Priority,
-    TimePeriod, Uri, LIB_PATH,
+    TimePeriod, Uri,
 };
 use tmflib_derive::{HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity};
 

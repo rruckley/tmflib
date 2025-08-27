@@ -13,7 +13,7 @@ use crate::common::tmf_error::TMFError;
 use crate::tmf651::agreement::AgreementRef;
 use crate::{
     DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, TMFEvent,
-    TimePeriod, LIB_PATH,
+    TimePeriod,
 };
 use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty, HasValidity};
 

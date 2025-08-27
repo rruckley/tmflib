@@ -7,7 +7,7 @@ const CLASS_PATH: &str = "catalog";
 use super::MOD_PATH;
 
 use crate::{
-    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod, Uri, LIB_PATH,
+    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod, Uri,
 };
 
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};

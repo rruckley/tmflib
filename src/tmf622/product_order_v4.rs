@@ -10,7 +10,7 @@ use crate::tmf651::agreement::AgreementRef;
 use crate::tmf663::shopping_cart::ShoppingCart;
 use crate::{
     vec_insert, DateTime, HasDescription, HasId, HasLastUpdate, HasNote, HasRelatedParty, TMFEvent,
-    Uri, LIB_PATH,
+    Uri,
 };
 use chrono::Utc;
 use serde::{Deserialize, Serialize};

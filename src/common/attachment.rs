@@ -9,7 +9,6 @@ use tmflib_derive::{HasDescription, HasId, HasName, HasValidity};
 use crate::TimePeriod;
 
 use super::MOD_PATH;
-use crate::LIB_PATH;
 
 const CLASS_PATH: &str = "attachment";
 

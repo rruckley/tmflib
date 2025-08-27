@@ -6,7 +6,7 @@ use super::MOD_PATH;
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
 use crate::tmf673::geographic_address::GeographicAddress;
-use crate::{gen_code, HasId, HasName, TMFEvent, LIB_PATH};
+use crate::{gen_code, HasId, HasName, TMFEvent, };
 use chrono::Utc;
 use tmflib_derive::{HasId, HasName};
 use uuid::Uuid;

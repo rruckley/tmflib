@@ -3,7 +3,7 @@
 use crate::common::money::Money;
 use crate::common::note::Note;
 use crate::common::tmf_error::TMFError;
-use crate::{HasId, HasNote, TimePeriod, Uri, LIB_PATH};
+use crate::{HasId, HasNote, TimePeriod, Uri, };
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasNote};
 

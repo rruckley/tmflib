@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty, LIB_PATH};
+use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty};
 
 use super::{

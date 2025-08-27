@@ -8,7 +8,7 @@ use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
 use crate::{
     vec_insert, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TMFEvent, TimePeriod,
-    TimeStamp, Uri, LIB_PATH,
+    TimeStamp, Uri,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 

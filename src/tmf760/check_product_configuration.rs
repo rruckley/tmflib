@@ -4,7 +4,7 @@
 use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
-use crate::{HasId, LIB_PATH};
+use crate::{HasId, };
 use tmflib_derive::HasId;
 const CLASS_PATH: &str = "CheckProductConfiguration";
 

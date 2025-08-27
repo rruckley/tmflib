@@ -14,7 +14,7 @@ use crate::tmf620::product_offering_price::ProductOfferingPriceRef;
 #[cfg(all(feature = "tmf620", feature = "build-V5"))]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf666::billing_account::BillingAccountRef;
-use crate::{DateTime, HasId, HasName, HasValidity, TimePeriod, LIB_PATH};
+use crate::{DateTime, HasId, HasName, HasValidity, TimePeriod};
 use tmflib_derive::{HasId, HasName, HasValidity};
 
 use super::MOD_PATH;

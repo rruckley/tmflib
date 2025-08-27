@@ -8,7 +8,7 @@ use super::MOD_PATH;
 
 use crate::common::event::{Event, EventPayload};
 use crate::{
-    DateTime, HasDescription, HasId, HasLastUpdate, HasValidity, TMFEvent, TimePeriod, LIB_PATH,
+    DateTime, HasDescription, HasId, HasLastUpdate, HasValidity, TMFEvent, TimePeriod,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasValidity};
 

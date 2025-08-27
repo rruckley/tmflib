@@ -15,7 +15,7 @@ use crate::tmf620::product_specification::ProductSpecificationRef;
 use crate::tmf620::{ChannelRef, MarketSegmentRef};
 
 use super::MOD_PATH;
-use crate::{DateTime, HasId, HasName, HasNote, HasValidity, TimePeriod, Uri, LIB_PATH};
+use crate::{DateTime, HasId, HasName, HasNote, HasValidity, TimePeriod, Uri, };
 use tmflib_derive::{HasId, HasName, HasNote, HasValidity};
 
 use serde::{Deserialize, Serialize};

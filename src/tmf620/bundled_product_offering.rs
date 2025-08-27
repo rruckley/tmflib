@@ -7,7 +7,7 @@ use super::product_offering::ProductOffering;
 use super::product_offering_v5::ProductOffering;
 
 use super::MOD_PATH;
-use crate::{HasId, HasName, LIB_PATH};
+use crate::{HasId, HasName};
 use tmflib_derive::{HasId, HasName};
 
 use serde::{Deserialize, Serialize};

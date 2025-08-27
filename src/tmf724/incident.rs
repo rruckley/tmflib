@@ -3,7 +3,7 @@
 
 use super::MOD_PATH;
 use crate::common::external_identifier::ExternalIdentifier;
-use crate::{DateTime, HasId, HasName, Uri, LIB_PATH};
+use crate::{DateTime, HasId, HasName, Uri, };
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasName};
 const CLASS_PATH: &str = "incident";

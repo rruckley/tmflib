@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{DateTime, HasId, HasLastUpdate, HasName, LIB_PATH};
+use crate::{DateTime, HasId, HasLastUpdate, HasName, };
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
 use super::{AccountBalance, AccountRelationship, AccountTaxExemption, MOD_PATH};

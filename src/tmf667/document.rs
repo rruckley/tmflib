@@ -6,7 +6,7 @@ use crate::common::tmf_error::TMFError;
 use crate::vec_insert;
 use crate::{
     common::attachment::AttachmentRefOrValue, DateTime, HasDescription, HasId, HasLastUpdate,
-    HasName, HasRelatedParty, Uri, LIB_PATH,
+    HasName, HasRelatedParty, Uri,
 };
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty};

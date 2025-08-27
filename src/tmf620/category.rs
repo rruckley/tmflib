@@ -13,7 +13,7 @@ use super::MOD_PATH;
 use crate::common::event::{Event, EventPayload};
 use crate::{
     DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent,
-    TimePeriod, Uri, LIB_PATH,
+    TimePeriod, Uri,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
