@@ -3,7 +3,7 @@
 use super::{work_order_item::WorkOrderItem, MOD_PATH};
 use crate::common::{note::Note, related_party::RelatedParty, tmf_error::TMFError};
 use crate::tmf646::appointment::AppointmentRef;
-use crate::{HasId, HasNote, HasRelatedParty, Uri, LIB_PATH, vec_insert};
+use crate::{HasId, HasNote, HasRelatedParty, Uri, vec_insert};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasNote, HasRelatedParty};
 

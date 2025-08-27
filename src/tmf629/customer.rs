@@ -17,7 +17,6 @@ use tmflib_derive::{HasId, HasName, HasValidity};
 use uuid::Uuid;
 
 use super::MOD_PATH;
-use crate::LIB_PATH;
 
 const CLASS_PATH: &str = "customer";
 const CUST_ID_SIZE: usize = 5;

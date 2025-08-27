@@ -8,7 +8,6 @@ use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
 use crate::{
     serde_value_to_type, vec_insert, DateTime, HasDescription, HasId, HasName, HasNote, TimePeriod,
-    LIB_PATH,
 };
 use tmflib_derive::{HasDescription, HasId, HasName, HasNote};
 

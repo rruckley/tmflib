@@ -11,7 +11,7 @@ use crate::common::contact::ContactMedium;
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
-use crate::LIB_PATH;
+
 use crate::{gen_code, DateTime, HasId, HasName, HasReference, HasRelatedParty, TMFEvent};
 use tmflib_derive::{HasId, HasRelatedParty};
 

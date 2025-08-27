@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::money::Money;
 use crate::common::related_party::RelatedParty;
-use crate::{DateTime, HasAttachment, HasId, HasLastUpdate, TimePeriod, Uri, LIB_PATH};
+use crate::{DateTime, HasAttachment, HasId, HasLastUpdate, TimePeriod, Uri, };
 use tmflib_derive::{HasId, HasLastUpdate};
 
 const CLASS_PATH: &str = "customer_bill";

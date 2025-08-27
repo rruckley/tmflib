@@ -6,7 +6,7 @@ use crate::common::related_party::RelatedParty;
 use crate::tmf632::individual_v4::Individual;
 #[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use crate::tmf632::individual_v5::Individual;
-use crate::{DateTime, HasAttachment, HasId, HasName, Uri, LIB_PATH};
+use crate::{DateTime, HasAttachment, HasId, HasName, Uri, };
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasAttachment, HasId};
 

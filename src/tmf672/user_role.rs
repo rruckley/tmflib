@@ -1,6 +1,6 @@
 //! User Role Module
 
-use crate::{HasId, Uri, LIB_PATH};
+use crate::{HasId, Uri, };
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 

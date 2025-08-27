@@ -18,7 +18,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::common::tmf_error::TMFError;
 use crate::{
-    HasDescription, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod, Uri, LIB_PATH,
+    HasDescription, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod, Uri,
 };
 
 use crate::tmf663::{cart_item::ItemRef, shopping_cart::ShoppingCartRef};

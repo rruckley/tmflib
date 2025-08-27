@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 const CLASS_PATH: &str = "resourceCandidate";
 
 use super::MOD_PATH;
-use crate::{HasId, HasLastUpdate, HasName, LIB_PATH};
+use crate::{HasId, HasLastUpdate, HasName};
 use tmflib_derive::{HasId, HasName};
 
 /// Resource Candidate (Catalog Entry)

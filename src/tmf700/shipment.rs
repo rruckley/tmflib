@@ -2,7 +2,7 @@
 
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::external_identifier::ExternalIdentifier;
-use crate::{DateTime, HasAttachment, HasId, HasName, Quantity, Uri, LIB_PATH};
+use crate::{DateTime, HasAttachment, HasId, HasName, Quantity, Uri, };
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasAttachment, HasId, HasName};
 

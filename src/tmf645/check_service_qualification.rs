@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     common::related_party::RelatedParty, vec_insert, DateTime, HasDescription, HasId,
-    HasRelatedParty, Uri, LIB_PATH,
+    HasRelatedParty, Uri,
 };
 
 use crate::common::tmf_error::TMFError;

@@ -12,7 +12,7 @@ use crate::tmf634::resource_candidate::ResourceCandidateRef;
 
 use crate::{
     vec_insert, DateTime, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName,
-    HasReference, HasValidity, TMFEvent, TimePeriod, Uri, LIB_PATH,
+    HasReference, HasValidity, TMFEvent, TimePeriod, Uri,
 };
 
 use super::product_offering_price::ProductOfferingPriceRef;

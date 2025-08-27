@@ -7,7 +7,7 @@ use crate::common::tmf_error::TMFError;
 use crate::tmf620::category::CategoryRef;
 use crate::{
     DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasReference, HasRelatedParty,
-    HasValidity, TMFEvent, TimePeriod, Uri, LIB_PATH,
+    HasValidity, TMFEvent, TimePeriod, Uri,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty, HasValidity};
 

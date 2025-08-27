@@ -1,11 +1,10 @@
 //! Module to test HasId derive macro
 
-use tmflib::HasId;
+use tmflib::{get_lib_path,HasId};
 use tmflib_derive::HasId;
 
 // Defined required consts
 const CLASS_PATH: &str = "mytmf";
-const LIB_PATH: &str = "tmf-lib";
 const MOD_PATH: &str = "tmf7xx";
 
 #[derive(Default, HasId)]

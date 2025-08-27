@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use super::MOD_PATH;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
-use crate::{DateTime, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod, LIB_PATH};
+use crate::{DateTime, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod};
 use tmflib_derive::{HasId, HasName, HasRelatedParty, HasValidity};
 
 const CLASS_PATH: &str = "serviceTest";

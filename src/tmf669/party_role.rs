@@ -8,7 +8,7 @@ use crate::{
     tmf632::Characteristic,
     tmf651::agreement::AgreementRef,
     tmf666::{AccountRef, PaymentMethodRef},
-    DateTime, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod, Uri, LIB_PATH,
+    DateTime, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod, Uri,
 };
 use tmflib_derive::{HasId, HasName, HasRelatedParty, HasValidity};
 

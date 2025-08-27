@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasDescription, HasId, Uri, LIB_PATH};
+use crate::{HasDescription, HasId, Uri};
 
 use tmflib_derive::{HasDescription, HasId};
 

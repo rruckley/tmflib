@@ -7,7 +7,6 @@ use crate::{vec_insert, HasDescription, HasId, HasLastUpdate, HasName, TimePerio
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::MOD_PATH;
-use crate::LIB_PATH;
 
 const CLASS_PATH: &str = "serviceSpecification";
 const SPEC_NEW_VERSION: &str = "1.0";

@@ -4,7 +4,7 @@
 use super::MOD_PATH;
 use crate::tmf646::appointment::AppointmentRef;
 use crate::tmf651::agreement::AgreementRef;
-use crate::{HasDescription, HasId, HasName, TimePeriod, Uri, LIB_PATH};
+use crate::{HasDescription, HasId, HasName, TimePeriod, Uri, };
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasName};
 

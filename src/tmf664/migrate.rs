@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::related_place::PlaceRef;
-use crate::{HasId, HasName, Uri, LIB_PATH};
+use crate::{HasId, HasName, Uri};
 use tmflib_derive::{HasId, HasName};
 
 use super::{TaskStateType, MOD_PATH};

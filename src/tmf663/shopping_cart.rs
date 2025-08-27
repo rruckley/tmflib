@@ -6,7 +6,7 @@ use crate::common::contact::ContactMedium;
 use crate::common::price::Price;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
-use crate::{HasId, HasRelatedParty, HasValidity, TimePeriod, LIB_PATH};
+use crate::{HasId, HasRelatedParty, HasValidity, TimePeriod};
 use tmflib_derive::{HasId, HasRelatedParty, HasValidity};
 
 use super::cart_item::CartItem;

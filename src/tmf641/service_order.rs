@@ -6,7 +6,7 @@ use super::MOD_PATH;
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
-use crate::LIB_PATH;
+
 use crate::{DateTime, HasDescription, HasId, HasNote, HasRelatedParty};
 use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty};
 

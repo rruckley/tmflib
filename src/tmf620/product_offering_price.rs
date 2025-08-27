@@ -9,7 +9,7 @@ use crate::common::event::{Event, EventPayload};
 use crate::common::money::Money;
 use crate::common::tax_item::TaxItem;
 use crate::{
-    HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent, TimePeriod, LIB_PATH,
+    HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent, TimePeriod,
 };
 use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
 
