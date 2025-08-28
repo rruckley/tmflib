@@ -281,6 +281,10 @@ pub trait HasId: Default {
     fn get_id(&self) -> String;
     /// Extract the HREF of this object into a new String
     fn get_href(&self) -> String;
+    /// Generate a complete URL for a given hostname
+    fn get_full_href(&self, hostname: impl Into<String>) -> String {
+        format!("{}{}", hostname.into(), self.get_href())
+    }
     /// Get the class of this object. This is also used to form part of the URL via generate_href()
     fn get_class() -> String;
     /// Get Class HREF, this represents the generate path to the class.
@@ -667,5 +671,18 @@ mod test {
 
         assert_eq!(ov.is_some(), true);
         assert_eq!(ov.unwrap().len(), 2);
+    }
+
+    #[test]
+    fn test_hasid_fullhref() {
+        use super::HasId;
+        let cust = Organization::new(ORG_NAME);
+
+        let full_href = cust.get_full_href("https://api.example.com");
+
+        assert_eq!(
+            full_href,
+            format!("https://api.example.com{}", cust.get_href())
+        );
     }
 }
