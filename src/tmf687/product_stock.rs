@@ -6,7 +6,7 @@ use crate::common::product::ProductRefOrValue;
 use crate::common::related_party::RelatedParty;
 use crate::common::related_place::RelatedPlaceRefOrValue;
 use crate::common::tmf_error::TMFError;
-use crate::{DateTime, HasId, HasLastUpdate, HasName, HasRelatedParty, TMFEvent, Uri, };
+use crate::{DateTime, HasId, HasLastUpdate, HasName, HasRelatedParty, TMFEvent, Uri};
 use tmflib_derive::{HasId, HasLastUpdate, HasName, HasRelatedParty};
 
 // External

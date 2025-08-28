@@ -11,15 +11,15 @@ use crate::tmf620::product_specification::{
 use super::product_offering_price::ProductOfferingPriceRef;
 use crate::tmf633::service_candidate::ServiceCandidateRef;
 use crate::tmf634::resource_candidate::ResourceCandidateRef;
-use crate::{HasDescription, HasId, HasLastUpdate, HasName, HasReference, TimePeriod,vec_insert};
+use crate::{vec_insert, HasDescription, HasId, HasLastUpdate, HasName, HasReference, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::{ChannelRef, MarketSegmentRef, PlaceRef, SLARef};
 use crate::tmf651::agreement::AgreementRef;
 
-use crate::LIB_PATH;
 use super::MOD_PATH;
+use crate::LIB_PATH;
 
 const PO_VERS_INIT: &str = "1.0";
 const CLASS_PATH: &str = "productOffering";
@@ -207,7 +207,7 @@ impl ProductOffering {
     /// let result = po.with_category(cat);
     /// ```
     pub fn with_category(mut self, category: Category) -> ProductOffering {
-        vec_insert(&mut self.category,CategoryRef::from(&category));
+        vec_insert(&mut self.category, CategoryRef::from(&category));
         self
     }
 

@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::tmf_error::TMFError;
-use crate::{HasId, HasRelatedParty, };
+use crate::{HasId, HasRelatedParty};
 use tmflib_derive::{HasId, HasRelatedParty};
 
 use super::product_offering_qualification_item::ProductOfferingQualificationItem;

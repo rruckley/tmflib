@@ -1,6 +1,6 @@
 //! Module to test HasId derive macro
 
-use tmflib::{get_lib_path,HasId};
+use tmflib::{get_lib_path, HasId};
 use tmflib_derive::HasId;
 
 // Defined required consts

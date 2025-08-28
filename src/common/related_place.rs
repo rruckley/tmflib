@@ -5,10 +5,10 @@
 
 #[cfg(all(feature = "tmf673", feature = "build-V4"))]
 use crate::tmf673::geographic_address::GeographicAddress;
-#[cfg(all(feature = "tmf674", feature = "build-V4"))]
-use crate::tmf674::geographic_site_v4::GeographicSite;
 #[cfg(all(feature = "tmf673", feature = "build-V5"))]
 use crate::tmf673::geographic_address::GeographicAddress;
+#[cfg(all(feature = "tmf674", feature = "build-V4"))]
+use crate::tmf674::geographic_site_v4::GeographicSite;
 #[cfg(all(feature = "tmf674", feature = "build-V5"))]
 use crate::tmf674::geographic_site_v5::GeographicSite;
 use crate::{HasId, HasName};

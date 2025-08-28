@@ -9,9 +9,7 @@ use super::MOD_PATH;
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
 use crate::tmf673::geographic_address::GeographicAddress;
-use crate::{
-    gen_code, HasDescription, HasId, HasName, HasValidity, TMFEvent, TimePeriod,
-};
+use crate::{gen_code, HasDescription, HasId, HasName, HasValidity, TMFEvent, TimePeriod};
 use tmflib_derive::{HasDescription, HasId, HasName, HasValidity};
 const CLASS_PATH: &str = "geographicSite";
 const DEFAULT_TZ: &str = "AEST";

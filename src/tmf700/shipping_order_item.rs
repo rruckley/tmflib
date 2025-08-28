@@ -2,7 +2,7 @@
 
 use super::shipping_instruction::ShippingInstruction;
 use crate::common::related_place::RelatedPlaceRefOrValue;
-use crate::{HasId, Uri, };
+use crate::{HasId, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
