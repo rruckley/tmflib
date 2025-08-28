@@ -8,9 +8,7 @@ use super::MOD_PATH;
 use crate::common::event::{Event, EventPayload};
 use crate::common::money::Money;
 use crate::common::tax_item::TaxItem;
-use crate::{
-    HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent, TimePeriod,
-};
+use crate::{HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent, TimePeriod};
 use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
 
 const CLASS_PATH: &str = "productOfferingPrice";

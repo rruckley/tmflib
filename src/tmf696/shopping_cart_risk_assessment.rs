@@ -2,7 +2,7 @@
 
 use super::characteristic::Characteristic;
 use super::risk_assessment_result::RiskAssessmentResult;
-use crate::{HasId, Uri, };
+use crate::{HasId, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 

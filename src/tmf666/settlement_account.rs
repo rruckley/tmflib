@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
-use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName, };
+use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::{

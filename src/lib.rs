@@ -61,7 +61,7 @@ use uuid::Uuid;
 /// Primary path for the whole library, All paths generated will start with this.
 pub const LIB_PATH: &str = "tmf-api";
 /// Path passed in from the environment at build time, used to form HREFs
-pub const TMF_PATH : Option<&str>= option_env!("TMF_PATH");
+pub const TMF_PATH: Option<&str> = option_env!("TMF_PATH");
 /// Default code length used by [gen_code] if no length is supplied.
 pub const CODE_DEFAULT_LENGTH: usize = 6;
 

@@ -2,13 +2,12 @@
 
 use serde::{Deserialize, Serialize};
 
+use crate::common::tmf_error::TMFError;
 use crate::tmf629::customer::Customer;
 use crate::{
     common::{money::Money, note::Note, related_party::RelatedParty},
-    HasId, HasRelatedParty, TimePeriod,
-    Uri, LIB_PATH,
+    HasId, HasRelatedParty, TimePeriod, Uri, LIB_PATH,
 };
-use crate::common::tmf_error::TMFError;
 use tmflib_derive::{HasId, HasRelatedParty};
 
 use super::{sales_lead_v5::SalesLeadRef, sales_opportunity_v5::SalesOpportunityPriorityType};

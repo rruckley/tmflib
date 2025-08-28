@@ -1,7 +1,7 @@
 //! Create a product template
 //!
 
-use tmflib::tmf620::category::{CategoryRef,Category};
+use tmflib::tmf620::category::{Category, CategoryRef};
 #[cfg(all(feature = "tmf620", feature = "build-V4"))]
 use tmflib::tmf620::product_offering::ProductOffering;
 #[cfg(all(feature = "tmf620", feature = "build-V5"))]

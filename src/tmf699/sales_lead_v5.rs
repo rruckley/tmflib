@@ -15,7 +15,7 @@ use crate::tmf620::product_specification::ProductSpecificationRef;
 use crate::tmf620::{ChannelRef, MarketSegmentRef};
 
 use super::MOD_PATH;
-use crate::{DateTime, HasId, HasName, HasNote, HasValidity, TimePeriod, Uri, };
+use crate::{DateTime, HasId, HasName, HasNote, HasValidity, TimePeriod, Uri};
 use tmflib_derive::{HasId, HasName, HasNote, HasValidity};
 
 use serde::{Deserialize, Serialize};
@@ -136,8 +136,8 @@ impl From<SalesLead> for SalesLeadRef {
 
 #[cfg(test)]
 mod test {
-    use super::{HasId,HasName};
     use super::SalesLead;
+    use super::{HasId, HasName};
     const SL_NAME: &str = "My Sales Lead";
     #[test]
     fn sales_lead_create_id() {

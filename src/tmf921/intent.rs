@@ -6,9 +6,7 @@ use super::MOD_PATH;
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
-use crate::{
-    DateTime, HasAttachment, HasDescription, HasId, HasName, HasRelatedParty, TimePeriod,
-};
+use crate::{DateTime, HasAttachment, HasDescription, HasId, HasName, HasRelatedParty, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasAttachment, HasDescription, HasId, HasName, HasRelatedParty};
 

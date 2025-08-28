@@ -4,7 +4,7 @@ use super::work_order_item::WorkOrderItem;
 use super::MOD_PATH;
 use crate::common::{note::Note, related_party::RelatedParty};
 use crate::tmf646::appointment::AppointmentRef;
-use crate::{HasId, Uri, };
+use crate::{HasId, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 

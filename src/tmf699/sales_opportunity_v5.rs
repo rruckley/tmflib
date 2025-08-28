@@ -1,7 +1,7 @@
 //!s Sales Opportunity Module V5
 
 use crate::common::money::Money;
-use crate::{HasId, HasName, HasValidity, TimePeriod, };
+use crate::{HasId, HasName, HasValidity, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasName, HasValidity};
 

@@ -10,7 +10,7 @@ use crate::{common::note::Note, DateTime};
 
 use super::MOD_PATH;
 use crate::common::tmf_error::TMFError;
-use crate::{HasId, HasNote, };
+use crate::{HasId, HasNote};
 use tmflib_derive::{HasId, HasNote};
 
 use serde::{Deserialize, Serialize};

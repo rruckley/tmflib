@@ -151,16 +151,16 @@ impl From<&PartyRole> for RelatedParty {
 #[cfg(test)]
 mod test {
     use super::RelatedParty;
+    use crate::tmf629::customer::Customer;
     #[cfg(all(feature = "tmf632", feature = "build-V4"))]
     use crate::tmf632::organization_v4::Organization;
-    #[cfg(all(feature = "tmf632", feature = "build-V5"))]
-    use crate::tmf632::organization_v5::Organization;
-    use crate::tmf669::party_role::PartyRole;
-    use crate::{tmf629::customer::Customer};
     #[cfg(all(feature = "tmf632", feature = "build-V4"))]
     use crate::tmf632::organization_v4::OrganizationRef;
     #[cfg(all(feature = "tmf632", feature = "build-V5"))]
+    use crate::tmf632::organization_v5::Organization;
+    #[cfg(all(feature = "tmf632", feature = "build-V5"))]
     use crate::tmf632::organization_v5::OrganizationRef;
+    use crate::tmf669::party_role::PartyRole;
     use crate::{HasId, HasName};
 
     const ORG_NAME: &str = "An Organisation";

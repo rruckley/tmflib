@@ -3,7 +3,7 @@
 use super::MOD_PATH;
 use crate::tmf646::appointment::AppointmentRef;
 use crate::tmf651::agreement::AgreementRef;
-use crate::{HasId, HasName, TimePeriod, Uri, };
+use crate::{HasId, HasName, TimePeriod, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasName};
 

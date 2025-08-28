@@ -357,7 +357,6 @@ impl HasName for Individual {
         self.set_name(name);
         self
     }
-    
 }
 
 /// Individual Event Types

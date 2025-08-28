@@ -8,7 +8,7 @@ use crate::common::tmf_error::TMFError;
 use crate::tmf641::service_order::ServiceOrder;
 use crate::tmf651::agreement::AgreementRef;
 use crate::tmf663::shopping_cart::ShoppingCart;
-use crate::{DateTime, HasId, HasLastUpdate, HasNote, HasRelatedParty, Uri, };
+use crate::{DateTime, HasId, HasLastUpdate, HasNote, HasRelatedParty, Uri};
 use tmflib_derive::{HasId, HasNote, HasRelatedParty};
 
 // URL Path components
@@ -48,7 +48,7 @@ impl From<&ProductOrder> for ProductOrderRef {
         let name = value
             .description
             .as_deref()
-            .unwrap_or( "No Order Description" );
+            .unwrap_or("No Order Description");
         ProductOrderRef {
             href: value.get_href(),
             id: value.get_id(),
@@ -120,7 +120,6 @@ impl HasLastUpdate for ProductOrder {
         }
         self
     }
-
 }
 
 impl ProductOrder {
