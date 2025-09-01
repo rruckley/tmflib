@@ -43,6 +43,10 @@ impl HasLastUpdate for ResourceCandidate {
         self.last_update = Some(time.into());
     }
 
+    fn get_last_update(&self) -> Option<String> {
+        self.last_update.clone()
+    }
+
     fn last_update(mut self, time: Option<String>) -> Self {
         match time {
             Some(t) => self.set_last_update(t),
