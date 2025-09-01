@@ -180,6 +180,9 @@ impl HasLastUpdate for ProductOrder {
     fn set_last_update(&mut self, time: impl Into<String>) {
         self.order_date = Some(time.into());
     }
+    fn get_last_update(&self) -> Option<String> {
+        self.order_date.clone()
+    }
     fn last_update(mut self, time: Option<String>) -> Self {
         match time {
             Some(t) => self.set_last_update(t),

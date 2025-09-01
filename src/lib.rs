@@ -322,13 +322,16 @@ pub trait HasLastUpdate: HasId {
         time.to_string()
     }
 
+    /// Get the last_update field if available
+    fn get_last_update(&self) -> Option<String>;
+
     /// Store a timestamp into last_update field (if available)
     fn set_last_update(&mut self, time: impl Into<String>);
 
     /// Create a new TMF object, also set last_update field to now()
     fn create_with_time() -> Self {
         // Create default instance
-        let mut item = Self::default();
+        let mut item = Self::create();
         item.generate_id();
         item.set_last_update(Self::get_timestamp());
         item
