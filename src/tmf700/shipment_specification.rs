@@ -1,12 +1,15 @@
 //! Shipment Specification Module
 
 use crate::common::attachment::AttachmentRefOrValue;
+use regex::Regex;
+use crate::common::tmf_error::TMFError;
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
 use crate::{
     DateTime, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasValidity,
     TimePeriod, Uri,
+    serde_value_to_type,
 };
 
 use super::MOD_PATH;
@@ -96,7 +99,7 @@ pub struct CharacteristicSpecification {
     max_cardinality: u16,
     min_cardinality: u16,
     name: Option<String>,
-    regex: String,
+    regex: Option<String>,
     valid_for: Option<TimePeriod>,
     value_type: String,
     // Referenced Struct
@@ -120,15 +123,73 @@ pub struct CharacteristicSpecificationRelationship {
 #[derive(Clone, Default, Debug, HasValidity, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CharacteristicValueSpecification {
-    is_default: bool,
+    /// Is this the default value
+    #[serde(skip_serializing_if = "Option::is_none")]
+    is_default: Option<bool>,
     range_interval: String,
-    regex: String,
+     /// Pattern to match value
+    #[serde(skip_serializing_if = "Option::is_none")]
+    regex: Option<String>,
     unit_of_measure: String,
+    /// Validity
+    #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
-    value: serde_json::Value,
+    /// Value
+    #[serde(skip_serializing_if = "Option::is_none")]
+    value: Option<serde_json::Value>,
     value_from: u16,
     value_to: u16,
-    value_type: String,
+    /// Value Type, e.g. String, Integer etc.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    value_type: Option<String>,
+}
+
+impl CharacteristicValueSpecification {
+    /// Constructor
+    pub fn new() -> CharacteristicValueSpecification {
+        CharacteristicValueSpecification {
+            ..Default::default()
+        }
+    }
+
+    /// Set regex for this characteristic value specification
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf633::characteristic_specification::CharacteristicValueSpecification;
+    /// let cvs = CharacteristicValueSpecification::new()
+    ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap();
+    /// ```
+    pub fn regex(mut self, regex: String) -> Result<CharacteristicValueSpecification,TMFError> {
+        let _re = Regex::new(&regex)?;
+        self.regex = Some(regex);
+        Ok(self)
+    }
+
+    /// Set value for this characteristic value specification
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf633::characteristic_specification::CharacteristicValueSpecification;
+    /// # use serde_json::json;
+    /// let cvs = CharacteristicValueSpecification::new()
+    ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
+    ///     .value("100Mb".into()).unwrap();
+    /// ```
+    pub fn value(mut self, value: serde_json::Value) -> Result<CharacteristicValueSpecification,TMFError> {
+        self.value_type = Some(serde_value_to_type(&value).to_string());
+        match self.regex {
+            Some(ref re_str) => {
+                let re = Regex::new(&re_str)?;
+                let val_str = value.to_string().replace('\"',"");
+                if !re.is_match(&val_str) {
+                    return Err(TMFError::GenericError(format!("Value {} does not match regex {}",val_str,re_str)));
+                }
+                self.value = Some(value);
+            },
+            // If no regex, then just set the value
+            None => self.value = Some(value)
+        }
+        Ok(self)
+    }
 }
 
 #[cfg(test)]
@@ -239,13 +300,13 @@ mod test {
             serde_json::from_str(CHARVALSPEC_JSON).unwrap();
 
         let two_str: String = "2".to_string();
-        assert_eq!(charvalspec.is_default, false);
+        assert_eq!(charvalspec.is_default, Some(false));
         assert_eq!(charvalspec.range_interval.as_str(), "1");
-        assert_eq!(charvalspec.regex.as_str(), "Regex");
+        assert_eq!(charvalspec.regex.unwrap().as_str(), "Regex");
         assert_eq!(charvalspec.unit_of_measure.as_str(), "Units");
-        assert_eq!(charvalspec.value, two_str);
+        assert_eq!(charvalspec.value.unwrap().to_string(), two_str);
         assert_eq!(charvalspec.value_from, 3);
         assert_eq!(charvalspec.value_to, 4);
-        assert_eq!(charvalspec.value_type.as_str(), "ValueType");
+        assert_eq!(charvalspec.value_type.unwrap().as_str(), "ValueType");
     }
 }
