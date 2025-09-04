@@ -2,12 +2,14 @@
 //!
 
 use chrono::Utc;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use super::MOD_PATH;
 
 use crate::common::event::{Event, EventPayload};
+use crate::common::tmf_error::TMFError;
 use crate::{
     serde_value_to_type, Cardinality, HasDescription, HasId, HasLastUpdate, HasName, HasReference,
     HasValidity, TMFEvent, TimePeriod,
@@ -380,13 +382,12 @@ impl ProductSpecificationCharacteristicValue {
     /// # Example
     /// ```
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
-    /// let pscv = ProductSpecificationCharacteristicValue::new("100Mb".into());
+    /// let pscv = ProductSpecificationCharacteristicValue::new();
     /// ```
-    pub fn new(value: serde_json::Value) -> ProductSpecificationCharacteristicValue {
-        let value_type = Some(serde_value_to_type(&value).to_string());
+    pub fn new() -> ProductSpecificationCharacteristicValue {
+        
         ProductSpecificationCharacteristicValue {
-            value,
-            value_type,
+            is_default: false,
             ..Default::default()
         }
     }
@@ -396,12 +397,63 @@ impl ProductSpecificationCharacteristicValue {
     /// ```
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
     ///
-    /// let pscv = ProductSpecificationCharacteristicValue::new("100Mb".into())
-    ///     .regex(String::from("^[0-9]+(Mb|Gb)$"));
+    /// let pscv = ProductSpecificationCharacteristicValue::new()
+    ///     .regex(String::from("[0-9]+(Mb|Gb)"));
     /// ```
-    pub fn regex(mut self, regex: String) -> ProductSpecificationCharacteristicValue {
+    pub fn regex(mut self, regex: String) -> Result<ProductSpecificationCharacteristicValue,TMFError> {
+        // For now we only wish to test if we can parse the regex string
+        let _re = Regex::new(&regex)?;
         self.regex = Some(regex);
-        self
+        Ok(self)
+    }
+
+    /// Set the value for this characteristic value
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
+    /// # use serde_json::json;
+    /// let pscv = ProductSpecificationCharacteristicValue::new()
+    ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
+    ///     .value("100Mb".into()).unwrap();
+    /// ```
+    pub fn value(mut self, value: serde_json::Value) -> Result<ProductSpecificationCharacteristicValue,TMFError> {
+        self.value_type = Some(serde_value_to_type(&value).to_string());
+        match self.regex {
+            Some(ref re_str) => {
+                let re = Regex::new(re_str)?;
+                let val_str = value.to_string();
+                if !re.is_match(&val_str) {
+                    return Err(TMFError::GenericError(format!("Value {} does not match regex {}",val_str,re_str)));
+                }
+                self.value = value;
+            },
+            // If no regex, then just set the value
+            None => self.value = value
+        }
+        Ok(self)
+    }
+
+    /// Validate a value against the regex (if set) and return an updated
+    /// ProductSpecificationCharacteristicValue with the value set.
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
+    /// # use serde_json::json;
+    /// let pscv = ProductSpecificationCharacteristicValue::new()
+    ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
+    ///    .validate("200Mb".into()).unwrap();
+    /// ```
+    pub fn validate(mut self, value: serde_json::Value) -> Result<ProductSpecificationCharacteristicValue,TMFError> {
+        // If we have a regex, then validate the value against it.
+        if let Some(re_str) = &self.regex {
+            let re = Regex::new(re_str)?;
+            let val_str = value.to_string();
+            if !re.is_match(&val_str) {
+                return Err(TMFError::GenericError(format!("Value {} does not match regex {}",val_str,re_str)));
+            }
+        }
+        self.value = value;
+        Ok(self)
     }
 }
 
@@ -587,4 +639,17 @@ mod test {
         assert_eq!(ps_ref.name, ps.name);
         assert_eq!(ps_ref.version, ps.version);
     }
+
+    #[test]
+    fn test_prodspecvalue_regex() {
+        let pscv = ProductSpecificationCharacteristicValue::new()
+            .regex(String::from("[0-9]+(Mb|Gb)"))
+            .unwrap()
+            .value("100Mb".into())
+            .unwrap();
+
+        assert_eq!(pscv.regex.is_some(), true);
+        assert_eq!(pscv.regex.unwrap(), String::from("[0-9]+(Mb|Gb)"));
+        assert_eq!(pscv.value, serde_json::Value::String("100Mb".to_string()));
+    }     
 }
