@@ -2,15 +2,17 @@
 //!
 
 use chrono::Utc;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use super::MOD_PATH;
 
 use crate::common::event::{Event, EventPayload};
+use crate::common::tmf_error::TMFError;
 use crate::{
-    Cardinality, HasDescription, HasId, HasLastUpdate, HasName, HasReference, HasValidity,
-    TMFEvent, TimePeriod,
+    serde_value_to_type, Cardinality, HasDescription, HasId, HasLastUpdate, HasName, HasReference,
+    HasValidity, TMFEvent, TimePeriod,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
@@ -28,22 +30,26 @@ pub const SPEC_CONV_VERB: &str = "Imported";
 #[derive(Clone, Debug, Default, Deserialize, Serialize, HasValidity)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristic {
-    configurable: bool,
+    /// Is this characteristic configurable
+    pub configurable: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     extensible: Option<bool>,
-    is_unique: bool,
+    /// Is this characteristic unique
+    pub is_unique: bool,
     max_cardinality: Cardinality,
     min_cardinality: Cardinality,
     /// Characteristic Name
     pub name: String,
+    /// Regular expression for value
     #[serde(skip_serializing_if = "Option::is_none")]
     regex: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     value_type: Option<String>,
+    /// Validity period for this characteristic
     #[serde(skip_serializing_if = "Option::is_none")]
-    valid_for: Option<TimePeriod>,
+    pub valid_for: Option<TimePeriod>,
 }
 
 impl ProductSpecificationCharacteristic {
@@ -345,19 +351,23 @@ pub enum ProductSpecificationEventType {
 #[derive(Clone, Debug, Default, Deserialize, Serialize, HasValidity)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristicValue {
-    is_default: bool,
+    /// Description of Characteristic Value
+    pub is_default: bool,
+    /// Value Range Interval
     #[serde(skip_serializing_if = "Option::is_none")]
-    range_interval: Option<String>,
+    pub range_interval: Option<String>,
+    /// Characteristic Value Regular Expression
     #[serde(skip_serializing_if = "Option::is_none")]
-    regex: Option<String>,
+    pub regex: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     unit_of_measure: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     value_from: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     value_to: Option<String>,
+    ///
     #[serde(skip_serializing_if = "Option::is_none")]
-    value_type: Option<String>,
+    pub value_type: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     valid_for: Option<TimePeriod>,
     value: serde_json::Value,
@@ -365,16 +375,85 @@ pub struct ProductSpecificationCharacteristicValue {
 
 impl ProductSpecificationCharacteristicValue {
     /// Create a new Product Specification Characteristic Value with a value
+    /// # Description
+    /// Creates a new Characterisitic Value with the provided value.
+    /// Other fields can be set by directly updating the structure.
+    /// This bypasses regular experssion checks
     /// # Example
     /// ```
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
-    /// let pscv = ProductSpecificationCharacteristicValue::new("100Mb".into());
+    /// let pscv = ProductSpecificationCharacteristicValue::new();
     /// ```
-    pub fn new(value: serde_json::Value) -> ProductSpecificationCharacteristicValue {
+    pub fn new() -> ProductSpecificationCharacteristicValue {
+        
         ProductSpecificationCharacteristicValue {
-            value,
+            is_default: false,
             ..Default::default()
         }
+    }
+
+    /// Set the regular expression for this characteristic value
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
+    ///
+    /// let pscv = ProductSpecificationCharacteristicValue::new()
+    ///     .regex(String::from("[0-9]+(Mb|Gb)"));
+    /// ```
+    pub fn regex(mut self, regex: String) -> Result<ProductSpecificationCharacteristicValue,TMFError> {
+        // For now we only wish to test if we can parse the regex string
+        let _re = Regex::new(&regex)?;
+        self.regex = Some(regex);
+        Ok(self)
+    }
+
+    /// Set the value for this characteristic value
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
+    /// # use serde_json::json;
+    /// let pscv = ProductSpecificationCharacteristicValue::new()
+    ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
+    ///     .value("100Mb".into()).unwrap();
+    /// ```
+    pub fn value(mut self, value: serde_json::Value) -> Result<ProductSpecificationCharacteristicValue,TMFError> {
+        self.value_type = Some(serde_value_to_type(&value).to_string());
+        match self.regex {
+            Some(ref re_str) => {
+                let re = Regex::new(re_str)?;
+                let val_str = value.to_string();
+                if !re.is_match(&val_str) {
+                    return Err(TMFError::GenericError(format!("Value {} does not match regex {}",val_str,re_str)));
+                }
+                self.value = value;
+            },
+            // If no regex, then just set the value
+            None => self.value = value
+        }
+        Ok(self)
+    }
+
+    /// Validate a value against the regex (if set) and return an updated
+    /// ProductSpecificationCharacteristicValue with the value set.
+    /// # Example
+    /// ```
+    /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
+    /// # use serde_json::json;
+    /// let pscv = ProductSpecificationCharacteristicValue::new()
+    ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
+    ///    .validate("200Mb".into()).unwrap();
+    /// ```
+    pub fn validate(mut self, value: serde_json::Value) -> Result<ProductSpecificationCharacteristicValue,TMFError> {
+        // If we have a regex, then validate the value against it.
+        if let Some(re_str) = &self.regex {
+            let re = Regex::new(re_str)?;
+            let val_str = value.to_string();
+            if !re.is_match(&val_str) {
+                return Err(TMFError::GenericError(format!("Value {} does not match regex {}",val_str,re_str)));
+            }
+        }
+        self.value = value;
+        Ok(self)
     }
 }
 
@@ -560,4 +639,17 @@ mod test {
         assert_eq!(ps_ref.name, ps.name);
         assert_eq!(ps_ref.version, ps.version);
     }
+
+    #[test]
+    fn test_prodspecvalue_regex() {
+        let pscv = ProductSpecificationCharacteristicValue::new()
+            .regex(String::from("[0-9]+(Mb|Gb)"))
+            .unwrap()
+            .value("100Mb".into())
+            .unwrap();
+
+        assert_eq!(pscv.regex.is_some(), true);
+        assert_eq!(pscv.regex.unwrap(), String::from("[0-9]+(Mb|Gb)"));
+        assert_eq!(pscv.value, serde_json::Value::String("100Mb".to_string()));
+    }     
 }

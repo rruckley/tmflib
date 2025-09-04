@@ -244,6 +244,7 @@ openapiv3 = "2.2.0"
 rust_decimal = "1.37.2"
 rust_decimal_macros = "1.37.1"
 thiserror = "2.0.16"
+regex = "1.11.2"
 
 [dev-dependencies]
 

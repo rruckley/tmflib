@@ -1,6 +1,7 @@
 //! Error Module for TMF
 
 use thiserror::Error;
+use regex::Error as RegexError;
 
 /// TMF Error Enum
 /// This enum defines various error types that can occur in the TMF library.
@@ -39,6 +40,9 @@ pub enum TMFError {
     /// Invalid Note error
     #[error("No data present for {0}")]
     NoDataError(String),
+    /// Regex Error
+    #[error("Regex Error: {0}")]
+    RegexError(#[from] RegexError),
 }
 
 impl From<&str> for TMFError {
