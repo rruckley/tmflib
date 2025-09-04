@@ -235,7 +235,7 @@ mod test {
         \"rangeInterval\" : \"1\",
         \"regex\" : \"Regex\",
         \"unitOfMeasure\" : \"Units\",
-        \"value\" : \"2\",
+        \"value\" : 2,
         \"valueFrom\" : 3,
         \"valueTo\" : 4,
         \"valueType\" : \"ValueType\"
