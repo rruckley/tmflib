@@ -11,8 +11,7 @@ use super::MOD_PATH;
 use crate::common::event::{Event, EventPayload};
 use crate::common::tmf_error::TMFError;
 use crate::{
-    serde_value_to_type, Cardinality, HasDescription, HasId, HasLastUpdate, HasName, HasReference,
-    HasValidity, TMFEvent, TimePeriod,
+    serde_value_to_type, vec_insert, Cardinality, HasDescription, HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent, TimePeriod
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
@@ -203,11 +202,19 @@ impl ProductSpecification {
         mut self,
         characteristic: ProductSpecificationCharacteristic,
     ) -> ProductSpecification {
-        match self.product_spec_characteristic.as_mut() {
-            Some(v) => v.push(characteristic),
-            None => self.product_spec_characteristic = Some(vec![characteristic]),
-        }
+        vec_insert(&mut self.product_spec_characteristic,characteristic);
         self
+    }
+
+    /// Get the class of this object
+    pub fn characteristic_by_name(
+        &self,
+        name: &str,
+    ) -> Option<&ProductSpecificationCharacteristic> {
+        match self.product_spec_characteristic.as_ref() {
+            Some(chars) => chars.iter().find(|c| c.name == name),
+            None => None,
+        }   
     }
 }
 
@@ -670,4 +677,45 @@ mod test {
         assert_eq!(pscv.regex.unwrap(), String::from("[0-9]+(Mb|Gb)"));
         assert_eq!(pscv.value, serde_json::Value::String("100Mb".to_string()));
     }     
+
+    #[test]
+    fn test_prodspecvalue_regex_invalid() {
+        let pscv = ProductSpecificationCharacteristicValue::new()
+            .regex(String::from("[0-9]+(Mb|Gb)"))
+            .unwrap()
+            .value("Invalid".into());   
+        assert!(pscv.is_err());
+    }
+
+    #[test]
+    fn test_with_charspec() {
+        let spec_char1 = ProductSpecificationCharacteristic::new(SPEC_NAME).cardinality(1, 2);
+        let spec_char2 = ProductSpecificationCharacteristic::new(SPEC_NAME).cardinality(3, 4);
+        let spec = ProductSpecification::new(SPEC_NAME)
+            .with_charateristic(spec_char1)
+            .with_charateristic(spec_char2);
+
+        assert_eq!(spec.product_spec_characteristic.is_some(), true);
+        assert_eq!(spec.product_spec_characteristic.unwrap().len(), 2);
+    }
+
+    #[test]
+    fn test_charspec_by_name() {
+        let spec_char1 = ProductSpecificationCharacteristic::new("Char1").cardinality(1, 2);
+        let spec_char2 = ProductSpecificationCharacteristic::new("Char2").cardinality(3, 4);
+        let spec = ProductSpecification::new(SPEC_NAME)
+            .with_charateristic(spec_char1)
+            .with_charateristic(spec_char2);
+
+        let c1 = spec.characteristic_by_name("Char1");
+        assert!(c1.is_some());
+        assert_eq!(c1.unwrap().name, "Char1".to_string());
+
+        let c2 = spec.characteristic_by_name("Char2");
+        assert!(c2.is_some());
+        assert_eq!(c2.unwrap().name, "Char2".to_string());
+
+        let c3 = spec.characteristic_by_name("Char3");
+        assert!(c3.is_none());  
+    }
 }
