@@ -1,15 +1,14 @@
 //! Shipment Specification Module
 
 use crate::common::attachment::AttachmentRefOrValue;
-use regex::Regex;
 use crate::common::tmf_error::TMFError;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
 use crate::{
-    DateTime, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasValidity,
-    TimePeriod, Uri,
-    serde_value_to_type,
+    serde_value_to_type, DateTime, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName,
+    HasValidity, TimePeriod, Uri,
 };
 
 use super::MOD_PATH;
@@ -127,7 +126,7 @@ pub struct CharacteristicValueSpecification {
     #[serde(skip_serializing_if = "Option::is_none")]
     is_default: Option<bool>,
     range_interval: String,
-     /// Pattern to match value
+    /// Pattern to match value
     #[serde(skip_serializing_if = "Option::is_none")]
     regex: Option<String>,
     unit_of_measure: String,
@@ -159,7 +158,7 @@ impl CharacteristicValueSpecification {
     /// let cvs = CharacteristicValueSpecification::new()
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap();
     /// ```
-    pub fn regex(mut self, regex: String) -> Result<CharacteristicValueSpecification,TMFError> {
+    pub fn regex(mut self, regex: String) -> Result<CharacteristicValueSpecification, TMFError> {
         let _re = Regex::new(&regex)?;
         self.regex = Some(regex);
         Ok(self)
@@ -174,19 +173,25 @@ impl CharacteristicValueSpecification {
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
     ///     .value("100Mb".into()).unwrap();
     /// ```
-    pub fn value(mut self, value: serde_json::Value) -> Result<CharacteristicValueSpecification,TMFError> {
+    pub fn value(
+        mut self,
+        value: serde_json::Value,
+    ) -> Result<CharacteristicValueSpecification, TMFError> {
         self.value_type = Some(serde_value_to_type(&value).to_string());
         match self.regex {
             Some(ref re_str) => {
                 let re = Regex::new(&re_str)?;
-                let val_str = value.to_string().replace('\"',"");
+                let val_str = value.to_string().replace('\"', "");
                 if !re.is_match(&val_str) {
-                    return Err(TMFError::GenericError(format!("Value {} does not match regex {}",val_str,re_str)));
+                    return Err(TMFError::GenericError(format!(
+                        "Value {} does not match regex {}",
+                        val_str, re_str
+                    )));
                 }
                 self.value = Some(value);
-            },
+            }
             // If no regex, then just set the value
-            None => self.value = Some(value)
+            None => self.value = Some(value),
         }
         Ok(self)
     }

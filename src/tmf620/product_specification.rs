@@ -11,8 +11,8 @@ use super::MOD_PATH;
 use crate::common::event::{Event, EventPayload};
 use crate::common::tmf_error::TMFError;
 use crate::{
-    serde_value_to_type, Cardinality, HasDescription, HasId, HasLastUpdate, HasName, HasReference,
-    HasValidity, TMFEvent, TimePeriod,
+    serde_value_to_type, vec_insert, Cardinality, HasDescription, HasId, HasLastUpdate, HasName,
+    HasReference, HasValidity, TMFEvent, TimePeriod,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
@@ -50,6 +50,9 @@ pub struct ProductSpecificationCharacteristic {
     /// Validity period for this characteristic
     #[serde(skip_serializing_if = "Option::is_none")]
     pub valid_for: Option<TimePeriod>,
+    /// Set of characteristic relationships
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_spec_char_relationship: Option<Vec<ProductSpecificationCharacteristicRelationship>>,
 }
 
 impl ProductSpecificationCharacteristic {
@@ -203,11 +206,42 @@ impl ProductSpecification {
         mut self,
         characteristic: ProductSpecificationCharacteristic,
     ) -> ProductSpecification {
-        match self.product_spec_characteristic.as_mut() {
-            Some(v) => v.push(characteristic),
-            None => self.product_spec_characteristic = Some(vec![characteristic]),
-        }
+        vec_insert(&mut self.product_spec_characteristic, characteristic);
         self
+    }
+
+    /// Get the class of this object
+    pub fn characteristic_by_name(
+        &self,
+        name: &str,
+    ) -> Option<&ProductSpecificationCharacteristic> {
+        match self.product_spec_characteristic.as_ref() {
+            Some(chars) => chars.iter().find(|c| c.name == name),
+            None => None,
+        }
+    }
+
+    /// Link remote characteristic specification
+    pub fn link_characteristic(&mut self, remote: &ProductSpecification, name: impl Into<String>) {
+        // Not implemented
+        let name: String = name.into();
+        let char_opt = remote.characteristic_by_name(&name);
+
+        if let Some(char_spec) = char_opt {
+            let mut new_char = char_spec.clone();
+            let char_rel = ProductSpecificationCharacteristicRelationship {
+                id: remote.get_id(),
+                href: remote.get_href(),
+                char_spec_seq: 0,
+                name: name.clone(),
+                relationship_type: String::from("dependsOn"),
+                valid_for: None,
+            };
+            // Insert relationship into placeholder characteristic
+            vec_insert(&mut new_char.product_spec_char_relationship, char_rel);
+            new_char.valid_for = None;
+            vec_insert(&mut self.product_spec_characteristic, new_char);
+        }
     }
 }
 
@@ -385,7 +419,6 @@ impl ProductSpecificationCharacteristicValue {
     /// let pscv = ProductSpecificationCharacteristicValue::new();
     /// ```
     pub fn new() -> ProductSpecificationCharacteristicValue {
-        
         ProductSpecificationCharacteristicValue {
             is_default: false,
             ..Default::default()
@@ -400,7 +433,10 @@ impl ProductSpecificationCharacteristicValue {
     /// let pscv = ProductSpecificationCharacteristicValue::new()
     ///     .regex(String::from("[0-9]+(Mb|Gb)"));
     /// ```
-    pub fn regex(mut self, regex: String) -> Result<ProductSpecificationCharacteristicValue,TMFError> {
+    pub fn regex(
+        mut self,
+        regex: String,
+    ) -> Result<ProductSpecificationCharacteristicValue, TMFError> {
         // For now we only wish to test if we can parse the regex string
         let _re = Regex::new(&regex)?;
         self.regex = Some(regex);
@@ -416,19 +452,25 @@ impl ProductSpecificationCharacteristicValue {
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
     ///     .value("100Mb".into()).unwrap();
     /// ```
-    pub fn value(mut self, value: serde_json::Value) -> Result<ProductSpecificationCharacteristicValue,TMFError> {
+    pub fn value(
+        mut self,
+        value: serde_json::Value,
+    ) -> Result<ProductSpecificationCharacteristicValue, TMFError> {
         self.value_type = Some(serde_value_to_type(&value).to_string());
         match self.regex {
             Some(ref re_str) => {
                 let re = Regex::new(re_str)?;
                 let val_str = value.to_string();
                 if !re.is_match(&val_str) {
-                    return Err(TMFError::GenericError(format!("Value {} does not match regex {}",val_str,re_str)));
+                    return Err(TMFError::GenericError(format!(
+                        "Value {} does not match regex {}",
+                        val_str, re_str
+                    )));
                 }
                 self.value = value;
-            },
+            }
             // If no regex, then just set the value
-            None => self.value = value
+            None => self.value = value,
         }
         Ok(self)
     }
@@ -443,13 +485,19 @@ impl ProductSpecificationCharacteristicValue {
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
     ///    .validate("200Mb".into()).unwrap();
     /// ```
-    pub fn validate(mut self, value: serde_json::Value) -> Result<ProductSpecificationCharacteristicValue,TMFError> {
+    pub fn validate(
+        mut self,
+        value: serde_json::Value,
+    ) -> Result<ProductSpecificationCharacteristicValue, TMFError> {
         // If we have a regex, then validate the value against it.
         if let Some(re_str) = &self.regex {
             let re = Regex::new(re_str)?;
             let val_str = value.to_string();
             if !re.is_match(&val_str) {
-                return Err(TMFError::GenericError(format!("Value {} does not match regex {}",val_str,re_str)));
+                return Err(TMFError::GenericError(format!(
+                    "Value {} does not match regex {}",
+                    val_str, re_str
+                )));
             }
         }
         self.value = value;
@@ -461,8 +509,9 @@ impl ProductSpecificationCharacteristicValue {
 #[derive(Clone, Debug, Deserialize, Serialize, HasValidity)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristicValueUse {
+    /// Description of Characteristic Value Use
     #[serde(skip_serializing_if = "Option::is_none")]
-    description: Option<String>,
+    pub description: Option<String>,
     max_cardinality: u16,
     min_cardinality: u16,
     name: String,
@@ -494,6 +543,24 @@ impl ProductSpecificationCharacteristicValueUse {
     pub fn with_spec(&mut self, specification: ProductSpecification) {
         self.product_specification = Some(ProductSpecificationRef::from(specification));
     }
+}
+
+/// Product Specification Characteristic Relationship
+#[derive(Clone, Debug, Deserialize, Serialize, HasValidity)]
+pub struct ProductSpecificationCharacteristicRelationship {
+    /// Id
+    pub id: String,
+    /// HREF where object is located
+    pub href: String,
+    /// Sequence number of the related characteristic
+    pub char_spec_seq: u32,
+    /// Name of the related characteristic
+    pub name: String,
+    /// Type of relationship
+    pub relationship_type: String,
+    /// Validity period for this relationship
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub valid_for: Option<TimePeriod>,
 }
 
 #[cfg(test)]
@@ -651,5 +718,71 @@ mod test {
         assert_eq!(pscv.regex.is_some(), true);
         assert_eq!(pscv.regex.unwrap(), String::from("[0-9]+(Mb|Gb)"));
         assert_eq!(pscv.value, serde_json::Value::String("100Mb".to_string()));
-    }     
+    }
+
+    #[test]
+    fn test_prodspecvalue_regex_invalid() {
+        let pscv = ProductSpecificationCharacteristicValue::new()
+            .regex(String::from("[0-9]+(Mb|Gb)"))
+            .unwrap()
+            .value("Invalid".into());
+        assert!(pscv.is_err());
+    }
+
+    #[test]
+    fn test_with_charspec() {
+        let spec_char1 = ProductSpecificationCharacteristic::new(SPEC_NAME).cardinality(1, 2);
+        let spec_char2 = ProductSpecificationCharacteristic::new(SPEC_NAME).cardinality(3, 4);
+        let spec = ProductSpecification::new(SPEC_NAME)
+            .with_charateristic(spec_char1)
+            .with_charateristic(spec_char2);
+
+        assert_eq!(spec.product_spec_characteristic.is_some(), true);
+        assert_eq!(spec.product_spec_characteristic.unwrap().len(), 2);
+    }
+
+    #[test]
+    fn test_charspec_by_name() {
+        let spec_char1 = ProductSpecificationCharacteristic::new("Char1").cardinality(1, 2);
+        let spec_char2 = ProductSpecificationCharacteristic::new("Char2").cardinality(3, 4);
+        let spec = ProductSpecification::new(SPEC_NAME)
+            .with_charateristic(spec_char1)
+            .with_charateristic(spec_char2);
+
+        let c1 = spec.characteristic_by_name("Char1");
+        assert!(c1.is_some());
+        assert_eq!(c1.unwrap().name, "Char1".to_string());
+
+        let c2 = spec.characteristic_by_name("Char2");
+        assert!(c2.is_some());
+        assert_eq!(c2.unwrap().name, "Char2".to_string());
+
+        let c3 = spec.characteristic_by_name("Char3");
+        assert!(c3.is_none());
+    }
+
+    #[test]
+    fn test_link_characteristic() {
+        let spec_char1 = ProductSpecificationCharacteristic::new("Char1").cardinality(1, 2);
+        let mut spec1 = ProductSpecification::new("Spec1").with_charateristic(spec_char1);
+        let spec_char2 = ProductSpecificationCharacteristic::new("Char2").cardinality(3, 4);
+        let spec2 = ProductSpecification::new("Spec2").with_charateristic(spec_char2);
+
+        spec1.link_characteristic(&spec2, "Char2");
+
+        assert!(spec1.product_spec_characteristic.is_some());
+        let chars = spec1.product_spec_characteristic.unwrap();
+        assert_eq!(chars.len(), 2);
+        let linked_char = chars.iter().find(|c| c.name == "Char2".to_string());
+        assert!(linked_char.is_some());
+        let rels = &linked_char.unwrap().product_spec_char_relationship;
+        assert!(rels.is_some());
+        let rels = rels.as_ref().unwrap();
+        assert_eq!(rels.len(), 1);
+        let rel = &rels[0];
+        assert_eq!(rel.name, "Char2".to_string());
+        assert_eq!(rel.relationship_type, "dependsOn".to_string());
+        assert_eq!(rel.id, spec2.get_id());
+        assert_eq!(rel.href, spec2.get_href());
+    }
 }

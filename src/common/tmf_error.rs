@@ -1,7 +1,7 @@
 //! Error Module for TMF
 
-use thiserror::Error;
 use regex::Error as RegexError;
+use thiserror::Error;
 
 /// TMF Error Enum
 /// This enum defines various error types that can occur in the TMF library.
