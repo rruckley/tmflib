@@ -496,6 +496,24 @@ impl ProductSpecificationCharacteristicValueUse {
     }
 }
 
+/// Product Specification Characteristic Relationship
+#[derive(Clone, Debug, Deserialize, Serialize, HasValidity)]
+pub struct ProductSpecificationCharacteristicRelationship {
+    /// Id
+    pub id: String,
+    /// HREF where object is located
+    pub href: String,
+    /// Sequence number of the related characteristic
+    pub char_spec_seq: u32,
+    /// Name of the related characteristic
+    pub name: String,
+    /// Type of relationship
+    pub relationship_type: String,
+    /// Validity period for this relationship
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub valid_for: Option<TimePeriod>,
+}
+
 #[cfg(test)]
 mod test {
 
