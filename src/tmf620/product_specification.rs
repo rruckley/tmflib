@@ -49,6 +49,9 @@ pub struct ProductSpecificationCharacteristic {
     /// Validity period for this characteristic
     #[serde(skip_serializing_if = "Option::is_none")]
     pub valid_for: Option<TimePeriod>,
+    /// Set of characteristic relationships
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub product_spec_char_relationship : Option<Vec<ProductSpecificationCharacteristicRelationship>>,
 }
 
 impl ProductSpecificationCharacteristic {
@@ -215,6 +218,33 @@ impl ProductSpecification {
             Some(chars) => chars.iter().find(|c| c.name == name),
             None => None,
         }   
+    }
+
+    /// Link remote characteristic specification
+    pub fn link_characteristic(
+        &mut self,
+        remote: &ProductSpecification,
+        name: impl Into<String>,
+    ) {
+        // Not implemented
+        let name : String = name.into();
+        let char_opt = remote.characteristic_by_name(&name);
+
+        if let Some(char_spec) = char_opt {
+            let mut new_char = char_spec.clone();   
+            let char_rel = ProductSpecificationCharacteristicRelationship {
+                id: remote.get_id(),
+                href: remote.get_href(),
+                char_spec_seq: 0,
+                name: name.clone(),
+                relationship_type: String::from("dependsOn"),
+                valid_for: None,
+            };
+            // Insert relationship into placeholder characteristic
+            vec_insert(&mut new_char.product_spec_char_relationship,char_rel);
+            new_char.valid_for = None;
+            vec_insert(&mut self.product_spec_characteristic,new_char);
+        }
     }
 }
 
@@ -468,8 +498,9 @@ impl ProductSpecificationCharacteristicValue {
 #[derive(Clone, Debug, Deserialize, Serialize, HasValidity)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductSpecificationCharacteristicValueUse {
+    /// Description of Characteristic Value Use
     #[serde(skip_serializing_if = "Option::is_none")]
-    description: Option<String>,
+    pub description: Option<String>,
     max_cardinality: u16,
     min_cardinality: u16,
     name: String,
@@ -718,4 +749,31 @@ mod test {
         let c3 = spec.characteristic_by_name("Char3");
         assert!(c3.is_none());  
     }
+
+    #[test]
+    fn test_link_characteristic() {
+        let spec_char1 = ProductSpecificationCharacteristic::new("Char1").cardinality(1, 2);
+        let mut spec1 = ProductSpecification::new("Spec1")
+            .with_charateristic(spec_char1);
+        let spec_char2 = ProductSpecificationCharacteristic::new("Char2").cardinality(3, 4);
+        let spec2 = ProductSpecification::new("Spec2")
+            .with_charateristic(spec_char2);
+
+        spec1.link_characteristic(&spec2,"Char2");
+
+        assert!(spec1.product_spec_characteristic.is_some());
+        let chars = spec1.product_spec_characteristic.unwrap();
+        assert_eq!(chars.len(),2);
+        let linked_char = chars.iter().find(|c| c.name == "Char2".to_string());
+        assert!(linked_char.is_some());
+        let rels = &linked_char.unwrap().product_spec_char_relationship;
+        assert!(rels.is_some());
+        let rels = rels.as_ref().unwrap();
+        assert_eq!(rels.len(),1);
+        let rel = &rels[0];
+        assert_eq!(rel.name,"Char2".to_string());
+        assert_eq!(rel.relationship_type,"dependsOn".to_string());
+        assert_eq!(rel.id,spec2.get_id());
+        assert_eq!(rel.href,spec2.get_href());
+    }   
 }
