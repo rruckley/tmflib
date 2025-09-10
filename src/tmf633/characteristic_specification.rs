@@ -1,7 +1,7 @@
 //! Characteristic Specification Module
 
-use serde::{Deserialize, Serialize};
 use regex::Regex;
+use serde::{Deserialize, Serialize};
 
 use crate::common::tmf_error::TMFError;
 use crate::{serde_value_to_type, Cardinality, TimePeriod};
@@ -58,7 +58,7 @@ impl CharacteristicValueSpecification {
     /// let cvs = CharacteristicValueSpecification::new()
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap();
     /// ```
-    pub fn regex(mut self, regex: String) -> Result<CharacteristicValueSpecification,TMFError> {
+    pub fn regex(mut self, regex: String) -> Result<CharacteristicValueSpecification, TMFError> {
         let _re = Regex::new(&regex)?;
         self.regex = Some(regex);
         Ok(self)
@@ -73,19 +73,25 @@ impl CharacteristicValueSpecification {
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
     ///     .value("100Mb".into()).unwrap();
     /// ```
-    pub fn value(mut self, value: serde_json::Value) -> Result<CharacteristicValueSpecification,TMFError> {
+    pub fn value(
+        mut self,
+        value: serde_json::Value,
+    ) -> Result<CharacteristicValueSpecification, TMFError> {
         self.value_type = Some(serde_value_to_type(&value).to_string());
         match self.regex {
             Some(ref re_str) => {
                 let re = Regex::new(re_str)?;
                 let val_str = value.to_string();
                 if !re.is_match(&val_str) {
-                    return Err(TMFError::GenericError(format!("Value {} does not match regex {}",val_str,re_str)));
+                    return Err(TMFError::GenericError(format!(
+                        "Value {} does not match regex {}",
+                        val_str, re_str
+                    )));
                 }
                 self.value = Some(value);
-            },
+            }
             // If no regex, then just set the value
-            None => self.value = Some(value)
+            None => self.value = Some(value),
         }
         Ok(self)
     }
