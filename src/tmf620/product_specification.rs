@@ -92,6 +92,12 @@ impl ProductSpecificationCharacteristic {
         self
     }
 
+    /// Set validity period
+    pub fn validity(mut self, validity: Option<TimePeriod>) -> ProductSpecificationCharacteristic {
+        self.valid_for = validity;
+        self
+    }
+
     /// Set MIN / MAX cardindiality
     /// Will ignore change if min > max.
     /// # Examples
@@ -223,7 +229,6 @@ impl ProductSpecification {
 
     /// Link remote characteristic specification
     pub fn link_characteristic(&mut self, remote: &ProductSpecification, name: impl Into<String>) {
-        // Not implemented
         let name: String = name.into();
         let char_opt = remote.characteristic_by_name(&name);
 
@@ -235,11 +240,10 @@ impl ProductSpecification {
                 char_spec_seq: 0,
                 name: name.clone(),
                 relationship_type: String::from("dependsOn"),
-                valid_for: None,
+                valid_for: new_char.valid_for.clone(),
             };
             // Insert relationship into placeholder characteristic
             vec_insert(&mut new_char.product_spec_char_relationship, char_rel);
-            new_char.valid_for = None;
             vec_insert(&mut self.product_spec_characteristic, new_char);
         }
     }
