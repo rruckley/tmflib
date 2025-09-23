@@ -94,6 +94,12 @@ impl TimePeriod {
     }
 
     /// Calculate period `days` into the future
+    /// # Example
+    /// ```
+    /// use tmflib::TimePeriod;
+    /// let period = TimePeriod::period_days(10);
+    /// assert!(period.end_date_time.is_some());
+    /// ```
     pub fn period_days(days: u64) -> TimePeriod {
         let now = Utc::now() + Days::new(days);
         let time =
@@ -509,6 +515,8 @@ pub mod tmf672;
 pub mod tmf673;
 #[cfg(feature = "tmf674")]
 pub mod tmf674;
+#[cfg(feature = "tmf676")]
+pub mod tmf676;
 #[cfg(feature = "tmf678")]
 pub mod tmf678;
 #[cfg(feature = "tmf679")]
