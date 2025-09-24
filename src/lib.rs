@@ -49,7 +49,7 @@
 // #![warn(rustdoc::missing_doc_code_examples)]
 #![warn(rustdoc::private_doc_tests)]
 
-use crate::common::note::Note;
+use crate::common::{note::Note, related_entity::EntityRef};
 use base32::encode;
 use chrono::{Days, Utc};
 use common::{attachment::AttachmentRefOrValue, related_party::RelatedParty, tmf_error::TMFError};
@@ -383,6 +383,15 @@ pub trait HasName: HasId {
     fn set_name(&mut self, name: impl Into<String>);
     /// Builder pattern to set name on create, usually coverered by new()
     fn name(self, name: impl Into<String>) -> Self;
+
+    /// Return a EntityRef for this object
+    fn as_entity(&self) -> EntityRef {
+        EntityRef {
+            id : self.get_id(),
+            href: self.get_href(),
+            name: self.get_name(),
+        }
+    }
 }
 
 /// Trait for classes with notes
