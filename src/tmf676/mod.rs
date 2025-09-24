@@ -19,5 +19,21 @@ const MOD_PATH: &str = "paymentManagement/v4";
 #[cfg(feature = "build-V5")]
 const MOD_PATH: &str = "paymentManagement/v5";
 
+// For payment method
+const CLASS_PATH: &str = "method";
+
 pub mod payment;
 pub mod refund;
+
+use crate::{HasDescription, HasId, HasName, Uri};
+use serde::{Deserialize, Serialize};
+use tmflib_derive::{HasDescription, HasId, HasName};
+
+/// Payment Method
+#[derive(Clone, Debug, Default, HasId, HasName, HasDescription, Serialize, Deserialize)]
+pub struct PaymentMethodRefOrValue {
+    id: Option<String>,
+    href: Option<Uri>,
+    name: Option<String>,
+    description: Option<String>,
+}
