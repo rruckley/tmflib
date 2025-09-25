@@ -18,11 +18,37 @@ const CLASS_PATH: &str = "payment";
 /// Reference to another TMF schema
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct PaymentItem {
-    amount : Money,
-    id  : String,
-    tax_amount: Money,
-    total_amount: Money,
+    amount : Option<Money>,
+    id  : Option<String>,
+    tax_amount: Option<Money>,
+    total_amount: Option<Money>,
     item: EntityRef,
+}
+
+impl PaymentItem {
+    /// Create new Payment Item
+    pub fn new(entity : impl HasName) -> PaymentItem {
+        PaymentItem { 
+            item: entity.as_entity(),
+            ..Default::default()
+        }
+    }
+
+        /// Set the amount for this transaction
+    pub fn amount(mut self, amount : f32) -> PaymentItem {
+        self.amount = Some(Money::from(amount));
+        self
+    }
+
+    /// Set the tax amount for this payment
+    pub fn tax(mut self, tax : f32) -> PaymentItem {
+        let tax = Money::from(tax);
+        self.tax_amount = Some(tax.clone());
+        if let Some(amount) = self.amount.clone() {
+            self.total_amount = Some(amount + tax);
+        };
+        self
+    }
 }
 
 /// A Payment
@@ -71,7 +97,7 @@ impl Payment {
         Payment {
             account,
             payment_method: method,
-            ..Default::default()
+            ..Payment::create()
         }
     }
 
@@ -84,6 +110,22 @@ impl Payment {
     /// Add paymet item to the payment
     pub fn item(mut self, item: PaymentItem) -> Payment {
         vec_insert(&mut self.payment_item,item);
+        self
+    }
+
+    /// Set the amount for this transaction
+    pub fn amount(mut self, amount : f32) -> Payment {
+        self.amount = Some(Money::from(amount));
+        self
+    }
+
+    /// Set the tax amount for this payment
+    pub fn tax(mut self, tax : f32) -> Payment {
+        let tax = Money::from(tax);
+        self.tax_amount = Some(tax.clone());
+        if let Some(amount) = self.amount.clone() {
+            self.total_amount = Some(amount + tax);
+        };
         self
     }
 }
