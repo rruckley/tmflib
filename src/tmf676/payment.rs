@@ -129,3 +129,68 @@ impl Payment {
         self
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::tmf632::individual_v4::Individual;
+
+    #[test]
+    fn test_payment_new() {
+                let method = PaymentMethodRefOrValue::default()
+            .name("Credit Card");
+        let account = AccountRef::default();
+        let payment = Payment::new(method,account); 
+        assert!(payment.payment_item.is_none());
+        assert!(payment.id.is_some());
+        assert!(payment.href.is_some());
+    }
+
+    #[test]
+    fn test_payment_payer() {
+        let method = PaymentMethodRefOrValue::default()
+            .name("Credit Card");
+        let account = AccountRef::default();
+        let payer = Individual::new("John Quinton Smith");
+        let payment = Payment::new(method,account)
+            .payer(&payer);
+
+        assert!(payment.payer.is_some());      
+    }
+
+    #[test]
+    fn test_payment_item() {
+        use crate::tmf632::individual_v4::Individual;
+        use crate::tmf637::v4::product::Product;
+        let method = PaymentMethodRefOrValue::default()
+            .name("Credit Card");
+        let account = AccountRef::default();
+        let payer = Individual::new("John Quinton Smith"); 
+        let product1 = Product::new("Mobile Phone");
+        let item1 = PaymentItem::new(product1)
+            .amount(100.0);  
+        let payment = Payment::new(method,account)
+            .payer(&payer)
+            .item(item1);
+    
+        assert!(payment.payment_item.is_some());
+        assert_eq!(payment.payment_item.unwrap().len(),1);
+    }
+
+    #[test]
+    fn test_payment_amount() {
+        let method = PaymentMethodRefOrValue::default()
+            .name("Credit Card");
+        let account = AccountRef::default();
+        let payment = Payment::new(method,account)
+            .amount(100.0)
+            .tax(10.0);
+
+        assert!(payment.amount.is_some());
+        assert!(payment.tax_amount.is_some());
+        assert!(payment.total_amount.is_some());
+        assert_eq!(payment.amount.unwrap(),Money::from(100.0));
+        assert_eq!(payment.tax_amount.unwrap(),Money::from(10.0));
+        assert_eq!(payment.total_amount.unwrap(),Money::from(110.0));
+    }
+}
