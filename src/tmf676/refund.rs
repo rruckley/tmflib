@@ -71,13 +71,13 @@ impl Refund {
     }
 
     /// Set the amount for this refund
-    pub fn amount(mut self, amount : f32) -> Refund {
+    pub fn amount(mut self, amount: f32) -> Refund {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount of this refund
-    pub fn tax(mut self, tax : f32) -> Refund {
+    pub fn tax(mut self, tax: f32) -> Refund {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
         if let Some(amount) = self.amount.clone() {
@@ -92,8 +92,7 @@ mod test {
     use super::*;
     #[test]
     fn test_refund_new() {
-        let method = PaymentMethodRefOrValue::default()
-            .name("Credit Card");
+        let method = PaymentMethodRefOrValue::default().name("Credit Card");
         let account = AccountRef::default();
         let refund = Refund::new(method, account);
 
@@ -105,15 +104,13 @@ mod test {
     fn test_refund_requestor() {
         use crate::tmf632::individual_v4::Individual;
 
-        let method = PaymentMethodRefOrValue::default()
-            .name("Credit Card");
+        let method = PaymentMethodRefOrValue::default().name("Credit Card");
         let account = AccountRef::default();
         let party = Individual::new("John Quinton Smith");
-        let refund = Refund::new(method, account)
-            .requestor(&party);
+        let refund = Refund::new(method, account).requestor(&party);
 
         assert!(refund.id.is_some());
-        assert!(refund.href.is_some());        
+        assert!(refund.href.is_some());
         assert!(refund.requestor.is_some());
     }
 
@@ -121,8 +118,7 @@ mod test {
     fn test_refund_amount() {
         use crate::tmf632::individual_v4::Individual;
 
-        let method = PaymentMethodRefOrValue::default()
-            .name("Credit Card");
+        let method = PaymentMethodRefOrValue::default().name("Credit Card");
         let account = AccountRef::default();
         let party = Individual::new("John Quinton Smith");
         let refund = Refund::new(method, account)
@@ -134,7 +130,7 @@ mod test {
         assert!(refund.tax_amount.is_some());
         assert!(refund.total_amount.is_some());
 
-        assert_eq!(refund.amount.unwrap(),Money::from(100.0));
-        assert_eq!(refund.total_amount.unwrap(),Money::from(110.0));
+        assert_eq!(refund.amount.unwrap(), Money::from(100.0));
+        assert_eq!(refund.total_amount.unwrap(), Money::from(110.0));
     }
 }

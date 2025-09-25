@@ -6,7 +6,7 @@ use crate::common::related_entity::EntityRef;
 use crate::common::related_party::RelatedParty;
 use crate::tmf666::AccountRef;
 use crate::tmf676::PaymentMethodRefOrValue;
-use crate::{DateTime, HasDescription, HasId, HasName, Uri,vec_insert};
+use crate::{vec_insert, DateTime, HasDescription, HasId, HasName, Uri};
 use serde::{Deserialize, Serialize};
 
 use tmflib_derive::{HasDescription, HasId, HasName};
@@ -18,8 +18,8 @@ const CLASS_PATH: &str = "payment";
 /// Reference to another TMF schema
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct PaymentItem {
-    amount : Option<Money>,
-    id  : Option<String>,
+    amount: Option<Money>,
+    id: Option<String>,
     tax_amount: Option<Money>,
     total_amount: Option<Money>,
     item: EntityRef,
@@ -27,21 +27,21 @@ pub struct PaymentItem {
 
 impl PaymentItem {
     /// Create new Payment Item
-    pub fn new(entity : impl HasName) -> PaymentItem {
-        PaymentItem { 
+    pub fn new(entity: impl HasName) -> PaymentItem {
+        PaymentItem {
             item: entity.as_entity(),
             ..Default::default()
         }
     }
 
-        /// Set the amount for this transaction
-    pub fn amount(mut self, amount : f32) -> PaymentItem {
+    /// Set the amount for this transaction
+    pub fn amount(mut self, amount: f32) -> PaymentItem {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount for this payment
-    pub fn tax(mut self, tax : f32) -> PaymentItem {
+    pub fn tax(mut self, tax: f32) -> PaymentItem {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
         if let Some(amount) = self.amount.clone() {
@@ -85,7 +85,7 @@ pub struct Payment {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     // Referenced Objects
-    payer : Option<RelatedParty>,
+    payer: Option<RelatedParty>,
     payment_method: PaymentMethodRefOrValue,
     account: AccountRef,
     payment_item: Option<Vec<PaymentItem>>,
@@ -93,7 +93,7 @@ pub struct Payment {
 
 impl Payment {
     /// Create a new Payment from a payment method and account
-    pub fn new(method: PaymentMethodRefOrValue, account : AccountRef) -> Payment {
+    pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Payment {
         Payment {
             account,
             payment_method: method,
@@ -102,25 +102,25 @@ impl Payment {
     }
 
     /// Set the payer
-    pub fn payer(mut self, party : impl Into<RelatedParty>) -> Payment {
+    pub fn payer(mut self, party: impl Into<RelatedParty>) -> Payment {
         self.payer = Some(party.into());
         self
     }
 
     /// Add paymet item to the payment
     pub fn item(mut self, item: PaymentItem) -> Payment {
-        vec_insert(&mut self.payment_item,item);
+        vec_insert(&mut self.payment_item, item);
         self
     }
 
     /// Set the amount for this transaction
-    pub fn amount(mut self, amount : f32) -> Payment {
+    pub fn amount(mut self, amount: f32) -> Payment {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount for this payment
-    pub fn tax(mut self, tax : f32) -> Payment {
+    pub fn tax(mut self, tax: f32) -> Payment {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
         if let Some(amount) = self.amount.clone() {
@@ -137,10 +137,9 @@ mod test {
 
     #[test]
     fn test_payment_new() {
-                let method = PaymentMethodRefOrValue::default()
-            .name("Credit Card");
+        let method = PaymentMethodRefOrValue::default().name("Credit Card");
         let account = AccountRef::default();
-        let payment = Payment::new(method,account); 
+        let payment = Payment::new(method, account);
         assert!(payment.payment_item.is_none());
         assert!(payment.id.is_some());
         assert!(payment.href.is_some());
@@ -148,49 +147,40 @@ mod test {
 
     #[test]
     fn test_payment_payer() {
-        let method = PaymentMethodRefOrValue::default()
-            .name("Credit Card");
+        let method = PaymentMethodRefOrValue::default().name("Credit Card");
         let account = AccountRef::default();
         let payer = Individual::new("John Quinton Smith");
-        let payment = Payment::new(method,account)
-            .payer(&payer);
+        let payment = Payment::new(method, account).payer(&payer);
 
-        assert!(payment.payer.is_some());      
+        assert!(payment.payer.is_some());
     }
 
     #[test]
     fn test_payment_item() {
         use crate::tmf632::individual_v4::Individual;
         use crate::tmf637::v4::product::Product;
-        let method = PaymentMethodRefOrValue::default()
-            .name("Credit Card");
+        let method = PaymentMethodRefOrValue::default().name("Credit Card");
         let account = AccountRef::default();
-        let payer = Individual::new("John Quinton Smith"); 
+        let payer = Individual::new("John Quinton Smith");
         let product1 = Product::new("Mobile Phone");
-        let item1 = PaymentItem::new(product1)
-            .amount(100.0);  
-        let payment = Payment::new(method,account)
-            .payer(&payer)
-            .item(item1);
-    
+        let item1 = PaymentItem::new(product1).amount(100.0).tax(10.0);
+        let payment = Payment::new(method, account).payer(&payer).item(item1);
+
         assert!(payment.payment_item.is_some());
-        assert_eq!(payment.payment_item.unwrap().len(),1);
+        assert_eq!(payment.payment_item.unwrap().len(), 1);
     }
 
     #[test]
     fn test_payment_amount() {
-        let method = PaymentMethodRefOrValue::default()
-            .name("Credit Card");
+        let method = PaymentMethodRefOrValue::default().name("Credit Card");
         let account = AccountRef::default();
-        let payment = Payment::new(method,account)
-            .amount(100.0)
-            .tax(10.0);
+        let payment = Payment::new(method, account).amount(100.0).tax(10.0);
 
         assert!(payment.amount.is_some());
         assert!(payment.tax_amount.is_some());
         assert!(payment.total_amount.is_some());
-        assert_eq!(payment.amount.unwrap(),Money::from(100.0));
-        assert_eq!(payment.tax_amount.unwrap(),Money::from(10.0));
-        assert_eq!(payment.total_amount.unwrap(),Money::from(110.0));
+        assert_eq!(payment.amount.unwrap(), Money::from(100.0));
+        assert_eq!(payment.tax_amount.unwrap(), Money::from(10.0));
+        assert_eq!(payment.total_amount.unwrap(), Money::from(110.0));
     }
 }
