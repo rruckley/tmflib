@@ -387,7 +387,7 @@ pub trait HasName: HasId {
     /// Return a EntityRef for this object
     fn as_entity(&self) -> EntityRef {
         EntityRef {
-            id : self.get_id(),
+            id: self.get_id(),
             href: self.get_href(),
             name: self.get_name(),
         }
