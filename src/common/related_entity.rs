@@ -11,9 +11,9 @@ pub struct EntityRef {
     /// Entity HREF
     pub href: String,
     /// Entity Id
-    pub id : String,
+    pub id: String,
     /// Entity Name
-    pub name : String,
+    pub name: String,
 }
 
 /// Reference to another TMF schema
