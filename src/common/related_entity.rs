@@ -7,6 +7,17 @@ use crate::Uri;
 
 /// Reference to another TMF schema
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
+pub struct EntityRef {
+    /// Entity HREF
+    pub href: String,
+    /// Entity Id
+    pub id: String,
+    /// Entity Name
+    pub name: String,
+}
+
+/// Reference to another TMF schema
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct RelatedEntity {
     /// Referenced Name
     pub name: String,
