@@ -3,17 +3,54 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasNote, HasRelatedParty, TMFError, Uri, common::{attachment::AttachmentRefOrValue, note::Note, related_party::RelatedParty},vec_insert
+    common::{attachment::AttachmentRefOrValue, note::Note, related_party::RelatedParty},
+    vec_insert, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasNote,
+    HasRelatedParty, TMFError, Uri,
 };
 
-use tmflib_derive::{HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasNote, HasRelatedParty};
+use tmflib_derive::{
+    HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasNote, HasRelatedParty,
+};
 
 const CLASS_PATH: &str = "ActualCost";
 use super::MOD_PATH;
 
+/// Actual Cost Item State Type
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
+pub enum ActualCostItemStateType {
+    /// Cost Incurred
+    Incurred,
+    /// Cost Disputed
+    Disputed,
+    /// Cost Verified
+    Verified,
+    /// Cost Allocated
+    #[default]
+    Allocated,
+    /// Cost Cancelled
+    Cancelled,
+}
+
+/// Cost Item Type
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
+pub enum CostItemType {
+    /// Once of Charges
+    OneTime,
+    /// Ongoing Recurring Charges
+    #[default]
+    Recurring,
+    /// Consumption Based Charges
+    ConsumptionBased,
+}
+
 /// Actual Cost Item
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
-pub struct ActualCostItem {}
+pub struct ActualCostItem {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub description: Option<String>,
+    pub cost_item_type: Option<CostItemType>,
+}
 
 /// Cost Relationship
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
@@ -72,13 +109,12 @@ pub struct ActualCost {
 
 impl ActualCost {
     /// Create a new Actual Cost
-    pub fn new(name : impl Into<String>) -> Self {
-        Self::create_with_time()
-            .name(name.into())
+    pub fn new(name: impl Into<String>) -> Self {
+        Self::create_with_time().name(name.into())
     }
 
     /// Add an Actual Cost Item
-    /// 
+    ///
     /// # Arguments
     /// * `item` - The Actual Cost Item to add
     /// # Returns
@@ -88,9 +124,9 @@ impl ActualCost {
     /// use tmflib::tmf764::actual_cost::{ActualCost, ActualCostItem};
     /// let cost = ActualCost::new("Example Cost")
     ///     .item(ActualCostItem{});
-    /// ``` 
+    /// ```
     pub fn item(mut self, item: ActualCostItem) -> Self {
         vec_insert(&mut self.cost_item, item);
         self
-    }   
+    }
 }
