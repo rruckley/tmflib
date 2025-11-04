@@ -3,7 +3,7 @@
 fn main() {
     #[cfg(feature = "tmf764")]
     {
-        use tmflib::tmf764::actual_cost::{ActualCost,ActualCostItem};
+        use tmflib::tmf764::actual_cost::{ActualCost, ActualCostItem};
         use tmflib::HasDescription;
 
         let item = ActualCostItem::default();
