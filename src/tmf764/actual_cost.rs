@@ -46,9 +46,17 @@ pub enum CostItemType {
 /// Actual Cost Item
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct ActualCostItem {
+    /// Unique identifier
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
+    /// Name
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    /// Description
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+    /// Quantity
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub cost_item_type: Option<CostItemType>,
 }
 
