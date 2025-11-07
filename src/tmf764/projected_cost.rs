@@ -18,7 +18,7 @@ const CLASS_PATH: &str = "ProjectedCost";
 /// Projected Cost Item
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct ProjectedCostItem {
-        /// Unique identifier
+    /// Unique identifier
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// Name
@@ -59,7 +59,7 @@ pub struct ProjectedCost {
     /// Cost Items
     pub cost_item: Option<Vec<ProjectedCostItem>>,
 
-        /// Notes
+    /// Notes
     #[serde(skip_serializing_if = "Option::is_none")]
     pub note: Option<Vec<Note>>,
 
@@ -108,7 +108,7 @@ impl From<ProjectedCost> for super::CostRef {
             base_type: None,
             referred_type: None,
             schema_location: None,
-            r#type: Some(String::from("ActualCost")),
+            r#type: Some(String::from("ProjectedCost")),
         }
     }
-}  
+}

@@ -151,4 +151,4 @@ impl From<ActualCost> for super::CostRef {
             r#type: Some(String::from("ActualCost")),
         }
     }
-}   
+}
