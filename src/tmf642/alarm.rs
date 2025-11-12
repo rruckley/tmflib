@@ -2,12 +2,28 @@ use serde::{Serialize, Deserialize};
 use super::{
     AlarmRef, AlarmType, AlarmedObjectRef, Comment, CrossedThresholdInformation, Entity,
     PerceivedSeverity, RelatedPlace, ServiceRef,
+    MOD_PATH,
 };
-#[derive(Debug, Clone, Serialize, Deserialize)]
+use crate::{
+    DateTime,
+    HasId,
+    Uri,
+};
+
+const CLASS_PATH : &str = "alarm";
+
+use tmflib_derive::HasId;
+
+///Alarm defines an alarm for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+#[derive(Default,Debug, Clone, Serialize, Deserialize, HasId)]
 pub struct Alarm {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
+    /// Unique identifier of the alarm
+    pub id : Option<String>,
+    /// Hyperlink to the alarm
+    pub href : Option<Uri>,
     ///Provides the Acknowledgement State of the alarm (unacknowledged, acknowledged).
     #[serde(rename = "ackState")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -27,11 +43,11 @@ pub struct Alarm {
     ///Indicates the last date and time when the alarm is changed on the alarm-owning system. Any change to the alarm whether coming from the alarmed resource, or triggered by a change from the client is changing this time.
     #[serde(rename = "alarmChangedTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub alarm_changed_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub alarm_changed_time: Option<DateTime>,
     ///Indicates the time (as a date + time) at which the alarm is cleared at the source.
     #[serde(rename = "alarmClearedTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub alarm_cleared_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub alarm_cleared_time: Option<DateTime>,
     ///Contains further information on the alarm.
     #[serde(rename = "alarmDetails")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -43,12 +59,12 @@ pub struct Alarm {
     ///Indicates the time (as a date + time) at which the alarm occurred at its source.
     #[serde(rename = "alarmRaisedTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub alarm_raised_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub alarm_raised_time: Option<DateTime>,
     /**Indicates the time (as a date + time) at which the alarm was reported by the owning OSS. It might be different from the alarmRaisedTime. For instance, if the alarm list is maintained by an EMS, the alarmRaisedtime would be the time the alarm
   was detected by the NE, while the alarmReportingTime would be the time this alarm was stored in the alarm list of the EMS.*/
     #[serde(rename = "alarmReportingTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub alarm_reporting_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub alarm_reporting_time: Option<DateTime>,
     ///Categorizes the alarm (X.733 8.1.1, 3GPP TS 32.111-2 Annex A)
     #[serde(rename = "alarmType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

@@ -21,6 +21,7 @@ pub struct CrossedThresholdInformation {
     #[serde(rename = "observedValue")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub observed_value: Option<String>,
+    /// Indicates a reference to the threshold that has been crossed.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub threshold: Option<ThresholdRef>,
     ///Indicates further information on the threshold crossing alarm.

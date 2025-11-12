@@ -1,3 +1,5 @@
+//! Module for TMF642 - Alarm Management
+
 pub use ack_alarm::*;
 pub use addressable::*;
 pub use alarm::*;
@@ -78,3 +80,5 @@ mod threshold_ref;
 mod threshold_ref_mvo;
 mod un_ack_alarm;
 mod un_group_alarm;
+
+const MOD_PATH : &str = "alarmManagement/v5";

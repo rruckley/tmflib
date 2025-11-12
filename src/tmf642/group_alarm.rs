@@ -1,5 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::{AlarmRefOrValue, Entity};
+use crate::{
+    DateTime,
+};
+
+/// GroupAlarm defines a group alarm for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct GroupAlarm {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -8,7 +13,7 @@ pub struct GroupAlarm {
     ///Time of the correlation
     #[serde(rename = "alarmChangedTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub alarm_changed_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub alarm_changed_time: Option<DateTime>,
     ///Correlated alarms
     #[serde(rename = "correlatedAlarm")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]

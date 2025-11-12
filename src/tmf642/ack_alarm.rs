@@ -1,5 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::{AlarmRefOrValue, Entity};
+use crate::{
+    DateTime,
+};
+
+///Acknowledgement of alarms
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AckAlarm {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -12,7 +17,7 @@ pub struct AckAlarm {
     ///Time of the acknowledgement
     #[serde(rename = "ackTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub ack_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub ack_time: Option<DateTime>,
     ///Name of the acknowledging user
     #[serde(rename = "ackUserId")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

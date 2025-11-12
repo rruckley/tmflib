@@ -1,5 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::Extensible;
+use crate::{
+    DateTime,
+};
+
+/// CommentMvo defines a comment for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CommentMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
@@ -14,7 +19,7 @@ pub struct CommentMvo {
     pub system_id: Option<String>,
     ///Indicates the time commenting the alarm
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub time: Option<chrono::DateTime<chrono::Utc>>,
+    pub time: Option<DateTime>,
     ///Indicates the user commenting the alarm.
     #[serde(rename = "userId")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

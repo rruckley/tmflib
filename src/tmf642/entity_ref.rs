@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{Addressable, Extensible};
+
+/// EntityRef defines a reference to an entity for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityRef {
     ///The actual type of the target instance when needed for disambiguation.

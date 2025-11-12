@@ -1,13 +1,17 @@
 use serde::{Serialize, Deserialize};
 use super::{Extensible, Place};
+
+/// RelatedPlaceFvo defines a related place for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPlace {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
+    /// Reference to the related place
     #[serde(rename = "relatedPlace")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub related_place: Option<Place>,
+    /// Role played by the related place
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<String>,
 }

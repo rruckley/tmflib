@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{AlarmRefOrValue, Comment, Entity};
+
+/// CommentAlarm defines a comment alarm for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CommentAlarm {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -9,6 +11,7 @@ pub struct CommentAlarm {
     #[serde(rename = "alarmPattern")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub alarm_pattern: Vec<AlarmRefOrValue>,
+    ///Comment to be added to the alarm(s)
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub comment: Option<Comment>,
     ///The successfully commented alarms

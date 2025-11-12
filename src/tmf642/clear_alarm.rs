@@ -1,5 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::{AlarmRefOrValue, Entity};
+use crate::{
+    DateTime,
+};
+
+/// ClearAlarm defines a clear alarm operation for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ClearAlarm {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -8,7 +13,7 @@ pub struct ClearAlarm {
     ///Time of the alarm clearing
     #[serde(rename = "alarmClearedTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub alarm_cleared_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub alarm_cleared_time: Option<DateTime>,
     ///Alarm patterns to match target alarms. An alarm will match if all of the sttributes in any of the patterns compare equal to those attributes of the alarm.
     #[serde(rename = "alarmPattern")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]

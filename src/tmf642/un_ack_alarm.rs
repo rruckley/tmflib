@@ -1,5 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::{AlarmRefOrValue, Entity};
+use crate::{
+    DateTime,
+};
+
+/// UnAckAlarm defines an unacknowledge alarm operation task for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct UnAckAlarm {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -12,7 +17,7 @@ pub struct UnAckAlarm {
     ///Time of the unacknowledgement
     #[serde(rename = "ackTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub ack_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub ack_time: Option<DateTime>,
     ///Name of the unacknowledging user
     #[serde(rename = "ackUserId")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
