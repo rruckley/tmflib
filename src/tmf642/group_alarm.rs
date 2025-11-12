@@ -1,7 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{AlarmRefOrValue, Entity};
+use super::{AlarmRefOrValue};
 use crate::{
     DateTime,
+    common::entity::Entity,
 };
 
 /// GroupAlarm defines a group alarm for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

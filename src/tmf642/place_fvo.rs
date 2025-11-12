@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{Entity, ExternalIdentifierFvo};
+use super::{ExternalIdentifierFvo};
+use crate::common::entity::Entity;
 
 ///PlaceFvo defines a place for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,3 +1,6 @@
+//! EntityRef Module, references to an Entity
+//! Defines the base EntityRef struct used across TMForum Open-APIs
+
 use serde::{Serialize, Deserialize};
 use crate::Uri;
 ///Base entity schema for use in TMForum Open-APIs. Property.

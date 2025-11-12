@@ -1,6 +1,6 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    AlarmRef, AlarmType, AlarmedObjectRef, Comment, CrossedThresholdInformation, Entity,
+    AlarmRef, AlarmType, AlarmedObjectRef, Comment, CrossedThresholdInformation,
     PerceivedSeverity, RelatedPlace, ServiceRef,
     MOD_PATH,
 };
@@ -8,6 +8,7 @@ use crate::{
     DateTime,
     HasId,
     Uri,
+    common::entity::Entity,
 };
 
 const CLASS_PATH : &str = "alarm";

@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{AlarmRefOrValue, Comment, Entity};
+use super::{AlarmRefOrValue, Comment};
+use crate::common::entity::Entity;
 
 /// CommentAlarm defines a comment alarm for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{AlarmRefOrValue, Entity};
+use super::{AlarmRefOrValue};
+use crate::common::entity::Entity;
 use crate::{
     DateTime,
 };
