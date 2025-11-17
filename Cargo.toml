@@ -14,6 +14,7 @@ tmf620 = ["tmf633","tmf634","tmf651"]
 tmf621 = []
 # TMF622 Product Order Module
 tmf622 = ["tmf641"]
+tmf628 = []
 # TMF629 Customer Module
 tmf629 = []
 tmf632 = []
@@ -66,6 +67,7 @@ all = [
     "tmf620",
     "tmf621",
     "tmf622",
+    "tmf628",
     "tmf629",
     "tmf632",
     "tmf633",
