@@ -1,3 +1,5 @@
+//! Defines the PerceivedSeverity enum used in Alarm definitions.
+
 use serde::{Serialize, Deserialize};
 /**Lists the possible severities that can be allocated to an Alarm. The values are consistent with ITU-T Recommendation X.733.
 Once an alarm has been cleared, its perceived severity is set to 'cleared' and can no longer be set.*/

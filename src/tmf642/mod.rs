@@ -1,3 +1,16 @@
+// Copyright [2025] [Ryan Ruckley]
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //! Module for TMF642 - Alarm Management
 
 pub use ack_alarm::*;
@@ -40,12 +53,12 @@ pub use un_ack_alarm::*;
 pub use un_group_alarm::*;
 mod ack_alarm;
 mod addressable;
-mod alarm;
+pub mod alarm;
 mod alarm_ref;
 mod alarm_ref_or_value;
-mod alarm_ref_mvo;
-mod alarm_type;
-mod alarmed_object_ref;
+pub mod alarm_ref_mvo;
+pub mod alarm_type;
+pub mod alarmed_object_ref;
 mod alarmed_object_ref_mvo;
 mod characteristic;
 mod characteristic_relationship;
@@ -62,8 +75,8 @@ mod external_identifier_mvo;
 mod group_alarm;
 mod hub;
 mod party_ref_or_party_role_ref;
-mod perceived_severity;
-mod place;
+pub mod perceived_severity;
+pub mod place;
 mod place_fvo;
 mod place_mvo;
 mod related_party_ref_or_party_role_ref;
