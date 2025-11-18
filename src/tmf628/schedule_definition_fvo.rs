@@ -19,7 +19,7 @@ pub struct ScheduleDefinitionFvo {
     ///The date schedule is used to define a schedule that is based on specific dates, such as December 31st 2015, February 28th 2013
     #[serde(rename = "dateScheduleDefintion")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub date_schedule_defintion: Vec<chrono::DateTime<chrono::Utc>>,
+    pub date_schedule_defintion: Vec<crate::DateTime>,
     ///A list of specific dates that should be excluded from the Schedule Definition.
     #[serde(rename = "excludedDate")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
