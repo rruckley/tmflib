@@ -15,7 +15,7 @@ pub struct ManagementJob {
     ///The measurement job creation time.
     #[serde(rename = "creationTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub creation_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub creation_time: Option<crate::DateTime>,
     #[serde(rename = "dataAccessEndpoint")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data_access_endpoint: Vec<DataAccessEndpoint>,
@@ -37,7 +37,7 @@ pub struct ManagementJob {
     ///The last time that a measurement job was modified.
     #[serde(rename = "lastModifiedTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub last_modified_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub last_modified_time: Option<crate::DateTime>,
     #[serde(rename = "scheduleDefinition")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub schedule_definition: Vec<ScheduleDefinition>,

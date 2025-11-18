@@ -1,4 +1,5 @@
 use serde::{Serialize, Deserialize};
+use crate::DateTime;
 use super::ExtensibleFvo;
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DayOfMonthRecurrenceFvo {
@@ -6,7 +7,7 @@ pub struct DayOfMonthRecurrenceFvo {
     #[serde(flatten)]
     pub extensible_fvo: ExtensibleFvo,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub dates: Option<chrono::DateTime<chrono::Utc>>,
+    pub dates: Option<DateTime>,
 }
 impl std::fmt::Display for DayOfMonthRecurrenceFvo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {

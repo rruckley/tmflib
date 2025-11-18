@@ -10,7 +10,7 @@ pub struct NoteFvo {
     pub author: Option<String>,
     ///Date of the note
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub date: Option<chrono::DateTime<chrono::Utc>>,
+    pub date: Option<crate::DateTime>,
     ///Text of the note
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,

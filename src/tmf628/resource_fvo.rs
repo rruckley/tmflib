@@ -30,7 +30,7 @@ pub struct ResourceFvo {
     ///A date time( DateTime). The date till the resource is operating
     #[serde(rename = "endOperatingDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub end_operating_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub end_operating_date: Option<crate::DateTime>,
     ///An identification of this resource that is owned by or originates in a software system different from the current system. The structure identifies the system itself, the nature of the resource within the system and the unique ID of the resource within the system. It is anticipated that multiple external IDs can be held for a single resource, e.g. if the resource passed through multiple systems on the way to the current system.
     #[serde(rename = "externalIdentifier")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
