@@ -1,6 +1,9 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    CollectionType, Entity, IndicatorType, PerformanceIndicatorSpecRelationship,
+    CollectionType, IndicatorType, PerformanceIndicatorSpecRelationship,
+};
+use crate::{
+    common::entity::Entity,
     TimePeriod,
 };
 #[derive(Debug, Clone, Serialize, Deserialize)]

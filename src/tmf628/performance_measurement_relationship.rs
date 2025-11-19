@@ -1,5 +1,9 @@
 use serde::{Serialize, Deserialize};
-use super::{Entity, PerformanceMeasurementRefOrValue, TimePeriod};
+use super::{PerformanceMeasurementRefOrValue};
+use crate::{
+    common::entity::Entity,
+    TimePeriod,
+};
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PerformanceMeasurementRelationship {
     ///Base entity schema for use in TMForum Open-APIs. Property.

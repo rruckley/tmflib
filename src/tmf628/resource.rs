@@ -1,10 +1,14 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    AttachmentRef, Characteristic, Entity, ExternalIdentifier, Feature, IntentRef, Note,
+    AttachmentRef, Characteristic, ExternalIdentifier, Feature, IntentRef, Note,
     RelatedPartyRefOrPartyRoleRef, RelatedPlaceRef, RelatedResourceOrderItem,
     ResourceAdministrativeStateType, ResourceOperationalStateType, ResourceRefOrValue,
     ResourceRelationship, ResourceSpecificationRef, ResourceStatusType,
-    ResourceUsageStateType, TimePeriod,
+    ResourceUsageStateType,
+};
+use crate::{
+    common::entity::Entity,
+    TimePeriod,
 };
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Resource {
@@ -76,7 +80,7 @@ pub struct Resource {
     ///A date time( DateTime). The date from which the resource is operating
     #[serde(rename = "startOperatingDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub start_operating_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub start_operating_date: Option<crate::DateTime>,
     ///A list of supporting resources (SupportingResource [*]). A collection of resources that support this resource (bundling, link ResourceSpecification)
     #[serde(rename = "supportingResource")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]

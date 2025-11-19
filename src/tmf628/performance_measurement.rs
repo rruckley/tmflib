@@ -1,6 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    Entity, MeasurementCollectionJobRef, PerformanceMeasurementRelationship, TimePeriod,
+    MeasurementCollectionJobRef, PerformanceMeasurementRelationship,
+};
+use crate::{
+    common::entity::Entity,
+    TimePeriod,
 };
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PerformanceMeasurement {

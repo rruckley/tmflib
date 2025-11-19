@@ -1,10 +1,14 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    AttachmentRefFvo, CharacteristicFvo, Entity, ExternalIdentifierFvo, FeatureFvo,
+    AttachmentRefFvo, CharacteristicFvo, ExternalIdentifierFvo, FeatureFvo,
     IntentRefFvo, NoteFvo, RelatedPartyRefOrPartyRoleRefFvo, RelatedPlaceRefFvo,
     RelatedResourceOrderItemFvo, ResourceAdministrativeStateType,
     ResourceOperationalStateType, ResourceRefOrValueFvo, ResourceRelationshipFvo,
-    ResourceSpecificationRefFvo, ResourceStatusType, ResourceUsageStateType, TimePeriod,
+    ResourceSpecificationRefFvo, ResourceStatusType, ResourceUsageStateType,
+};
+use crate::{
+    common::entity::Entity,
+    TimePeriod,
 };
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResourceFvo {
