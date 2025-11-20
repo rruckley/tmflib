@@ -14,6 +14,7 @@ pub struct DataAccessEndpointFvo {
     ///URI for using the data access API
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub uri: Option<String>,
+    ///Query filter parameters for the data access API
     #[serde(rename = "uriQueryFilter")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub uri_query_filter: Option<DataFilterMapFvo>,

@@ -10,6 +10,8 @@ use crate::{
     common::entity::Entity,
     TimePeriod,
 };
+
+///Resource
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Resource {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -23,6 +25,7 @@ pub struct Resource {
     #[serde(rename = "administrativeState")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub administrative_state: Option<ResourceAdministrativeStateType>,
+    ///A list of attachments associated with the resource
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub attachment: Vec<AttachmentRef>,
     ///Category of the concrete resource. e.g Gold, Silver for MSISDN concrete resource
@@ -45,14 +48,17 @@ pub struct Resource {
     ///the name of the resource
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    ///A list of notes associated with the resource
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub note: Vec<Note>,
     ///ResourceOperationalStateType enumerations; values defined by ITU X.731: 'disable': The resource is totally inoperable and unable to provide service to the user(s); 'enable': The resource is partially or fully operable and available for use.
     #[serde(rename = "operationalState")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub operational_state: Option<ResourceOperationalStateType>,
+    ///A list of places associated with the resource
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub place: Vec<RelatedPlaceRef>,
+    ///A list of parties or party roles associated with the resource
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub related_party: Vec<RelatedPartyRefOrPartyRoleRef>,

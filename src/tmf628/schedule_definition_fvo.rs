@@ -2,11 +2,14 @@ use serde::{Serialize, Deserialize};
 use super::{
     DayOfWeekRecurrenceFvo, ExtensibleFvo, MonthlyScheduleDayOfWeekDefinitionFvo,
 };
+
+///Schedule Definition FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ScheduleDefinitionFvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible_fvo: ExtensibleFvo,
+    ///The monthly schedule is used to define a schedule that is based on the weeks of the month, e.g. a schedule that will be active only on the first Monday and second Tuesday of each month.
     #[serde(rename = "MonthlyScheduleDayOfWeekDefinition")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub monthly_schedule_day_of_week_definition: Option<

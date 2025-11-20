@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::DataFilterAttribute;
+
+///Data Filter Attribute String Array schema
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DataFilterAttributeStringArray {
     ///give an attribute used for filtering

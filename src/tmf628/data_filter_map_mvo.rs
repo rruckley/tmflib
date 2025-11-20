@@ -1,10 +1,13 @@
 use serde::{Serialize, Deserialize};
 use super::{DataFilterMapItemMvo, Extensible};
+
+///Data Filter Map
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DataFilterMapMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
+    ///A list of data filter map items
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub mappings: Vec<DataFilterMapItemMvo>,
 }
