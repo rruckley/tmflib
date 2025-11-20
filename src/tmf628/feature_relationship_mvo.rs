@@ -1,8 +1,11 @@
 use serde::{Serialize, Deserialize};
 use super::{EntityRefMvo};
 use crate::TimePeriod;
+
+///Feature Relationship MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct FeatureRelationshipMvo {
+    ///Base Entity Ref MVO schema
     #[serde(flatten)]
     pub entity_ref_mvo: EntityRefMvo,
     ///This is the name of the target feature.

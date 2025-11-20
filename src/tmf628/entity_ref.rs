@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{Addressable, Extensible};
+
+///Entity Ref MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityRef {
     ///The actual type of the target instance when needed for disambiguation.

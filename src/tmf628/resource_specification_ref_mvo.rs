@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::EntityRefMvo;
+
+///Resource Specification Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceSpecificationRefMvo {
     #[serde(flatten)]

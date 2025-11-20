@@ -10,6 +10,8 @@ use crate::{
     common::entity::Entity,
     TimePeriod,
 };
+
+///Resource FVO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResourceFvo {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -23,6 +25,7 @@ pub struct ResourceFvo {
     #[serde(rename = "administrativeState")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub administrative_state: Option<ResourceAdministrativeStateType>,
+    ///A list of attachments associated with the resource
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub attachment: Vec<AttachmentRefFvo>,
     ///Category of the concrete resource. e.g Gold, Silver for MSISDN concrete resource
@@ -45,27 +48,34 @@ pub struct ResourceFvo {
     ///the name of the resource
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    ///A list of notes associated with the resource
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub note: Vec<NoteFvo>,
     ///ResourceOperationalStateType enumerations; values defined by ITU X.731: 'disable': The resource is totally inoperable and unable to provide service to the user(s); 'enable': The resource is partially or fully operable and available for use.
     #[serde(rename = "operationalState")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub operational_state: Option<ResourceOperationalStateType>,
+    ///A list of places associated with the resource
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub place: Vec<RelatedPlaceRefFvo>,
+    ///A list of parties or party roles associated with the resource
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub related_party: Vec<RelatedPartyRefOrPartyRoleRefFvo>,
+    ///A list of characteristics of the resource
     #[serde(rename = "resourceCharacteristic")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub resource_characteristic: Vec<CharacteristicFvo>,
     ///A list of resource order items related to this resource
     #[serde(rename = "resourceOrderItem")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    ///ResourceOrderItem [*]. A collection of resource order items that are related to this resource.
     pub resource_order_item: Vec<RelatedResourceOrderItemFvo>,
+    ///A list of relationships to other resources
     #[serde(rename = "resourceRelationship")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub resource_relationship: Vec<ResourceRelationshipFvo>,
+    ///Reference to the specification that is used to instantiate the resource
     #[serde(rename = "resourceSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resource_specification: Option<ResourceSpecificationRefFvo>,

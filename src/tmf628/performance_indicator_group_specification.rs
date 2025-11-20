@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{Addressable, Extensible, PerformanceIndicatorSpecificationRefOrValue};
+
+///Performance Indicator Group Specification
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PerformanceIndicatorGroupSpecification {
     ///Base schema for addressable entities

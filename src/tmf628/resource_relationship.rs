@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{Characteristic, Extensible, ResourceRefOrValue};
+
+///Resource Relationship
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceRelationship {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
@@ -12,6 +14,7 @@ pub struct ResourceRelationship {
     ///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Resource entity and not the ResourceRefOrValue class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resource: Option<ResourceRefOrValue>,
+    ///A list of characteristics that apply to the resource relationship.
     #[serde(rename = "resourceRelationshipCharacteristic")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub resource_relationship_characteristic: Vec<Characteristic>,

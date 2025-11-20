@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{CharacteristicMvo, Extensible, FeatureRelationshipMvo, PolicyRefMvo};
+
+///Feature MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct FeatureMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

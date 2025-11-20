@@ -1,7 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::EntityRef;
+
+///Resource Specification Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceSpecificationRef {
+    ///Base Entity Reference schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Resource Specification version

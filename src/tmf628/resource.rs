@@ -62,6 +62,7 @@ pub struct Resource {
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub related_party: Vec<RelatedPartyRefOrPartyRoleRef>,
+    ///A list of characteristics of the resource
     #[serde(rename = "resourceCharacteristic")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub resource_characteristic: Vec<Characteristic>,
@@ -69,9 +70,11 @@ pub struct Resource {
     #[serde(rename = "resourceOrderItem")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub resource_order_item: Vec<RelatedResourceOrderItem>,
+    ///A list of relationships to other resources
     #[serde(rename = "resourceRelationship")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub resource_relationship: Vec<ResourceRelationship>,
+    ///Reference to the specification that defines this resource.
     #[serde(rename = "resourceSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resource_specification: Option<ResourceSpecificationRef>,

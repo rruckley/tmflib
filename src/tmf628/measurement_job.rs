@@ -4,8 +4,11 @@ use super::{
     PerformanceIndicatorGroupSpecification, PerformanceIndicatorSpecificationRefOrValue,
     TrackingRecord,
 };
+
+///Measurement Job
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MeasurementJob {
+    ///Base Management Job schema
     #[serde(flatten)]
     pub management_job: ManagementJob,
     ///The identifier of the application that consumes performance indicators.
@@ -15,17 +18,21 @@ pub struct MeasurementJob {
     ///Sampling rate of the collection or production of performance indicators.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub granularity: Option<Granularity>,
+    ///Criteria for selecting the monitored class(es).
     #[serde(rename = "monitoredClassCriteria")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub monitored_class_criteria: Option<MonitoredClassCriteria>,
+    ///Criteria for selecting the monitored instance(s).
     #[serde(rename = "monitoredInstancesCriteria")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub monitored_instances_criteria: Option<MonitoredInstancesCriteria>,
+    ///Specifications of performance indicator groups to be measured.
     #[serde(rename = "performanceIndicatorGroupSpecification")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub performance_indicator_group_specification: Vec<
         PerformanceIndicatorGroupSpecification,
     >,
+    ///Specifications of performance indicators to be measured.
     #[serde(rename = "performanceIndicatorSpecification")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub performance_indicator_specification: Vec<
@@ -35,6 +42,7 @@ pub struct MeasurementJob {
     #[serde(rename = "producingApplicationId")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub producing_application_id: Option<String>,
+    ///Records tracking the changes of the MeasurementJob.
     #[serde(rename = "trackingRecord")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub tracking_record: Vec<TrackingRecord>,

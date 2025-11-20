@@ -1,8 +1,11 @@
 use serde::{Serialize, Deserialize};
 use super::{EntityRef};
 use crate::TimePeriod;
+
+///Feature Relationship
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct FeatureRelationship {
+    ///Base Entity Ref schema
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///This is the name of the target feature.
