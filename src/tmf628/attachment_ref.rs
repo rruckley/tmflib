@@ -1,7 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::EntityRef;
+
+///Attachment Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AttachmentRef {
+    ///Reference to an entity
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///A narrative text describing the content of the attachment

@@ -15,6 +15,7 @@ pub struct PerformanceIndicatorGroupSpecification {
     ///A word, term, or phrase by which a PerformanceIndicatorGroupSpecification is tagged.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    ///Specification of performance indicators included in this group
     #[serde(rename = "performanceIndicatorSpecification")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub performance_indicator_specification: Vec<

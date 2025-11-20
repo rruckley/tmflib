@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::EntityRefMvo;
+
+///Policy Reference MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyRefMvo {
     ///When sub-classing, this defines the super-class

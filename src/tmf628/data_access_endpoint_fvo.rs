@@ -1,9 +1,13 @@
 use serde::{Serialize, Deserialize};
 use super::{DataFilterMapFvo, LogicalResourceFvo};
+
+///Data Access Endpoint Full Value Object
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DataAccessEndpointFvo {
+    ///Base Logical Resource Full Value Object
     #[serde(flatten)]
     pub logical_resource_fvo: LogicalResourceFvo,
+    ///The type of API (e.g., REST, SOAP)
     #[serde(rename = "apiType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub api_type: Option<String>,

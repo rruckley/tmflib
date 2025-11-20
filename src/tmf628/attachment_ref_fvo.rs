@@ -1,7 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::EntityRefFvo;
+
+///Attachment Reference FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AttachmentRefFvo {
+    ///Base Entity Reference FVO
     #[serde(flatten)]
     pub entity_ref_fvo: EntityRefFvo,
     ///A narrative text describing the content of the attachment

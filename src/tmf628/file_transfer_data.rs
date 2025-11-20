@@ -1,16 +1,20 @@
 use serde::{Serialize, Deserialize};
 use super::{CompressionType, Duration, Extensible, PackingType, ProtocolTransferData};
+
+///File Transfer Data schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FileTransferData {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
+    ///Protocol Transfer Data schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub protocol_transfer_data: ProtocolTransferData,
     ///File compression type.
     #[serde(rename = "compressionType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub compression_type: Option<CompressionType>,
+    ///File format type.
     #[serde(rename = "fileFormat")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub file_format: Option<String>,

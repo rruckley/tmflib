@@ -4,6 +4,8 @@ use crate::{
     common::entity::Entity,
     TimePeriod,
 };
+
+/// Performance Measurement Relationship
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PerformanceMeasurementRelationship {
     ///Base entity schema for use in TMForum Open-APIs. Property.

@@ -1,7 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::ResourceFvo;
+
+///Logical Resource Full Value Object
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LogicalResourceFvo {
+    ///Base Resource Full Value Object
     #[serde(flatten)]
     pub resource_fvo: ResourceFvo,
     ///the value of the logical resource. E.g '0746712345' for  MSISDN's

@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::EntityRefFvo;
+
+/// Policy Reference FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyRefFvo {
     ///When sub-classing, this defines the super-class
@@ -13,11 +15,13 @@ pub struct PolicyRefFvo {
     ///When sub-classing, this defines the sub-class Extensible name
     #[serde(rename = "@type")]
     pub type_: String,
+    ///Base EntityRefFVO schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub entity_ref_fvo: EntityRefFvo,
     ///unique identifier
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
+    /// Version of the policy
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
 }

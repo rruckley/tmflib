@@ -6,6 +6,8 @@ use crate::{
     common::entity::Entity,
     TimePeriod,
 };
+
+/// Performance Indicator Specification
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PerformanceIndicatorSpecification {
     ///Base entity schema for use in TMForum Open-APIs. Property.

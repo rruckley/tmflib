@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{AddressableMvo, Extensible, PerformanceIndicatorSpecificationRefOrValueMvo};
+
+/// Performance Indicator Group Specification MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PerformanceIndicatorGroupSpecificationMvo {
     ///Base schema for addressable entities
@@ -15,6 +17,7 @@ pub struct PerformanceIndicatorGroupSpecificationMvo {
     ///A word, term, or phrase by which a PerformanceIndicatorGroupSpecification is tagged.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    ///Reference to Performance Indicator Specifications included in this Performance Indicator Group Specification
     #[serde(rename = "performanceIndicatorSpecification")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub performance_indicator_specification: Vec<

@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
 use super::{DataFilterMapItem, Extensible};
+
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DataFilterMap {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

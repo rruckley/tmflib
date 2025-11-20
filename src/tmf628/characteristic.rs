@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
 use super::{CharacteristicRelationship, Extensible};
+/// A characteristic is a named attribute that can be assigned to an entity. Characteristics are used to define properties of an entity that can be measured, observed, or configured. Examples of characteristics include color, size, weight, and performance metrics.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Characteristic {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

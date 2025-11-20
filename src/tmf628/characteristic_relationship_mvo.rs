@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::Extensible;
+
+///Characteristic Full Value Object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicRelationshipMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

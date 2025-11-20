@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{Characteristic, Extensible, FeatureRelationship, PolicyRef};
+
+///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Feature {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
