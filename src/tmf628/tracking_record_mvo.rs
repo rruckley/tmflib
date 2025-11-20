@@ -20,7 +20,7 @@ pub struct TrackingRecordMvo {
     pub system_id: Option<String>,
     ///Describes the time at which the action was done
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub time: Option<chrono::DateTime<chrono::Utc>>,
+    pub time: Option<crate::DateTime>,
     ///Describes the user doing the action
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub user: Option<String>,

@@ -23,11 +23,11 @@ pub struct ScheduleDefinitionFvo {
     ///A list of specific dates that should be excluded from the Schedule Definition.
     #[serde(rename = "excludedDate")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub excluded_date: Vec<chrono::DateTime<chrono::Utc>>,
+    pub excluded_date: Vec<crate::DateTime>,
     ///The schedule definition for running the threshold job
     #[serde(rename = "monthlyScheduleDayOfMonthDefinition")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub monthly_schedule_day_of_month_definition: Vec<chrono::DateTime<chrono::Utc>>,
+    pub monthly_schedule_day_of_month_definition: Vec<crate::DateTime>,
     ///A recurring frequency to run a job within day that is included in schedule definition, for example: every 5 minutes, 15 minute, 30 minutes, 1 hour
     #[serde(rename = "recurringFrequency")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -35,7 +35,7 @@ pub struct ScheduleDefinitionFvo {
     ///The End time of the Schedule Definition. If the attribute is empty the Schedule run forever, not having a time constraint.
     #[serde(rename = "scheduleDefinitionEndTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub schedule_definition_end_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub schedule_definition_end_time: Option<crate::DateTime>,
     ///A list of time ranges within a specific day that the schedule will be active on, for example 08:00-12:00, 16:00-19:00.
     #[serde(rename = "scheduleDefinitionHourRange")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -43,7 +43,7 @@ pub struct ScheduleDefinitionFvo {
     ///The Start time of the Schedule Definition
     #[serde(rename = "scheduleDefinitionStartTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub schedule_definition_start_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub schedule_definition_start_time: Option<crate::DateTime>,
 }
 impl std::fmt::Display for ScheduleDefinitionFvo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
