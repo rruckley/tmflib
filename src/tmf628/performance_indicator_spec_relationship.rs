@@ -1,6 +1,8 @@
 use serde::{Serialize, Deserialize};
 use crate::TimePeriod;
 use crate::common::entity::Entity;
+
+/// Performance Indicator Spec Relationship
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PerformanceIndicatorSpecRelationship {
     ///Base entity schema for use in TMForum Open-APIs. Property.

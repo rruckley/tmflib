@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{DataFilterMapItemMvo, Extensible};
+use super::{DataFilterMapItemMvo};
+use crate::common::extensible::Extensible;
 
 ///Data Filter Map
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

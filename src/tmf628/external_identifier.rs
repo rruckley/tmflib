@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use super::Extensible;
+use crate::common::extensible::Extensible;
 
 ///External Identifier
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

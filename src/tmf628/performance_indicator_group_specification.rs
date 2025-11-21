@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
-use super::{Addressable, Extensible, PerformanceIndicatorSpecificationRefOrValue};
+use super::{PerformanceIndicatorSpecificationRefOrValue};
+use crate::common::extensible::Extensible;
+use crate::common::addressable::Addressable;
 
 ///Performance Indicator Group Specification
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

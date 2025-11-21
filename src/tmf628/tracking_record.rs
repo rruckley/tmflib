@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{Characteristic, Extensible};
+use super::{Characteristic};
+use crate::common::extensible::Extensible;
 
 ///A record of actions taken on an entity, used for audit and tracking purposes
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

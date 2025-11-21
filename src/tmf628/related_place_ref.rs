@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{Extensible, PlaceRef};
+use super::{PlaceRef};
+use crate::common::extensible::Extensible;
+
+///Related Place Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPlaceRef {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
@@ -8,6 +11,7 @@ pub struct RelatedPlaceRef {
     ///Place reference.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub place: Option<PlaceRef>,
+    ///Role of the related place.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<String>,
 }

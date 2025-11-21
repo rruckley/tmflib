@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{CharacteristicRelationshipMvo, Extensible};
+use super::{CharacteristicRelationshipMvo};
+use crate::common::extensible::Extensible;
 
 ///Characteristic Modify Value Object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

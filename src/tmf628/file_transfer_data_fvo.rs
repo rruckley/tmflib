@@ -2,20 +2,25 @@ use serde::{Serialize, Deserialize};
 use super::{
     CompressionType, Duration, ExtensibleFvo, PackingType, ProtocolTransferDataFvo,
 };
+
+///File Transfer Data FVO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FileTransferDataFvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible_fvo: ExtensibleFvo,
+    ///Protocol Transfer Data FVO
     #[serde(flatten)]
     pub protocol_transfer_data_fvo: ProtocolTransferDataFvo,
     ///File compression type.
     #[serde(rename = "compressionType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub compression_type: Option<CompressionType>,
+    ///File format of the transferred file.
     #[serde(rename = "fileFormat")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub file_format: Option<String>,
+    ///Location where the file is stored or retrieved from.
     #[serde(rename = "fileLocation")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub file_location: Option<String>,

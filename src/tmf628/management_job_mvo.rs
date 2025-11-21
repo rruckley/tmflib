@@ -1,16 +1,21 @@
 use serde::{Serialize, Deserialize};
 use super::{DataAccessEndpointMvo, Entity, FileTransferDataMvo, ScheduleDefinitionMvo};
+
+/// Management Job Mvo
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagementJobMvo {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
+    /// Data Access Endpoint
     #[serde(rename = "dataAccessEndpoint")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data_access_endpoint: Vec<DataAccessEndpointMvo>,
+    /// File Transfer Data
     #[serde(rename = "fileTransferData")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub file_transfer_data: Vec<FileTransferDataMvo>,
+    /// Schedule Definition
     #[serde(rename = "scheduleDefinition")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub schedule_definition: Vec<ScheduleDefinitionMvo>,

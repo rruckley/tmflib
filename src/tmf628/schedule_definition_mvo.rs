@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{DayOfWeekRecurrenceMvo, Extensible, MonthlyScheduleDayOfWeekDefinitionMvo};
+use super::{DayOfWeekRecurrenceMvo, MonthlyScheduleDayOfWeekDefinitionMvo};
+use crate::common::extensible::Extensible;
 
 ///A Schedule Definition is used to define a schedule for running a job, for example a threshold job. The schedule definition can be based on specific dates, days of the week or days of the month. In addition, the schedule definition can include time ranges within a day and a recurring frequency to run the job within the active time ranges.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

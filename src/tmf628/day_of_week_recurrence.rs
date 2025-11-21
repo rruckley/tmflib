@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use super::Extensible;
+use crate::common::extensible::Extensible;
 use crate::DateTime;
 
 ///Day Of Week Recurrence

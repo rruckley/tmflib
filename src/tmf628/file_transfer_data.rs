@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{CompressionType, Duration, Extensible, PackingType, ProtocolTransferData};
+use super::{CompressionType, Duration, PackingType, ProtocolTransferData};
+use crate::common::extensible::Extensible;
 
 ///File Transfer Data schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -18,6 +19,7 @@ pub struct FileTransferData {
     #[serde(rename = "fileFormat")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub file_format: Option<String>,
+    ///Location where the file is stored or retrieved from.
     #[serde(rename = "fileLocation")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub file_location: Option<String>,

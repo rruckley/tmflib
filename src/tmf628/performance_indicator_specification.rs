@@ -43,6 +43,7 @@ pub struct PerformanceIndicatorSpecification {
     ///A word, term, or phrase by which a PerformanceIndicatorSpecification is known and distinguished from other PerformanceIndicatorSpecifications.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    ///Relationships to other PerformanceIndicatorSpecification objects.
     #[serde(rename = "performanceIndicatorSpecRelationship")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub performance_indicator_spec_relationship: Vec<

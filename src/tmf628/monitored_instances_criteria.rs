@@ -1,10 +1,13 @@
 use serde::{Serialize, Deserialize};
-use super::Extensible;
+use crate::common::extensible::Extensible;
+
+/// Monitored Instances Criteria
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct MonitoredInstancesCriteria {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
+    /// List of monitored object instances
     #[serde(rename = "monitoredObjectInstances")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub monitored_object_instances: Vec<String>,

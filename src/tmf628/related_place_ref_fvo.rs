@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{ExtensibleFvo, PlaceRefFvo};
+
+///Related Place Reference FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPlaceRefFvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
@@ -7,6 +9,7 @@ pub struct RelatedPlaceRefFvo {
     pub extensible_fvo: ExtensibleFvo,
     ///Place reference.
     pub place: PlaceRefFvo,
+    ///Role of the related place.
     pub role: String,
 }
 impl std::fmt::Display for RelatedPlaceRefFvo {

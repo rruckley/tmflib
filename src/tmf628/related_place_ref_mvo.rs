@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{Extensible, PlaceRefMvo};
+use super::{PlaceRefMvo};
+use crate::common::extensible::Extensible;
+
+///Related Place Reference MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPlaceRefMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
@@ -7,6 +10,7 @@ pub struct RelatedPlaceRefMvo {
     pub extensible: Extensible,
     ///Place reference.
     pub place: PlaceRefMvo,
+    ///Role of the related place.
     pub role: String,
 }
 impl std::fmt::Display for RelatedPlaceRefMvo {

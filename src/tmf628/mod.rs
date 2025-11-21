@@ -14,7 +14,7 @@
 //! TMF628 Performance Management
 
 
-pub use addressable::*;
+// pub use addressable::*;
 pub use addressable_fvo::*;
 pub use addressable_mvo::*;
 pub use administrative_state::*;
@@ -56,7 +56,7 @@ pub use entity_ref::*;
 pub use entity_ref_fvo::*;
 pub use entity_ref_mvo::*;
 pub use execution_state_type::*;
-pub use extensible::*;
+// pub use extensible::*;
 pub use extensible_fvo::*;
 pub use external_identifier::*;
 pub use external_identifier_fvo::*;
@@ -157,7 +157,7 @@ pub use time_period::*;
 pub use tracking_record::*;
 pub use tracking_record_fvo::*;
 pub use tracking_record_mvo::*;
-mod addressable;
+// mod addressable;
 mod addressable_fvo;
 mod addressable_mvo;
 mod administrative_state;
@@ -199,7 +199,7 @@ mod entity_ref;
 mod entity_ref_fvo;
 mod entity_ref_mvo;
 mod execution_state_type;
-mod extensible;
+// mod extensible;
 mod extensible_fvo;
 mod external_identifier;
 mod external_identifier_fvo;

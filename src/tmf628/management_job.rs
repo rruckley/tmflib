@@ -3,6 +3,7 @@ use super::{
     AdministrativeState, DataAccessEndpoint, Entity, ExecutionStateType,
     FileTransferData, ScheduleDefinition,
 };
+///Management Job FVO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ManagementJob {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -16,6 +17,7 @@ pub struct ManagementJob {
     #[serde(rename = "creationTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub creation_time: Option<crate::DateTime>,
+    ///A list of data access endpoints for the management job
     #[serde(rename = "dataAccessEndpoint")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data_access_endpoint: Vec<DataAccessEndpoint>,
@@ -23,6 +25,7 @@ pub struct ManagementJob {
     #[serde(rename = "executionState")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub execution_state: Option<ExecutionStateType>,
+    ///A list of file transfer data definitions for the management job
     #[serde(rename = "fileTransferData")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub file_transfer_data: Vec<FileTransferData>,
@@ -38,6 +41,7 @@ pub struct ManagementJob {
     #[serde(rename = "lastModifiedTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub last_modified_time: Option<crate::DateTime>,
+    ///A list of schedule definitions for the management job
     #[serde(rename = "scheduleDefinition")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub schedule_definition: Vec<ScheduleDefinition>,

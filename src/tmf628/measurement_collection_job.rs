@@ -1,9 +1,13 @@
 use serde::{Serialize, Deserialize};
 use super::{DataFilterMap, MeasurementJob, ReportingPeriod};
+
+/// Measurement Collection Job
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MeasurementCollectionJob {
+    ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub measurement_job: MeasurementJob,
+    ///Filter defining the subset of data to be collected by the job
     #[serde(rename = "jobCollectionFilter")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub job_collection_filter: Option<DataFilterMap>,
@@ -11,6 +15,7 @@ pub struct MeasurementCollectionJob {
     #[serde(rename = "jobOnDemand")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub job_on_demand: Option<bool>,
+    ///Output format of the collected measurement data
     #[serde(rename = "outputFormat")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub output_format: Option<String>,
@@ -18,6 +23,7 @@ pub struct MeasurementCollectionJob {
     #[serde(rename = "reportingPeriod")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub reporting_period: Option<ReportingPeriod>,
+    ///Filter defining the subset of data to be searched by the job
     #[serde(rename = "searchTaskFilter")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub search_task_filter: Option<DataFilterMap>,

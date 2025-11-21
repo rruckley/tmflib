@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
-use super::EntityRef;
+use crate::common::entity_ref::EntityRef;
+
+/// Policy Ref
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyRef {
     ///When sub-classing, this defines the super-class
@@ -14,6 +16,7 @@ pub struct PolicyRef {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
+    ///Base entity reference schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Hyperlink reference
@@ -22,6 +25,7 @@ pub struct PolicyRef {
     ///unique identifier
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
+    ///Version of the policy
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
 }

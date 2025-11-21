@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{ExtensibleFvo, OrderItemActionType};
+
+///Related Resource Order Item FVO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RelatedResourceOrderItemFvo {
     ///The actual type of the target instance when needed for disambiguation.

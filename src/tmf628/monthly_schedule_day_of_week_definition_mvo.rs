@@ -1,13 +1,18 @@
 use serde::{Serialize, Deserialize};
-use super::{DayOfMonthRecurrenceMvo, Extensible};
+use super::{DayOfMonthRecurrenceMvo};
+use crate::common::extensible::Extensible;
+
+/// Monthly Schedule Day Of Week Definition Mvo
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct MonthlyScheduleDayOfWeekDefinitionMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
+    /// Day Of Month Recurrence
     #[serde(rename = "dayOfMonthRecurrence")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub day_of_month_recurrence: Vec<DayOfMonthRecurrenceMvo>,
+    /// Recurring Day Sequence
     #[serde(rename = "recurringDaySequence")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub recurring_day_sequence: Option<String>,

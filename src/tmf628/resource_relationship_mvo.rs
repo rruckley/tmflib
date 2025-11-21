@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{CharacteristicMvo, Extensible, ResourceRefOrValueMvo};
+use super::{CharacteristicMvo, ResourceRefOrValueMvo};
+use crate::common::extensible::Extensible;
+
+///Resource Relationship MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceRelationshipMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
@@ -10,6 +13,7 @@ pub struct ResourceRelationshipMvo {
     pub relationship_type: String,
     ///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Resource entity and not the ResourceRefOrValue class itself
     pub resource: ResourceRefOrValueMvo,
+    ///List of characteristics
     #[serde(rename = "resourceRelationshipCharacteristic")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub resource_relationship_characteristic: Vec<CharacteristicMvo>,

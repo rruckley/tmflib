@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use super::Extensible;
+use crate::common::extensible::Extensible;
 
 ///Data Filter Template FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

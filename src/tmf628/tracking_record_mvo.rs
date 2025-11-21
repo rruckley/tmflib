@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{CharacteristicMvo, Extensible};
+use super::{CharacteristicMvo};
+use crate::common::extensible::Extensible;
 
 ///TrackingRecordMvo
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

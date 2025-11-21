@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{Extensible, PartyRefOrPartyRoleRef};
+use super::{PartyRefOrPartyRoleRef};
+use crate::common::extensible::Extensible;
+
+///Related Party Ref Or Party Role Ref MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPartyRefOrPartyRoleRef {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

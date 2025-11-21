@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{Addressable, ExtensibleFvo};
+use super::{ExtensibleFvo};
+use crate::common::addressable::Addressable;
 
 ///Entity Ref FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

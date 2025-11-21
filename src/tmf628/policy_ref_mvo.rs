@@ -16,11 +16,13 @@ pub struct PolicyRefMvo {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
+    ///Base entity reference MVO schema for use in TMForum Open-APIs. Property used to extend other entities.
     #[serde(flatten)]
     pub entity_ref_mvo: EntityRefMvo,
     ///unique identifier
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
+    ///Version of the Policy
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
 }

@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{Extensible, OrderItemActionType};
+use super::{OrderItemActionType};
+use crate::common::extensible::Extensible;
+
+///Related Resource Order Item FVO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RelatedResourceOrderItem {
     ///The actual type of the target instance when needed for disambiguation.

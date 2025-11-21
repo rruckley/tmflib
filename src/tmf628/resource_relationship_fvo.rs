@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{CharacteristicFvo, ExtensibleFvo, ResourceRefOrValueFvo};
+
+///Resource Relationship FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceRelationshipFvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
@@ -10,6 +12,7 @@ pub struct ResourceRelationshipFvo {
     pub relationship_type: String,
     ///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Resource entity and not the ResourceRefOrValue class itself
     pub resource: ResourceRefOrValueFvo,
+    ///List of characteristics
     #[serde(rename = "resourceRelationshipCharacteristic")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub resource_relationship_characteristic: Vec<CharacteristicFvo>,

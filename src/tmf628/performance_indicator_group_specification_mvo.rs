@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{AddressableMvo, Extensible, PerformanceIndicatorSpecificationRefOrValueMvo};
+use super::{AddressableMvo, PerformanceIndicatorSpecificationRefOrValueMvo};
+use crate::common::extensible::Extensible;
 
 /// Performance Indicator Group Specification MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

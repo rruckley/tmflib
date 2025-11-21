@@ -1,7 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::ResourceMvo;
+
+///Logical Resource MVO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LogicalResourceMvo {
+    ///Base Resource MVO schema for use in TMForum Open-APIs - When used for in a schema it means that
     #[serde(flatten)]
     pub resource_mvo: ResourceMvo,
     ///the value of the logical resource. E.g '0746712345' for  MSISDN's
