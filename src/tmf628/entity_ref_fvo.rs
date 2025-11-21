@@ -1,11 +1,10 @@
-//! EntityRef Module, references to an Entity
-//! Defines the base EntityRef struct used across TMForum Open-APIs
 use serde::{Serialize, Deserialize};
-use super::addressable::Addressable;
-use super::extensible::Extensible;
-///Entity Ref MVO
+use super::{ExtensibleFvo};
+use crate::common::addressable::Addressable;
+
+///Entity Ref FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
-pub struct EntityRef {
+pub struct EntityRefFvo {
     ///The actual type of the target instance when needed for disambiguation.
     #[serde(rename = "@referredType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -15,30 +14,23 @@ pub struct EntityRef {
     pub addressable: Addressable,
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
-    pub extensible: Extensible,
-    ///The URI of the referred entity.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub href: Option<String>,
-    ///The identifier of the referred entity.
-    pub id: String,
+    pub extensible_fvo: ExtensibleFvo,
     ///Name of the referred entity.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 }
-impl std::fmt::Display for EntityRef {
+impl std::fmt::Display for EntityRefFvo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-
-impl std::ops::Deref for EntityRef {
+impl std::ops::Deref for EntityRefFvo {
     type Target = Addressable;
     fn deref(&self) -> &Self::Target {
         &self.addressable
     }
 }
-
-impl std::ops::DerefMut for EntityRef {
+impl std::ops::DerefMut for EntityRefFvo {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.addressable
     }

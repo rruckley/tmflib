@@ -1,8 +1,7 @@
-//! EntityRef Module, references to an Entity
-//! Defines the base EntityRef struct used across TMForum Open-APIs
 use serde::{Serialize, Deserialize};
-use super::addressable::Addressable;
-use super::extensible::Extensible;
+use crate::common::extensible::Extensible;
+use crate::common::addressable::Addressable;
+
 ///Entity Ref MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityRef {
@@ -30,14 +29,12 @@ impl std::fmt::Display for EntityRef {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-
 impl std::ops::Deref for EntityRef {
     type Target = Addressable;
     fn deref(&self) -> &Self::Target {
         &self.addressable
     }
 }
-
 impl std::ops::DerefMut for EntityRef {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.addressable
