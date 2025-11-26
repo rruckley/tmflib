@@ -3,6 +3,8 @@
 
 use serde::{Serialize, Deserialize};
 use crate::Uri;
+use super::{addressable::Addressable, extensible::Extensible};
+
 ///Base entity schema for use in TMForum Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Entity {
