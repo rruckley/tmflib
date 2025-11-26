@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use crate::common::entity_ref::EntityRef;
+use crate::common::entity::EntityRef;
 
 /// Policy Ref
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
