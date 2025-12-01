@@ -14,6 +14,7 @@ tmf620 = ["tmf633","tmf634","tmf651"]
 tmf621 = []
 # TMF622 Product Order Module
 tmf622 = ["tmf641"]
+tmf628 = []
 # TMF629 Customer Module
 tmf629 = []
 tmf632 = []
@@ -25,6 +26,8 @@ tmf638 = []
 tmf639 = []
 # TMF641 Service Order Module
 tmf641 = ["tmf646"]
+tmf642 = []
+# TMF645 Service Qualification Module
 tmf645 = ["tmf633","tmf641"]
 tmf646 = []
 tmf648 = ["tmf620"]
@@ -58,6 +61,7 @@ tmf701 = []
 tmf724 = []
 tmf760 = []
 tmf764 = []
+tmf909 = []
 tmf921 = []
 
 # Build all APIs
@@ -65,6 +69,7 @@ all = [
     "tmf620",
     "tmf621",
     "tmf622",
+    "tmf628",
     "tmf629",
     "tmf632",
     "tmf633",
@@ -73,6 +78,7 @@ all = [
     "tmf638",
     "tmf639",
     "tmf641",
+    "tmf642",
     "tmf645",
     "tmf646",
     "tmf648",
@@ -99,6 +105,7 @@ all = [
     "tmf724",
     "tmf760",
     "tmf764",
+    "tmf909",
     "tmf921"
 ]
 
@@ -236,7 +243,7 @@ default = ["all","build-V4"]
 [dependencies]
 chrono = "0.4.41"
 rust_iso4217 = "0.1.1"
-serde = { version = "1.0.219", features = ["derive"]}
+serde = { version = "1.0.228", features = ["derive"]}
 serde_json = "1.0.143"
 sha256 = { version = "1.6.0", default-features = false }
 uuid = { version = "1.18.0", features = ["v4"]}
@@ -245,10 +252,10 @@ tmflib-derive = { version = "0.1.35" }
 hex = "0.4.3"
 base32 = "0.5.1"
 openapiv3 = "2.2.0"
-rust_decimal = "1.37.2"
-rust_decimal_macros = "1.37.1"
+rust_decimal = "1.39.0"
+rust_decimal_macros = "1.39.0"
 thiserror = "2.0.17"
-regex = "1.11.2"
+regex = "1.12.2"
 
 [dev-dependencies]
 
