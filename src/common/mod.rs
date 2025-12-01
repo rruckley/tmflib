@@ -20,7 +20,6 @@ pub mod addressable;
 pub mod attachment;
 pub mod contact;
 pub mod entity;
-pub mod entity_ref;
 pub mod event;
 pub mod external_identifier;
 pub mod extensible;
