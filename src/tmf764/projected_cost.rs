@@ -91,7 +91,7 @@ impl ProjectedCost {
     /// ```rust
     /// use tmflib::tmf764::actual_cost::{ActualCost, ActualCostItem};
     /// let cost = ActualCost::new("Example Cost")
-    ///     .item(ActualCostItem{});
+    ///     .item(ActualCostItem::new("Item 1"));
     /// ```
     pub fn item(mut self, item: ProjectedCostItem) -> Self {
         vec_insert(&mut self.cost_item, item);

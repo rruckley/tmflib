@@ -60,6 +60,16 @@ pub struct ActualCostItem {
     pub cost_item_type: Option<CostItemType>,
 }
 
+impl ActualCostItem {
+    /// Create a new Actual Cost Item
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
+            name: Some(name.into()),
+            ..Default::default()
+        }
+    }
+}
+
 /// Cost Relationship
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct CostRelationship {}
@@ -131,7 +141,7 @@ impl ActualCost {
     /// ```rust
     /// use tmflib::tmf764::actual_cost::{ActualCost, ActualCostItem};
     /// let cost = ActualCost::new("Example Cost")
-    ///     .item(ActualCostItem{});
+    ///     .item(ActualCostItem::new("Item 1"));
     /// ```
     pub fn item(mut self, item: ActualCostItem) -> Self {
         vec_insert(&mut self.cost_item, item);
