@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Addressable, Extensible};
+use serde::{Deserialize, Serialize};
 
 ///Base entity reference schema for use in TMForum Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

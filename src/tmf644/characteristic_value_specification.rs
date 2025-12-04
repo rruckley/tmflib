@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-use crate::TimePeriod;
 use crate::common::extensible::Extensible;
+use crate::TimePeriod;
 
 /// A specification that defines the value type, default value, valid range, and so forth, for a characteristic.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

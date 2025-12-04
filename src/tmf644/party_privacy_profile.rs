@@ -1,10 +1,10 @@
-use serde::{Serialize, Deserialize};
 use super::{
     PartyPrivacyAgreementRef, PartyPrivacyProfileCharacteristic,
     PartyPrivacyProfileSpecificationRef, RelatedPartyRefOrPartyRoleRef,
 };
-use crate::TimePeriod;
 use crate::common::entity::Entity;
+use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// Party Privacy Profile
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -33,7 +33,8 @@ pub struct PartyPrivacyProfile {
     ///Date and time when the PartyPrivacyProfile was last updated
     #[serde(rename = "lastUpdate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub last_update: Option<crate::DateTime>, ///Name of the privacy profile
+    pub last_update: Option<crate::DateTime>,
+    ///Name of the privacy profile
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     ///List of characteristics of the privacy profile

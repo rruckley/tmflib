@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicMvo, Extensible, RelatedPartyRefOrPartyRoleRefMvo};
+use serde::{Deserialize, Serialize};
 
 /// Party Privacy Profile Characteristic MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{AgreementSpecificationRefMvo, PartyRoleSpecificationRefMvo};
+use serde::{Deserialize, Serialize};
 
 /// Party Privacy Role Specification MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

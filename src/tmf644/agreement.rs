@@ -1,11 +1,11 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    AgreementAuthorization, AgreementItem, AgreementRelationship,
-    AgreementSpecificationRef, Characteristic, PartyRefOrPartyRoleRef,
-    RelatedDocumentRefOrValue, RelatedPartyRefOrPartyRoleRef,
+    AgreementAuthorization, AgreementItem, AgreementRelationship, AgreementSpecificationRef,
+    Characteristic, PartyRefOrPartyRoleRef, RelatedDocumentRefOrValue,
+    RelatedPartyRefOrPartyRoleRef,
 };
-use crate::TimePeriod;
 use crate::common::entity::Entity;
+use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///Base entity schema for use in TMForum Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

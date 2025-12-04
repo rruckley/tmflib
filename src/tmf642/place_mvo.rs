@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{ ExternalIdentifierMvo};
+use super::ExternalIdentifierMvo;
 use crate::common::entity::Entity;
+use serde::{Deserialize, Serialize};
 
 /// PlaceMvo defines a place for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

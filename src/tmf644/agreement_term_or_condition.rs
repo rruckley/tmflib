@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-use crate::TimePeriod;
 use crate::common::extensible::Extensible;
+use crate::TimePeriod;
 
 /// AgreementTermOrCondition struct
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

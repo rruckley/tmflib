@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-use crate::TimePeriod;
 use crate::common::extensible::Extensible;
+use crate::TimePeriod;
 
 /// CharacteristicSpecificationRelationship defined in terms of a base schema that is extended to add attributes specific to the kind of characteristic specification relationship being described
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

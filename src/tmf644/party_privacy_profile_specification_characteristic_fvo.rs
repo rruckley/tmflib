@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicSpecificationFvo, PartyRoleSpecificationRefFvo};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// Party Privacy Profile Specification Characteristic FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

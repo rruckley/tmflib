@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Characteristic, Extensible, RelatedPartyRefOrPartyRoleRef};
+use serde::{Deserialize, Serialize};
 
 /// Party Privacy Profile Characteristic
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

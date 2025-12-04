@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Base schema for adressable entities
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AddressableFvo {

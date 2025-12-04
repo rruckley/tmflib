@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::Extensible;
+use serde::{Deserialize, Serialize};
 
 /// Authorization related to an agreement
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

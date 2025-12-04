@@ -1,9 +1,7 @@
-use serde::{Serialize, Deserialize};
-use super::{
-    CharacteristicSpecificationRelationshipMvo, CharacteristicValueSpecificationMvo,
-};
-use crate::TimePeriod;
+use super::{CharacteristicSpecificationRelationshipMvo, CharacteristicValueSpecificationMvo};
 use crate::common::extensible::Extensible;
+use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// CharacteristicSpecification defined in terms of a base schema that is extended to add attributes specific to the kind of characteristic being described
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

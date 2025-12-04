@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicFvo, ExtensibleFvo, RelatedPartyRefOrPartyRoleRefFvo};
+use serde::{Deserialize, Serialize};
 
 /// Party Privacy Profile Characteristic FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

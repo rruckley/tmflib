@@ -1,9 +1,8 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    CharacteristicSpecificationRelationshipFvo, CharacteristicValueSpecificationFvo,
-    ExtensibleFvo,
+    CharacteristicSpecificationRelationshipFvo, CharacteristicValueSpecificationFvo, ExtensibleFvo,
 };
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// A specification that defines a characteristic that can be used to describe an entity.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

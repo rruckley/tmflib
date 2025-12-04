@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{ExtensibleFvo};
+use super::ExtensibleFvo;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// CharacteristicValueSpecification defined in terms of a base schema that is extended to add attributes specific to the kind of characteristic value specification being described
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ThresholdRef;
+use serde::{Deserialize, Serialize};
 ///Identifies the details of the threshold that has been crossed.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CrossedThresholdInformation {

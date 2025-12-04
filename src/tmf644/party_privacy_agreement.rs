@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Agreement, PartyPrivacyProfileCharacteristic, PartyPrivacyProfileRef};
+use serde::{Deserialize, Serialize};
 
 /// Party Privacy Agreement
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

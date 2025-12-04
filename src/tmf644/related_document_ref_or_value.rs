@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{DocumentRefOrValue, Extensible};
+use serde::{Deserialize, Serialize};
 
 /// Related Document Reference or Value
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

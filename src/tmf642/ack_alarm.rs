@@ -1,9 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{AlarmRefOrValue};
-use crate::{
-    common::entity::Entity,
-    DateTime,
-};
+use super::AlarmRefOrValue;
+use crate::{common::entity::Entity, DateTime};
+use serde::{Deserialize, Serialize};
 
 ///Acknowledgement of alarms
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

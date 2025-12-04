@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{AgreementTermOrConditionMvo, Extensible};
+use serde::{Deserialize, Serialize};
 
 /// An item of an agreement
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

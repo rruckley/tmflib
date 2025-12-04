@@ -1,10 +1,10 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    PartyPrivacyProfileSpecificationCharacteristic,
-    PartyPrivacyRoleSpecification, ProductOfferingRef, RelatedPartyRefOrPartyRoleRef,
+    PartyPrivacyProfileSpecificationCharacteristic, PartyPrivacyRoleSpecification,
+    ProductOfferingRef, RelatedPartyRefOrPartyRoleRef,
 };
 use crate::common::entity::Entity;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// Specification of a Party Privacy Profile
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

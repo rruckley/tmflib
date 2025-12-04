@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{AddressableFvo, ExtensibleFvo};
+use serde::{Deserialize, Serialize};
 
 /// Entity Reference FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

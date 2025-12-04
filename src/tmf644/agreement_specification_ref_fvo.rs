@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{EntityRefFvo, ExtensibleFvo};
+use serde::{Deserialize, Serialize};
 
 /// Reference to an AgreementSpecification entity
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

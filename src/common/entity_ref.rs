@@ -1,8 +1,8 @@
 //! EntityRef Module, references to an Entity
 //! Defines the base EntityRef struct used across TMForum Open-APIs
-use serde::{Serialize, Deserialize};
 use super::addressable::Addressable;
 use super::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 ///Entity Ref MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityRef {

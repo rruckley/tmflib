@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use crate::TimePeriod;
 use crate::common::entity_ref::EntityRef;
+use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// AgreementRelationshipMvo struct
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

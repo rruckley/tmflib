@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{EntityRefFvo};
+use super::EntityRefFvo;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// AgreementRelationshipFvo struct
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

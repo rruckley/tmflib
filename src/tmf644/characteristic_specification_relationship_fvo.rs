@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{ExtensibleFvo};
+use super::ExtensibleFvo;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// CharacteristicSpecificationRelationship defined in terms of a base schema that is extended to add attributes specific to the kind of characteristic specification relationship being described
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

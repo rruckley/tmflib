@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Party role specification reference. A party role specification gives additional details on the part played by a party in a given context.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyRoleSpecificationRef {}

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Extensible, PartyRefOrPartyRoleRef};
+use serde::{Deserialize, Serialize};
 
 /// Related Party Reference or Party Role Reference MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

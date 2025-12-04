@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{ExtensibleFvo};
+use super::ExtensibleFvo;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 // use crate::common::extensible::Extensible;
 /// A term or condition of an agreement
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

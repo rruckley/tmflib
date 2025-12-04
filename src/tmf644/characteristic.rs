@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicRelationship, Extensible};
+use serde::{Deserialize, Serialize};
 
 /// Characteristic defined in terms of a base schema that is extended to add attributes specific to the kind of characteristic being described
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

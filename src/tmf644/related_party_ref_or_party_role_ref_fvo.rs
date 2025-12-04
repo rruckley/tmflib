@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{ExtensibleFvo, PartyRefOrPartyRoleRefFvo};
+use serde::{Deserialize, Serialize};
 
 /// Related Party Reference or Party Role Reference FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
