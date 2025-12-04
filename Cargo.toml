@@ -24,6 +24,7 @@ tmf634 = []
 tmf637 = []
 tmf638 = []
 tmf639 = []
+tmf640 = []
 # TMF641 Service Order Module
 tmf641 = ["tmf646"]
 tmf642 = []
@@ -78,6 +79,7 @@ all = [
     "tmf637",
     "tmf638",
     "tmf639",
+    "tmf640",
     "tmf641",
     "tmf642",
     "tmf644",
