@@ -1,15 +1,12 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    AttachmentRefMvo, CharacteristicMvo, ExternalIdentifierMvo, FeatureMvo,
-    IntentRefMvo, NoteMvo, RelatedPartyRefOrPartyRoleRefMvo, RelatedPlaceRefMvo,
-    RelatedResourceOrderItemMvo, ResourceAdministrativeStateType,
-    ResourceOperationalStateType, ResourceRefOrValueMvo, ResourceRelationshipMvo,
-    ResourceSpecificationRefMvo, ResourceStatusType, ResourceUsageStateType,
+    AttachmentRefMvo, CharacteristicMvo, ExternalIdentifierMvo, FeatureMvo, IntentRefMvo, NoteMvo,
+    RelatedPartyRefOrPartyRoleRefMvo, RelatedPlaceRefMvo, RelatedResourceOrderItemMvo,
+    ResourceAdministrativeStateType, ResourceOperationalStateType, ResourceRefOrValueMvo,
+    ResourceRelationshipMvo, ResourceSpecificationRefMvo, ResourceStatusType,
+    ResourceUsageStateType,
 };
-use crate::{
-    common::entity::Entity,
-    TimePeriod,
-};
+use crate::{common::entity::Entity, TimePeriod};
+use serde::{Deserialize, Serialize};
 
 ///Resource MVO
 #[derive(Debug, Clone, Serialize, Deserialize)]

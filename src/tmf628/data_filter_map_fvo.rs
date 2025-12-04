@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{DataFilterMapItemFvo, ExtensibleFvo};
+use serde::{Deserialize, Serialize};
 
 ///Data Filter Map Full Value Object``
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

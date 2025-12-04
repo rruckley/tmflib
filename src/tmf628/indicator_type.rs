@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///This is enumeration for Indicator Type
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum IndicatorType {

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::EntityRefFvo;
+use serde::{Deserialize, Serialize};
 
 /// Policy Reference FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

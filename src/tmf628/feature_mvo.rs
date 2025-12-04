@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicMvo, FeatureRelationshipMvo, PolicyRefMvo};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Feature MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::Resource;
+use serde::{Deserialize, Serialize};
 
 ///Logical Resource schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::EntityRef;
+use serde::{Deserialize, Serialize};
 
 ///Attachment Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

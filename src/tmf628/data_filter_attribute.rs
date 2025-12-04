@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///give an attribute used for filtering
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DataFilterAttribute {

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ResourceFvo;
+use serde::{Deserialize, Serialize};
 
 ///Logical Resource Full Value Object
 #[derive(Debug, Clone, Serialize, Deserialize)]

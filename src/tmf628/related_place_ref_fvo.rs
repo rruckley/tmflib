@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{ExtensibleFvo, PlaceRefFvo};
+use serde::{Deserialize, Serialize};
 
 ///Related Place Reference FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

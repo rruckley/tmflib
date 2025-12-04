@@ -1,9 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{PerformanceMeasurementRefOrValue};
-use crate::{
-    common::entity::Entity,
-    TimePeriod,
-};
+use super::PerformanceMeasurementRefOrValue;
+use crate::{common::entity::Entity, TimePeriod};
+use serde::{Deserialize, Serialize};
 
 /// Performance Measurement Relationship
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

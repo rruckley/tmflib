@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ExtensibleFvo;
+use serde::{Deserialize, Serialize};
 
 ///Note structure to capture user comments
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{CharacteristicRelationship};
+use super::CharacteristicRelationship;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 /// A characteristic is a named attribute that can be assigned to an entity. Characteristics are used to define properties of an entity that can be measured, observed, or configured. Examples of characteristics include color, size, weight, and performance metrics.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Characteristic {

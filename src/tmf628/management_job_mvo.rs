@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{DataAccessEndpointMvo, Entity, FileTransferDataMvo, ScheduleDefinitionMvo};
+use serde::{Deserialize, Serialize};
 
 /// Management Job Mvo
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

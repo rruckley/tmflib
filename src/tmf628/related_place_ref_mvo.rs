@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{PlaceRefMvo};
+use super::PlaceRefMvo;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Related Place Reference MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

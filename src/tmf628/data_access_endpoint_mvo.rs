@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{DataFilterMapMvo, LogicalResourceMvo};
+use serde::{Deserialize, Serialize};
 
 ///Data Access Endpoint Multi Value Object
 #[derive(Debug, Clone, Serialize, Deserialize)]

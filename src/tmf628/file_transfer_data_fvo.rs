@@ -1,7 +1,5 @@
-use serde::{Serialize, Deserialize};
-use super::{
-    CompressionType, Duration, ExtensibleFvo, PackingType, ProtocolTransferDataFvo,
-};
+use super::{CompressionType, Duration, ExtensibleFvo, PackingType, ProtocolTransferDataFvo};
+use serde::{Deserialize, Serialize};
 
 ///File Transfer Data FVO
 #[derive(Debug, Clone, Serialize, Deserialize)]

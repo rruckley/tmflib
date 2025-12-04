@@ -1,9 +1,9 @@
-use serde::{Serialize, Deserialize};
 use super::{
     Granularity, ManagementJob, MonitoredClassCriteria, MonitoredInstancesCriteria,
     PerformanceIndicatorGroupSpecification, PerformanceIndicatorSpecificationRefOrValue,
     TrackingRecord,
 };
+use serde::{Deserialize, Serialize};
 
 ///Measurement Job
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -29,15 +29,11 @@ pub struct MeasurementJob {
     ///Specifications of performance indicator groups to be measured.
     #[serde(rename = "performanceIndicatorGroupSpecification")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub performance_indicator_group_specification: Vec<
-        PerformanceIndicatorGroupSpecification,
-    >,
+    pub performance_indicator_group_specification: Vec<PerformanceIndicatorGroupSpecification>,
     ///Specifications of performance indicators to be measured.
     #[serde(rename = "performanceIndicatorSpecification")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub performance_indicator_specification: Vec<
-        PerformanceIndicatorSpecificationRefOrValue,
-    >,
+    pub performance_indicator_specification: Vec<PerformanceIndicatorSpecificationRefOrValue>,
     ///The identifier of the application that produces performance indicators.
     #[serde(rename = "producingApplicationId")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

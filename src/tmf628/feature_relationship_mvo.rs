@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{EntityRefMvo};
+use super::EntityRefMvo;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///Feature Relationship MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

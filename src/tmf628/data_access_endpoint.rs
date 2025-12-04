@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{DataFilterMap, LogicalResource};
+use serde::{Deserialize, Serialize};
 
 ///Data Access Endpoint schema
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
-use super::{PerformanceIndicatorSpecificationRefOrValue};
-use crate::common::extensible::Extensible;
+use super::PerformanceIndicatorSpecificationRefOrValue;
 use crate::common::addressable::Addressable;
+use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Performance Indicator Group Specification
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -22,9 +22,7 @@ pub struct PerformanceIndicatorGroupSpecification {
     ///Specification of performance indicators included in this group
     #[serde(rename = "performanceIndicatorSpecification")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub performance_indicator_specification: Vec<
-        PerformanceIndicatorSpecificationRefOrValue,
-    >,
+    pub performance_indicator_specification: Vec<PerformanceIndicatorSpecificationRefOrValue>,
 }
 impl std::fmt::Display for PerformanceIndicatorGroupSpecification {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {

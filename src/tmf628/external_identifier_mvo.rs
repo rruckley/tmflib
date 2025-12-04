@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///External Identifier MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
