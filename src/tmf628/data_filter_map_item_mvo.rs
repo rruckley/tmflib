@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{DataFilterAttributeStringArray, DataFilterTemplateMvo};
+use serde::{Deserialize, Serialize};
 ///definition of a field used for filtering template with the associated attributes.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DataFilterMapItemMvo {

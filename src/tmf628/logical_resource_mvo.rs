@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ResourceMvo;
+use serde::{Deserialize, Serialize};
 
 ///Logical Resource MVO
 #[derive(Debug, Clone, Serialize, Deserialize)]

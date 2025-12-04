@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicFvo, ExtensibleFvo};
+use serde::{Deserialize, Serialize};
 
 ///Tracking Record FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

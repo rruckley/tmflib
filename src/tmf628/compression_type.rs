@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::CompressionEnumType;
+use serde::{Deserialize, Serialize};
 ///File compression type.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CompressionType {

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicRelationship, Extensible};
+use serde::{Deserialize, Serialize};
 
 ///Characteristic defines a characteristic for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

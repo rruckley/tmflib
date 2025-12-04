@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use crate::common::extensible::Extensible;
 use crate::common::addressable::Addressable;
+use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Entity Ref MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

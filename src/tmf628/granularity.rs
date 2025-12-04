@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Sampling rate of the collection or production of performance indicators.
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum Granularity {

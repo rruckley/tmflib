@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///A period of time, either as a deadline (endDateTime only) a startDateTime only, or both
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TimePeriodOld {

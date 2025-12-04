@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Enumeration of supported compressions. All extensions allowed.
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum CompressionEnumType {

@@ -1,9 +1,9 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    AdministrativeState, DataAccessEndpointFvo, Entity, ExecutionStateType,
-    FileTransferDataFvo, ScheduleDefinitionFvo,
+    AdministrativeState, DataAccessEndpointFvo, Entity, ExecutionStateType, FileTransferDataFvo,
+    ScheduleDefinitionFvo,
 };
 use crate::DateTime;
+use serde::{Deserialize, Serialize};
 ///Management Job FVO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ManagementJobFvo {

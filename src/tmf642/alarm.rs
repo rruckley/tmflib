@@ -13,33 +13,27 @@
 // limitations under the License.
 //! Alarm defines an alarm for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 
-use serde::{Serialize, Deserialize};
 use super::{
-    AlarmRef, AlarmType, AlarmedObjectRef, Comment, CrossedThresholdInformation,
-    PerceivedSeverity, RelatedPlace, ServiceRef,
-    MOD_PATH,
+    AlarmRef, AlarmType, AlarmedObjectRef, Comment, CrossedThresholdInformation, PerceivedSeverity,
+    RelatedPlace, ServiceRef, MOD_PATH,
 };
-use crate::{
-    DateTime,
-    HasId,
-    Uri,
-    common::entity::Entity,
-};
+use crate::{common::entity::Entity, DateTime, HasId, Uri};
+use serde::{Deserialize, Serialize};
 
-const CLASS_PATH : &str = "alarm";
+const CLASS_PATH: &str = "alarm";
 
 use tmflib_derive::HasId;
 
 ///Alarm defines an alarm for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
-#[derive(Default,Debug, Clone, Serialize, Deserialize, HasId)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize, HasId)]
 pub struct Alarm {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     /// Unique identifier of the alarm
-    pub id : Option<String>,
+    pub id: Option<String>,
     /// Hyperlink to the alarm
-    pub href : Option<Uri>,
+    pub href: Option<Uri>,
     ///Provides the Acknowledgement State of the alarm (unacknowledged, acknowledged).
     #[serde(rename = "ackState")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -77,7 +71,7 @@ pub struct Alarm {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub alarm_raised_time: Option<DateTime>,
     /**Indicates the time (as a date + time) at which the alarm was reported by the owning OSS. It might be different from the alarmRaisedTime. For instance, if the alarm list is maintained by an EMS, the alarmRaisedtime would be the time the alarm
-  was detected by the NE, while the alarmReportingTime would be the time this alarm was stored in the alarm list of the EMS.*/
+    was detected by the NE, while the alarmReportingTime would be the time this alarm was stored in the alarm list of the EMS.*/
     #[serde(rename = "alarmReportingTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub alarm_reporting_time: Option<DateTime>,
@@ -125,7 +119,7 @@ pub struct Alarm {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub parent_alarm: Vec<AlarmRef>,
     /**Lists the possible severities that can be allocated to an Alarm. The values are consistent with ITU-T Recommendation X.733.
-Once an alarm has been cleared, its perceived severity is set to 'cleared' and can no longer be set.*/
+    Once an alarm has been cleared, its perceived severity is set to 'cleared' and can no longer be set.*/
     #[serde(rename = "perceivedSeverity")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub perceived_severity: Option<PerceivedSeverity>,

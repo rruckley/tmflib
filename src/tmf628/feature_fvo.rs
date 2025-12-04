@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicFvo, ExtensibleFvo, FeatureRelationshipFvo, PolicyRefFvo};
+use serde::{Deserialize, Serialize};
 
 ///Feature FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

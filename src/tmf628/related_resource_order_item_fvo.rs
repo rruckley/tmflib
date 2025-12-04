@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{ExtensibleFvo, OrderItemActionType};
+use serde::{Deserialize, Serialize};
 
 ///Related Resource Order Item FVO
 #[derive(Debug, Clone, Serialize, Deserialize)]

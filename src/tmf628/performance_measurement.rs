@@ -13,14 +13,9 @@
 // limitations under the License.
 //! Performance Measurement object model for TMF628 Performance Management
 
-use serde::{Serialize, Deserialize};
-use super::{
-    MeasurementCollectionJobRef, PerformanceMeasurementRelationship,
-};
-use crate::{
-    common::entity::Entity,
-    TimePeriod,
-};
+use super::{MeasurementCollectionJobRef, PerformanceMeasurementRelationship};
+use crate::{common::entity::Entity, TimePeriod};
+use serde::{Deserialize, Serialize};
 
 /// Performance Measurement
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

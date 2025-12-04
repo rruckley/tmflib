@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Characteristic Full Value Object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

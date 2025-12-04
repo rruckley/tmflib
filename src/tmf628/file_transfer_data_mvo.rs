@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{CompressionType, Duration, PackingType, ProtocolTransferData};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///
 #[derive(Debug, Clone, Serialize, Deserialize)]

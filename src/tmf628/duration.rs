@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///A time interval in a given unit of time
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Duration {

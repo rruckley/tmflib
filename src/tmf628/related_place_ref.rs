@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{PlaceRef};
+use super::PlaceRef;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Related Place Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

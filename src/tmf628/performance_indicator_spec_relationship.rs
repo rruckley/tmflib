@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use crate::TimePeriod;
 use crate::common::entity::Entity;
+use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// Performance Indicator Spec Relationship
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::PackingEnumType;
+use serde::{Deserialize, Serialize};
 ///Specify if the output file(s) are to be packed.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PackingType {

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ExtensibleFvo;
+use serde::{Deserialize, Serialize};
 
 /// Monitored Instances Criteria Fvo
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

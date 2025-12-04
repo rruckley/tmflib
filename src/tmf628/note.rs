@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Note structure to capture user comments
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
