@@ -2,6 +2,7 @@ use serde::{Serialize, Deserialize};
 use super::{ExtensibleFvo};
 use crate::TimePeriod;
 // use crate::common::extensible::Extensible;
+/// A term or condition of an agreement
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AgreementTermOrConditionFvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

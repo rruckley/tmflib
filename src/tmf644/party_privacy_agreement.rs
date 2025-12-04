@@ -1,7 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::{Agreement, PartyPrivacyProfileCharacteristic, PartyPrivacyProfileRef};
+
+/// Party Privacy Agreement
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyPrivacyAgreement {
+    ///Base Agreement schema
     #[serde(flatten)]
     pub agreement: Agreement,
     ///The privacy profiles that are the subject of the agreement

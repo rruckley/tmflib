@@ -1,8 +1,11 @@
 use serde::{Serialize, Deserialize};
 use super::{CharacteristicSpecificationFvo, PartyRoleSpecificationRefFvo};
 use crate::TimePeriod;
+
+/// Party Privacy Profile Specification Characteristic FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyPrivacyProfileSpecificationCharacteristicFvo {
+    ///Base Characteristic Specification FVO schema for use in TMForum Open-APIs
     #[serde(flatten)]
     pub characteristic_specification_fvo: CharacteristicSpecificationFvo,
     ///A list of roles in the organization who are allowed access to this characteristic

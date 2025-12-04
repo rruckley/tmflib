@@ -5,18 +5,21 @@ use super::{
 };
 use crate::TimePeriod;
 use crate::common::entity::Entity;
-// use crate::common::extensible::Extensible;
+
+/// Party Privacy Profile
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyPrivacyProfile {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
+    ///Reference to the party (or party role) that agreed to the privacy profile
     #[serde(rename = "agreedByParty")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub agreed_by_party: Option<RelatedPartyRefOrPartyRoleRef>,
     ///Reference to Party Privacy Agreement resource
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub agreement: Option<PartyPrivacyAgreementRef>,
+    ///Reference to the party (or party role) to which the privacy profile applies
     #[serde(rename = "applicableForParty")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub applicable_for_party: Option<RelatedPartyRefOrPartyRoleRef>,

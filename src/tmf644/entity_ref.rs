@@ -1,7 +1,9 @@
 use serde::{Serialize, Deserialize};
 use super::{Addressable, Extensible};
+
+///Base entity reference schema for use in TMForum Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
-pub struct EntityRef {
+pub struct EntityRefXXX {
     ///The actual type of the target instance when needed for disambiguation.
     #[serde(rename = "@referredType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -21,18 +23,18 @@ pub struct EntityRef {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 }
-impl std::fmt::Display for EntityRef {
+impl std::fmt::Display for EntityRefXXX {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-impl std::ops::Deref for EntityRef {
+impl std::ops::Deref for EntityRefXXX {
     type Target = Addressable;
     fn deref(&self) -> &Self::Target {
         &self.addressable
     }
 }
-impl std::ops::DerefMut for EntityRef {
+impl std::ops::DerefMut for EntityRefXXX {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.addressable
     }

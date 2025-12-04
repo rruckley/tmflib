@@ -1,18 +1,23 @@
 use serde::{Serialize, Deserialize};
 use super::{
     AgreementAuthorization, AgreementItem, AgreementRelationship,
-    AgreementSpecificationRef, Characteristic, Entity, PartyRefOrPartyRoleRef,
+    AgreementSpecificationRef, Characteristic, PartyRefOrPartyRoleRef,
     RelatedDocumentRefOrValue, RelatedPartyRefOrPartyRoleRef,
 };
 use crate::TimePeriod;
+use crate::common::entity::Entity;
+
+///Base entity schema for use in TMForum Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Agreement {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
+    ///List of authorizations associated with the agreement
     #[serde(rename = "agreementAuthorization")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub agreement_authorization: Vec<AgreementAuthorization>,
+    ///List of items included in the agreement
     #[serde(rename = "agreementItem")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub agreement_item: Vec<AgreementItem>,
@@ -20,9 +25,11 @@ pub struct Agreement {
     #[serde(rename = "agreementPeriod")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub agreement_period: Option<TimePeriod>,
+    ///List of relationships to other agreements
     #[serde(rename = "agreementRelationship")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub agreement_relationship: Vec<AgreementRelationship>,
+    ///Reference to the agreement specification that is the basis for this agreement
     #[serde(rename = "agreementSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub agreement_specification: Option<AgreementSpecificationRef>,
@@ -30,6 +37,7 @@ pub struct Agreement {
     #[serde(rename = "agreementType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub agreement_type: Option<String>,
+    ///List of characteristics of the agreement
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub characteristic: Vec<Characteristic>,
     ///A period of time, either as a deadline (endDateTime only) a startDateTime only, or both
@@ -39,6 +47,7 @@ pub struct Agreement {
     ///Narrative that explains the agreement and details about the it , such as why the agreement is taking place.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+    ///List of parties or party roles engaged in the agreement
     #[serde(rename = "engagedParty")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub engaged_party: Vec<PartyRefOrPartyRoleRef>,
@@ -53,6 +62,7 @@ pub struct Agreement {
     #[serde(rename = "relatedDocument")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub related_document: Vec<RelatedDocumentRefOrValue>,
+    ///List of parties or party roles involved in the agreement
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub related_party: Vec<RelatedPartyRefOrPartyRoleRef>,

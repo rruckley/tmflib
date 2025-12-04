@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{AgreementTermOrCondition, Extensible};
+
+/// An item of an agreement
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AgreementItem {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
@@ -8,6 +10,7 @@ pub struct AgreementItem {
     ///Identifier of the Agreement item (generally it is a sequence number 01, 02, 03, ...)
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
+    ///Terms or conditions associated with the agreement item
     #[serde(rename = "termOrCondition")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub term_or_condition: Vec<AgreementTermOrCondition>,

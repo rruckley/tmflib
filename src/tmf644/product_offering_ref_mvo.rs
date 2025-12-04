@@ -1,7 +1,11 @@
 use serde::{Serialize, Deserialize};
-use super::EntityRef;
+
+use crate::common::entity_ref::EntityRef;
+
+/// Product Offering Reference MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ProductOfferingRefMvo {
+    ///Base Entity Reference schema for use in TMForum Open-APIs
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Version of the product offering

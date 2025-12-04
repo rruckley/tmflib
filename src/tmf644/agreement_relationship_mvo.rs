@@ -1,9 +1,11 @@
 use serde::{Serialize, Deserialize};
-use super::{EntityRef};
 use crate::TimePeriod;
-// use crate::common::extensible::Extensible;
+use crate::common::entity_ref::EntityRef;
+
+/// AgreementRelationshipMvo struct
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AgreementRelationshipMvo {
+    ///Base entity reference schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Unique identifier of the related agreement

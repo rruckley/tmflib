@@ -1,7 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::{EntityRefFvo, ExtensibleFvo};
+
+/// Reference to an AgreementSpecification entity
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AgreementSpecificationRefFvo {
+    ///Base entity reference schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref_fvo: EntityRefFvo,
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

@@ -1,7 +1,11 @@
 use serde::{Serialize, Deserialize};
-use super::EntityRef;
+
+use crate::common::entity_ref::EntityRef;
+
+/// Reference to a ProductOffering
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ProductOfferingRef {
+    /// Entity reference
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Version of the product offering

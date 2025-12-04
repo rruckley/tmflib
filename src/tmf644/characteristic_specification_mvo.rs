@@ -4,6 +4,8 @@ use super::{
 };
 use crate::TimePeriod;
 use crate::common::extensible::Extensible;
+
+/// CharacteristicSpecification defined in terms of a base schema that is extended to add attributes specific to the kind of characteristic being described
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicSpecificationMvo {
     ///This (optional) field provides a link to the schema describing the value type.

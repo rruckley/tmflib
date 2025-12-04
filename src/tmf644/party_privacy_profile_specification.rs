@@ -1,9 +1,12 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    Entity, PartyPrivacyProfileSpecificationCharacteristic,
+    PartyPrivacyProfileSpecificationCharacteristic,
     PartyPrivacyRoleSpecification, ProductOfferingRef, RelatedPartyRefOrPartyRoleRef,
 };
+use crate::common::entity::Entity;
 use crate::TimePeriod;
+
+/// Specification of a Party Privacy Profile
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyPrivacyProfileSpecification {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -27,6 +30,7 @@ pub struct PartyPrivacyProfileSpecification {
     ///Name of the specification
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    ///List of product offerings that are covered by this specification
     #[serde(rename = "productOffering")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub product_offering: Vec<ProductOfferingRef>,

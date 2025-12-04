@@ -4,6 +4,8 @@ use super::{
     ExtensibleFvo,
 };
 use crate::TimePeriod;
+
+/// A specification that defines a characteristic that can be used to describe an entity.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicSpecificationFvo {
     ///This (optional) field provides a link to the schema describing the value type.

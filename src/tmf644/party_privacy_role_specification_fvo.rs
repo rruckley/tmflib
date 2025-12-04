@@ -1,10 +1,13 @@
 use serde::{Serialize, Deserialize};
 use super::{AgreementSpecificationRefFvo, PartyRoleSpecificationRefFvo};
+
+/// Party Privacy Role Specification FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyPrivacyRoleSpecificationFvo {
     ///Party role specification reference. A party role specification gives additional details on the part played by a party in a given context.
     #[serde(flatten)]
     pub party_role_specification_ref_fvo: PartyRoleSpecificationRefFvo,
+    ///Agreement specifications associated with this party role specification.
     #[serde(rename = "agreementSpecification")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub agreement_specification: Vec<AgreementSpecificationRefFvo>,

@@ -1,10 +1,13 @@
 use serde::{Serialize, Deserialize};
 use super::{CharacteristicMvo, Extensible, RelatedPartyRefOrPartyRoleRefMvo};
+
+/// Party Privacy Profile Characteristic MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyPrivacyProfileCharacteristicMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
+    ///The characteristic to which the privacy rules apply
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub characterisitc: Option<CharacteristicMvo>,
     ///Defines the purpose authorized or refused for the characteristic (e.g. ADMIN, INFORMATION, MARKETING, RESEARCH, etc.

@@ -1,8 +1,11 @@
 use serde::{Serialize, Deserialize};
 use super::{CharacteristicSpecificationMvo, PartyRoleSpecificationRefMvo};
 use crate::TimePeriod;
+
+/// Party Privacy Profile Specification Characteristic MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyPrivacyProfileSpecificationCharacteristicMvo {
+    ///Base Characteristic Specification MVO schema for use in TMForum Open-APIs
     #[serde(flatten)]
     pub characteristic_specification_mvo: CharacteristicSpecificationMvo,
     ///A list of roles in the organization who are allowed access to this characteristic

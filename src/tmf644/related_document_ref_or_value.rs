@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::{DocumentRefOrValue, Extensible};
+
+/// Related Document Reference or Value
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedDocumentRefOrValue {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
@@ -8,6 +10,7 @@ pub struct RelatedDocumentRefOrValue {
     ///
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub document: Option<DocumentRefOrValue>,
+    ///Role of the related document
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<String>,
 }
