@@ -56,7 +56,7 @@ pub use entity_ref_fvo::*;
 pub use entity_ref_mvo::*;
 pub use execution_state_type::*;
 // pub use extensible::*;
-pub use extensible_fvo::*;
+// pub use extensible_fvo::*;
 pub use external_identifier::*;
 pub use external_identifier_fvo::*;
 pub use external_identifier_mvo::*;

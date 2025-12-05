@@ -1,2 +1,2 @@
-use serde::{Deserialize, Serialize};
+//! Empty module
 
