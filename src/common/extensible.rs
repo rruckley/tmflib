@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
 pub struct Extensible {
     ///When sub-classing, this defines the super-class
     #[serde(rename = "@baseType")]
