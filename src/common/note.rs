@@ -68,6 +68,7 @@ mod test {
     use super::Note;
 
     const NOTE_JSON: &str = "{
+        \"@type\" : \"Note\",
         \"id\" : \"N123\",
         \"author\" : \"john.q.citizen@example.com\",
         \"text\" : \"A Note\"
