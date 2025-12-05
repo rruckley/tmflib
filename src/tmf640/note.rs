@@ -10,7 +10,7 @@ pub struct NoteXXX {
     pub author: Option<String>,
     ///Date of the note
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub date: Option<chrono::DateTime<chrono::Utc>>,
+    pub date: Option<crate::DateTime>,
     ///Identifier of the note within its containing entity
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,

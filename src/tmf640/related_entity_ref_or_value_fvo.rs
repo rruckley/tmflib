@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{EntityRefOrValueFvo, Extensible};
+use super::{EntityRefOrValueFvo};
+use crate::common::extensible::Extensible;
+
+///This is a related entity which may be represented either as a reference or as a value object.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedEntityRefOrValueFvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

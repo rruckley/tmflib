@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{EntityRef, TimePeriod};
+use super::{EntityRef};
+use crate::TimePeriod;
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct FeatureRelationship {
     #[serde(flatten)]

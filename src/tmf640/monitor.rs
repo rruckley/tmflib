@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{Entity, Request, Response};
+use super::{Request, Response};
+use crate::common::entity::Entity;
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Monitor {
     ///Base entity schema for use in TMForum Open-APIs. Property.

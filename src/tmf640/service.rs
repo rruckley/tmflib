@@ -1,10 +1,13 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    Characteristic, ContextUpdate, Entity, ExternalIdentifier, Feature, IntentRefOrValue,
-    Note, RelatedEntityRefOrValue, RelatedPartyRefOrPartyRoleRef, RelatedPlaceRefOrValue,
+    Characteristic, ContextUpdate, ExternalIdentifier, Feature, IntentRefOrValue,
+    RelatedEntityRefOrValue, RelatedPartyRefOrPartyRoleRef, RelatedPlaceRefOrValue,
     RelatedServiceOrderItem, ResourceRef, ServiceOperatingStatusType, ServiceRefOrValue,
     ServiceRelationship, ServiceSpecificationRef, ServiceStateType,
 };
+// use crate::common::extensible::Extensible;
+use crate::common::note::Note;
+use crate::common::entity::Entity;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Service {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -19,7 +22,7 @@ pub struct Service {
     ///Date when the service ends
     #[serde(rename = "endDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub end_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub end_date: Option<crate::DateTime>,
     ///A list of external identifiers assoicated with this service
     #[serde(rename = "externalIdentifier")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -96,7 +99,7 @@ pub struct Service {
     ///Date when the service starts
     #[serde(rename = "startDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub start_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub start_date: Option<crate::DateTime>,
     ///This attribute is an enumerated integer that indicates how the Service is started, such as: 0: Unknown; 1: Automatically by the managed environment; 2: Automatically by the owning device; 3: Manually by the Provider of the Service; 4: Manually by a Customer of the Provider; 5: Any of the above
     #[serde(rename = "startMode")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

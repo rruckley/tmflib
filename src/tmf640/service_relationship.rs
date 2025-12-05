@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{Characteristic, Extensible, ServiceRefOrValue};
+use super::{Characteristic, ServiceRefOrValue};
+use crate::common::extensible::Extensible  ;
+
+///This is a relationship between two services.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceRelationship {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
