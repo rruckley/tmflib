@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{EntityRefMvo, RelatedPartyRefOrPartyRoleRefMvo};
-use crate::common::{ extensible::Extensible};
+use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Context Update MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

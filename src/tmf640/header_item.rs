@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///An item typically included in a request or response
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct HeaderItem {

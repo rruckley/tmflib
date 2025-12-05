@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{Request, Response};
 use crate::common::entity::Entity;
+use serde::{Deserialize, Serialize};
 
 /// Monitor
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

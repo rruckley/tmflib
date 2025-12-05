@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{EntityRef};
-use crate::common::extensible::Extensible  ;
+use super::EntityRef;
+use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Reference to a service specification, by version.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Resource reference, for when Resource is used by other entities.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceRefMvo {}

@@ -1,4 +1,4 @@
-use super::{CharacteristicRelationshipFvo};
+use super::CharacteristicRelationshipFvo;
 use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 

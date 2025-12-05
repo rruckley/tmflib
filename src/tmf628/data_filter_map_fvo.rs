@@ -1,4 +1,4 @@
-use super::{DataFilterMapItemFvo};
+use super::DataFilterMapItemFvo;
 use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 

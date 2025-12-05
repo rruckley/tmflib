@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicMvo, FeatureRelationshipMvo, PolicyRefMvo};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///A characteristic that can be used to describe an entity
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

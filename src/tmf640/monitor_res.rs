@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Response object for Monitor
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct MonitorRes {}

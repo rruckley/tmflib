@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{CharacteristicRelationshipFvo};
+use super::CharacteristicRelationshipFvo;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 /// Characteristic FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

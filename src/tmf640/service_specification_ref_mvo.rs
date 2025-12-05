@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{EntityRefMvo};
-use crate::common::extensible::Extensible  ;
+use super::EntityRefMvo;
+use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///ServiceSpecificationRefMvo
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

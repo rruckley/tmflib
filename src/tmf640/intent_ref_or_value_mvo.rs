@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Intent Ref (if Intent already exists) or Value (if Intent be created or its details be presented)
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct IntentRefOrValueMvo {}

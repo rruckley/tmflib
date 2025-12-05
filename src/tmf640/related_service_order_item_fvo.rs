@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{OrderItemActionType};
-use crate::common::extensible::Extensible  ;
+use super::OrderItemActionType;
+use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///A related service order item, with a role.
 #[derive(Debug, Clone, Serialize, Deserialize)]

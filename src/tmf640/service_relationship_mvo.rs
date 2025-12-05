@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicMvo, ServiceRefOrValueMvo};
-use crate::common::extensible::Extensible  ;
+use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///This is a relationship between two services.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

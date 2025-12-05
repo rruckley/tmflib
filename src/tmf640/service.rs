@@ -1,13 +1,13 @@
-use serde::{Serialize, Deserialize};
 use super::{
     Characteristic, ContextUpdate, ExternalIdentifier, Feature, IntentRefOrValue,
     RelatedEntityRefOrValue, RelatedPartyRefOrPartyRoleRef, RelatedPlaceRefOrValue,
     RelatedServiceOrderItem, ResourceRef, ServiceOperatingStatusType, ServiceRefOrValue,
     ServiceRelationship, ServiceSpecificationRef, ServiceStateType,
 };
+use serde::{Deserialize, Serialize};
 // use crate::common::extensible::Extensible;
-use crate::common::note::Note;
 use crate::common::entity::Entity;
+use crate::common::note::Note;
 
 ///Service
 #[derive(Debug, Clone, Serialize, Deserialize)]

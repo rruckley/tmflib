@@ -1,5 +1,5 @@
-use crate::common::extensible::ExtensibleFvo;
 use crate::common::addressable::Addressable;
+use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 
 ///Entity Ref FVO

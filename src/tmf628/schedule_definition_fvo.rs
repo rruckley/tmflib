@@ -1,6 +1,6 @@
 use super::{DayOfWeekRecurrenceFvo, MonthlyScheduleDayOfWeekDefinitionFvo};
-use serde::{Deserialize, Serialize};
 use crate::common::extensible::ExtensibleFvo;
+use serde::{Deserialize, Serialize};
 
 ///Schedule Definition FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

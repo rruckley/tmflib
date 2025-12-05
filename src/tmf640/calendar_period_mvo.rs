@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{HourPeriodMvo};
+use super::HourPeriodMvo;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///CalendarPeriodMvo object representing a period of time in a calendar
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{EntityRef, RelatedPartyRefOrPartyRoleRef};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///An update of the context of an entity, such as status or state
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

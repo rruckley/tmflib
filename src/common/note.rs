@@ -1,11 +1,11 @@
 //! Note Module
 
+use super::extensible::Extensible;
 use crate::DateTime;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 use uuid::Uuid;
-use super::extensible::Extensible;
 /// Notes object for journaling against many TMF objects
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]

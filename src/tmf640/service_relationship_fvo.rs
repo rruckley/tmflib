@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicFvo, ServiceRefOrValueFvo};
-use crate::common::extensible::Extensible  ;
+use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///This is a ServiceRelationship which may be represented either as a reference or as an inline value.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

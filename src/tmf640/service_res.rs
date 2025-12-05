@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Response object for Service
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceRes {}

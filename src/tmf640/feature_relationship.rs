@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{EntityRef};
+use super::EntityRef;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///FeatureRelationship
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

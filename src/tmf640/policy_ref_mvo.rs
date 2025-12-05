@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::EntityRefMvo;
+use serde::{Deserialize, Serialize};
 
 ///PolicyRefMvo
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

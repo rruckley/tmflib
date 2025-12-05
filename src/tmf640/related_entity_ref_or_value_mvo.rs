@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{EntityRefOrValueMvo};
-use crate::common::extensible::Extensible  ;
+use super::EntityRefOrValueMvo;
+use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///This is a related entity which may be represented either as a reference or as an inline value.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

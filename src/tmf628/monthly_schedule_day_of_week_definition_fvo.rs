@@ -1,4 +1,4 @@
-use super::{DayOfMonthRecurrenceFvo};
+use super::DayOfMonthRecurrenceFvo;
 use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 

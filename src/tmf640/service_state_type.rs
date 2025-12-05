@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Valid values for the lifecycle state of the service
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum ServiceStateType {
