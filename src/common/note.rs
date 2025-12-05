@@ -12,7 +12,7 @@ use super::extensible::Extensible;
 pub struct Note {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
-    pub extensible: Extensible,
+    extensible: Extensible,
     id: String,
     author: Option<String>,
     date: Option<DateTime>,
