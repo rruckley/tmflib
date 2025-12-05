@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{Extensible, HourPeriod};
+use super::{HourPeriod};
+use crate::common::extensible::Extensible;
+
+///A period of time, either as a deadline (endDateTime only) a startDateTime only, or both
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CalendarPeriod {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

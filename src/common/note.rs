@@ -5,11 +5,14 @@ use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 use uuid::Uuid;
-
+use super::extensible::Extensible;
 /// Notes object for journaling against many TMF objects
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Note {
+    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    #[serde(flatten)]
+    pub extensible: Extensible,
     id: String,
     author: Option<String>,
     date: Option<DateTime>,
@@ -23,6 +26,7 @@ impl Note {
         let now = Utc::now();
         let time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
         Note {
+            extensible: Extensible::default(),
             id,
             author: None,
             date: Some(time.to_string()),
@@ -39,6 +43,23 @@ impl Note {
 impl From<&str> for Note {
     fn from(value: &str) -> Self {
         Note::new(value)
+    }
+}
+
+impl std::fmt::Display for Note {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+impl std::ops::Deref for Note {
+    type Target = Extensible;
+    fn deref(&self) -> &Self::Target {
+        &self.extensible
+    }
+}
+impl std::ops::DerefMut for Note {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.extensible
     }
 }
 

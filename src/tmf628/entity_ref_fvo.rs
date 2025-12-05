@@ -1,4 +1,4 @@
-use super::ExtensibleFvo;
+use crate::common::extensible::ExtensibleFvo;
 use crate::common::addressable::Addressable;
 use serde::{Deserialize, Serialize};
 

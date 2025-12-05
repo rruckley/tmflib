@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{EntityRefMvo, Extensible, RelatedPartyRefOrPartyRoleRefMvo};
+use super::{EntityRefMvo, RelatedPartyRefOrPartyRoleRefMvo};
+use crate::common::{ extensible::Extensible};
+
+///Context Update MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ContextUpdateMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
@@ -11,7 +14,7 @@ pub struct ContextUpdateMvo {
     ///The date and time the status/state last changed.
     #[serde(rename = "lastUpdate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub last_update: Option<chrono::DateTime<chrono::Utc>>,
+    pub last_update: Option<crate::DateTime>,
     ///The reason/context for the current value of the status/state.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,

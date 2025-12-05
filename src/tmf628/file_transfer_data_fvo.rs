@@ -1,5 +1,6 @@
-use super::{CompressionType, Duration, ExtensibleFvo, PackingType, ProtocolTransferDataFvo};
+use super::{CompressionType, Duration, PackingType, ProtocolTransferDataFvo};
 use serde::{Deserialize, Serialize};
+use crate::common::extensible::ExtensibleFvo;
 
 ///File Transfer Data FVO
 #[derive(Debug, Clone, Serialize, Deserialize)]

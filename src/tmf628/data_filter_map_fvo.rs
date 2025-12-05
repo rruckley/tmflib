@@ -1,4 +1,5 @@
-use super::{DataFilterMapItemFvo, ExtensibleFvo};
+use super::{DataFilterMapItemFvo};
+use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 
 ///Data Filter Map Full Value Object``

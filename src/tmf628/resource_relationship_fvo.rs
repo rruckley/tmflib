@@ -1,5 +1,6 @@
-use super::{CharacteristicFvo, ExtensibleFvo, ResourceRefOrValueFvo};
+use super::{CharacteristicFvo, ResourceRefOrValueFvo};
 use serde::{Deserialize, Serialize};
+use crate::common::extensible::ExtensibleFvo;
 
 ///Resource Relationship FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

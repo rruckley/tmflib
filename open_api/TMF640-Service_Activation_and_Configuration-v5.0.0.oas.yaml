@@ -3796,7 +3796,7 @@ components:
           enum:
             - LineString
         coordinates:
-          $ref: '#/components/schemas/lineString'
+          $ref: '#/components/schemas/LineString'
     LineString_FVO:
       type: object
       description: 'GeoJSON: A collection of Points forming a connected line'
@@ -3806,7 +3806,7 @@ components:
           enum:
             - LineString
         coordinates:
-          $ref: '#/components/schemas/lineString'
+          $ref: '#/components/schemas/LineString'
       required:
         - type
         - coordinates
@@ -3819,7 +3819,7 @@ components:
           enum:
             - LineString
         coordinates:
-          $ref: '#/components/schemas/lineString'
+          $ref: '#/components/schemas/LineString'
     Monitor:
       allOf:
         - $ref: '#/components/schemas/Entity'
@@ -3933,7 +3933,7 @@ components:
           enum:
             - MultiLineString
         coordinates:
-          $ref: '#/components/schemas/lineString'
+          $ref: '#/components/schemas/LineString'
     MultiLineString_FVO:
       type: object
       description: 'GeoJSON: A collection of distinct LineStrings'
@@ -3943,7 +3943,7 @@ components:
           enum:
             - MultiLineString
         coordinates:
-          $ref: '#/components/schemas/lineString'
+          $ref: '#/components/schemas/LineString'
       required:
         - type
         - coordinates
@@ -3956,7 +3956,7 @@ components:
           enum:
             - MultiLineString
         coordinates:
-          $ref: '#/components/schemas/lineString'
+          $ref: '#/components/schemas/LineString'
     MultiPoint:
       type: object
       description: 'GeoJSON: A collection of Points'
@@ -3966,7 +3966,7 @@ components:
           enum:
             - MultiPoint
         coordinates:
-          $ref: '#/components/schemas/positionArray'
+          $ref: '#/components/schemas/PositionArray'
     MultiPoint_FVO:
       type: object
       description: 'GeoJSON: A collection of Points'
@@ -3976,7 +3976,7 @@ components:
           enum:
             - MultiPoint
         coordinates:
-          $ref: '#/components/schemas/positionArray'
+          $ref: '#/components/schemas/PositionArray'
       required:
         - type
         - coordinates
@@ -3989,7 +3989,7 @@ components:
           enum:
             - MultiPoint
         coordinates:
-          $ref: '#/components/schemas/positionArray'
+          $ref: '#/components/schemas/PositionArray'
     MultiPolygon:
       type: object
       description: 'GeoJSON: A collection of Polygons'
@@ -3999,7 +3999,7 @@ components:
           enum:
             - MultiPolygon
         coordinates:
-          $ref: '#/components/schemas/multiPolygon'
+          $ref: '#/components/schemas/MultiPolygon'
     MultiPolygon_FVO:
       type: object
       description: 'GeoJSON: A collection of Polygons'
@@ -4009,7 +4009,7 @@ components:
           enum:
             - MultiPolygon
         coordinates:
-          $ref: '#/components/schemas/multiPolygon'
+          $ref: '#/components/schemas/MultiPolygon'
       required:
         - type
         - coordinates
@@ -4022,7 +4022,7 @@ components:
           enum:
             - MultiPolygon
         coordinates:
-          $ref: '#/components/schemas/multiPolygon'
+          $ref: '#/components/schemas/MultiPolygon'
     Note:
       allOf:
         - $ref: '#/components/schemas/Extensible'
@@ -4689,7 +4689,7 @@ components:
           enum:
             - Polygon
         coordinates:
-          $ref: '#/components/schemas/polygon'
+          $ref: '#/components/schemas/Polygon'
     Polygon_FVO:
       type: object
       description: 'GeoJSON: An array of linear rings'
@@ -4699,7 +4699,7 @@ components:
           enum:
             - Polygon
         coordinates:
-          $ref: '#/components/schemas/polygon'
+          $ref: '#/components/schemas/Polygon'
       required:
         - type
         - coordinates
@@ -4712,7 +4712,7 @@ components:
           enum:
             - Polygon
         coordinates:
-          $ref: '#/components/schemas/polygon'
+          $ref: '#/components/schemas/Polygon'
     Quantity:
       type: object
       description: An amount in a given unit
@@ -6039,7 +6039,7 @@ components:
       description: >-
         A bounding box array that contains the geometry. The axes order follows the axes order of
         the geometry
-    common:
+    Common:
       properties:
         '@id':
           description: >-
@@ -6087,7 +6087,7 @@ components:
         propertyName: '@type'
         mapping:
           JsonLdExpressionValue: '#/components/schemas/JsonLdExpressionValue'
-    common_FVO:
+    Common_FVO:
       properties:
         '@id':
           description: >-
@@ -6135,7 +6135,7 @@ components:
         propertyName: '@type'
         mapping:
           JsonLdExpressionValue: '#/components/schemas/JsonLdExpressionValue_FVO'
-    common_MVO:
+    Common_MVO:
       properties:
         '@id':
           description: >-
@@ -6183,7 +6183,7 @@ components:
         propertyName: '@type'
         mapping:
           JsonLdExpressionValue: '#/components/schemas/JsonLdExpressionValue_MVO'
-    context:
+    Context:
       additionalProperties: true
       properties:
         '@context':
@@ -6193,7 +6193,7 @@ components:
         propertyName: '@type'
         mapping:
           JsonLdExpressionValue: '#/components/schemas/JsonLdExpressionValue'
-    context_FVO:
+    Context_FVO:
       additionalProperties: true
       properties:
         '@context':
@@ -6203,7 +6203,7 @@ components:
         propertyName: '@type'
         mapping:
           JsonLdExpressionValue: '#/components/schemas/JsonLdExpressionValue_FVO'
-    context_MVO:
+    Context_MVO:
       additionalProperties: true
       properties:
         '@context':
@@ -6213,7 +6213,7 @@ components:
         propertyName: '@type'
         mapping:
           JsonLdExpressionValue: '#/components/schemas/JsonLdExpressionValue_MVO'
-    graph:
+    Graph:
       additionalProperties: true
       properties:
         '@graph':
@@ -6225,7 +6225,7 @@ components:
         propertyName: '@type'
         mapping:
           JsonLdExpressionValue: '#/components/schemas/JsonLdExpressionValue'
-    graph_FVO:
+    Graph_FVO:
       additionalProperties: true
       properties:
         '@graph':
@@ -6237,7 +6237,7 @@ components:
         propertyName: '@type'
         mapping:
           JsonLdExpressionValue: '#/components/schemas/JsonLdExpressionValue_FVO'
-    graph_MVO:
+    Graph_MVO:
       additionalProperties: true
       properties:
         '@graph':
@@ -6249,27 +6249,27 @@ components:
         propertyName: '@type'
         mapping:
           JsonLdExpressionValue: '#/components/schemas/JsonLdExpressionValue_MVO'
-    lineString:
+    LineString:
       items:
         $ref: '#/components/schemas/position'
       minItems: 2
       type: array
       description: 'GeoJSON: An array of two or more positions'
-    linearRing:
+    LinearRing:
       items:
         $ref: '#/components/schemas/position'
       minItems: 4
       type: array
       description: 'GeoJSON: An array of four or more positions where the first equals the last'
-    multiPolygon:
+    MultiPolygon:
       items:
-        $ref: '#/components/schemas/polygon'
+        $ref: '#/components/schemas/Polygon'
       minItems: 1
       type: array
       description: 'GeoJSON: An array of polygons'
-    polygon:
+    Polygon:
       items:
-        $ref: '#/components/schemas/linearRing'
+        $ref: '#/components/schemas/LinearRing'
       minItems: 1
       type: array
       description: 'GeoJSON: An array of linear rings'
@@ -6279,7 +6279,7 @@ components:
       minItems: 2
       type: array
       description: 'GeoJSON: A single position'
-    positionArray:
+    PositionArray:
       items:
         $ref: '#/components/schemas/position'
       type: array
