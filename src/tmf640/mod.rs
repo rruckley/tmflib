@@ -102,7 +102,7 @@ pub use service_specification_ref_mvo::*;
 pub use service_state_type::*;
 pub use service_res::*;
 // pub use time_period::*;
-mod addressable;
+// mod addressable;
 mod attachment_ref_or_value;
 mod attachment_ref_or_value_fvo;
 mod attachment_ref_or_value_mvo;

@@ -2,6 +2,7 @@ use serde::{Serialize, Deserialize};
 use super::{PartyRefOrPartyRoleRef};
 use crate::common::extensible::Extensible;
 
+///This is a related party or party role which may be represented either as a reference or as an inline value.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPartyRefOrPartyRoleRef {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

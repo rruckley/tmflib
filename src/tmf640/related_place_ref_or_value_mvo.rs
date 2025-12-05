@@ -11,6 +11,7 @@ pub struct RelatedPlaceRefOrValueMvo {
     ///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Place entity and not the PlaceRefOrValue class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub place: Option<PlaceRefOrValueMvo>,
+    ///Role of the related place
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<String>,
 }

@@ -8,6 +8,8 @@ use super::{
 // use crate::common::extensible::Extensible;
 use crate::common::note::Note;
 use crate::common::entity::Entity;
+
+///Service
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Service {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -59,6 +61,7 @@ pub struct Service {
     #[serde(rename = "operatingStatus")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub operating_status: Option<ServiceOperatingStatusType>,
+    ///Context update related to operating status changes
     #[serde(rename = "operatingStatusContextUpdate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub operating_status_context_update: Option<ContextUpdate>,
@@ -89,6 +92,7 @@ pub struct Service {
     #[serde(rename = "serviceRelationship")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub service_relationship: Vec<ServiceRelationship>,
+    ///Reference to the specification that defines this service.
     #[serde(rename = "serviceSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service_specification: Option<ServiceSpecificationRef>,

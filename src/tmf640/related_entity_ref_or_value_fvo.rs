@@ -10,6 +10,7 @@ pub struct RelatedEntityRefOrValueFvo {
     pub extensible: Extensible,
     ///
     pub entity: EntityRefOrValueFvo,
+    ///Role of the related entity
     pub role: String,
 }
 impl std::fmt::Display for RelatedEntityRefOrValueFvo {

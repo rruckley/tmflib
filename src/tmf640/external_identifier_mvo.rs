@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use crate::common::extensible::Extensible;
+
+///External Identifier FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ExternalIdentifierMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

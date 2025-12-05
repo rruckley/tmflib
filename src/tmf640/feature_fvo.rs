@@ -1,6 +1,8 @@
 use serde::{Serialize, Deserialize};
 use super::{CharacteristicFvo, FeatureRelationshipFvo, PolicyRefFvo};
 use crate::common::extensible::Extensible;
+
+///FeatureFvo 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct FeatureFvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

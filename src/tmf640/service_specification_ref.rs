@@ -5,6 +5,7 @@ use crate::common::extensible::Extensible  ;
 ///Reference to a service specification, by version.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceSpecificationRef {
+    ///Entity Reference FVO base structure
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

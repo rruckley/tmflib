@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use crate::common::{addressable::Addressable, extensible::Extensible};
+
+///Entity Reference MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityRefMvo {
     ///The actual type of the target instance when needed for disambiguation.

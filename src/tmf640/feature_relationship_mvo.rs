@@ -1,8 +1,11 @@
 use serde::{Serialize, Deserialize};
 use super::{EntityRefMvo};
 use crate::TimePeriod;
+
+///FeatureRelationshipMvo
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct FeatureRelationshipMvo {
+    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub entity_ref_mvo: EntityRefMvo,
     ///This is the name of the target feature.

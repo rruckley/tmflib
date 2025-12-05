@@ -10,6 +10,7 @@ pub struct RelatedPlaceRefOrValueFvo {
     pub extensible: Extensible,
     ///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Place entity and not the PlaceRefOrValue class itself
     pub place: PlaceRefOrValueFvo,
+    ///Role of the related place
     pub role: String,
 }
 impl std::fmt::Display for RelatedPlaceRefOrValueFvo {

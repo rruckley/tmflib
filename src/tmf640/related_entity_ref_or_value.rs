@@ -11,6 +11,7 @@ pub struct RelatedEntityRefOrValue {
     ///
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub entity: Option<EntityRefOrValue>,
+    ///Role of the related entity
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<String>,
 }

@@ -2,6 +2,7 @@ use serde::{Serialize, Deserialize};
 use super::{OrderItemActionType};
 use crate::common::extensible::Extensible  ;
 
+///A related service order item, with a role.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RelatedServiceOrderItemFvo {
     ///The actual type of the target instance when needed for disambiguation.
