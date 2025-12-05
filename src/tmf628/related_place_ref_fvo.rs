@@ -1,4 +1,5 @@
-use super::{ExtensibleFvo, PlaceRefFvo};
+use super::PlaceRefFvo;
+use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 
 ///Related Place Reference FVO

@@ -1,4 +1,5 @@
-use super::{ExtensibleFvo, PartyRefOrPartyRoleRefFvo};
+use super::PartyRefOrPartyRoleRefFvo;
+use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 
 /// Related Party Ref Or Party Role Ref Fvo

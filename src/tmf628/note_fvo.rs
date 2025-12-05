@@ -1,4 +1,4 @@
-use super::ExtensibleFvo;
+use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 
 ///Note structure to capture user comments

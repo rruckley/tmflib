@@ -1,4 +1,5 @@
-use super::{CharacteristicFvo, ExtensibleFvo, FeatureRelationshipFvo, PolicyRefFvo};
+use super::{CharacteristicFvo, FeatureRelationshipFvo, PolicyRefFvo};
+use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 
 ///Feature FVO

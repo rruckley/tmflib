@@ -1,0 +1,37 @@
+use super::EntityRef;
+use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
+
+///FeatureRelationshipFvo
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct FeatureRelationshipFvo {
+    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    #[serde(flatten)]
+    pub entity_ref: EntityRef,
+    ///This is the name of the target feature.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    ///This is the type of the feature relationship.
+    #[serde(rename = "relationshipType")]
+    pub relationship_type: String,
+    ///A period of time, either as a deadline (endDateTime only) a startDateTime only, or both
+    #[serde(rename = "validFor")]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub valid_for: Option<TimePeriod>,
+}
+impl std::fmt::Display for FeatureRelationshipFvo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+impl std::ops::Deref for FeatureRelationshipFvo {
+    type Target = EntityRef;
+    fn deref(&self) -> &Self::Target {
+        &self.entity_ref
+    }
+}
+impl std::ops::DerefMut for FeatureRelationshipFvo {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.entity_ref
+    }
+}

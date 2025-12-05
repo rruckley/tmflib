@@ -1,4 +1,4 @@
-use super::Extensible;
+use crate::common::extensible::Extensible;
 use serde::{Deserialize, Serialize};
 
 /// ExternalIdentifierMvo defines an external identifier for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

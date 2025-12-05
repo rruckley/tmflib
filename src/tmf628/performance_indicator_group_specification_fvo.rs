@@ -1,4 +1,5 @@
-use super::{AddressableFvo, ExtensibleFvo, PerformanceIndicatorSpecificationRefOrValueFvo};
+use super::{AddressableFvo, PerformanceIndicatorSpecificationRefOrValueFvo};
+use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 
 /// Performance Indicator Group Specification FVO

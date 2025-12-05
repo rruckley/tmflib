@@ -1,0 +1,16 @@
+use serde::{Deserialize, Serialize};
+///An item typically included in a request or response
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct HeaderItem {
+    ///The name of the header item, e.g. locale
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+    ///The value of the header item, e.g. en-us
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub value: Option<String>,
+}
+impl std::fmt::Display for HeaderItem {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}

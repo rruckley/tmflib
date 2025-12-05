@@ -1,4 +1,5 @@
-use super::{ExtensibleFvo, OrderItemActionType};
+use super::OrderItemActionType;
+use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 
 ///Related Resource Order Item FVO

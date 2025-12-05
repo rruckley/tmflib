@@ -1,4 +1,4 @@
-use super::ExtensibleFvo;
+use crate::common::extensible::ExtensibleFvo;
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
