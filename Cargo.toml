@@ -36,6 +36,7 @@ tmf648 = ["tmf620"]
 tmf651 = ["tmf648"]
 tmf652 = []
 tmf653 = []
+tmf657 = []
 tmf662 = []
 tmf663 = []
 tmf664 = []
@@ -60,6 +61,7 @@ tmf699 = []
 # TMF700 Shipping Order Module
 tmf700 = []
 tmf701 = []
+tmf720 = []
 tmf724 = []
 tmf760 = []
 tmf764 = []
@@ -87,6 +89,8 @@ all = [
     "tmf646",
     "tmf648",
     "tmf653",
+    "tmf657",
+    "tmf662",
     "tmf663",
     "tmf664",
     "tmf666",
@@ -106,6 +110,7 @@ all = [
     "tmf699",
     "tmf700",
     "tmf701",
+    "tmf720",
     "tmf724",
     "tmf760",
     "tmf764",
@@ -127,20 +132,20 @@ TMFC001 = ["common","tmf620","tmf633","tmf669","tmf632","tmf634","tmf651","tmf67
 # Product Order Capture and Validation
 TMFC002 = ["tmf622","tmf648","tmf663","common"]
 ## Product Order Delivery Orchestration and Management
-TMFC003 = ["common"]
-TMFC004 = ["common"]
+TMFC003 = ["tmf620","tmf622","tmf637","tmf641","common"]
+# TMFC004 = ["common"]
 # Product Inventory
-TMFC005 = ["tmf620","common"]
+TMFC005 = ["tmf620","tmf637","common"]
 # Service Catalog Management
-TMFC006 = ["common"]
+TMFC006 = ["tmf633","tmf657","tmf634","tmf669","tmf632","tmf662","common"]
 # Service Order Management
-TMFC007 = ["tmf641"]
+TMFC007 = ["tmf641","tmf632","tmf634","tmf639","tmf640","common"]
 # Service Inventory
-TMFC008 = ["tmf638"]
+TMFC008 = ["tmf638","tmf633"]
 # Servicve Qualification Management
 TMFC009 = ["tmf645"]
 # Resource Catalog Management
-TMFC010 = ["common"]
+TMFC010 = ["tmf634","common"]
 # Resource Order Management
 TMFC011 = ["tmf652"]
 # Resource Inventory
@@ -160,7 +165,7 @@ TMFC018 = ["common"]
 # Event Management
 TMFC019 = ["common"]
 # Digital Identity Management
-TMFC020 = ["common"]
+TMFC020 = ["tmf720","tmf632","tmf669","common"]
 # Party Privacy Management
 TMFC022 = ["common"]
 # Party Interaction Management
@@ -216,7 +221,7 @@ TMFC048 = ["common"]
 # Marketing Communications
 TMFC049 = ["common"]
 # Recommendation Management
-TMFC050 = ["common"]
+TMFC050 = ["tmf680","tmf620","common"]
 # Document Management
 TMFC051 = ["common"]
 # IT and Network Infrastructure Management
