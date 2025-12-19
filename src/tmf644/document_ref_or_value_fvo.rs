@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///
+/// Document Reference or Document Value MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DocumentRefOrValueFvo {}
 impl std::fmt::Display for DocumentRefOrValueFvo {

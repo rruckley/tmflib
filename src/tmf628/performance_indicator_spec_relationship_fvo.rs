@@ -8,7 +8,7 @@ pub struct PerformanceIndicatorSpecRelationshipFvo {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
-    ///
+    /// The type of relationship such as 'dependsOn', 'relatesTo', 'isComposedOf'
     #[serde(rename = "relationshipType")]
     pub relationship_type: String,
     ///The association role for this service specification

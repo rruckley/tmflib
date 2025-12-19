@@ -13,8 +13,8 @@
 // limitations under the License.
 //! Performance Measurement object model for TMF628 Performance Management
 
-use super::{MeasurementCollectionJobRef, PerformanceMeasurementRelationship,MOD_PATH};
-use crate::{common::entity::Entity, TimePeriod, HasDescription, HasEntity};
+use super::{MeasurementCollectionJobRef, PerformanceMeasurementRelationship, MOD_PATH};
+use crate::{common::entity::Entity, HasDescription, HasEntity, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasDescription;
 
@@ -53,7 +53,11 @@ impl HasEntity for PerformanceMeasurement {
         self.generate_href();
     }
     fn generate_href(&mut self) {
-        let href = format!("{}/{}",PerformanceMeasurement::get_class_href(),self.get_id());
+        let href = format!(
+            "{}/{}",
+            PerformanceMeasurement::get_class_href(),
+            self.get_id()
+        );
         self.href = href.into();
     }
 
@@ -76,11 +80,16 @@ impl HasEntity for PerformanceMeasurement {
     }
 
     fn get_class_href() -> String {
-        format!("/{}/{}/{}",crate::get_lib_path(),MOD_PATH,PerformanceMeasurement::get_class())
+        format!(
+            "/{}/{}/{}",
+            crate::get_lib_path(),
+            MOD_PATH,
+            PerformanceMeasurement::get_class()
+        )
     }
 
     fn get_mod_path() -> String {
-        format!("/{}/{}",crate::get_lib_path(),MOD_PATH)
+        format!("/{}/{}", crate::get_lib_path(), MOD_PATH)
     }
 
     fn set_id(&mut self, id: impl Into<String>) {

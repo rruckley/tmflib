@@ -12,7 +12,7 @@ pub struct PerformanceMeasurementRelationship {
     #[serde(rename = "relatedMeasurement")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub related_measurement: Option<PerformanceMeasurementRefOrValue>,
-    ///
+    /// The type of relationship such as 'dependsOn', 'relatesTo', 'isComposedOf'
     #[serde(rename = "relationshipType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub relationship_type: Option<String>,

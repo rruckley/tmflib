@@ -271,9 +271,8 @@ pub fn get_lib_path() -> String {
 }
 
 /// Trait indicating a TMF struct has and id, href fields defined in an Entity struct
-
-pub trait HasEntity : Default {
- /// Get a new UUID in simple format (no seperators)
+pub trait HasEntity: Default {
+    /// Get a new UUID in simple format (no seperators)
     fn get_uuid() -> String {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
         Uuid::new_v4().simple().to_string()

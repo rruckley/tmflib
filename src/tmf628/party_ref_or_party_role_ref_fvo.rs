@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
-///
+
+/// Reference to a party or party role FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyRefOrPartyRoleRefFvo {}
 impl std::fmt::Display for PartyRefOrPartyRoleRefFvo {

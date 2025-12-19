@@ -180,7 +180,7 @@ impl CharacteristicValueSpecification {
         self.value_type = Some(serde_value_to_type(&value).to_string());
         match self.regex {
             Some(ref re_str) => {
-                let re = Regex::new(&re_str)?;
+                let re = Regex::new(re_str)?;
                 let val_str = value.to_string().replace('\"', "");
                 if !re.is_match(&val_str) {
                     return Err(TMFError::GenericError(format!(

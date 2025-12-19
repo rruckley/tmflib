@@ -403,7 +403,7 @@ pub struct ProductSpecificationCharacteristicValue {
     value_from: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     value_to: Option<String>,
-    ///
+    /// Type of Characteristic Value
     #[serde(skip_serializing_if = "Option::is_none")]
     pub value_type: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]

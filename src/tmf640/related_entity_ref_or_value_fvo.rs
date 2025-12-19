@@ -8,7 +8,7 @@ pub struct RelatedEntityRefOrValueFvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
-    ///
+    ///   Reference to an entity
     pub entity: EntityRefOrValueFvo,
     ///Role of the related entity
     pub role: String,

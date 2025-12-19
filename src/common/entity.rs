@@ -1,8 +1,8 @@
 //! Entity Module
 //! Defines the base Entity struct used across TMForum Open-APIs
 
-use crate::Uri;
 use super::{addressable::Addressable, extensible::Extensible};
+use crate::Uri;
 
 use serde::{Deserialize, Serialize};
 ///Base entity schema for use in TMForum Open-APIs. Property.

@@ -8,7 +8,7 @@ pub struct PerformanceIndicatorSpecRelationship {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
-    ///
+    /// The type of relationship such as 'dependsOn', 'relatesTo', 'isComposedOf'
     #[serde(rename = "relationshipType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub relationship_type: Option<String>,

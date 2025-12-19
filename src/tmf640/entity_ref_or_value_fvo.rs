@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///
+///      Reference to an entity FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityRefOrValueFvo {}
 impl std::fmt::Display for EntityRefOrValueFvo {
