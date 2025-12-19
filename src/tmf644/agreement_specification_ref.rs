@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::common::entity_ref::EntityRef;
+use crate::common::entity::EntityRef;
 use crate::common::extensible::Extensible;
 
 /// Reference to an AgreementSpecification entity

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::common::entity_ref::EntityRef;
+use crate::common::entity::EntityRef;
 use crate::TimePeriod;
 
 ///Base entity reference schema for use in TMForum Open-APIs. Property.
