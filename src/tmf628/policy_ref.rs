@@ -1,4 +1,4 @@
-use crate::common::entity_ref::EntityRef;
+use crate::common::entity::EntityRef;
 use serde::{Deserialize, Serialize};
 
 /// Policy Ref

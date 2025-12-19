@@ -270,6 +270,55 @@ pub fn get_lib_path() -> String {
     }
 }
 
+/// Trait indicating a TMF struct has and id, href fields defined in an Entity struct
+
+pub trait HasEntity : Default {
+ /// Get a new UUID in simple format (no seperators)
+    fn get_uuid() -> String {
+        // Using simple format as SurrealDB doesn't like dashes in standard format.
+        Uuid::new_v4().simple().to_string()
+    }
+    /// Generate and store a new ID. This will also regenerated the HREF field via generate_href()
+    fn generate_id(&mut self);
+    /// Generate a new HTML reference.
+    /// # Details
+    /// This is usually triggered directly from generate_id() but can be manually triggered.
+    fn generate_href(&mut self);
+    /// Extract the id of this object into a new String
+    fn get_id(&self) -> String;
+    /// Extract the HREF of this object into a new String
+    fn get_href(&self) -> String;
+    /// Generate a complete URL for a given hostname
+    fn get_full_href(&self, hostname: impl Into<String>) -> String {
+        format!("{}{}", hostname.into(), self.get_href())
+    }
+    /// Get the class of this object. This is also used to form part of the URL via generate_href()
+    fn get_class() -> String;
+    /// Get Class HREF, this represents the generate path to the class.
+    fn get_class_href() -> String;
+    /// Get the module path
+    fn get_mod_path() -> String;
+    /// Set the id on the object, also triggers generate_href().
+    fn set_id(&mut self, id: impl Into<String>);
+    /// Create a new instance of a TMF object that has id and href fields.
+    /// # Example
+    /// ```
+    /// # use crate::tmflib::tmf629::customer::Customer;
+    /// # use crate::tmflib::HasId;
+    /// let offering = Customer::create();
+    /// ````
+    fn create() -> Self {
+        // Create default instance
+        let mut item = Self::default();
+        // Generate unique id and href
+        item.generate_id();
+        item
+    }
+    /// Builder pattern to set id on create()
+    /// NB: This can be used to set an explicit id on create instead of auto-generate via `[create`]
+    fn id(self, id: impl Into<String>) -> Self;
+}
+
 /// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId: Default {
     /// Get a new UUID in simple format (no seperators)
