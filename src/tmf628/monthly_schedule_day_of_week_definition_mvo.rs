@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{DayOfMonthRecurrenceMvo};
+use super::DayOfMonthRecurrenceMvo;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 /// Monthly Schedule Day Of Week Definition Mvo
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

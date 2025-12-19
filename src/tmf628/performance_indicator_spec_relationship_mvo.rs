@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{Entity};
+use super::Entity;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///Performance Indicator Spec Relationship MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

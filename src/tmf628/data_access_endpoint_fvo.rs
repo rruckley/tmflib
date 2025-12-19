@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{DataFilterMapFvo, LogicalResourceFvo};
+use serde::{Deserialize, Serialize};
 
 ///Data Access Endpoint Full Value Object
 #[derive(Debug, Clone, Serialize, Deserialize)]

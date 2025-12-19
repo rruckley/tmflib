@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Extensible, PlaceMvo};
+use serde::{Deserialize, Serialize};
 
 /// RelatedPlaceMvo defines a related place for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

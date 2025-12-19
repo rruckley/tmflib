@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Place reference.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PlaceRefFvo {}

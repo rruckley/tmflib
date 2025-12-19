@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///ResourceStatusType enumerations
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum ResourceStatusType {

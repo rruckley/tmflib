@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{Characteristic, FeatureRelationship, PolicyRef};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

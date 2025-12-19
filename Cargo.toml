@@ -24,9 +24,11 @@ tmf634 = []
 tmf637 = []
 tmf638 = []
 tmf639 = []
+tmf640 = []
 # TMF641 Service Order Module
 tmf641 = ["tmf646"]
 tmf642 = []
+tmf644 = []
 # TMF645 Service Qualification Module
 tmf645 = ["tmf633","tmf641"]
 tmf646 = []
@@ -60,6 +62,8 @@ tmf700 = []
 tmf701 = []
 tmf724 = []
 tmf760 = []
+tmf764 = []
+tmf909 = []
 tmf921 = []
 
 # Build all APIs
@@ -75,8 +79,10 @@ all = [
     "tmf637",
     "tmf638",
     "tmf639",
+    "tmf640",
     "tmf641",
     "tmf642",
+    "tmf644",
     "tmf645",
     "tmf646",
     "tmf648",
@@ -102,6 +108,8 @@ all = [
     "tmf701",
     "tmf724",
     "tmf760",
+    "tmf764",
+    "tmf909",
     "tmf921"
 ]
 

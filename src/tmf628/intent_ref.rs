@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Intent reference, for when Intent is used by other entities
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct IntentRef {}

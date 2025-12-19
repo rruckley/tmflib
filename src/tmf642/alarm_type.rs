@@ -13,7 +13,7 @@
 // limitations under the License.
 //! Categorizes the alarm
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Categorizes the alarm (X.733 8.1.1, 3GPP TS 32.111-2 Annex A)
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum AlarmType {

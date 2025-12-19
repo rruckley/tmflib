@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{Entity};
+use super::Entity;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///Performance Indicator Specification Relationship Full Value Object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

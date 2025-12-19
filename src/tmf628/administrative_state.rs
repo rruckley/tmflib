@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///This is enumeration for Administrative state
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum AdministrativeState {

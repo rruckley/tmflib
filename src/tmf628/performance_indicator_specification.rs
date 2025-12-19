@@ -1,11 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{
-    CollectionType, IndicatorType, PerformanceIndicatorSpecRelationship,
-};
-use crate::{
-    common::entity::Entity,
-    TimePeriod,
-};
+use super::{CollectionType, IndicatorType, PerformanceIndicatorSpecRelationship};
+use crate::{common::entity::Entity, TimePeriod};
+use serde::{Deserialize, Serialize};
 
 /// Performance Indicator Specification
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -46,9 +41,7 @@ pub struct PerformanceIndicatorSpecification {
     ///Relationships to other PerformanceIndicatorSpecification objects.
     #[serde(rename = "performanceIndicatorSpecRelationship")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub performance_indicator_spec_relationship: Vec<
-        PerformanceIndicatorSpecRelationship,
-    >,
+    pub performance_indicator_spec_relationship: Vec<PerformanceIndicatorSpecRelationship>,
     ///The point of view for the PerformanceIndicatorSpecification, such as a single user instance or aggregation.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub perspective: Option<String>,

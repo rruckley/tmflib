@@ -1,6 +1,6 @@
 //! Addressable objects
 
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Base schema for addressable entities
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Addressable {

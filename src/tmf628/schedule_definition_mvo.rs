@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{DayOfWeekRecurrenceMvo, MonthlyScheduleDayOfWeekDefinitionMvo};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///A Schedule Definition is used to define a schedule for running a job, for example a threshold job. The schedule definition can be based on specific dates, days of the week or days of the month. In addition, the schedule definition can include time ranges within a day and a recurring frequency to run the job within the active time ranges.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -11,9 +11,7 @@ pub struct ScheduleDefinitionMvo {
     ///The monthly schedule is used to define a schedule that is based on the weeks of the month, e.g. a schedule that will be active only on the first Monday and second Tuesday of each month.
     #[serde(rename = "MonthlyScheduleDayOfWeekDefinition")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub monthly_schedule_day_of_week_definition: Option<
-        MonthlyScheduleDayOfWeekDefinitionMvo,
-    >,
+    pub monthly_schedule_day_of_week_definition: Option<MonthlyScheduleDayOfWeekDefinitionMvo>,
     ///The weekly schedule is used to define a schedule that is based on the days of the week, e.g. a schedule that will be active only on Monday and Tuesday.
     #[serde(rename = "WeeklyScheduledDefinition")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]

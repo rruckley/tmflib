@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{OrderItemActionType};
+use super::OrderItemActionType;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Related Resource Order Item FVO
 #[derive(Debug, Clone, Serialize, Deserialize)]

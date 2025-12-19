@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::DataFilterAttribute;
+use serde::{Deserialize, Serialize};
 
 ///Data Filter Attribute String Array schema
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

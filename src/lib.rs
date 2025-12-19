@@ -547,10 +547,14 @@ pub mod tmf637;
 pub mod tmf638;
 #[cfg(feature = "tmf639")]
 pub mod tmf639;
+#[cfg(feature = "tmf640")]
+pub mod tmf640;
 #[cfg(feature = "tmf641")]
 pub mod tmf641;
 #[cfg(feature = "tmf642")]
 pub mod tmf642;
+#[cfg(feature = "tmf644")]
+pub mod tmf644;
 #[cfg(feature = "tmf645")]
 pub mod tmf645;
 #[cfg(feature = "tmf646")]
@@ -601,6 +605,10 @@ pub mod tmf700;
 pub mod tmf724;
 #[cfg(feature = "tmf760")]
 pub mod tmf760;
+#[cfg(feature = "tmf764")]
+pub mod tmf764;
+#[cfg(feature = "tmf909")]
+pub mod tmf909;
 #[cfg(feature = "tmf921")]
 pub mod tmf921;
 

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
-use super::Extensible;
+use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 /// CharacteristicRelationship defines a characteristic relationship for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

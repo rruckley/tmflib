@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicMvo, ResourceRefOrValueMvo};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Resource Relationship MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

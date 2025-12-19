@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{DataFilterMap, MeasurementJob, ReportingPeriod};
+use serde::{Deserialize, Serialize};
 
 /// Measurement Collection Job
 #[derive(Debug, Clone, Serialize, Deserialize)]

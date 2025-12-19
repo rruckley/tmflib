@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
-use super::ExtensibleFvo;
+use crate::common::extensible::ExtensibleFvo;
+use serde::{Deserialize, Serialize};
 
 ///Monitored Class Criteria FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

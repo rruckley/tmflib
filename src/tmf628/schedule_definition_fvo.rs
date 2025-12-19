@@ -1,7 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{
-    DayOfWeekRecurrenceFvo, ExtensibleFvo, MonthlyScheduleDayOfWeekDefinitionFvo,
-};
+use super::{DayOfWeekRecurrenceFvo, MonthlyScheduleDayOfWeekDefinitionFvo};
+use crate::common::extensible::ExtensibleFvo;
+use serde::{Deserialize, Serialize};
 
 ///Schedule Definition FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -12,9 +11,7 @@ pub struct ScheduleDefinitionFvo {
     ///The monthly schedule is used to define a schedule that is based on the weeks of the month, e.g. a schedule that will be active only on the first Monday and second Tuesday of each month.
     #[serde(rename = "MonthlyScheduleDayOfWeekDefinition")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub monthly_schedule_day_of_week_definition: Option<
-        MonthlyScheduleDayOfWeekDefinitionFvo,
-    >,
+    pub monthly_schedule_day_of_week_definition: Option<MonthlyScheduleDayOfWeekDefinitionFvo>,
     ///The weekly schedule is used to define a schedule that is based on the days of the week, e.g. a schedule that will be active only on Monday and Tuesday.
     #[serde(rename = "WeeklyScheduledDefinition")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]

@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Resource entity and not the ResourceRefOrValue class itself
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceRefOrValueMvo {}

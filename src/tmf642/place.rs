@@ -13,9 +13,9 @@
 // limitations under the License.
 //! Place defines a place for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 
-use serde::{Serialize, Deserialize};
-use super::{ ExternalIdentifier};
+use super::ExternalIdentifier;
 use crate::common::entity::Entity;
+use serde::{Deserialize, Serialize};
 
 /// Place defines a place for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

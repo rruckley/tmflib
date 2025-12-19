@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::EntityRef;
+use serde::{Deserialize, Serialize};
 
 ///Resource Specification Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

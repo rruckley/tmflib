@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
-use super::ExtensibleFvo;
+use crate::common::extensible::ExtensibleFvo;
+use serde::{Deserialize, Serialize};
 
 ///External Identifier FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,8 +1,8 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    AdministrativeState, DataAccessEndpoint, Entity, ExecutionStateType,
-    FileTransferData, ScheduleDefinition,
+    AdministrativeState, DataAccessEndpoint, Entity, ExecutionStateType, FileTransferData,
+    ScheduleDefinition,
 };
+use serde::{Deserialize, Serialize};
 ///Management Job FVO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ManagementJob {

@@ -7,7 +7,6 @@ fn main() {
         use tmflib::tmf642::alarm_type::AlarmType;
         use tmflib::tmf642::perceived_severity::PerceivedSeverity;
 
-
         let alarm = Alarm {
             id: Some("alarm-001".to_string()),
             alarm_type: Some(AlarmType::CommunicationsAlarm),
@@ -16,5 +15,5 @@ fn main() {
         };
 
         println!("Created Alarm: {:?}", alarm);
-    }   
+    }
 }

@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Reference to object which affected by Alarm (AlarmedObject).
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AlarmedObjectRefMvo {}
