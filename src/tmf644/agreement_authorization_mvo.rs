@@ -1,4 +1,4 @@
-use super::Extensible;
+use crate::common::extensible::Extensible;
 use serde::{Deserialize, Serialize};
 
 /// Agreement Authorization FVO

@@ -1,4 +1,5 @@
-use super::{CharacteristicFvo, ExtensibleFvo};
+use super::CharacteristicFvo;
+use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 
 ///Tracking Record FVO

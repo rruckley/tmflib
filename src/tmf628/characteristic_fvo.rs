@@ -1,4 +1,5 @@
-use super::{CharacteristicRelationshipFvo, ExtensibleFvo};
+use super::CharacteristicRelationshipFvo;
+use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 
 ///Characteristic Full Value Object
