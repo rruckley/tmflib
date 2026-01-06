@@ -21,6 +21,7 @@ tmf632 = []
 # TMF633 Service Catalogue Module
 tmf633 = []
 tmf634 = []
+tmf635 = []
 tmf637 = []
 tmf638 = []
 tmf639 = []
@@ -78,6 +79,7 @@ all = [
     "tmf632",
     "tmf633",
     "tmf634",
+    "tmf635",
     "tmf637",
     "tmf638",
     "tmf639",
