@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{CharacteristicRelationship, Extensible};
+use serde::{Deserialize, Serialize};
 
 /// Characterisitic
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

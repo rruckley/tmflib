@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::EntityRefMvo;
+use serde::{Deserialize, Serialize};
 ///Action of the promotion. When the customer meets the conditions in the promotion pattern, the customer can be given the benefits in the action.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PromotionActionMvo {
@@ -12,8 +12,8 @@ pub struct PromotionActionMvo {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub action_type: Option<String>,
     /**When the Promotion type is 1: Award, it means the amount or value of the awards decided by actionType, such as: Amount of gift, Amount of bonus, Value of discount;
- • When the Promotion type is 2: Discount, it means the value of the discount;
- • When the Promotion type is 3: reduction, it means the value of the reduced money.*/
+    • When the Promotion type is 2: Discount, it means the value of the discount;
+    • When the Promotion type is 3: reduction, it means the value of the reduced money.*/
     #[serde(rename = "actionValue")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub action_value: Option<String>,

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Addressable, Extensible};
+use serde::{Deserialize, Serialize};
 
 ///EntityRef is a generic reference to an entity that is identified by at least an id. The referred entity may be extended to capture additional attributes.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

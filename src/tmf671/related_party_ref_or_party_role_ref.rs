@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Extensible, PartyRefOrPartyRoleRef};
+use serde::{Deserialize, Serialize};
 
 ///RelatedPartyRefOrPartyRoleRef is used to reference a related party or party role in the context of the specific entity it is linked to.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

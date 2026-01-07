@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Set of criteria to be followed by all parties.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PromotionCriteriaMvo {

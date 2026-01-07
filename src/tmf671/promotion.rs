@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{PromotionPattern};
+use super::PromotionPattern;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///Promotion Resource is used to provide additional discounts, vouchers, bonuses, or gifts to customers who meet predefined criteria. By using promotions, the enterprise can attract users and encourage more consumption, especially continuous purchases. Normally, promotions are not considered a specific type of product or product offering. They are often applied when customers purchase product offerings that exceed a certain price or amount limit.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

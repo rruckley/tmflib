@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::PromotionCriteriaFvo;
+use serde::{Deserialize, Serialize};
 ///Set of group criteria to promotion. Fulfilling these criteria, parties will receice benefits
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PromotionCriteriaGroupFvo {

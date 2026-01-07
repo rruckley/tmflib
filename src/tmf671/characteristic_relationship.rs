@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///CharacteristicRelationship is used to define a relationship between two characteristics.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

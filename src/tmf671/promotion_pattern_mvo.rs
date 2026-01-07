@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{PromotionActionMvo, PromotionCriteriaGroupMvo};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 ///Detailed pattern of the promotion.The pattern decides the conditions of promotion and the benefit of the promotion to be given to the eligible customer.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PromotionPatternMvo {
