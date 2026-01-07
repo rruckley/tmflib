@@ -1,6 +1,8 @@
 use serde::{Serialize, Deserialize};
 use crate::common::entity::Entity;
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
+
+/// Customer360 Account VO
 pub struct Customer360AccountVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]

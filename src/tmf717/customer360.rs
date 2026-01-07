@@ -24,6 +24,7 @@ pub struct Customer360 {
     ///List of appointments of a customer.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub appointment: Vec<Customer360AppointmentVo>,
+    ///Customer information.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub customer: Option<Customer360CustomerVo>,
     ///List of bills of a customer.

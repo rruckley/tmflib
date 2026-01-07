@@ -1,7 +1,6 @@
 use serde::{Serialize, Deserialize};
 use super::{ ProductOfferingRef, ProductStatusType};
 use crate::common::entity::Entity;
-use crate::TimePeriod;
 
 /// Customer360 Product VO
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -15,6 +14,7 @@ pub struct Customer360ProductVo {
     ///Name of the product. It could be the same as the name of the product offering
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    ///Reference to the product offering from which the product is instantiated
     #[serde(rename = "productOffering")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub product_offering: Option<ProductOfferingRef>,

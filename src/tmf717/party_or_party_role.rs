@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-///
+
+/// Party or Party Role
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyOrPartyRole {}
 impl std::fmt::Display for PartyOrPartyRole {

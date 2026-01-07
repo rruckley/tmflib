@@ -9,8 +9,10 @@ pub struct Customer360RecommendationVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
+    ///Category of the recommendation
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub category: Option<CategoryRef>,
+    ///Description of the recommendation
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     ///Name of recommendation

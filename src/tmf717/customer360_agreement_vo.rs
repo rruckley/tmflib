@@ -13,6 +13,7 @@ pub struct Customer360AgreementVo {
     #[serde(rename = "agreementPeriod")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub agreement_period: Option<TimePeriod>,
+    ///Reference to the agreement specification
     #[serde(rename = "agreementSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub agreement_specification: Option<AgreementSpecificationRef>,

@@ -18,6 +18,7 @@ pub struct Customer360PaymentMethodVo {
     ///Friendly name assigned to the payment method
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    ///Status of the payment method
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status: Option<String>,
     ///A period of time, either as a deadline (endDateTime only) a startDateTime only, or both

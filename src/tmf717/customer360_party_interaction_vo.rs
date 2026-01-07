@@ -2,6 +2,8 @@ use serde::{Serialize, Deserialize};
 use crate::common::entity::Entity;
 use crate::TimePeriod;
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
+
+/// Customer360 Party Interaction VO
 pub struct Customer360PartyInteractionVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
