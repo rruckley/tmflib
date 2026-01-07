@@ -1,4 +1,6 @@
 use serde::{Serialize, Deserialize};
+
+///A reference to a product
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ProductRef {
     ///When sub-classing, this defines the super-class

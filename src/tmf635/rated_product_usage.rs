@@ -31,6 +31,7 @@ pub struct RatedProductUsage {
     #[serde(rename = "offerTariffType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub offer_tariff_type: Option<String>,
+    ///Product reference
     #[serde(rename = "productRef")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub product_ref: Option<ProductRef>,

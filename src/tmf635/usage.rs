@@ -27,15 +27,18 @@ pub struct Usage {
     ///unique identifier
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
+    /// Rated product usage
     #[serde(rename = "ratedProductUsage")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rated_product_usage: Option<Vec<RatedProductUsage>>,
+    /// Related party
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
     ///Possible values for the status of the Usage
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status: Option<UsageStatusType>,
+    /// Usage characteristics
     #[serde(rename = "usageCharacteristic")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub usage_characteristic: Option<Vec<UsageCharacteristic>>,

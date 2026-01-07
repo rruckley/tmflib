@@ -15,6 +15,7 @@ pub struct UsageCharacteristic {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
+    ///Relationship to other characteristics
     #[serde(rename = "characteristicRelationship")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub characteristic_relationship: Option<Vec<CharacteristicRelationship>>,
@@ -23,6 +24,7 @@ pub struct UsageCharacteristic {
     pub id: Option<String>,
     ///Name of the characteristic
     pub name: String,
+    ///Value of the characteristic
     pub value: Any,
     ///Data type of the value of the characteristic
     #[serde(rename = "valueType")]
