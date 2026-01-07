@@ -1,9 +1,9 @@
-use serde::{Serialize, Deserialize};
 use super::{
     AttachmentRefOrValue, CharacteristicSpecification, ConstraintRef,
     EntitySpecificationRelationship, RelatedParty, TargetEntitySchema,
 };
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 /**A detailed description of a usage event that are of interest to the business and can have charges applied to it. It is comprised of characteristics, which define all attributes known for a particular type of usage.
 Skipped properties: id,href*/
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

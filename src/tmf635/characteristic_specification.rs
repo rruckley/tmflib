@@ -1,8 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{
-    CharacteristicSpecificationRelationship, CharacteristicValueSpecification,
-};
+use super::{CharacteristicSpecificationRelationship, CharacteristicValueSpecification};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 ///This class defines a characteristic specification.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicSpecification {
@@ -29,9 +27,7 @@ pub struct CharacteristicSpecification {
     ///A CharacteristicValueSpecification object is used to define a set of attributes, each of which can be assigned to a corresponding set of attributes in a CharacteristicSpecification object. The values of the attributes in the CharacteristicValueSpecification object describe the values of the attributes that a corresponding Characteristic object can take on.
     #[serde(rename = "characteristicValueSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub characteristic_value_specification: Option<
-        Vec<CharacteristicValueSpecification>,
-    >,
+    pub characteristic_value_specification: Option<Vec<CharacteristicValueSpecification>>,
     ///If true, the Boolean indicates that the target Characteristic is configurable
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub configurable: Option<bool>,

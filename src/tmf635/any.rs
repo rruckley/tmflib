@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 ///An empty data structure
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///A base / value business entity used to represent money
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Money {

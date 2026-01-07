@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::Usage;
+use serde::{Deserialize, Serialize};
 ///The event data structure
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UsageCreateEventPayload {

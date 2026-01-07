@@ -1,8 +1,7 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    RatedProductUsage, RelatedParty, UsageCharacteristic, UsageSpecificationRef,
-    UsageStatusType,
+    RatedProductUsage, RelatedParty, UsageCharacteristic, UsageSpecificationRef, UsageStatusType,
 };
+use serde::{Deserialize, Serialize};
 ///An occurrence of employing a Product, Service, or Resource for its intended purpose, which is of interest to the business and can have charges applied to it. It is comprised of characteristics, which represent attributes of usage.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Usage {

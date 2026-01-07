@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Sets the communication endpoint address the service instance must use to deliver notification information
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EventSubscriptionInput {

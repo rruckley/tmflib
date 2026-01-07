@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{Quantity};
+use super::Quantity;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 ///An attachment by value or by reference. An attachment complements the description of an element, for example through a document, a video, a picture.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AttachmentRefOrValue {

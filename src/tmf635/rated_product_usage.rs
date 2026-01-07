@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Money, ProductRef};
+use serde::{Deserialize, Serialize};
 ///An occurrence of employing a product for its intended purpose with all rating details
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RatedProductUsage {
@@ -56,8 +56,8 @@ pub struct RatedProductUsage {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tax_rate: Option<f64>,
     /**Tag value: [usage]: the usage is always rated outside a usage bundle
-[included usage]: the usage is rated inside a usage bundle
-[non included usage]: the usage bundle is exhausted. The usage is rated outside the usage bundle*/
+    [included usage]: the usage is rated inside a usage bundle
+    [non included usage]: the usage bundle is exhausted. The usage is rated outside the usage bundle*/
     #[serde(rename = "usageRatingTag")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub usage_rating_tag: Option<String>,

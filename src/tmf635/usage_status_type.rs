@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Possible values for the status of the Usage
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum UsageStatusType {

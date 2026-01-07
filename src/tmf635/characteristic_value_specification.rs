@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{Any};
+use super::Any;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 ///specification of a value (number or text or an object) that can be assigned to a Characteristic.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicValueSpecification {

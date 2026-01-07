@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///The reference object to the schema and type of target entity which is described by a specification
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TargetEntitySchema {

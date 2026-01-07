@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 ///A reference to a product
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 ///An aggregation, migration, substitution, dependency or exclusivity relationship between/among Characteristic specifications. The specification characteristic is embedded within the specification whose ID and href are in this entity, and identified by its ID.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicSpecificationRelationship {

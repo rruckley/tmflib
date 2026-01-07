@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Any, CharacteristicRelationship};
+use serde::{Deserialize, Serialize};
 ///Provides the value of a given characteristic
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct UsageCharacteristic {
