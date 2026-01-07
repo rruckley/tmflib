@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
-use super::{AppointmentStateType, CalendarEventRef, Entity, TimePeriod};
+use super::{AppointmentStateType, CalendarEventRef};
+use crate::common::entity::Entity;
+use crate::TimePeriod;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Customer360AppointmentVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.

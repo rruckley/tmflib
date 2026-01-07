@@ -1,5 +1,9 @@
 use serde::{Serialize, Deserialize};
-use super::{Entity, QuoteStateType, TimePeriod};
+use super::QuoteStateType;
+use crate::common::entity::Entity;
+use crate::TimePeriod;
+
+/// Customer360 Quote VO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Customer360QuoteVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.

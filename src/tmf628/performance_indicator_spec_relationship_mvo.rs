@@ -1,4 +1,4 @@
-use super::Entity;
+use crate::common::entity::Entity;
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 

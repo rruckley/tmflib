@@ -1,5 +1,9 @@
 use serde::{Serialize, Deserialize};
-use super::{Entity, TroubleTicketStatusType};
+use super::TroubleTicketStatusType;
+use crate::common::entity::Entity;
+// use crate::TimePeriod;
+
+/// Customer360 Trouble Ticket VO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Customer360TroubleTicketVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.

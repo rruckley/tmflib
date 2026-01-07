@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use super::Entity;
+use crate::common::entity::Entity;
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Customer360LoyaltyAccountVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.

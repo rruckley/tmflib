@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{Entity, TimePeriod};
+use crate::common::entity::Entity;
+use crate::TimePeriod;
+
+///Base entity schema for use in TMForum Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Customer360PaymentMethodVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.

@@ -1,5 +1,9 @@
 use serde::{Serialize, Deserialize};
-use super::{Entity, ServiceRef};
+use super::ServiceRef;
+use crate::common::entity::Entity;
+// use crate::TimePeriod;
+
+/// Customer360 Service Problem VO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Customer360ServiceProblemVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.

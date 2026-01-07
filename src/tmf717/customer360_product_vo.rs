@@ -1,5 +1,9 @@
 use serde::{Serialize, Deserialize};
-use super::{Entity, ProductOfferingRef, ProductStatusType};
+use super::{ ProductOfferingRef, ProductStatusType};
+use crate::common::entity::Entity;
+use crate::TimePeriod;
+
+/// Customer360 Product VO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Customer360ProductVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.

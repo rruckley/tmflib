@@ -1,5 +1,9 @@
 use serde::{Serialize, Deserialize};
-use super::{AttachmentRefOrValue, Extensible, TaxDefinition, TimePeriod};
+use super::{AttachmentRefOrValue, TaxDefinition};
+use crate::common::extensible::Extensible;
+use crate::TimePeriod;
+
+/// Tax Exemption Certificate
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TaxExemptionCertificate {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

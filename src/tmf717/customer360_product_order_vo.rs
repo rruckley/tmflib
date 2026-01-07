@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{Entity, ProductOrderStateType};
+use super::ProductOrderStateType;
+use crate::common::entity::Entity;
+
+///Base entity schema for use in TMForum Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Customer360ProductOrderVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.

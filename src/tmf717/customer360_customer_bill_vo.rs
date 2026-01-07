@@ -1,5 +1,6 @@
 use serde::{Serialize, Deserialize};
-use super::{CustomerBillStateType, Entity};
+use super::{CustomerBillStateType};
+use crate::common::entity::Entity;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Customer360CustomerBillVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.

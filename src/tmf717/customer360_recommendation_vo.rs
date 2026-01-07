@@ -1,5 +1,9 @@
 use serde::{Serialize, Deserialize};
-use super::{CategoryRef, Entity, TimePeriod};
+use super::CategoryRef;
+use crate::common::entity::Entity;
+use crate::TimePeriod;
+
+/// Customer360 Recommendation VO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Customer360RecommendationVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.

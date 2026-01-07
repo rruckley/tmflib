@@ -5,8 +5,11 @@ use super::{
     Customer360PartyInteractionVo, Customer360PaymentMethodVo, Customer360ProductOrderVo,
     Customer360ProductVo, Customer360PromotionVo, Customer360QuoteVo,
     Customer360RecommendationVo, Customer360ServiceProblemVo, Customer360TroubleTicketVo,
-    Entity, TimePeriod,
 };
+use crate::common::entity::Entity;
+use crate::TimePeriod;
+
+/// Customer360
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Customer360 {
     ///Base entity schema for use in TMForum Open-APIs. Property.

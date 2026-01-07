@@ -1,10 +1,15 @@
 use serde::{Serialize, Deserialize};
-use super::{ContactMedium, Entity, PartyRef, RelatedPartyOrPartyRole, TimePeriod};
+use super::{ContactMedium, PartyRef, RelatedPartyOrPartyRole};
+use crate::common::entity::Entity;
+use crate::TimePeriod;
+
+/// Customer360 Customer VO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Customer360CustomerVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
+    ///A list of contact details (phone, email, etc.) for the Customer
     #[serde(rename = "contactMedium")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub contact_medium: Vec<ContactMedium>,
@@ -15,6 +20,7 @@ pub struct Customer360CustomerVo {
     ///A word, term, or phrase by which the Customer is known and distinguished from other Customers.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    ///A list of parties or party roles related to the Customer
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub related_party: Vec<RelatedPartyOrPartyRole>,
