@@ -1,37 +1,39 @@
+use serde::{Serialize, Deserialize};
 use crate::common::entity::Entity;
 use crate::TimePeriod;
-use serde::{Deserialize, Serialize};
-
-///Performance Indicator Spec Relationship MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
-pub struct PerformanceIndicatorSpecRelationshipMvo {
+
+/// Customer360 Party Interaction VO
+pub struct Customer360PartyInteractionVo {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
-    /// The type of relationship such as 'dependsOn', 'relatesTo', 'isComposedOf'
-    #[serde(rename = "relationshipType")]
+    ///Description of the interaction
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub relationship_type: Option<String>,
-    ///The association role for this service specification
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub role: Option<String>,
+    pub description: Option<String>,
     ///A period of time, either as a deadline (endDateTime only) a startDateTime only, or both
-    #[serde(rename = "validFor")]
+    #[serde(rename = "interactionDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub valid_for: Option<TimePeriod>,
+    pub interaction_date: Option<TimePeriod>,
+    ///Reason why the interaction happened
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reason: Option<String>,
+    ///Status of the interaction (opened, inProgress, completed)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
 }
-impl std::fmt::Display for PerformanceIndicatorSpecRelationshipMvo {
+impl std::fmt::Display for Customer360PartyInteractionVo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-impl std::ops::Deref for PerformanceIndicatorSpecRelationshipMvo {
+impl std::ops::Deref for Customer360PartyInteractionVo {
     type Target = Entity;
     fn deref(&self) -> &Self::Target {
         &self.entity
     }
 }
-impl std::ops::DerefMut for PerformanceIndicatorSpecRelationshipMvo {
+impl std::ops::DerefMut for Customer360PartyInteractionVo {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.entity
     }
