@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -576,6 +576,8 @@ pub mod tmf666;
 pub mod tmf667;
 #[cfg(feature = "tmf669")]
 pub mod tmf669;
+#[cfg(feature = "tmf671")]
+pub mod tmf671;
 #[cfg(feature = "tmf672")]
 pub mod tmf672;
 #[cfg(feature = "tmf673")]
