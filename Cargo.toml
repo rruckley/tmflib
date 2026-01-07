@@ -203,7 +203,7 @@ TMFC038 = ["common"]
 # Agreement Management
 TMFC039 = ["tmf651","common"]
 # Product Usage Management
-TMFC040 = ["tmf635","common"]
+TMFC040 = ["tmf635","tmf632","tmf669","tmf620","tmf637","common"]
 # Anomaly Detector
 TMFC041 = ["common"]
 # Anomaly Predictor
