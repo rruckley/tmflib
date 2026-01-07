@@ -1,27 +1,17 @@
 //! Resource Module
 
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
-use crate::common::related_party::RelatedParty;
-use crate::common::attachment::AttachmentRefOrValue;
-use super::MOD_PATH;
 use super::characteristic::Characteristic;
-use crate::{
-    HasId,
-    HasName,
-    HasAttachment,
-    HasRelatedParty,
-    LIB_PATH
-};
-use tmflib_derive::{
-    HasId,
-    HasName,
-    HasAttachment,
-    HasRelatedParty,
-};
+use super::MOD_PATH;
+use crate::common::attachment::AttachmentRefOrValue;
+use crate::common::related_party::RelatedParty;
+use crate::common::tmf_error::TMFError;
+use crate::{HasAttachment, HasId, HasName, HasRelatedParty};
+use tmflib_derive::{HasAttachment, HasId, HasName, HasRelatedParty};
 
-const CLASS_PATH : &str = "resource";
-const RESOURCE_VERS : &str = "1.0";
+const CLASS_PATH: &str = "resource";
+const RESOURCE_VERS: &str = "1.0";
 
 /// Resource Usage Status
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -75,8 +65,10 @@ pub enum ResourceStatusType {
     Suspended,
 }
 
-/// TMF Resource 
-#[derive(Clone, Debug, Default, Deserialize, HasId, HasName, HasAttachment, HasRelatedParty, Serialize)]
+/// TMF Resource
+#[derive(
+    Clone, Debug, Default, Deserialize, HasId, HasName, HasAttachment, HasRelatedParty, Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct Resource {
     /// Administrative Status
@@ -114,28 +106,31 @@ pub struct Resource {
 
 impl Resource {
     /// Create a new Resource Inventory record
-    pub fn new(name : impl Into<String>) -> Resource {
+    pub fn new(name: impl Into<String>) -> Resource {
         let mut resource = Resource::create();
         resource.name = Some(name.into());
         resource.resource_version = Some(RESOURCE_VERS.to_owned());
-        resource    
+        resource
     }
 }
 
 #[cfg(test)]
 mod test {
-    use crate::tmf632::individual_v4::Individual;
     use crate::common::related_party::RelatedParty;
+    #[cfg(feature = "build-V4")]
+    use crate::tmf632::individual_v4::Individual;
+    #[cfg(feature = "build-V5")]
+    use crate::tmf632::individual_v5::Individual;
 
     use super::*;
 
-    const RESOURCE_NAME : &str = "ResourceName";
-    
-    const RESOUCEUSAGESTATE_JSON : &str = "\"Idle\"";
-    const RESOUCEADMINADMINSTATE_JSON : &str = "\"Unlocked\"";
-    const RESOUCEOPSSTATE_JSON : &str = "\"Enable\"";
-    const RESOUCESTATE_JSON : &str = "\"Available\"";
-    const RESOURCE_JSON : &str = "{
+    const RESOURCE_NAME: &str = "ResourceName";
+
+    const RESOUCEUSAGESTATE_JSON: &str = "\"Idle\"";
+    const RESOUCEADMINADMINSTATE_JSON: &str = "\"Unlocked\"";
+    const RESOUCEOPSSTATE_JSON: &str = "\"Enable\"";
+    const RESOUCESTATE_JSON: &str = "\"Available\"";
+    const RESOURCE_JSON: &str = "{
         \"administrativeState\" : \"Unlocked\",
         \"name\" : \"ResourceName\",
         \"operationalState\" : \"Enable\",
@@ -145,55 +140,67 @@ mod test {
         \"usageState\" : \"Idle\"
     }";
 
-    const INDIVIDUAL_NAME : &str = "An Individual";
+    const INDIVIDUAL_NAME: &str = "An Individual";
 
     #[test]
     fn test_resource_new() {
         let resource = Resource::new(RESOURCE_NAME);
 
-        assert_eq!(resource.get_name().as_str(),RESOURCE_NAME);
-        assert_eq!(resource.resource_version.is_some(),true);
-        assert_eq!(resource.resource_version.unwrap(),RESOURCE_VERS);
+        assert_eq!(resource.get_name().as_str(), RESOURCE_NAME);
+        assert_eq!(resource.resource_version.is_some(), true);
+        assert_eq!(resource.resource_version.unwrap(), RESOURCE_VERS);
     }
 
     #[test]
     fn test_resourceusagestate_deserialize() {
-        let resourceusagestate : ResourceUsageStateType = serde_json::from_str(RESOUCEUSAGESTATE_JSON).unwrap();
+        let resourceusagestate: ResourceUsageStateType =
+            serde_json::from_str(RESOUCEUSAGESTATE_JSON).unwrap();
 
-        assert_eq!(resourceusagestate,ResourceUsageStateType::Idle);
+        assert_eq!(resourceusagestate, ResourceUsageStateType::Idle);
     }
 
     #[test]
     fn test_resourceadminstate_deserialize() {
-        let resourceadminstate : ResourceAdministrativeStateType = serde_json::from_str(RESOUCEADMINADMINSTATE_JSON).unwrap();
+        let resourceadminstate: ResourceAdministrativeStateType =
+            serde_json::from_str(RESOUCEADMINADMINSTATE_JSON).unwrap();
 
-        assert_eq!(resourceadminstate,ResourceAdministrativeStateType::Unlocked);
+        assert_eq!(
+            resourceadminstate,
+            ResourceAdministrativeStateType::Unlocked
+        );
     }
 
     #[test]
     fn test_resourceopsstate_deserialize() {
-        let resourceopsstate : ResourceOperationalStateType = serde_json::from_str(RESOUCEOPSSTATE_JSON).unwrap();
+        let resourceopsstate: ResourceOperationalStateType =
+            serde_json::from_str(RESOUCEOPSSTATE_JSON).unwrap();
 
-        assert_eq!(resourceopsstate,ResourceOperationalStateType::Enable);
+        assert_eq!(resourceopsstate, ResourceOperationalStateType::Enable);
     }
 
     #[test]
     fn test_resourcestate_deseralize() {
-        let resourcestate : ResourceStatusType = serde_json::from_str(RESOUCESTATE_JSON).unwrap();
+        let resourcestate: ResourceStatusType = serde_json::from_str(RESOUCESTATE_JSON).unwrap();
 
-        assert_eq!(resourcestate,ResourceStatusType::Available);
+        assert_eq!(resourcestate, ResourceStatusType::Available);
     }
 
     #[test]
     fn test_resource_deserialize() {
-        let resource : Resource = serde_json::from_str(RESOURCE_JSON).unwrap();
+        let resource: Resource = serde_json::from_str(RESOURCE_JSON).unwrap();
 
-        assert_eq!(resource.get_name().as_str(),"ResourceName");
-        assert_eq!(resource.resource_version.is_some(),true);
-        assert_eq!(resource.resource_version.unwrap().as_str(),"1.0");
-        assert_eq!(resource.administrative_state,ResourceAdministrativeStateType::Unlocked);
-        assert_eq!(resource.operational_state,ResourceOperationalStateType::Enable);
-        assert_eq!(resource.usage_state,Some(ResourceUsageStateType::Idle));
+        assert_eq!(resource.get_name().as_str(), "ResourceName");
+        assert_eq!(resource.resource_version.is_some(), true);
+        assert_eq!(resource.resource_version.unwrap().as_str(), "1.0");
+        assert_eq!(
+            resource.administrative_state,
+            ResourceAdministrativeStateType::Unlocked
+        );
+        assert_eq!(
+            resource.operational_state,
+            ResourceOperationalStateType::Enable
+        );
+        assert_eq!(resource.usage_state, Some(ResourceUsageStateType::Idle));
     }
 
     #[test]
@@ -204,9 +211,8 @@ mod test {
 
         resource.add(&attach);
 
-        assert_eq!(resource.attachment.is_some(),true);
-        assert_eq!(resource.attachment.unwrap().len(),1);
-
+        assert_eq!(resource.attachment.is_some(), true);
+        assert_eq!(resource.attachment.unwrap().len(), 1);
     }
 
     #[test]
@@ -215,7 +221,7 @@ mod test {
         let mut resource = Resource::new(RESOURCE_NAME);
         resource.add_party(RelatedParty::from(&party));
 
-        assert_eq!(resource.related_party.is_some(),true);
-        assert_eq!(resource.related_party.unwrap().len(),1);
+        assert_eq!(resource.related_party.is_some(), true);
+        assert_eq!(resource.related_party.unwrap().len(), 1);
     }
 }

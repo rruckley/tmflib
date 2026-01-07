@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,23 +16,23 @@
 //!
 //! Structs associated with product catalogue management
 
-use serde::{Deserialize, Serialize};
 use crate::common::related_place::PlaceRef;
+use serde::{Deserialize, Serialize};
 
-#[cfg(all(feature = "tmf620",feature = "build-V4"))]
+#[cfg(all(feature = "tmf620", feature = "build-V4"))]
 const MOD_PATH: &str = "productCatalogManagement/v4";
-#[cfg(all(feature = "tmf620",feature = "build-V5"))]
+#[cfg(all(feature = "tmf620", feature = "build-V5"))]
 const MOD_PATH: &str = "productCatalogManagement/v5";
 
 pub mod bundled_product_offering;
 pub mod catalog;
 pub mod category;
 
-#[cfg(all(feature = "tmf620",feature = "build-V4"))]
+#[cfg(all(feature = "tmf620", feature = "build-V4"))]
 pub mod product_offering;
-#[cfg(all(feature = "tmf620",feature = "build-V5"))]
-pub mod product_offering_v5;
 pub mod product_offering_price;
+#[cfg(all(feature = "tmf620", feature = "build-V5"))]
+pub mod product_offering_v5;
 pub mod product_specification;
 
 /// Channel Reference
@@ -46,8 +46,8 @@ pub struct ChannelRef {
 /// Market Segment Refefence
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct MarketSegmentRef {
-    id : String,
-    name : String,
+    id: String,
+    name: String,
     href: String,
 }
 
@@ -60,7 +60,7 @@ mod test {
     use super::*;
 
     const EMPTY_JSON: &str = "{}";
-    const REF_JSON : &str = "{
+    const REF_JSON: &str = "{
     \"id\" : \"id123\",
     \"href\" : \"href123\",
     \"name\" : \"namew123\"
@@ -72,7 +72,7 @@ mod test {
 
         let channel_str = serde_json::to_string(&channel);
 
-        assert_eq!(channel_str.is_ok(),true);
+        assert_eq!(channel_str.is_ok(), true);
     }
 
     #[test]
@@ -81,7 +81,7 @@ mod test {
 
         let segment_str = serde_json::to_string(&segment);
 
-        assert_eq!(segment_str.is_ok(),true);  
+        assert_eq!(segment_str.is_ok(), true);
     }
 
     #[test]
@@ -90,7 +90,7 @@ mod test {
 
         let place_str = serde_json::to_string(&place);
 
-        assert_eq!(place_str.is_ok(),true);
+        assert_eq!(place_str.is_ok(), true);
     }
 
     #[test]
@@ -99,28 +99,29 @@ mod test {
 
         let sla_str = serde_json::to_string(&sla);
 
-        assert_eq!(sla_str.is_ok(),true);
+        assert_eq!(sla_str.is_ok(), true);
     }
 
     #[test]
     fn test_channelref_deserialize() {
-        let _channelref : ChannelRef = serde_json::from_str(REF_JSON).expect("Could not parse Empty JSON");
+        let _channelref: ChannelRef =
+            serde_json::from_str(REF_JSON).expect("Could not parse Empty JSON");
     }
 
     #[test]
     fn test_marketsegmentref_deserialize() {
-        let _marketsegmentref : MarketSegmentRef  = serde_json::from_str(REF_JSON).expect("Could not parse Emoty JSON");
+        let _marketsegmentref: MarketSegmentRef =
+            serde_json::from_str(REF_JSON).expect("Could not parse Emoty JSON");
     }
 
     #[test]
     fn test_placeref_deserialize() {
-        let _placeref : PlaceRef  = serde_json::from_str(REF_JSON).expect("Could not parse Empty JSON");
+        let _placeref: PlaceRef =
+            serde_json::from_str(REF_JSON).expect("Could not parse Empty JSON");
     }
 
     #[test]
     fn test_slafef_deserialize() {
-        let _slaref : SLARef = serde_json::from_str(EMPTY_JSON).expect("Could not parse Emoty JSON");
+        let _slaref: SLARef = serde_json::from_str(EMPTY_JSON).expect("Could not parse Emoty JSON");
     }
-
 }
-

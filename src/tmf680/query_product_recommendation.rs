@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,60 +14,60 @@
 
 //! Product Recommendation Module
 
-use serde::{Serialize,Deserialize};
+use serde::{Deserialize, Serialize};
 
-use crate::{
-    HasId,
-    HasName,
-    HasDescription,
-    HasValidity,
-    HasRelatedParty,
-    Uri,
-    TimePeriod,
-    LIB_PATH,
-};
+use crate::common::tmf_error::TMFError;
+use crate::{HasDescription, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod, Uri};
 
-use crate::tmf663::{
-    cart_item::ItemRef,
-    shopping_cart::ShoppingCartRef}
-    ;
+use crate::tmf663::{cart_item::ItemRef, shopping_cart::ShoppingCartRef};
 
-use crate::tmf620::product_offering::ProductOfferingRef;
-use crate::tmf622::product_order_v4::ProductOrderRef;
-use crate::common::related_place::RelatedPlaceRefOrValue;
-use crate::common::related_party::RelatedParty;
 use crate::common::product::ProductRefOrValue;
+use crate::common::related_party::RelatedParty;
+use crate::common::related_place::RelatedPlaceRefOrValue;
+#[cfg(feature = "build-V4")]
+use crate::tmf620::product_offering::ProductOfferingRef;
+#[cfg(feature = "build-V5")]
+use crate::tmf620::product_offering_v5::ProductOfferingRef;
+#[cfg(feature = "build-V4")]
+use crate::tmf622::product_order_v4::ProductOrderRef;
+#[cfg(feature = "build-V5")]
+use crate::tmf622::product_order_v5::ProductOrderRef;
 
 use super::MOD_PATH;
 
-use tmflib_derive::{
+use tmflib_derive::{HasDescription, HasId, HasName, HasRelatedParty, HasValidity};
+
+const CLASS_PATH: &str = "queryProductRecommendation";
+
+/// Recommendation Item
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
+pub struct RecommentationItem {
+    /// Unique Identifier
+    pub id: Option<String>,
+    /// Recommendation Item Priority
+    pub priority: u32,
+    /// Product
+    pub product: Option<Vec<ProductRefOrValue>>,
+    /// Product Offering
+    pub product_offering: Option<Vec<ProductOfferingRef>>,
+}
+
+/// Query Product Recommendations
+#[derive(
+    Clone,
+    Default,
+    Debug,
     HasId,
     HasName,
     HasDescription,
     HasValidity,
     HasRelatedParty,
-};
-
-const CLASS_PATH : &str = "queryProductRecommendation";
-
-/// Recommendation Item
-#[derive(Clone,Default,Debug,Serialize,Deserialize)]
-pub struct RecommentationItem {
-    /// Unique Identifier
-    pub id : Option<String>,
-    /// Recommendation Item Priority
-    pub priority : u32,
-    /// Product
-    pub product : Option<Vec<ProductRefOrValue>>,
-    /// Product Offering
-    pub product_offering : Option<Vec<ProductOfferingRef>>,
-}
-
-/// Query Product Recommendations
-#[derive(Clone,Default,Debug,HasId,HasName,HasDescription,HasValidity,HasRelatedParty,Deserialize,Serialize)]
+    Deserialize,
+    Serialize,
+)]
 pub struct QueryProductRecommendation {
     /// Unique Identifier
-    pub id : Option<String>,
+    pub id: Option<String>,
     /// HTTP Uri
     pub href: Option<Uri>,
     /// Name
@@ -78,26 +78,26 @@ pub struct QueryProductRecommendation {
     pub valid_for: Option<TimePeriod>,
     // Referenced objects
     /// Related Party
-    pub related_party : Option<Vec<RelatedParty>>,
+    pub related_party: Option<Vec<RelatedParty>>,
     /// Place
-    pub place : Option<Vec<RelatedPlaceRefOrValue>>,
+    pub place: Option<Vec<RelatedPlaceRefOrValue>>,
     /// Product
-    pub product : Option<Vec<ProductRefOrValue>>,
+    pub product: Option<Vec<ProductRefOrValue>>,
     /// Product Order
-    pub product_order : Option<Vec<ProductOrderRef>>,
+    pub product_order: Option<Vec<ProductOrderRef>>,
     /// Recommandation Item
-    pub recommendation_item : Option<Vec<RecommentationItem>>,
+    pub recommendation_item: Option<Vec<RecommentationItem>>,
     /// Shopping Cart
-    pub shopping_cart : Option<Vec<ShoppingCartRef>>,
+    pub shopping_cart: Option<Vec<ShoppingCartRef>>,
     /// Shopping Cart Item
-    pub shopping_cart_item : Option<Vec<ItemRef>>,
+    pub shopping_cart_item: Option<Vec<ItemRef>>,
 }
 
 impl QueryProductRecommendation {
     /// Create a new Product Recommendation
-    pub fn new(name : impl Into<String>) -> QueryProductRecommendation {
+    pub fn new(name: impl Into<String>) -> QueryProductRecommendation {
         QueryProductRecommendation {
-            name : Some(name.into()),
+            name: Some(name.into()),
             ..QueryProductRecommendation::create()
         }
     }
@@ -107,15 +107,14 @@ impl QueryProductRecommendation {
 mod test {
     use super::*;
 
-    const REC_NAME : &str = "Recommendation Name";
-    const REC_DESC : &str = "Recommendation Description";
+    const REC_NAME: &str = "Recommendation Name";
+    const REC_DESC: &str = "Recommendation Description";
 
     #[test]
     fn test_recommendation_create() {
-        let recommendation = QueryProductRecommendation::new(REC_NAME)
-            .description(REC_DESC);
+        let recommendation = QueryProductRecommendation::new(REC_NAME).description(REC_DESC);
 
-        assert_eq!(recommendation.get_name(),REC_NAME.to_string());
-        assert_eq!(recommendation.get_description(),REC_DESC.to_string());
+        assert_eq!(recommendation.get_name(), REC_NAME.to_string());
+        assert_eq!(recommendation.get_description(), REC_DESC.to_string());
     }
 }

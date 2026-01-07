@@ -1,24 +1,18 @@
 //! Geographic Site Module
 
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
-use crate::{
-    LIB_PATH, 
-    HasName, 
-    HasId,
-    TMFEvent,
-    gen_code
-};
-use tmflib_derive::{HasId,HasName};
-use uuid::Uuid;
-use chrono::Utc;
-use crate::common::event::{Event,EventPayload};
-use crate::tmf673::geographic_address::GeographicAddress;
-use crate::common::related_party::RelatedParty;
 use super::MOD_PATH;
+use crate::common::event::{Event, EventPayload};
+use crate::common::related_party::RelatedParty;
+use crate::tmf673::geographic_address::GeographicAddress;
+use crate::{gen_code, HasId, HasName, TMFEvent};
+use chrono::Utc;
+use tmflib_derive::{HasId, HasName};
+use uuid::Uuid;
 const CLASS_PATH: &str = "geographicSite";
-const DEFAULT_TZ : &str = "AEST";
-const CODE_PREFIX : &str = "S-";
+const DEFAULT_TZ: &str = "AEST";
+const CODE_PREFIX: &str = "S-";
 
 /// Reference to a place
 /// # Uses
@@ -34,10 +28,10 @@ pub struct PlaceRefOrValue {
 
 impl From<GeographicAddress> for PlaceRefOrValue {
     fn from(value: GeographicAddress) -> Self {
-        PlaceRefOrValue { 
-            id: value.get_id(), 
-            href: value.get_href(), 
-            name: value.get_name() 
+        PlaceRefOrValue {
+            id: value.get_id(),
+            href: value.get_href(),
+            name: value.get_name(),
         }
     }
 }
@@ -46,34 +40,31 @@ impl From<GeographicAddress> for PlaceRefOrValue {
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct HourPeriod {
-    start_hour : String,
-    end_hour : String,
+    start_hour: String,
+    end_hour: String,
 }
 
 /// Calendar entry defining periodic status for site, e.g. opening hours
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CalendarPeriod {
-    day : Option<String>,
-    status : Option<String>,
-    time_zone : Option<String>,
-    hour_period : Option<Vec<HourPeriod>>,
+    day: Option<String>,
+    status: Option<String>,
+    time_zone: Option<String>,
+    hour_period: Option<Vec<HourPeriod>>,
 }
 
 impl CalendarPeriod {
     /// Generate standard business hours calendar
     pub fn business_hours() -> CalendarPeriod {
-    CalendarPeriod {
-        day : Some("weekdays".to_string()),
-        status : Some("open".to_string()),
-        time_zone : Some(DEFAULT_TZ.to_string()),
-        hour_period : Some(
-            vec![HourPeriod{
-                start_hour : "09:00 am".to_string(),
-                end_hour : "05:00 pm".to_string(),
-            }
-            ]
-        )
+        CalendarPeriod {
+            day: Some("weekdays".to_string()),
+            status: Some("open".to_string()),
+            time_zone: Some(DEFAULT_TZ.to_string()),
+            hour_period: Some(vec![HourPeriod {
+                start_hour: "09:00 am".to_string(),
+                end_hour: "05:00 pm".to_string(),
+            }]),
         }
     }
 }
@@ -92,15 +83,15 @@ pub struct GeographicSite {
     pub name: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     /// Site Code
-    pub code : Option<String>,
+    pub code: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     place: Option<PlaceRefOrValue>,
     /// Site Status
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub status : Option<String>,
+    pub status: Option<String>,
     /// Calendar Period
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub calendar : Option<Vec<CalendarPeriod>>,
+    pub calendar: Option<Vec<CalendarPeriod>>,
     /// Customer / other parties related to this site
     #[serde(skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
@@ -108,32 +99,38 @@ pub struct GeographicSite {
 
 impl GeographicSite {
     /// Create a new Geographic Site with a name
-    pub fn new(name : impl Into<String>) -> GeographicSite {
+    pub fn new(name: impl Into<String>) -> GeographicSite {
         let mut site = GeographicSite::create();
         site.name = Some(name.into());
         site.generate_code(None);
         site
     }
     /// Set the place on this Site
-    pub fn place(mut self, place : PlaceRefOrValue) -> GeographicSite {
+    pub fn place(mut self, place: PlaceRefOrValue) -> GeographicSite {
         self.place = Some(place);
-        self    
+        self
     }
     /// Set the calendar for this site
-    pub fn calendar(mut self, calendar : CalendarPeriod) -> GeographicSite {
+    pub fn calendar(mut self, calendar: CalendarPeriod) -> GeographicSite {
         self.calendar.as_mut().unwrap().push(calendar);
         self
     }
 
     /// Generate a new site code based on available fields
-    pub fn generate_code(&mut self, offset : Option<u32>) {
-        let (code,_hash) = gen_code(self.get_name(), self.get_id(), offset, Some(CODE_PREFIX.to_string()), None);
+    pub fn generate_code(&mut self, offset: Option<u32>) {
+        let (code, _hash) = gen_code(
+            self.get_name(),
+            self.get_id(),
+            offset,
+            Some(CODE_PREFIX.to_string()),
+            None,
+        );
         self.code = Some(code);
     }
 }
 
 /// Events for Geographic Site
-#[derive(Clone,Debug,Deserialize,Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub enum GeographicSiteEventType {
     /// New Site Created
     GeographicSiteCreateEvent,
@@ -146,7 +143,7 @@ pub enum GeographicSiteEventType {
 }
 
 /// Container for the payload that generated the event
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GeographicSiteEvent {
     /// Struct that this event relates to
@@ -156,7 +153,7 @@ pub struct GeographicSiteEvent {
 impl TMFEvent<GeographicSiteEvent> for GeographicSite {
     fn event(&self) -> GeographicSiteEvent {
         GeographicSiteEvent {
-            geographic_site : self.clone(),
+            geographic_site: self.clone(),
         }
     }
 }
@@ -165,10 +162,15 @@ impl EventPayload<GeographicSiteEvent> for GeographicSite {
     type Subject = GeographicSite;
     type EventType = GeographicSiteEventType;
 
-    fn to_event(&self,event_type : Self::EventType) -> Event<GeographicSiteEvent,Self::EventType> {
+    fn to_event(&self, event_type: Self::EventType) -> Event<GeographicSiteEvent, Self::EventType> {
         let now = Utc::now();
-        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
-        let desc = format!("{:?} for {} [{}]",event_type,self.get_name(),self.get_id());
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
+        let desc = format!(
+            "{:?} for {} [{}]",
+            event_type,
+            self.get_name(),
+            self.get_id()
+        );
         Event {
             correlation_id: None,
             description: Some(desc),
@@ -182,8 +184,7 @@ impl EventPayload<GeographicSiteEvent> for GeographicSite {
             priority: None,
             time_occurred: Some(event_time.to_string()),
             event_type,
-            event: self.event()
+            event: self.event(),
         }
     }
 }
-

@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,4 +18,4 @@ pub mod agreement;
 pub mod agreement_item;
 pub mod agreement_specification;
 
-const MOD_PATH : &str = "agreementManagement/v4";
+const MOD_PATH: &str = "agreementManagement/v4";

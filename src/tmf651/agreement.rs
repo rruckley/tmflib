@@ -1,21 +1,21 @@
 //! Agreement Module
 
-use serde::{Deserialize,Serialize};
-use crate::{LIB_PATH,HasId,HasName, HasRelatedParty, HasDescription, TimePeriod, DateTime};
-use tmflib_derive::{HasId,HasName,HasDescription};
-use crate::common::related_party::RelatedParty;
 use super::{agreement_item::AgreementItem, agreement_specification::AgreementSpecificationRef};
+use crate::common::related_party::RelatedParty;
 use crate::tmf648::quote::Quote;
+use crate::{DateTime, HasDescription, HasId, HasName, HasRelatedParty, TimePeriod};
+use serde::{Deserialize, Serialize};
+use tmflib_derive::{HasDescription, HasId, HasName};
 
 use super::MOD_PATH;
-const CLASS_PATH : &str = "agreement";
+const CLASS_PATH: &str = "agreement";
 
 /// Agreeement / Contract
-#[derive(Clone,Default,Debug, Deserialize, HasId, HasName, HasDescription, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasName, HasDescription, Serialize)]
 pub struct Agreement {
     /// Period of this agreement
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub agreement_period : Option<TimePeriod>,
+    pub agreement_period: Option<TimePeriod>,
     /// Type of this agreement
     #[serde(skip_serializing_if = "Option::is_none")]
     pub agreement_type: Option<String>,
@@ -30,7 +30,7 @@ pub struct Agreement {
     pub initial_date: Option<DateTime>,
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub id : Option<String>,
+    pub id: Option<String>,
     /// URI for Agreement
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
@@ -58,17 +58,17 @@ pub struct Agreement {
 
 impl Agreement {
     /// Create a new Agreement
-    pub fn new(name : impl Into<String>) -> Agreement {
+    pub fn new(name: impl Into<String>) -> Agreement {
         let mut agreement = Agreement::create();
         agreement.name = Some(name.into());
         agreement
     }
     /// Add a new item to the list
-    pub fn add_item(&mut self, item : AgreementItem) {
+    pub fn add_item(&mut self, item: AgreementItem) {
         match self.agreement_item.as_mut() {
             Some(v) => {
                 v.push(item);
-            },
+            }
             None => {
                 self.agreement_item = Some(vec![item]);
             }
@@ -77,7 +77,7 @@ impl Agreement {
 }
 
 /// Agreement Reference
-#[derive(Clone,Default,Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct AgreementRef {
     /// Unique Id of referenced agreement
     id: String,
@@ -99,7 +99,7 @@ impl From<Agreement> for AgreementRef {
 
 impl From<&Quote> for Agreement {
     fn from(value: &Quote) -> Self {
-        let mut agreement = Agreement::new(format!("Agreement from: {}",value.get_name()));
+        let mut agreement = Agreement::new(format!("Agreement from: {}", value.get_name()));
         agreement.version.clone_from(&value.version);
         agreement.agreement_period = Some(TimePeriod::period_days(365));
         agreement.description.clone_from(&value.description);
@@ -107,7 +107,7 @@ impl From<&Quote> for Agreement {
         if party.is_some() {
             agreement.engaged_party = vec![party.cloned().unwrap()];
         }
-        // Iterate through 
+        // Iterate through
         if value.quote_item.is_some() {
             let items = value.quote_item.as_ref().unwrap();
             items.iter().for_each(|i| {
@@ -124,7 +124,7 @@ impl From<&Quote> for Agreement {
 mod test {
     use super::*;
 
-    const AGREEMENT : &str = "AnAgreement";
+    const AGREEMENT: &str = "AnAgreement";
     const QUOTE_VERS: &str = "1.0";
     const QUOTE_DESC: &str = "QuoteDescription";
 
@@ -132,7 +132,7 @@ mod test {
     fn test_agreement_new_name() {
         let agreement = Agreement::new(AGREEMENT);
 
-        assert_eq!(agreement.name,Some(AGREEMENT.into()));
+        assert_eq!(agreement.name, Some(AGREEMENT.into()));
     }
 
     #[test]
@@ -140,9 +140,9 @@ mod test {
         let agreement = Agreement::new(AGREEMENT);
         let agreement_ref = AgreementRef::from(agreement.clone());
 
-        assert_eq!(agreement.id,Some(agreement_ref.id));
-        assert_eq!(agreement.name,Some(agreement_ref.name));
-        assert_eq!(agreement.href,Some(agreement_ref.href)); 
+        assert_eq!(agreement.id, Some(agreement_ref.id));
+        assert_eq!(agreement.name, Some(agreement_ref.name));
+        assert_eq!(agreement.href, Some(agreement_ref.href));
     }
 
     #[test]
@@ -152,10 +152,10 @@ mod test {
         quote.description = Some(QUOTE_DESC.to_string());
         let agreement = Agreement::from(&quote);
 
-        assert_eq!(quote.version,agreement.version);
-        assert_eq!(agreement.agreement_period.is_some(),true);
-        assert_eq!(agreement.description.is_some(),true);
-        assert_eq!(agreement.description.unwrap().as_str(),QUOTE_DESC);
+        assert_eq!(quote.version, agreement.version);
+        assert_eq!(agreement.agreement_period.is_some(), true);
+        assert_eq!(agreement.description.is_some(), true);
+        assert_eq!(agreement.description.unwrap().as_str(), QUOTE_DESC);
     }
 
     #[test]
@@ -169,7 +169,7 @@ mod test {
 
         agreement.add_item(item2);
 
-        assert_eq!(agreement.agreement_item.is_some(),true);
-        assert_eq!(agreement.agreement_item.unwrap().len(),2);
+        assert_eq!(agreement.agreement_item.is_some(), true);
+        assert_eq!(agreement.agreement_item.unwrap().len(), 2);
     }
 }

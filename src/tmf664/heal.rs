@@ -4,32 +4,31 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, LIB_PATH,HasName,Uri,DateTime};
-use tmflib_derive::{HasId,HasName};
+use crate::{DateTime, HasId, HasName, Uri};
+use tmflib_derive::{HasId, HasName};
 
+use super::{TaskStateType, MOD_PATH};
 
-use super::{MOD_PATH,TaskStateType};
-
-const CLASS_PATH : &str = "heal";
+const CLASS_PATH: &str = "heal";
 
 /// Heal Resource Function
-#[derive(Clone,Debug,Default,HasId,HasName,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, HasId, HasName, Deserialize, Serialize)]
 pub struct Heal {
     /// Unique Id
-    pub id : Option<String>,
+    pub id: Option<String>,
     /// HTTP Uri
     pub href: Option<Uri>,
     /// Name
-    pub name : Option<String>,
+    pub name: Option<String>,
     // Referenced fields
     /// Tracks the lifecycle status of the migrate request.
-    pub state : Option<TaskStateType>,
+    pub state: Option<TaskStateType>,
     /// Reason why healing is being requested.
-    pub cause : Option<String>,
+    pub cause: Option<String>,
     /// Indicates the degree of healing required.
-    pub degree_of_healing : Option<String>,
+    pub degree_of_healing: Option<String>,
     /// Exact action to be taken as part of the heal process or a pointer to a script to be run.
     pub heal_action: Option<String>,
     /// The time when the heal action needs to commence. This allows a delay to be added.
-    pub start_time : Option<DateTime>,
+    pub start_time: Option<DateTime>,
 }

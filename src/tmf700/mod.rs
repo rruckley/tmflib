@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
 //! TMF700 Shipping Order Management
 
 /// Common path for TMF700
-pub const MOD_PATH : &str = "shippingOrder/v4";
+pub const MOD_PATH: &str = "shippingOrder/v4";
 
-pub mod shipping_order;
-pub mod shipping_order_item;
-pub mod shipping_instruction;
 pub mod shipment;
 pub mod shipment_specification;
+pub mod shipping_instruction;
+pub mod shipping_order;
+pub mod shipping_order_item;

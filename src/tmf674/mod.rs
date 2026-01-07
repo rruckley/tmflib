@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,6 +25,6 @@ pub mod geographic_site_v4;
 pub mod geographic_site_v5;
 
 #[cfg(all(feature = "tmf674", feature = "build-V4"))]
-const MOD_PATH : &str = "geographicSiteManagement/v4";
+const MOD_PATH: &str = "geographicSiteManagement/v4";
 #[cfg(all(feature = "tmf674", feature = "build-V5"))]
-const MOD_PATH : &str = "geographicSiteManagement/v5";
+const MOD_PATH: &str = "geographicSiteManagement/v5";

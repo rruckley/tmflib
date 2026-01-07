@@ -3,35 +3,23 @@
 
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::tmf620::bundled_product_offering::BundledProductOffering;
-use crate::tmf620::category::CategoryRef;
+use crate::tmf620::category::{Category, CategoryRef};
 use crate::tmf620::product_specification::{
-    ProductSpecification, ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
+    ProductSpecificationCharacteristicValueUse, ProductSpecificationRef,
 };
 
-use crate::{
-    HasLastUpdate, 
-    HasDescription,
-    HasId, 
-    HasName, 
-    HasReference,
-    TimePeriod
-};
-use tmflib_derive::{
-    HasDescription,
-    HasId,
-    HasName,
-    HasLastUpdate
-};
-use crate::tmf634::resource_candidate::ResourceCandidateRef;
-use crate::tmf633::service_candidate::ServiceCandidateRef;
 use super::product_offering_price::ProductOfferingPriceRef;
+use crate::tmf633::service_candidate::ServiceCandidateRef;
+use crate::tmf634::resource_candidate::ResourceCandidateRef;
+use crate::{vec_insert, HasDescription, HasId, HasLastUpdate, HasName, HasReference, TimePeriod};
 use serde::{Deserialize, Serialize};
+use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
-use super::{ChannelRef,MarketSegmentRef,PlaceRef,SLARef};
+use super::{ChannelRef, MarketSegmentRef, PlaceRef, SLARef};
 use crate::tmf651::agreement::AgreementRef;
 
-use super::LIB_PATH;
 use super::MOD_PATH;
+use crate::LIB_PATH;
 
 const PO_VERS_INIT: &str = "1.0";
 const CLASS_PATH: &str = "productOffering";
@@ -39,18 +27,21 @@ const CLASS_PATH: &str = "productOffering";
 /// Product Offering Reference
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct ProductOfferingRef {
-    id: String,
-    href: String,
-    name : String,
+    /// Unique Id of Product Offering
+    pub id: String,
+    /// HREF for API use
+    pub href: String,
+    /// Name of Product Offering
+    pub name: String,
 }
 
 impl From<ProductOffering> for ProductOfferingRef {
     /// Convert from ProductOffering into ProductOfferingRef
-    fn from(po : ProductOffering) -> ProductOfferingRef {
-        ProductOfferingRef { 
-            id: po.get_id(), 
-            href: po.get_href(), 
-            name: po.get_name() 
+    fn from(po: ProductOffering) -> ProductOfferingRef {
+        ProductOfferingRef {
+            id: po.get_id(),
+            href: po.get_href(),
+            name: po.get_name(),
         }
     }
 }
@@ -86,20 +77,22 @@ pub struct ProductOfferingRelationship {
 }
 
 impl From<ProductOffering> for ProductOfferingRelationship {
-    fn from(po : ProductOffering) -> ProductOfferingRelationship {
+    fn from(po: ProductOffering) -> ProductOfferingRelationship {
         ProductOfferingRelationship {
             id: po.id.clone(),
             href: po.href.clone(),
             name: po.name.clone(),
             relationship_type: None,
-            role : None,
+            role: None,
             valid_for: None,
         }
     }
 }
 
 /// Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasDescription, HasName,HasLastUpdate, Serialize)]
+#[derive(
+    Clone, Default, Debug, Deserialize, HasId, HasDescription, HasName, HasLastUpdate, Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOffering {
     /// Unique identifier
@@ -200,7 +193,7 @@ impl ProductOffering {
     }
 
     /// Set status of this ProductOffering
-    pub fn status(&mut self, status : &str) {
+    pub fn status(&mut self, status: &str) {
         self.lifecycle_status = Some(status.to_owned());
     }
 
@@ -211,38 +204,35 @@ impl ProductOffering {
     /// # use tmflib::tmf620::category::{Category,CategoryRef};
     /// let po = ProductOffering::new(String::from("MyOffer"));
     /// let cat= Category::new(String::from("MyCategory"));
-    /// let result = po.with_category(CategoryRef::from(&cat));
+    /// let result = po.with_category(cat);
     /// ```
     pub fn with_category(mut self, category: Category) -> ProductOffering {
-        let cat_ref = CategoryRef::from(category);
-        self.category = upsert(self.category,category);
-        match self.category.as_mut() {
-            Some(v) => v.push(cat_ref),
-            None => self.category = Some(vec![cat_ref]),
-        }
+        vec_insert(&mut self.category, CategoryRef::from(&category));
         self
     }
 
-    pub fn upsert<T : IntoIterator,U : HasId>( &i : Some(T), item : U) -> Option<T> {
-        match i.as_mut() {
-            Some(v) => v.push(U),
-            None => Some(vec![item]),
-        }
-    }
-
     /// Add characteristic value uses into this Product Offering
-    pub fn with_char_value_use(mut self, char_value_use : ProductSpecificationCharacteristicValueUse) -> ProductOffering {
-        self.prod_spec_char_value_use.as_mut().unwrap().push(char_value_use);
+    pub fn with_char_value_use(
+        mut self,
+        char_value_use: ProductSpecificationCharacteristicValueUse,
+    ) -> ProductOffering {
+        self.prod_spec_char_value_use
+            .as_mut()
+            .unwrap()
+            .push(char_value_use);
         self
     }
 
     /// Create a link between two ProductOfferings
-    pub fn link_po(&mut self, remote_po : ProductOffering, relationship_type : &str, role : &str) {
+    pub fn link_po(&mut self, remote_po: ProductOffering, relationship_type: &str, role: &str) {
         // Create a link from ourselves into remote_po using type and role prodived.
         let mut offer_rel = ProductOfferingRelationship::from(remote_po);
         offer_rel.relationship_type = Some(relationship_type.to_string());
         offer_rel.role = Some(role.to_string());
-        self.product_offering_relationship.as_mut().unwrap().push(offer_rel);
+        self.product_offering_relationship
+            .as_mut()
+            .unwrap()
+            .push(offer_rel);
     }
 }
 

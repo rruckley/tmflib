@@ -1,5 +1,5 @@
 //! Geographic Address Example
-//! 
+//!
 
 use tmflib::tmf673::geographic_address::GeographicAddress;
 

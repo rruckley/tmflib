@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 //! TMF639 Resource Inventory Management
 
-const MOD_PATH : &str = "resourceInventoryManagement/v4";
+const MOD_PATH: &str = "resourceInventoryManagement/v4";
 
-pub mod resource;
 pub mod characteristic;
+pub mod resource;

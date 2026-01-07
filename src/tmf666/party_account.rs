@@ -2,42 +2,31 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    HasId, 
-    HasDescription,
-    HasLastUpdate, 
-    HasName,
-    HasRelatedParty,
-    LIB_PATH, 
-    DateTime,
-};
-use tmflib_derive::{
-    HasId, 
-    HasDescription,
-    HasName, 
-    HasLastUpdate,
-    HasRelatedParty,
-};
+use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty};
+use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty};
 
-use crate::common::{
-    money::Money,
-    related_party::RelatedParty,
-    contact::Contact,
-};
 use super::{
-    AccountBalance,
-    AccountRef,
-    AccountTaxExemption,
-    financial_account::FinancialAccountRef,
-    MOD_PATH,
-    PaymentPlan,
-    PaymentMethodRef,
+    financial_account::FinancialAccountRef, AccountBalance, AccountRef, AccountTaxExemption,
+    PaymentMethodRef, PaymentPlan, MOD_PATH,
 };
+use crate::common::tmf_error::TMFError;
+use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
 
-const CLASS_PATH : &str = "account";
+const CLASS_PATH: &str = "account";
 
 /// Party Account
-#[derive( Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasRelatedParty, HasDescription, Serialize)]
+#[derive(
+    Clone,
+    Debug,
+    Default,
+    Deserialize,
+    HasId,
+    HasName,
+    HasLastUpdate,
+    HasRelatedParty,
+    HasDescription,
+    Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct PartyAccount {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -57,7 +46,7 @@ pub struct PartyAccount {
     last_update: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
-    // Referenced 
+    // Referenced
     related_party: Option<Vec<RelatedParty>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     contact: Option<Vec<Contact>>,
@@ -76,10 +65,10 @@ pub struct PartyAccount {
 impl From<PartyAccount> for AccountRef {
     fn from(value: PartyAccount) -> Self {
         AccountRef {
-            id : value.get_id(),
+            id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            description : value.description.clone(),
+            description: value.description.clone(),
         }
     }
 }
@@ -91,19 +80,19 @@ mod test {
     use super::PartyAccount;
     use crate::tmf666::AccountRef;
 
-    const PARTYACC_ID : &str = "PA123";
-    const PARTYACC_NAME : &str =  "PartyAccountName";
-    const PARTYACC_JSON : &str = "{
+    const PARTYACC_ID: &str = "PA123";
+    const PARTYACC_NAME: &str = "PartyAccountName";
+    const PARTYACC_JSON: &str = "{
         \"name\" : \"PartyAccountName\",
         \"description\" : \"Description\"
     }";
 
     #[test]
     fn test_partyacc_deserialize() {
-        let partyacc : PartyAccount = serde_json::from_str(PARTYACC_JSON).unwrap();
+        let partyacc: PartyAccount = serde_json::from_str(PARTYACC_JSON).unwrap();
 
-        assert_eq!(partyacc.description.is_some(),true);
-        assert_eq!(partyacc.description.unwrap().as_str(),"Description");
+        assert_eq!(partyacc.description.is_some(), true);
+        assert_eq!(partyacc.description.unwrap().as_str(), "Description");
     }
 
     #[test]
@@ -113,7 +102,7 @@ mod test {
         partyacc.set_id(PARTYACC_ID);
         partyacc.set_name(PARTYACC_NAME);
 
-        assert_eq!(partyacc.get_name().as_str(),PARTYACC_NAME);
+        assert_eq!(partyacc.get_name().as_str(), PARTYACC_NAME);
     }
 
     #[test]
@@ -125,9 +114,8 @@ mod test {
 
         let accountref = AccountRef::from(partyacc.clone());
 
-        assert_eq!(accountref.id,partyacc.get_id());
-        assert_eq!(accountref.name,partyacc.get_name());
-        assert_eq!(accountref.href,partyacc.get_href());
-
+        assert_eq!(accountref.id, partyacc.get_id());
+        assert_eq!(accountref.name, partyacc.get_name());
+        assert_eq!(accountref.href, partyacc.get_href());
     }
 }

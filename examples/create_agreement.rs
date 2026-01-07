@@ -1,5 +1,5 @@
 //! Create an Agreement
-//! 
+//!
 
 use tmflib::tmf651::agreement::Agreement;
 

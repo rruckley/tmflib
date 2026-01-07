@@ -1,0 +1,9 @@
+use serde::{Deserialize, Serialize};
+/// Document Reference or Document Value
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct DocumentRefOrValue {}
+impl std::fmt::Display for DocumentRefOrValue {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}

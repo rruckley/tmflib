@@ -1,49 +1,35 @@
 //! Product Order Module
 
-use serde::{Deserialize, Serialize};
-use chrono::Utc;
-use tmflib_derive::{
-    HasId,
-    HasDescription,
-    HasNote,
-    HasRelatedParty
-};
-use crate::tmf641::service_order::ServiceOrder;
-use crate::common::related_party::RelatedParty;
-use crate::common::note::Note;
-use crate::common::event::{Event,EventPayload};
-use crate::tmf651::agreement::AgreementRef;
-use crate::{
-    DateTime,
-    HasDescription,
-    HasId, 
-    HasLastUpdate, 
-    HasNote, 
-    HasRelatedParty,
-    Uri,
-    TMFEvent,
-    vec_insert,
-    LIB_PATH,
-};
-use crate::tmf663::shopping_cart::ShoppingCart;
 use super::product_order_item::ProductOrderItem;
+use crate::common::event::{Event, EventPayload};
+use crate::common::note::Note;
+use crate::common::related_party::RelatedParty;
+use crate::common::tmf_error::TMFError;
+use crate::tmf641::service_order::ServiceOrder;
+use crate::tmf651::agreement::AgreementRef;
+use crate::tmf663::shopping_cart::ShoppingCart;
+use crate::{
+    vec_insert, DateTime, HasDescription, HasId, HasLastUpdate, HasNote, HasRelatedParty, TMFEvent,
+    Uri,
+};
+use chrono::Utc;
+use serde::{Deserialize, Serialize};
+use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty};
 
 // URL Path components
 use super::MOD_PATH;
 
-
-
 const CLASS_PATH: &str = "productOrder";
 
 /// Reference to a Product Order
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct ProductOrderRef {
     /// Link to Product Order
-    pub href : Uri,
+    pub href: Uri,
     /// Unique Id of Product Order
-    pub id : String,
+    pub id: String,
     /// Name or title of product order
-    pub name : String,
+    pub name: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@baseType")]
     base_type: Option<String>,
@@ -60,15 +46,16 @@ pub struct ProductOrderRef {
 
 impl From<ProductOrder> for ProductOrderRef {
     fn from(value: ProductOrder) -> Self {
-        let name = value.description.as_deref().unwrap_or({
-            "No Order Description"
-        });
+        let name = value
+            .description
+            .as_deref()
+            .unwrap_or("No Order Description");
         ProductOrderRef {
             href: value.get_href(),
             id: value.get_id(),
             // Should ideally generate a useful name if description is missing
             name: name.to_string(),
-            r#type : Some("ProductOrder".to_string()),
+            r#type: Some("ProductOrder".to_string()),
             ..Default::default()
         }
     }
@@ -76,21 +63,22 @@ impl From<ProductOrder> for ProductOrderRef {
 
 impl From<&ProductOrder> for ProductOrderRef {
     fn from(value: &ProductOrder) -> Self {
-        let name = value.description.as_deref().unwrap_or({
-            "No Order Description"
-        });
+        let name = value
+            .description
+            .as_deref()
+            .unwrap_or("No Order Description");
         ProductOrderRef {
             href: value.get_href(),
             id: value.get_id(),
             name: name.to_string(),
-            r#type : Some("ProductOrder".to_string()),
+            r#type: Some("ProductOrder".to_string()),
             ..Default::default()
         }
     }
 }
 
 /// Product Order Event Type
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub enum ProductOrderEventType {
     /// Order Created
     #[default]
@@ -106,10 +94,10 @@ pub enum ProductOrderEventType {
 }
 
 /// Product Order Event Container
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct ProductOrderEvent {
     /// Impacted Product Order
-    pub order : ProductOrder,
+    pub order: ProductOrder,
 }
 
 impl TMFEvent<ProductOrderEvent> for ProductOrder {
@@ -124,10 +112,10 @@ impl EventPayload<ProductOrderEvent> for ProductOrder {
     type Subject = ProductOrder;
     type EventType = ProductOrderEventType;
 
-    fn to_event(&self,event_type : Self::EventType) -> Event<ProductOrderEvent,Self::EventType> {
-        let desc = format!("{:?} for order {}",event_type,self.get_id());
+    fn to_event(&self, event_type: Self::EventType) -> Event<ProductOrderEvent, Self::EventType> {
+        let desc = format!("{:?} for order {}", event_type, self.get_id());
         let now = Utc::now();
-        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
         Event {
             id: Some(self.get_id()),
             href: Some(self.get_href()),
@@ -136,11 +124,13 @@ impl EventPayload<ProductOrderEvent> for ProductOrder {
             event: self.event(),
             ..Default::default()
         }
-    }    
+    }
 }
 
 /// ProductOrder
-#[derive(Clone, Debug, Default, Deserialize, HasId, HasDescription, HasNote, HasRelatedParty, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, HasId, HasDescription, HasNote, HasRelatedParty, Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOrder {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -155,19 +145,19 @@ pub struct ProductOrder {
     pub cancellation_reason: Option<String>,
     /// Category
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub category : Option<String>,
+    pub category: Option<String>,
     /// Completion Date
     #[serde(skip_serializing_if = "Option::is_none")]
     pub completion_date: Option<DateTime>,
     /// Description
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub description : Option<String>,
+    pub description: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     /// Expected Completion Date
-    pub expected_completion_date : Option<DateTime>,
+    pub expected_completion_date: Option<DateTime>,
     /// External Id
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub external_id : Option<String>,
+    pub external_id: Option<String>,
     /// Order Date
     #[serde(skip_serializing_if = "Option::is_none")]
     pub order_date: Option<DateTime>,
@@ -180,17 +170,20 @@ pub struct ProductOrder {
     // Referenced objects
     /// Notes
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub note : Option<Vec<Note>>,
+    pub note: Option<Vec<Note>>,
     /// Agreements
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub agreement : Option<Vec<AgreementRef>>,
+    pub agreement: Option<Vec<AgreementRef>>,
 }
 
 impl HasLastUpdate for ProductOrder {
-    fn set_last_update(&mut self, time : impl Into<String>) {
+    fn set_last_update(&mut self, time: impl Into<String>) {
         self.order_date = Some(time.into());
     }
-    fn last_update(mut self, time : Option<String>) -> Self {
+    fn get_last_update(&self) -> Option<String> {
+        self.order_date.clone()
+    }
+    fn last_update(mut self, time: Option<String>) -> Self {
         match time {
             Some(t) => self.set_last_update(t),
             None => self.set_last_update(ProductOrder::get_timestamp()),
@@ -208,30 +201,31 @@ impl ProductOrder {
     }
 
     /// Add an ProductOrderItem into the ProductOrder
-    pub fn add_order_item(&mut self, order_item : ProductOrderItem) {
-        vec_insert(&mut self.product_order_item,order_item);
+    pub fn add_order_item(&mut self, order_item: ProductOrderItem) {
+        vec_insert(&mut self.product_order_item, order_item);
         // self.product_order_item.as_mut().unwrap().push(order_item);
     }
-
 }
 
 impl From<ServiceOrder> for ProductOrder {
     fn from(value: ServiceOrder) -> Self {
         let mut po = ProductOrder::new();
-        
-        po.cancellation_reason.clone_from(&value.cancellation_reason);
+
+        po.cancellation_reason
+            .clone_from(&value.cancellation_reason);
         po.category.clone_from(&value.category);
         po.description.clone_from(&value.description);
         po.external_id.clone_from(&value.external_id);
         po.note.clone_from(&value.note);
         po.related_party.clone_from(&value.related_party);
-        
+
         // Dates
         po.completion_date.clone_from(&value.completion_date);
         po.order_date.clone_from(&value.order_date);
         po.cancellation_date.clone_from(&value.cancellation_date);
-        po.expected_completion_date.clone_from(&value.expected_completion_date);
-        
+        po.expected_completion_date
+            .clone_from(&value.expected_completion_date);
+
         // Iterate through service order items
         let items = match value.service_order_item {
             Some(i) => {
@@ -242,12 +236,12 @@ impl From<ServiceOrder> for ProductOrder {
                     out.push(poi);
                 });
                 Some(out)
-            },
+            }
             None => None,
         };
         po.product_order_item = items;
 
-        po  
+        po
     }
 }
 
@@ -260,7 +254,11 @@ impl From<ShoppingCart> for ProductOrder {
         // Bring across the cart items
         if value.cart_item.is_some() {
             value.cart_item.unwrap().into_iter().for_each(|i| {
-                order.product_order_item.as_mut().unwrap().push(ProductOrderItem::from(i));
+                order
+                    .product_order_item
+                    .as_mut()
+                    .unwrap()
+                    .push(ProductOrderItem::from(i));
             });
         }
         // Bring across the related parties
@@ -279,7 +277,7 @@ mod test {
     use crate::tmf641::service_order::ServiceOrder;
     use crate::tmf663::shopping_cart::ShoppingCart;
 
-    const SERVICE_CAT : &str = "ServiceCategory";
+    const SERVICE_CAT: &str = "ServiceCategory";
 
     #[test]
     fn test_orderref_from_order() {
@@ -287,8 +285,8 @@ mod test {
 
         let order_ref = ProductOrderRef::from(order.clone());
 
-        assert_eq!(order.get_id(),order_ref.id);
-        assert_eq!(order.get_href(),order_ref.href);
+        assert_eq!(order.get_id(), order_ref.id);
+        assert_eq!(order.get_href(), order_ref.href);
     }
 
     #[test]
@@ -297,8 +295,8 @@ mod test {
 
         let order_ref = ProductOrderRef::from(&order);
 
-        assert_eq!(order.get_id(),order_ref.id);
-        assert_eq!(order.get_href(),order_ref.href);   
+        assert_eq!(order.get_id(), order_ref.id);
+        assert_eq!(order.get_href(), order_ref.href);
     }
 
     #[test]
@@ -308,7 +306,7 @@ mod test {
 
         let product_order = ProductOrder::from(service_order.clone());
 
-        assert_eq!(product_order.category,service_order.category);
+        assert_eq!(product_order.category, service_order.category);
     }
 
     #[test]
@@ -317,8 +315,8 @@ mod test {
 
         let order = ProductOrder::from(cart.clone());
 
-        assert_eq!(order.description.is_some(),true);
-        assert_eq!(order.related_party.is_none(),true);
-        assert_eq!(order.product_order_item.is_none(),true);
+        assert_eq!(order.description.is_some(), true);
+        assert_eq!(order.related_party.is_none(), true);
+        assert_eq!(order.product_order_item.is_none(), true);
     }
 }

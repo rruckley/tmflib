@@ -1,9 +1,9 @@
 //! Test something
-//! 
+//!
 
 #[derive(Default)]
 struct Test {
-    vec : Option<Vec<String>>,
+    vec: Option<Vec<String>>,
 }
 
 fn main() {
@@ -12,15 +12,11 @@ fn main() {
 
     let my_test = &test;
     let rp = match my_test.vec.as_ref() {
-        Some(v) => {
-            match v.get(0) {
-                Some(i) => Some(i).cloned(),
-                None => None,
-            }
+        Some(v) => match v.get(0) {
+            Some(i) => Some(i).cloned(),
+            None => None,
         },
-        None => {
-            None
-        },
+        None => None,
     };
     dbg!(rp);
 }

@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 //! TMF633 Service Catalogue Management
 
-const MOD_PATH : &str = "serviceCatalogManagement/v4";
+const MOD_PATH: &str = "serviceCatalogManagement/v4";
 
+pub mod characteristic_specification;
+pub mod service_candidate;
 pub mod service_catalog;
 pub mod service_category;
 pub mod service_specification;
-pub mod service_candidate;
-pub mod characteristic_specification;

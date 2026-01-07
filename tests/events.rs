@@ -1,5 +1,5 @@
 //! Test event generation
-//! 
+//!
 
 use tmflib::common::event::EventPayload;
 use tmflib::tmf620::catalog::Catalog;
@@ -12,5 +12,5 @@ fn test_event_product_catalog() {
 
     let event = catalog.to_event(CatalogEventType::CatalogCreateEvent);
 
-    assert_eq!(event.domain.unwrap(),Catalog::get_class());
+    assert_eq!(event.domain.unwrap(), Catalog::get_class());
 }

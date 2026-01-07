@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,13 +14,16 @@
 
 //! TMF622 Product Order Management
 
+#[cfg(feature = "build-V4")]
 const MOD_PATH: &str = "productOrderingManagement/v4";
+#[cfg(feature = "build-V5")]
+const MOD_PATH: &str = "productOrderingManagement/v5";
 
 #[cfg(all(feature = "tmf622", feature = "build-V4"))]
 pub mod product_order_v4;
 #[cfg(all(feature = "tmf622", feature = "build-V5"))]
 pub mod product_order_v5;
 
-pub mod product_order_item;
 #[cfg(all(feature = "tmf622", feature = "build-V5"))]
 pub mod milestone;
+pub mod product_order_item;

@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 //! TMF679 Product Qualification Management
 
 /// Common path for TMF679
-pub const MOD_PATH : &str = "productOfferingQualificationManagement/v4";
+pub const MOD_PATH: &str = "productOfferingQualificationManagement/v4";
 
-pub mod product_qualification;
 pub mod product_offering_qualification_item;
+pub mod product_qualification;

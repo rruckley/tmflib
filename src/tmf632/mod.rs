@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,29 +16,29 @@
 //! # Description
 //! Manages data related to Parties either [`individual_v4::Individual`] or [`organization_v4::Organization`]
 
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
-#[cfg(all(feature = "tmf632",feature = "build-V4"))]
-const MOD_PATH : &str = "partyManagement/v4";
-#[cfg(all(feature = "tmf632",feature = "build-V5"))]
-const MOD_PATH : &str = "partyManagement/v5";
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
+const MOD_PATH: &str = "partyManagement/v4";
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
+const MOD_PATH: &str = "partyManagement/v5";
 
-#[cfg(all(feature = "tmf632",feature = "build-V4"))]
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
 pub mod individual_v4;
-#[cfg(all(feature = "tmf632",feature = "build-V4"))]
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
 pub mod organization_v4;
 
-#[cfg(all(feature = "tmf632",feature = "build-V5"))]
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
 pub mod individual_v5;
-#[cfg(all(feature = "tmf632",feature = "build-V5"))]
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
 pub mod organization_v5;
 
 /// General Party characteristic
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Characteristic {
     name: String,
-    name_type : String,
+    name_type: String,
     value: String,
     base_type: Option<String>,
     schema_location: Option<String>,
@@ -51,7 +51,7 @@ mod test {
 
     use super::Characteristic;
 
-    const CHAR_JSON : &str = "{
+    const CHAR_JSON: &str = "{
         \"name\" : \"name\",
         \"nameType\" : \"NameType\",
         \"value\" : \"CharName\"
@@ -59,11 +59,11 @@ mod test {
 
     #[test]
     fn test_characteristic_deserialise() {
-        let char : Characteristic = serde_json::from_str(CHAR_JSON)
-            .expect("Could not parse CHAR_JSON");
+        let char: Characteristic =
+            serde_json::from_str(CHAR_JSON).expect("Could not parse CHAR_JSON");
 
-        assert_eq!(char.name.as_str(),"name");
-        assert_eq!(char.name_type.as_str(),"NameType");
-        assert_eq!(char.value.as_str(),"CharName");
+        assert_eq!(char.name.as_str(), "name");
+        assert_eq!(char.name_type.as_str(), "NameType");
+        assert_eq!(char.value.as_str(), "CharName");
     }
 }

@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 //! - V4 Supported
 //! - V5 Supported
 
-const MOD_PATH : &str = "tmf678/v5";
+const MOD_PATH: &str = "tmf678/v5";
 
 #[cfg(all(feature = "tmf678", feature = "build-V4"))]
 pub mod customer_bill_v4;

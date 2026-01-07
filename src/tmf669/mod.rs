@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 //! TMF669 Party Role Management
 //! # Description
-//! This API can be seen as a generalisation of CUstomer management API where Party Roles may be any, not only a customer. 
-//! In fact, Customer  ([crate::tmf629]) can be seen as a specific instance of a party role. 
+//! This API can be seen as a generalisation of CUstomer management API where Party Roles may be any, not only a customer.
+//! In fact, Customer  ([crate::tmf629]) can be seen as a specific instance of a party role.
 //! The role defines a specialisation of how the party object is used and thus a reference to a party (via [`crate::tmf632`]) is required.
 //! This is achieved via the [common/related_party] object.
 
-const MOD_PATH : &str = "partyRoleManagement/v4";
+const MOD_PATH: &str = "partyRoleManagement/v4";
 
 pub mod party_role;

@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 
 //! TMF696 Risk Management
 
-pub mod product_order_risk_assessment;
-pub mod shopping_cart_risk_assessment;
-pub mod risk_assessment_result;
 pub mod characteristic;
+pub mod product_order_risk_assessment;
+pub mod risk_assessment_result;
+pub mod shopping_cart_risk_assessment;
 
-const MOD_PATH : &str = "riskManagement/v4";
+const MOD_PATH: &str = "riskManagement/v4";

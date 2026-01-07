@@ -1,26 +1,26 @@
 //! Shopping Cart Item
 
-use serde::{Deserialize, Serialize};
-use crate::common::note::Note;
 use super::shopping_cart::CartPrice;
+use crate::common::note::Note;
 #[cfg(all(feature = "tmf620", feature = "build-V4"))]
 use crate::tmf620::product_offering::ProductOfferingRef;
 #[cfg(all(feature = "tmf620", feature = "build-V5"))]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
+use serde::{Deserialize, Serialize};
 
 use std::convert::From;
 use uuid::Uuid;
 
 /// Shopping Cart Item Reference
-#[derive(Clone,Default,Debug,Serialize,Deserialize)]
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct ItemRef {
-    id : String,
+    id: String,
 }
 
 impl From<CartItem> for ItemRef {
     fn from(value: CartItem) -> Self {
         ItemRef {
-            id : value.id.unwrap_or_default().clone(),
+            id: value.id.unwrap_or_default().clone(),
         }
     }
 }
@@ -30,7 +30,7 @@ impl From<CartItem> for ItemRef {
 pub struct CartItem {
     id: Option<String>,
     /// Notes for this Cart Item
-    pub note : Vec<Note>,
+    pub note: Vec<Note>,
     /// Product Offering in cart
     pub product_offering: Option<ProductOfferingRef>,
     /// Quantity
@@ -41,7 +41,7 @@ pub struct CartItem {
 
 impl CartItem {
     /// Add a note to this cart item
-    pub fn add_note(&mut self, note : Note) {
+    pub fn add_note(&mut self, note: Note) {
         self.note.push(note);
     }
 }
@@ -49,8 +49,8 @@ impl CartItem {
 impl From<ProductOfferingRef> for CartItem {
     fn from(value: ProductOfferingRef) -> Self {
         let id = Uuid::new_v4().simple().to_string();
-        CartItem { 
-            id: Some(id), 
+        CartItem {
+            id: Some(id),
             quantity: 1,
             product_offering: Some(value),
             ..Default::default()
@@ -61,13 +61,16 @@ impl From<ProductOfferingRef> for CartItem {
 #[cfg(test)]
 mod test {
     use crate::common::note::Note;
-    use crate::tmf620::product_offering::{ProductOffering,ProductOfferingRef};
+    #[cfg(feature = "build-V4")]
+    use crate::tmf620::product_offering::{ProductOffering, ProductOfferingRef};
+    #[cfg(feature = "build-V5")]
+    use crate::tmf620::product_offering_v5::{ProductOffering, ProductOfferingRef};
 
     use super::CartItem;
 
-    const OFFER_NAME : &str = "OfferName";
+    const OFFER_NAME: &str = "OfferName";
 
-    const CART_JSON : &str = "{
+    const CART_JSON: &str = "{
         \"id\" : \"CI123\",
         \"note\" : [],
         \"quantity\" : 1,
@@ -80,7 +83,7 @@ mod test {
         let mut cart_item = CartItem::default();
         cart_item.add_note(note);
 
-        assert_eq!(cart_item.note.len(),1);
+        assert_eq!(cart_item.note.len(), 1);
     }
 
     #[test]
@@ -89,16 +92,19 @@ mod test {
 
         let cart_item = CartItem::from(ProductOfferingRef::from(offer));
 
-        assert_eq!(cart_item.quantity,1);
-        assert_eq!(cart_item.product_offering.is_some(),true);
-        assert_eq!(cart_item.product_offering.unwrap().name,OFFER_NAME.to_string());
+        assert_eq!(cart_item.quantity, 1);
+        assert_eq!(cart_item.product_offering.is_some(), true);
+        assert_eq!(
+            cart_item.product_offering.unwrap().name,
+            OFFER_NAME.to_string()
+        );
     }
 
     #[test]
     fn test_cartitem_deserialization() {
-        let cartitem : CartItem = serde_json::from_str(CART_JSON).unwrap();
+        let cartitem: CartItem = serde_json::from_str(CART_JSON).unwrap();
 
-        assert_eq!(cartitem.id.is_some(),true);
-        assert_eq!(cartitem.quantity,1);
+        assert_eq!(cartitem.id.is_some(), true);
+        assert_eq!(cartitem.quantity, 1);
     }
 }

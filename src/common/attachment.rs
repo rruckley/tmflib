@@ -1,26 +1,14 @@
 //! Attachment Module
 //!
 //!
-use serde::{Deserialize, Serialize};
-use crate::{
-    HasId, 
-    HasName, 
-    HasValidity, 
-    HasDescription,
-    DateTime
-};
-use tmflib_derive::{
-    HasId, 
-    HasDescription,
-    HasName, 
-    HasValidity
-};
 use crate::tmf667::document::Document;
+use crate::{DateTime, HasDescription, HasId, HasName, HasValidity};
+use serde::{Deserialize, Serialize};
+use tmflib_derive::{HasDescription, HasId, HasName, HasValidity};
 
 use crate::TimePeriod;
 
 use super::MOD_PATH;
-use crate::LIB_PATH;
 
 const CLASS_PATH: &str = "attachment";
 
@@ -46,7 +34,9 @@ pub struct AttachmentSize {
 }
 
 /// Attachment Reference or Value
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasName, HasDescription, HasValidity, Serialize)]
+#[derive(
+    Clone, Default, Debug, Deserialize, HasId, HasName, HasDescription, HasValidity, Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct AttachmentRefOrValue {
     /// Unique Id
@@ -69,7 +59,7 @@ pub struct AttachmentRefOrValue {
     pub mime_type: Option<String>,
     /// Name of document
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub name : Option<String>,
+    pub name: Option<String>,
     /// URL where the content is stored for the external attachment
     #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
@@ -93,13 +83,16 @@ impl AttachmentRefOrValue {
 
 impl From<&Document> for AttachmentRefOrValue {
     fn from(value: &Document) -> Self {
-        let validity  = value.last_update.as_ref().map(|t| TimePeriod::from(t.clone() as DateTime));
+        let validity = value
+            .last_update
+            .as_ref()
+            .map(|t| TimePeriod::from(t.clone() as DateTime));
         AttachmentRefOrValue {
             name: Some(value.get_name()),
             id: Some(value.get_id()),
             href: Some(value.get_href()),
             description: value.description.clone(),
-            valid_for : validity,
+            valid_for: validity,
             ..Default::default()
         }
     }
@@ -107,25 +100,25 @@ impl From<&Document> for AttachmentRefOrValue {
 
 #[cfg(test)]
 mod test {
-    use crate::{tmf667::document::Document, HasName};
-    use crate::HasDescription;
     use super::*;
+    use crate::HasDescription;
+    use crate::{tmf667::document::Document, HasName};
 
-    const ATTACH_TYPE_JSON : &str = "\"inLine\"";
-    const ATTACH_SIZE : &str = "{
+    const ATTACH_TYPE_JSON: &str = "\"inLine\"";
+    const ATTACH_SIZE: &str = "{
         \"amount\" : 123.4,
         \"units\" : \"bytes\"  
     }";
-    const ATTACH_NAME: &str= "AttachmentName";
+    const ATTACH_NAME: &str = "AttachmentName";
 
-    const ATTACH_JSON : &str = "{}";
-    const ATTACH_DESC : &str = "AttachmentDescription";
+    const ATTACH_JSON: &str = "{}";
+    const ATTACH_DESC: &str = "AttachmentDescription";
 
     #[test]
     fn test_attachment_default() {
         let attachment = AttachmentRefOrValue::new();
 
-        assert_eq!(attachment.valid_for.is_some(),true);
+        assert_eq!(attachment.valid_for.is_some(), true);
     }
 
     #[test]
@@ -134,37 +127,39 @@ mod test {
 
         let attachment = AttachmentRefOrValue::from(&document);
 
-        assert_eq!(attachment.get_name(),document.get_name());
+        assert_eq!(attachment.get_name(), document.get_name());
     }
 
     #[test]
     fn test_attachmenttype_deserialize() {
-        let attach_type : AttachmentType = serde_json::from_str(ATTACH_TYPE_JSON).expect("Could not parse test json");
+        let attach_type: AttachmentType =
+            serde_json::from_str(ATTACH_TYPE_JSON).expect("Could not parse test json");
 
-        assert_eq!(attach_type,AttachmentType::InLine);
+        assert_eq!(attach_type, AttachmentType::InLine);
     }
 
     #[test]
     fn test_attachmentsize_deserialize() {
-        let attach_size : AttachmentSize = serde_json::from_str(ATTACH_SIZE).expect("Could not parse test json");
+        let attach_size: AttachmentSize =
+            serde_json::from_str(ATTACH_SIZE).expect("Could not parse test json");
 
-        assert_eq!(attach_size.amount,123.4);
-        assert_eq!(attach_size.units.as_str(),"bytes");
+        assert_eq!(attach_size.amount, 123.4);
+        assert_eq!(attach_size.units.as_str(), "bytes");
     }
 
     #[test]
     fn test_attach_deserialize() {
-        let _attach : AttachmentRefOrValue = serde_json::from_str(ATTACH_JSON).expect("Could not parse attach JSON");
-
+        let _attach: AttachmentRefOrValue =
+            serde_json::from_str(ATTACH_JSON).expect("Could not parse attach JSON");
     }
 
     #[test]
     fn test_attach_hasname() {
         let mut attach = AttachmentRefOrValue::new();
-        
+
         attach.set_name(ATTACH_NAME);
 
-        assert_eq!(attach.get_name().as_str(),ATTACH_NAME);
+        assert_eq!(attach.get_name().as_str(), ATTACH_NAME);
     }
 
     #[test]
@@ -172,17 +167,16 @@ mod test {
         let mut attach = AttachmentRefOrValue::new();
         attach.set_validity(TimePeriod::period_30days());
 
-        assert_eq!(attach.valid_for.is_some(),true);
-        assert_eq!(attach.valid_for.unwrap().started(),true);
+        assert_eq!(attach.valid_for.is_some(), true);
+        assert_eq!(attach.valid_for.unwrap().started(), true);
     }
 
     #[test]
     fn test_attach_description() {
-        let attach = AttachmentRefOrValue::new()
-            .description(ATTACH_DESC);
+        let attach = AttachmentRefOrValue::new().description(ATTACH_DESC);
 
-        assert_eq!(attach.description.is_some(),true);
-        assert_eq!(attach.get_description().as_str(),ATTACH_DESC);
+        assert_eq!(attach.description.is_some(), true);
+        assert_eq!(attach.get_description().as_str(), ATTACH_DESC);
     }
 
     #[test]
@@ -191,7 +185,7 @@ mod test {
 
         attach.set_description(ATTACH_DESC);
 
-        assert_eq!(attach.description.is_some(),true);
-        assert_eq!(attach.get_description().as_str(),ATTACH_DESC);        
+        assert_eq!(attach.description.is_some(), true);
+        assert_eq!(attach.get_description().as_str(), ATTACH_DESC);
     }
 }

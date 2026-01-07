@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 //! TMF629 Customer Management
 //! # Description
-//! This module represents the common case of a customer. Customer is a specific instance of a Party Role [crate::tmf669]. 
-//! This means to create a customer, an organisation (from [`crate::tmf632`]) must be supplied. 
+//! This module represents the common case of a customer. Customer is a specific instance of a Party Role [crate::tmf669].
+//! This means to create a customer, an organisation (from [`crate::tmf632`]) must be supplied.
 
 const MOD_PATH: &str = "customerManagement/v4";
 

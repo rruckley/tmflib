@@ -1,27 +1,19 @@
 //! Customer Bill Management v5
-//! 
+//!
 
 use super::MOD_PATH;
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
-use crate::{
-    LIB_PATH,
-    HasId,
-    HasAttachment,
-    HasLastUpdate,
-    DateTime,
-    TimePeriod,
-    Uri
-};
-use tmflib_derive::{HasId,HasLastUpdate};
+use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::money::Money;
 use crate::common::related_party::RelatedParty;
-use crate::common::attachment::AttachmentRefOrValue;
+use crate::{DateTime, HasAttachment, HasId, HasLastUpdate, TimePeriod, Uri};
+use tmflib_derive::{HasId, HasLastUpdate};
 
-const CLASS_PATH : &str = "customer_bill";
+const CLASS_PATH: &str = "customer_bill";
 
 /// Customer Bill Run Type
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum CustomerBillRunType {
     /// Inside regular bill cycle
     #[default]
@@ -31,7 +23,7 @@ pub enum CustomerBillRunType {
 }
 
 /// Customer Bill Status
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum CustomerBillStateType {
     /// New Bill
     #[default]
@@ -49,7 +41,7 @@ pub enum CustomerBillStateType {
 }
 
 /// Customer Bill
-#[derive(Clone,Debug,Default,Deserialize,HasId,HasLastUpdate,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, HasId, HasLastUpdate, Serialize)]
 pub struct CustomerBill {
     amount_due: Option<Money>,
     bill_date: Option<DateTime>,
@@ -87,7 +79,7 @@ impl CustomerBill {
 }
 
 impl HasAttachment for CustomerBill {
-    fn add(&mut self, attachment : &AttachmentRefOrValue) {
+    fn add(&mut self, attachment: &AttachmentRefOrValue) {
         match self.bill_document.as_mut() {
             Some(v) => {
                 v.push(attachment.clone());
@@ -95,35 +87,37 @@ impl HasAttachment for CustomerBill {
             None => {
                 self.bill_document = Some(vec![attachment.clone()]);
             }
-        }    
+        }
     }
-    fn position(&self, name : impl Into<String>) -> Option<usize> {
+    fn position(&self, name: impl Into<String>) -> Option<usize> {
         match self.bill_document.as_ref() {
             Some(v) => {
-                let pattern : String = name.into();
+                let pattern: String = name.into();
                 v.iter().position(|a| a.name == Some(pattern.clone()))
             }
             None => None,
         }
     }
-    fn find(&self, name : impl Into<String>) -> Option<&AttachmentRefOrValue> {
+    fn find(&self, name: impl Into<String>) -> Option<&AttachmentRefOrValue> {
         match self.bill_document.as_ref() {
             Some(v) => {
-                let pattern : String = name.into();
-                v.iter().find(|a| a.name == Some(pattern.clone()))               
-            },
+                let pattern: String = name.into();
+                v.iter().find(|a| a.name == Some(pattern.clone()))
+            }
             None => None,
         }
     }
     fn get(&self, position: usize) -> Option<AttachmentRefOrValue> {
         match self.bill_document.as_ref() {
-            Some(v) => {
-                v.get(position).cloned()
-            },
+            Some(v) => v.get(position).cloned(),
             None => None,
-        }    
+        }
     }
-    fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue> {
+    fn remove(&mut self, position: usize) -> Option<AttachmentRefOrValue> {
         self.bill_document.as_mut().map(|v| v.remove(position))
+    }
+    fn attachment(mut self, attachment: AttachmentRefOrValue) -> Self {
+        self.add(&attachment);
+        self
     }
 }

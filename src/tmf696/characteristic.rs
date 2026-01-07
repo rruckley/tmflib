@@ -1,10 +1,10 @@
 //! Risk Assessment Characteristic Module
 
 use crate::Uri;
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
 /// Risk Assessement Characteristic
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Characteristic {
     id: Option<String>,
@@ -26,20 +26,19 @@ pub struct Characteristic {
 
 impl Characteristic {
     /// Create a new characteristic
-    pub fn new(name: impl Into<String>,value: impl Into<String>) -> Characteristic {
-        let val_str : String = value.into();
+    pub fn new(name: impl Into<String>, value: impl Into<String>) -> Characteristic {
+        let val_str: String = value.into();
         Characteristic {
-            name : name.into(),
-            value : val_str.into(),
+            name: name.into(),
+            value: val_str.into(),
             value_type: "String".to_string(),
             ..Default::default()
         }
     }
 }
 
-
 /// Risk Assessement Characteristic Relationship
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct CharacteristicRelationship {
     href: Option<Uri>,
     id: Option<String>,
@@ -50,42 +49,41 @@ pub struct CharacteristicRelationship {
 mod test {
     use super::*;
 
-    const CHAR_NAME : &str = "A Characteristic";
+    const CHAR_NAME: &str = "A Characteristic";
     const CHAR_VALUE: &str = "A Value";
 
-    const CHARREL_JSON : &str = "{
+    const CHARREL_JSON: &str = "{
         \"id\" : \"CR123\"
     }";
-    const CHAR_JSON : &str = "{
+    const CHAR_JSON: &str = "{
         \"name\" : \"CharacteristicName\",
         \"value\" : \"CharacteristicValue\",
         \"valueType\" : \"string\"
     }";
 
-
     #[test]
     fn test_characteristic_new() {
-        let characteristic = Characteristic::new(CHAR_NAME,CHAR_VALUE);
+        let characteristic = Characteristic::new(CHAR_NAME, CHAR_VALUE);
 
-        assert_eq!(characteristic.name,CHAR_NAME.to_string());
-        assert_eq!(characteristic.value,CHAR_VALUE.to_string());
-        assert_eq!(characteristic.value_type,"String".to_string());
+        assert_eq!(characteristic.name, CHAR_NAME.to_string());
+        assert_eq!(characteristic.value, CHAR_VALUE.to_string());
+        assert_eq!(characteristic.value_type, "String".to_string());
     }
 
     #[test]
     fn test_charrel_deserialize() {
-        let charrel : CharacteristicRelationship = serde_json::from_str(CHARREL_JSON).unwrap();
+        let charrel: CharacteristicRelationship = serde_json::from_str(CHARREL_JSON).unwrap();
 
-        assert_eq!(charrel.id.is_some(),true);
-        assert_eq!(charrel.id.unwrap().as_str(),"CR123");
+        assert_eq!(charrel.id.is_some(), true);
+        assert_eq!(charrel.id.unwrap().as_str(), "CR123");
     }
 
     #[test]
     fn test_char_deserialize() {
-        let characteristic : Characteristic = serde_json::from_str(CHAR_JSON).unwrap();
+        let characteristic: Characteristic = serde_json::from_str(CHAR_JSON).unwrap();
 
-        assert_eq!(characteristic.name.as_str(),"CharacteristicName");
-        assert_eq!(characteristic.value.as_str(),"CharacteristicValue".into());
-        assert_eq!(characteristic.value_type.as_str(),"string");
+        assert_eq!(characteristic.name.as_str(), "CharacteristicName");
+        assert_eq!(characteristic.value.as_str(), "CharacteristicValue".into());
+        assert_eq!(characteristic.value_type.as_str(), "string");
     }
 }

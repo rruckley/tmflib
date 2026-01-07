@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,9 +16,12 @@
 
 const MOD_PATH: &str = "common";
 
+pub mod addressable;
 pub mod attachment;
 pub mod contact;
+pub mod entity;
 pub mod event;
+pub mod extensible;
 pub mod external_identifier;
 pub mod money;
 pub mod note;
@@ -28,3 +31,5 @@ pub mod related_entity;
 pub mod related_party;
 pub mod related_place;
 pub mod tax_item;
+
+pub mod tmf_error;

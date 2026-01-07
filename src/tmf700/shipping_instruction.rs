@@ -1,22 +1,17 @@
 //! Shipping Instruction Module
 
-use crate::{
-    TimePeriod,
-    HasId, 
-    Uri,
-    LIB_PATH,
-    HasNote,
-};
 use crate::common::money::Money;
 use crate::common::note::Note;
-use tmflib_derive::{HasId,HasNote};
-use serde::{Deserialize,Serialize};
+use crate::common::tmf_error::TMFError;
+use crate::{HasId, HasNote, TimePeriod, Uri};
+use serde::{Deserialize, Serialize};
+use tmflib_derive::{HasId, HasNote};
 
 use super::MOD_PATH;
-const CLASS_PATH : &str = "instruction";
+const CLASS_PATH: &str = "instruction";
 
 /// Signarure Required Type
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub enum SignatureRequiredByType {
     /// Signature required by an Adult
     Adult,
@@ -26,7 +21,7 @@ pub enum SignatureRequiredByType {
 }
 
 /// Shipping Item Instructions
-#[derive(Clone,Default,Debug,Deserialize,HasId,HasNote,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, HasId, HasNote, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShippingInstruction {
     carrier_id: String,
@@ -50,37 +45,39 @@ pub struct ShippingInstruction {
     receipt_confirmation: String,
     shipping_type: String,
     signature_required: bool,
-    signature_required_by : Option<SignatureRequiredByType>,
-    warehouse_id : String,
+    signature_required_by: Option<SignatureRequiredByType>,
+    warehouse_id: String,
     // Referenced Struct
     /// Notes
-    pub note : Option<Vec<Note>>,
+    pub note: Option<Vec<Note>>,
 }
 
 impl ShippingInstruction {
     /// Create a new shipping instruction
-    pub fn new(instruction : impl Into<String>) -> ShippingInstruction {
-        ShippingInstruction::create()
-            .message(instruction)
+    pub fn new(instruction: impl Into<String>) -> ShippingInstruction {
+        ShippingInstruction::create().message(instruction)
     }
 
     /// Set the label message for this instructions
-    pub fn message(mut self, message : impl Into<String>) -> ShippingInstruction {
+    pub fn message(mut self, message: impl Into<String>) -> ShippingInstruction {
         self.label_message = Some(message.into());
         self
     }
 
     /// Set the signature requirements
-    pub fn signature_required_by(mut self, signature : Option<SignatureRequiredByType>) -> ShippingInstruction {
+    pub fn signature_required_by(
+        mut self,
+        signature: Option<SignatureRequiredByType>,
+    ) -> ShippingInstruction {
         match signature {
-            Some(s) => { 
+            Some(s) => {
                 self.signature_required_by = Some(s);
                 self.signature_required = true;
-            },
+            }
             None => {
                 self.signature_required_by = None;
                 self.signature_required = false;
-            },
+            }
         };
         self
     }
@@ -95,20 +92,20 @@ impl From<String> for ShippingInstruction {
 #[cfg(test)]
 mod test {
     use super::{ShippingInstruction, SignatureRequiredByType};
-    const INST : &str = "AnInstruction";
+    const INST: &str = "AnInstruction";
 
     #[test]
     fn test_instruction_create() {
         let instruction = ShippingInstruction::new(INST);
 
-        assert_eq!(instruction.label_message.unwrap(),INST.to_string());
+        assert_eq!(instruction.label_message.unwrap(), INST.to_string());
     }
 
     #[test]
     fn test_instruction_from_string() {
-        let instruction : ShippingInstruction = INST.to_string().into();
+        let instruction: ShippingInstruction = INST.to_string().into();
 
-        assert_eq!(instruction.label_message.unwrap(),INST.to_string());
+        assert_eq!(instruction.label_message.unwrap(), INST.to_string());
     }
 
     #[test]
@@ -116,6 +113,6 @@ mod test {
         let instruction = ShippingInstruction::new(INST)
             .signature_required_by(Some(SignatureRequiredByType::Receiver));
 
-        assert_eq!(instruction.signature_required,true);
+        assert_eq!(instruction.signature_required, true);
     }
 }

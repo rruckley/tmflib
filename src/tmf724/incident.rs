@@ -1,12 +1,12 @@
 //! Incident Module
-//! 
+//!
 
-use serde::{Deserialize,Serialize};
-use crate::{LIB_PATH,HasId, HasName, Uri, DateTime};
-use crate::common::external_identifier::ExternalIdentifier;
-use tmflib_derive::{HasId,HasName};
 use super::MOD_PATH;
-const CLASS_PATH : &str = "incident";
+use crate::common::external_identifier::ExternalIdentifier;
+use crate::{DateTime, HasId, HasName, Uri};
+use serde::{Deserialize, Serialize};
+use tmflib_derive::{HasId, HasName};
+const CLASS_PATH: &str = "incident";
 
 /// Incident Priority
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -22,7 +22,7 @@ pub enum PriorityType {
     Low,
 }
 
-/// Incident Urgency 
+/// Incident Urgency
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub enum UrgencyType {
     /// Critical
@@ -59,7 +59,7 @@ pub enum IncidentStateType {
 }
 
 /// Incident Impact
-#[derive(Clone, Debug, Default, Deserialize,PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub enum ImpactType {
     /// Extensive (Highest)
     Extensive,
@@ -77,11 +77,11 @@ pub enum ImpactType {
 #[serde(rename_all = "camelCase")]
 pub struct Characteristic {
     /// Unique Id
-    pub id : String,
+    pub id: String,
     /// Name
-    pub name : String,
+    pub name: String,
     /// Value
-    pub value : serde_json::Value,
+    pub value: serde_json::Value,
     /// Value type
     pub value_type: String,
 }
@@ -99,8 +99,8 @@ pub struct ResourceEntity {
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RootCause {
-    href : Uri,
-    id : String,
+    href: Uri,
+    id: String,
     location: String,
 }
 
@@ -109,11 +109,9 @@ pub struct RootCause {
 #[serde(rename_all = "camelCase")]
 pub struct EntityRef {
     href: Uri,
-    id : String,
+    id: String,
     name: String,
 }
-
-
 
 /// ITIL Incident
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasName, Serialize)]
@@ -194,7 +192,7 @@ pub struct Incident {
 
 impl Incident {
     /// Create a new incident
-    pub fn new(name : impl Into<String>) -> Incident {
+    pub fn new(name: impl Into<String>) -> Incident {
         Incident {
             name: Some(name.into()),
             impact: Some(ImpactType::Moderate),
@@ -211,103 +209,105 @@ impl Incident {
 mod test {
     use super::*;
 
-    const PRIORITY_JSON : &str = "\"Medium\"";
-    const URGENCY_JSON : &str = "\"Medium\"";
-    const ACKSTATE_JSON : &str = "\"Unacknowledged\"";
-    const STATE_JSON : &str = "\"Raised\"";
-    const IMPACT_JSON : &str = "\"Moderate\"";
+    const PRIORITY_JSON: &str = "\"Medium\"";
+    const URGENCY_JSON: &str = "\"Medium\"";
+    const ACKSTATE_JSON: &str = "\"Unacknowledged\"";
+    const STATE_JSON: &str = "\"Raised\"";
+    const IMPACT_JSON: &str = "\"Moderate\"";
 
-    const CHAR_JSON : &str = "{
+    const CHAR_JSON: &str = "{
         \"id\" : \"CHAR123\",
         \"name\" :\"CharacteristicName\",
         \"value\" : \"Value\",
         \"valueType\" : \"ValueType\"
     }";
 
-
     #[test]
     fn test_incident_new_name() {
         let incident = Incident::new("AnIncident");
 
-        assert_eq!(incident.name,Some("AnIncident".to_string()));
+        assert_eq!(incident.name, Some("AnIncident".to_string()));
     }
 
     #[test]
     fn test_incident_new_priority() {
         let incident = Incident::new("AnIncident");
 
-        assert_eq!(incident.priority,Some(PriorityType::Medium));
+        assert_eq!(incident.priority, Some(PriorityType::Medium));
     }
 
     #[test]
     fn test_incident_new_impact() {
         let incident = Incident::new("AnIncident");
-        
-        assert_eq!(incident.impact,Some(ImpactType::Moderate));
+
+        assert_eq!(incident.impact, Some(ImpactType::Moderate));
     }
 
     #[test]
     fn test_incident_new_urgency() {
         let incident = Incident::new("AnIncident");
 
-        assert_eq!(incident.urgency,Some(UrgencyType::Medium));
+        assert_eq!(incident.urgency, Some(UrgencyType::Medium));
     }
 
     #[test]
     fn test_incident_new_state() {
         let incident = Incident::new("AnIncident");
-        
-        assert_eq!(incident.state,Some(IncidentStateType::Raised));
+
+        assert_eq!(incident.state, Some(IncidentStateType::Raised));
     }
 
     #[test]
     fn test_incident_new_ack() {
         let incident = Incident::new("AnIncident");
 
-        assert_eq!(incident.ack_state, Some(IncidentAckStateType::Unacknowledged));
+        assert_eq!(
+            incident.ack_state,
+            Some(IncidentAckStateType::Unacknowledged)
+        );
     }
     #[test]
     fn test_priority_deserialize() {
-        let priority : PriorityType = serde_json::from_str(PRIORITY_JSON).unwrap();
+        let priority: PriorityType = serde_json::from_str(PRIORITY_JSON).unwrap();
 
-        assert_eq!(priority,PriorityType::Medium);
+        assert_eq!(priority, PriorityType::Medium);
     }
 
     #[test]
     fn test_urgency_deseralize() {
-        let urgency : UrgencyType = serde_json::from_str(URGENCY_JSON).unwrap();
+        let urgency: UrgencyType = serde_json::from_str(URGENCY_JSON).unwrap();
 
-        assert_eq!(urgency,UrgencyType::Medium);
+        assert_eq!(urgency, UrgencyType::Medium);
     }
 
     #[test]
     fn test_ackstate_deserialize() {
-        let ackstate : IncidentAckStateType = serde_json::from_str(ACKSTATE_JSON).unwrap();
+        let ackstate: IncidentAckStateType = serde_json::from_str(ACKSTATE_JSON).unwrap();
 
-        assert_eq!(ackstate,IncidentAckStateType::Unacknowledged);
+        assert_eq!(ackstate, IncidentAckStateType::Unacknowledged);
     }
 
     #[test]
     fn test_state_deseralize() {
-        let state : IncidentStateType = serde_json::from_str(STATE_JSON).unwrap();
+        let state: IncidentStateType = serde_json::from_str(STATE_JSON).unwrap();
 
-        assert_eq!(state,IncidentStateType::Raised);
+        assert_eq!(state, IncidentStateType::Raised);
     }
 
     #[test]
     fn test_impact_deseralize() {
-        let impact : ImpactType = serde_json::from_str(IMPACT_JSON).unwrap();
+        let impact: ImpactType = serde_json::from_str(IMPACT_JSON).unwrap();
 
         assert_eq!(impact, ImpactType::Moderate);
     }
 
     #[test]
     fn test_char_deserialize() {
-        let characteristic : Characteristic = serde_json::from_str(CHAR_JSON).unwrap();
+        let characteristic: Characteristic = serde_json::from_str(CHAR_JSON).unwrap();
 
-        assert_eq!(characteristic.id.as_str(),"CHAR123");
-        assert_eq!(characteristic.name.as_str(),"CharacteristicName");
-        assert_eq!(characteristic.value.as_str(),"Value".into()  );
+        assert_eq!(characteristic.id.as_str(), "CHAR123");
+        assert_eq!(characteristic.name.as_str(), "CharacteristicName");
+        assert_eq!(characteristic.value.as_str(), "Value".into());
         assert_eq!(characteristic.value_type.as_str(), "ValueType");
     }
 }

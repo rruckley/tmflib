@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 //! # Versions
 //! - v4 supported
 
-const MOD_PATH : &str = "shoppingCart/v4";
+const MOD_PATH: &str = "shoppingCart/v4";
 
-pub mod shopping_cart;
 pub mod cart_item;
+pub mod shopping_cart;

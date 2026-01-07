@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,6 @@
 
 //! TMF760 Product Configurator
 
-const MOD_PATH : &str = "productConfiguration/v5";
+const MOD_PATH: &str = "productConfiguration/v5";
 
 pub mod check_product_configuration;

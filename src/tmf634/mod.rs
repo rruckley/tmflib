@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
 //! TMF634 Resource Catalogue Management
 
 #[cfg(feature = "build-V4")]
-const MOD_PATH : &str = "resourceCatalog/v4";
+const MOD_PATH: &str = "resourceCatalog/v4";
 #[cfg(feature = "build-V5")]
-const MOD_PATH : &str = "resourceCatalog/v5";
+const MOD_PATH: &str = "resourceCatalog/v5";
 
 pub mod catalog;
-pub mod resource_category;
 pub mod resource_candidate;
+pub mod resource_category;
 pub mod resource_specification;

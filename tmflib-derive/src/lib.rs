@@ -1,4 +1,4 @@
-// Copyright [2025] [Ryan Ruckley]
+// Copyright [2026] [Ryan Ruckley]
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,26 +18,32 @@
 
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input,Data,DeriveInput};
+use syn::{parse_macro_input, Data, DeriveInput};
 
-/// Generate code for struct when HasId trait is required. 
+/// Generate code for struct when HasId trait is required.
 /// NB: This trait requires both id and href fields to be present.
 #[proc_macro_derive(HasId)]
 pub fn hasid_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
 
     let fields = match input.data {
-        Data::Struct(s) => {
-            s.fields
-                .into_iter()
-                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
-            },
+        Data::Struct(s) => s
+            .fields
+            .into_iter()
+            .map(|f| f.ident.unwrap().to_string())
+            .collect::<Vec<_>>(),
         _ => panic!("HasId only supports Struct"),
     };
     let name = input.ident;
     // Ensure id field is present
-    let _id = fields.iter().find(|s| *s == "id").expect("No id field present");
-    let _href = fields.iter().find(|s| *s == "href").expect("No href field present");
+    let _id = fields
+        .iter()
+        .find(|s| *s == "id")
+        .expect("No id field present");
+    let _href = fields
+        .iter()
+        .find(|s| *s == "href")
+        .expect("No href field present");
     // Generate HasId impl block based on this name.
 
     let out = quote! {
@@ -68,10 +74,10 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
                 CLASS_PATH.to_string()
             }
             fn get_class_href() -> String {
-                format!("/{}/{}/{}",LIB_PATH,MOD_PATH,#name::get_class())
+                format!("/{}/{}/{}",crate::get_lib_path(),MOD_PATH,#name::get_class())
             }
             fn get_mod_path() -> String {
-                format!("/{}/{}",LIB_PATH,MOD_PATH)
+                format!("/{}/{}",crate::get_lib_path(),MOD_PATH)
             }
             fn set_id(&mut self, id : impl Into<String>) {
                 self.id = Some(id.into());
@@ -90,17 +96,20 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
 
 /// Generate functions for HasAttachment Trait
 #[proc_macro_derive(HasAttachment)]
-pub fn hasattachment_derive(input : TokenStream) -> TokenStream {
+pub fn hasattachment_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let fields = match input.data {
-        Data::Struct(s) => {
-            s.fields
-                .into_iter()
-                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
-            },
+        Data::Struct(s) => s
+            .fields
+            .into_iter()
+            .map(|f| f.ident.unwrap().to_string())
+            .collect::<Vec<_>>(),
         _ => panic!("HasAttachments only supports Struct"),
     };
-    let _last_update = fields.iter().find(|s| *s == "attachment").expect("No attachment field present");
+    let _last_update = fields
+        .iter()
+        .find(|s| *s == "attachment")
+        .expect("No attachment field present");
     let name = input.ident;
     let out = quote! {
         impl HasAttachment for #name {
@@ -112,7 +121,7 @@ pub fn hasattachment_derive(input : TokenStream) -> TokenStream {
                     None => {
                         self.attachment = Some(vec![attachment.clone()]);
                     }
-                }    
+                }
             }
             fn position(&self, name : impl Into<String>) -> Option<usize> {
                 match self.attachment.as_ref() {
@@ -127,7 +136,7 @@ pub fn hasattachment_derive(input : TokenStream) -> TokenStream {
                 match self.attachment.as_ref() {
                     Some(v) => {
                         let pattern : String = name.into();
-                        v.iter().find(|a| a.name == Some(pattern.clone()))               
+                        v.iter().find(|a| a.name == Some(pattern.clone()))
                     },
                     None => None,
                 }
@@ -138,7 +147,7 @@ pub fn hasattachment_derive(input : TokenStream) -> TokenStream {
                         v.get(position).cloned()
                     },
                     None => None,
-                }    
+                }
             }
             fn remove(&mut self, position : usize) -> Option<AttachmentRefOrValue> {
                 match self.attachment.as_mut() {
@@ -163,19 +172,26 @@ pub fn hasattachment_derive(input : TokenStream) -> TokenStream {
 pub fn haslastupdate_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let fields = match input.data {
-        Data::Struct(s) => {
-            s.fields
-                .into_iter()
-                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
-            },
+        Data::Struct(s) => s
+            .fields
+            .into_iter()
+            .map(|f| f.ident.unwrap().to_string())
+            .collect::<Vec<_>>(),
         _ => panic!("HasId only supports Struct"),
     };
-    let _last_update = fields.iter().find(|s| *s == "last_update").expect("No last_update field present");
+    let _last_update = fields
+        .iter()
+        .find(|s| *s == "last_update")
+        .expect("No last_update field present");
     let name = input.ident;
     let out = quote! {
         impl HasLastUpdate for #name {
             fn set_last_update(&mut self, time : impl Into<String>) {
                 self.last_update = Some(time.into());
+            }
+
+            fn get_last_update(&self) -> Option<String> {
+                self.last_update.clone()
             }
 
             fn last_update(mut self, time : Option<String>) -> Self {
@@ -195,16 +211,19 @@ pub fn haslastupdate_derive(input: TokenStream) -> TokenStream {
 pub fn hasname_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let fields = match input.data {
-        Data::Struct(s) => {
-            s.fields
-                .into_iter()
-                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
-            },
+        Data::Struct(s) => s
+            .fields
+            .into_iter()
+            .map(|f| f.ident.unwrap().to_string())
+            .collect::<Vec<_>>(),
         _ => panic!("HasId only supports Struct"),
     };
     let name = input.ident;
     // Ensure id field is present
-    let _name = fields.iter().find(|s| *s == "name").expect("No name field present");
+    let _name = fields
+        .iter()
+        .find(|s| *s == "name")
+        .expect("No name field present");
     let out = quote! {
         impl HasName for #name {
             fn get_name(&self) -> String {
@@ -227,23 +246,26 @@ pub fn hasname_derive(input: TokenStream) -> TokenStream {
 pub fn hasnote_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let fields = match input.data {
-        Data::Struct(s) => {
-            s.fields
-                .into_iter()
-                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
-            },
+        Data::Struct(s) => s
+            .fields
+            .into_iter()
+            .map(|f| f.ident.unwrap().to_string())
+            .collect::<Vec<_>>(),
         _ => panic!("HasId only supports Struct"),
     };
     let name = input.ident;
     // Ensure id field is present
-    let _note = fields.iter().find(|s| *s == "note").expect("No note field present");
+    let _note = fields
+        .iter()
+        .find(|s| *s == "note")
+        .expect("No note field present");
     let out = quote! {
         impl HasNote for #name {
             fn add_note(&mut self, note : Note) {
                 match self.note.as_mut() {
                     Some(v) => v.push(note),
                     None => self.note = Some(vec![note]),
-                }  
+                }
             }
             fn get_note(&self, idx : usize) -> Option<&Note> {
                 match self.note.as_ref() {
@@ -251,11 +273,11 @@ pub fn hasnote_derive(input: TokenStream) -> TokenStream {
                     None => None,
                 }
             }
-            fn remove_note(&mut self, idx: usize) -> Result<Note,String> {
+            fn remove_note(&mut self, idx: usize) -> Result<Note,TMFError> {
                 match self.note.as_mut() {
                     Some(n) => Ok(n.remove(idx)),
-                    None => Err(String::from("No notes present")),
-                }  
+                    None => Err(TMFError::NoDataError("No notes present".to_string())),
+                }
             }
             fn note(mut self, note : Note) -> Self {
                 self.add_note(note);
@@ -271,17 +293,20 @@ pub fn hasnote_derive(input: TokenStream) -> TokenStream {
 pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let fields = match input.data {
-        Data::Struct(s) => {
-            s.fields
-                .into_iter()
-                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
-            },
+        Data::Struct(s) => s
+            .fields
+            .into_iter()
+            .map(|f| f.ident.unwrap().to_string())
+            .collect::<Vec<_>>(),
         _ => panic!("HasRelatedParty only supports Struct"),
     };
     let name = input.ident;
     // Ensure id field is present
-    let _related_party: &String = fields.iter().find(|s| *s == "related_party").expect("No related_party field present");
-    let out = quote! {   
+    let _related_party: &String = fields
+        .iter()
+        .find(|s| *s == "related_party")
+        .expect("No related_party field present");
+    let out = quote! {
         impl HasRelatedParty for #name {
             fn add_party(&mut self, party : RelatedParty) {
                 match self.related_party.as_mut() {
@@ -297,10 +322,15 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
                     },
                     None => None,
                 }
-                  
+
             }
-            fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,String> {
-                Ok(self.related_party.as_mut().unwrap().remove(idx))  
+            fn remove_party(&mut self, idx : usize) -> Result<RelatedParty,TMFError> {
+                match self.related_party.as_mut() {
+                    None => Err(TMFError::NoDataError("No related parties present".to_string())),
+                    Some(rp) => {
+                        Ok(rp.remove(idx))
+                    }
+                }
             }
             fn get_by_role(&self, role : String) -> Option<Vec<&RelatedParty>> {
                 match &self.related_party {
@@ -312,7 +342,7 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
                         Some(out)
                     },
                     None => None,
-                }    
+                }
             }
 
             fn party(mut self, party : RelatedParty) -> Self {
@@ -329,16 +359,19 @@ pub fn hasrelatedparty_derive(input: TokenStream) -> TokenStream {
 pub fn hasdescription_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let fields = match input.data {
-        Data::Struct(s) => {
-            s.fields
-                .into_iter()
-                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
-            },
+        Data::Struct(s) => s
+            .fields
+            .into_iter()
+            .map(|f| f.ident.unwrap().to_string())
+            .collect::<Vec<_>>(),
         _ => panic!("HasValidity only supports Struct"),
     };
     let name = input.ident;
     // Ensure id field is present
-    let _name = fields.iter().find(|s| *s == "description").expect("No description field found");    
+    let _name = fields
+        .iter()
+        .find(|s| *s == "description")
+        .expect("No description field found");
 
     let out = quote! {
         impl HasDescription for #name {
@@ -350,7 +383,7 @@ pub fn hasdescription_derive(input: TokenStream) -> TokenStream {
                 match self.description.as_ref() {
                     Some(d) => d.clone(),
                     None => String::default(),
-                }    
+                }
             }
             fn set_description(&mut self, description : impl Into<String>) -> Option<String> {
                 self.description.replace(description.into())
@@ -360,22 +393,24 @@ pub fn hasdescription_derive(input: TokenStream) -> TokenStream {
     out.into()
 }
 
-
 /// Generate code for HasValidity trait.
 #[proc_macro_derive(HasValidity)]
 pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let fields = match input.data {
-        Data::Struct(s) => {
-            s.fields
-                .into_iter()
-                .map(|f| f.ident.unwrap().to_string()).collect::<Vec<_>>()
-            },
+        Data::Struct(s) => s
+            .fields
+            .into_iter()
+            .map(|f| f.ident.unwrap().to_string())
+            .collect::<Vec<_>>(),
         _ => panic!("HasValidity only supports Struct"),
     };
     let name = input.ident;
     // Ensure id field is present
-    let _name = fields.iter().find(|s| *s == "valid_for").expect("No valid_for object present");
+    let _name = fields
+        .iter()
+        .find(|s| *s == "valid_for")
+        .expect("No valid_for object present");
     let out = quote! {
         impl HasValidity for #name {
             fn get_validity(&self) -> Option<TimePeriod> {
@@ -385,7 +420,7 @@ pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
                 match self.valid_for.as_ref() {
                     Some(v) => v.end_date_time.clone(),
                     None => None,
-                }        
+                }
             }
             fn get_validity_start(&self) -> Option<crate::TimeStamp> {
                 match self.valid_for.as_ref() {
@@ -433,5 +468,5 @@ pub fn hasvalidity_derive(input: TokenStream) -> TokenStream {
             }
         }
     };
-    out.into()   
+    out.into()
 }

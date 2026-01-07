@@ -5,14 +5,14 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use super::MOD_PATH;
-use crate::{HasId,HasName, HasLastUpdate, LIB_PATH,TMFEvent,HasValidity, TimePeriod, HasReference};
+use crate::common::event::{Event, EventPayload};
 use crate::common::money::Money;
 use crate::common::tax_item::TaxItem;
-use crate::common::event::{Event,EventPayload};
-use tmflib_derive::{HasId,HasLastUpdate,HasName, HasValidity};
+use crate::{HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent, TimePeriod};
+use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
 
-const CLASS_PATH : &str = "productOfferingPrice";
-const PRICE_VERS : &str = "1.0";
+const CLASS_PATH: &str = "productOfferingPrice";
+const PRICE_VERS: &str = "1.0";
 
 /// Constraints
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -29,8 +29,6 @@ pub struct ConstraintRef {
     version: Option<String>,
 }
 
-
-
 /// Product Offering Price Reference
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -46,10 +44,10 @@ pub struct ProductOfferingPriceRef {
 }
 
 impl From<ProductOfferingPrice> for ProductOfferingPriceRef {
-    fn from(pop : ProductOfferingPrice) -> ProductOfferingPriceRef {
-        ProductOfferingPriceRef { 
-            id: pop.id.clone(), 
-            href: pop.href.clone(), 
+    fn from(pop: ProductOfferingPrice) -> ProductOfferingPriceRef {
+        ProductOfferingPriceRef {
+            id: pop.id.clone(),
+            href: pop.href.clone(),
             name: pop.get_name(),
         }
     }
@@ -63,7 +61,9 @@ impl HasReference for ProductOfferingPrice {
 }
 
 /// Pricing linked to a Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
+#[derive(
+    Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOfferingPrice {
     /// Unique Id
@@ -108,7 +108,7 @@ pub struct ProductOfferingPrice {
 
 impl ProductOfferingPrice {
     /// Create a new Price Offering Price object
-    pub fn new(name :  impl Into<String>) -> ProductOfferingPrice {
+    pub fn new(name: impl Into<String>) -> ProductOfferingPrice {
         let mut pop = ProductOfferingPrice::create_with_time();
         pop.version = Some(PRICE_VERS.to_string());
         pop.name = Some(name.into());
@@ -117,7 +117,7 @@ impl ProductOfferingPrice {
 }
 
 /// Container for the payload that generated the event
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct ProductOfferingPriceEvent {
     /// Struct that this event relates to
     pub pop: ProductOfferingPrice,
@@ -125,19 +125,20 @@ pub struct ProductOfferingPriceEvent {
 
 impl TMFEvent<ProductOfferingPriceEvent> for ProductOfferingPrice {
     fn event(&self) -> ProductOfferingPriceEvent {
-        ProductOfferingPriceEvent {
-            pop : self.clone(),
-        }
+        ProductOfferingPriceEvent { pop: self.clone() }
     }
 }
 
 impl EventPayload<ProductOfferingPriceEvent> for ProductOfferingPrice {
     type Subject = ProductOfferingPrice;
     type EventType = ProductOfferingPriceEventType;
-    fn to_event(&self,event_type : ProductOfferingPriceEventType) -> Event<ProductOfferingPriceEvent,ProductOfferingPriceEventType> {       
+    fn to_event(
+        &self,
+        event_type: ProductOfferingPriceEventType,
+    ) -> Event<ProductOfferingPriceEvent, ProductOfferingPriceEventType> {
         let now = Utc::now();
-        let event_time = chrono::DateTime::from_timestamp(now.timestamp(),0).unwrap();
-        let desc = format!("{:?} for {}",event_type,self.get_name());
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
+        let desc = format!("{:?} for {}", event_type, self.get_name());
         Event {
             correlation_id: None,
             description: Some(desc),
@@ -157,7 +158,7 @@ impl EventPayload<ProductOfferingPriceEvent> for ProductOfferingPrice {
 }
 
 /// Product Offering Price Event Type
-#[derive(Clone,Default,Debug,Deserialize,PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
 pub enum ProductOfferingPriceEventType {
     /// POP Created
     #[default]
@@ -175,20 +176,20 @@ mod test {
 
     use super::*;
 
-    const POP : &str = "APrice";
+    const POP: &str = "APrice";
 
     #[test]
     fn test_price_new_name() {
         let pop = ProductOfferingPrice::new(POP);
 
-        assert_eq!(pop.name,Some(POP.into()));
+        assert_eq!(pop.name, Some(POP.into()));
     }
 
     #[test]
     fn test_price_new_version() {
         let pop = ProductOfferingPrice::new(POP);
 
-        assert_eq!(pop.version,Some(PRICE_VERS.into()));    
+        assert_eq!(pop.version, Some(PRICE_VERS.into()));
     }
 
     #[test]
@@ -197,8 +198,8 @@ mod test {
 
         let price_ref = ProductOfferingPriceRef::from(price.clone());
 
-        assert_eq!(price.id,price_ref.id);
-        assert_eq!(price.href,price_ref.href);
-        assert_eq!(price.get_name(),price_ref.name);
+        assert_eq!(price.id, price_ref.id);
+        assert_eq!(price.href, price_ref.href);
+        assert_eq!(price.get_name(), price_ref.name);
     }
 }

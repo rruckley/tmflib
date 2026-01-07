@@ -1,41 +1,34 @@
 //! Shipping Order Module
-//! 
-
+//!
 
 use super::{shipping_instruction::ShippingInstruction, shipping_order_item::ShippingOrderItem};
-use crate::{common::note::Note, DateTime};
 #[cfg(all(feature = "tmf622", feature = "build-V4"))]
 use crate::tmf622::product_order_v4::ProductOrderRef;
 #[cfg(all(feature = "tmf622", feature = "build-V5"))]
 use crate::tmf622::product_order_v5::ProductOrderRef;
+use crate::{common::note::Note, DateTime};
 
 use super::MOD_PATH;
-use crate::{
-    HasId,
-    HasNote,
-    LIB_PATH
-};
-use tmflib_derive::{
-    HasId,
-    HasNote
-};
+use crate::common::tmf_error::TMFError;
+use crate::{HasId, HasNote};
+use tmflib_derive::{HasId, HasNote};
 
-use serde::{Deserialize,Serialize};
+use serde::{Deserialize, Serialize};
 
-const CLASS_PATH : &str = "shippingOrder";
+const CLASS_PATH: &str = "shippingOrder";
 
 /// Related Shipping Order
-#[derive(Clone,Default,Debug,Deserialize,Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct RelatedShippingOrder {
     href: String,
-    id  : String,
+    id: String,
     name: String,
     role: Option<String>,
 }
 
 impl RelatedShippingOrder {
     /// Set the role for this RelatedShippingOrder
-    pub fn role(mut self, role : impl Into<String>) -> RelatedShippingOrder {
+    pub fn role(mut self, role: impl Into<String>) -> RelatedShippingOrder {
         self.role = Some(role.into());
         self
     }
@@ -71,7 +64,7 @@ pub struct ShippingOrder {
     pub href: Option<String>,
     /// Status
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub status : Option<String>,
+    pub status: Option<String>,
     //
     // Referenced Types
     //
@@ -88,7 +81,7 @@ pub struct ShippingOrder {
     pub product_order: Option<ProductOrderRef>,
     /// Shipping Instruction Top Level
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub shipping_instruction : Option<ShippingInstruction>,
+    pub shipping_instruction: Option<ShippingInstruction>,
 }
 
 impl ShippingOrder {
@@ -98,13 +91,13 @@ impl ShippingOrder {
     }
 
     /// Set shipping instructions for this shipping order
-    pub fn instruction(mut self, instruction : ShippingInstruction) -> ShippingOrder {
+    pub fn instruction(mut self, instruction: ShippingInstruction) -> ShippingOrder {
         self.shipping_instruction = Some(instruction);
         self
     }
 
     /// Add an order item to this order
-    pub fn add_item(&mut self, item : ShippingOrderItem) {
+    pub fn add_item(&mut self, item: ShippingOrderItem) {
         match self.shipping_order_item.as_mut() {
             Some(v) => v.push(item),
             None => self.shipping_order_item = Some(vec![item]),
@@ -112,8 +105,8 @@ impl ShippingOrder {
     }
 
     /// Add a RelatedShippingOrder to this order
-    pub fn link_order(&mut self, shipping_order: &ShippingOrder, role : impl Into<String>) {
-        self.related_shipping_order = Some(RelatedShippingOrder::from(shipping_order).role(role));  
+    pub fn link_order(&mut self, shipping_order: &ShippingOrder, role: impl Into<String>) {
+        self.related_shipping_order = Some(RelatedShippingOrder::from(shipping_order).role(role));
     }
 }
 #[cfg(test)]
@@ -121,17 +114,17 @@ mod test {
     use crate::tmf700::shipping_instruction::ShippingInstruction;
     use crate::tmf700::shipping_order_item::ShippingOrderItem;
 
+    use super::HasId;
     use super::RelatedShippingOrder;
     use super::ShippingOrder;
-    use super::HasId;
 
-    const SHIP_INST : &str = "ShippingInstruction";
+    const SHIP_INST: &str = "ShippingInstruction";
     #[test]
     fn shipping_order_create_id() {
         // Generate shipping order, test id
         let so = ShippingOrder::new();
 
-        assert_eq!(so.id.is_some(),true);
+        assert_eq!(so.id.is_some(), true);
         assert_eq!(so.href.is_some(), true);
     }
 
@@ -149,8 +142,8 @@ mod test {
         let so = ShippingOrder::new();
         let so_rel = RelatedShippingOrder::from(&so);
 
-        assert_eq!(so.get_id(),so_rel.id);
-        assert_eq!(so.get_href(),so_rel.href);
+        assert_eq!(so.get_id(), so_rel.id);
+        assert_eq!(so.get_href(), so_rel.href);
     }
 
     #[test]
@@ -159,21 +152,23 @@ mod test {
         let mut so_child = ShippingOrder::new();
 
         so_child.link_order(&so_parent, "Parent");
-        
-        assert_eq!(so_child.related_shipping_order.is_some(),true);
+
+        assert_eq!(so_child.related_shipping_order.is_some(), true);
         let linked_order = so_child.related_shipping_order.unwrap();
-        
-        assert_eq!(so_parent.get_id(),linked_order.id);
+
+        assert_eq!(so_parent.get_id(), linked_order.id);
     }
 
     #[test]
     fn shipping_order_instruction() {
         let instruction = ShippingInstruction::new(SHIP_INST);
-        let so = ShippingOrder::new()
-            .instruction(instruction);
+        let so = ShippingOrder::new().instruction(instruction);
 
-        assert_eq!(so.shipping_instruction.is_some(),true);
-        assert_eq!(so.shipping_instruction.unwrap().label_message,Some(SHIP_INST.to_string()));
+        assert_eq!(so.shipping_instruction.is_some(), true);
+        assert_eq!(
+            so.shipping_instruction.unwrap().label_message,
+            Some(SHIP_INST.to_string())
+        );
     }
 
     #[test]
@@ -182,11 +177,11 @@ mod test {
         let item1 = ShippingOrderItem::new();
         so.add_item(item1);
 
-        assert_eq!(so.shipping_order_item.is_some(),true);
+        assert_eq!(so.shipping_order_item.is_some(), true);
 
         let item2 = ShippingOrderItem::new();
         so.add_item(item2);
 
-        assert_eq!(so.shipping_order_item.unwrap().len(),2);        
+        assert_eq!(so.shipping_order_item.unwrap().len(), 2);
     }
 }

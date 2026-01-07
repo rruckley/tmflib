@@ -2,16 +2,16 @@
 
 use serde::{Deserialize, Serialize};
 
-const MOD_PATH : &str = "resourceFunctionActivation/v4";
+const MOD_PATH: &str = "resourceFunctionActivation/v4";
 
-pub mod resource_function;
 pub mod heal;
 pub mod migrate;
 pub mod monitor;
+pub mod resource_function;
 pub mod scale;
 
 /// Task Status
-#[derive(Clone,Debug,Default,Deserialize,Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum TaskStateType {
     /// Task Accepted
     #[default]
