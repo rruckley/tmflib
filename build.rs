@@ -6,7 +6,7 @@
 // use std::collections::HashMap;
 use std::env;
 // use std::fs;
-use std::path::Path;
+// use std::path::Path;
 // // use openapiv3::AnySchema;
 // // use openapiv3::ArrayType;
 // // use openapiv3::ObjectType;
@@ -565,8 +565,8 @@ use std::path::Path;
 // }
 
 fn main() {
-    let out_dir = env::var_os("OUT_DIR").unwrap();
-    let _dest_path = Path::new(&out_dir).join("auto-lib.rs");
+    let _out_dir = env::var_os("OUT_DIR").unwrap();
+    // let _dest_path = Path::new(&out_dir).join("auto-lib.rs");
 
 //     // Open a OAS file
 //     let data = include_str!("open_api/TMF723-Policy_Management-v5.0.0.oas.json");
