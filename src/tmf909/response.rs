@@ -1,0 +1,20 @@
+use serde::{Serialize, Deserialize};
+use super::HeaderItem;
+///A response to a request
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct Response {
+    ///The body of the response. For example for an HTTP response might contain HTML for rendering.
+    pub body: String,
+    ///Items included in the header of the response. For example for an HTTP response might contain negotiated locale.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub header: Vec<HeaderItem>,
+    ///The status of the response. For example for an HTTP response would be codes such as 200, 400, etc.
+    #[serde(rename = "statusCode")]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status_code: Option<String>,
+}
+impl std::fmt::Display for Response {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
