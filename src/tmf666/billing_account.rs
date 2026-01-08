@@ -2,33 +2,85 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasLastUpdate, HasName, CreateTMF, CreateTMFWithTime, LIB_PATH, DateTime};
-use tmflib_derive::{HasId, HasName, HasLastUpdate};
+use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
+use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName};
+use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
-use super::MOD_PATH;
+use super::{
+    financial_account::FinancialAccountRef, AccountBalance, AccountRef, AccountTaxExemption,
+    PaymentMethodRef, PaymentPlan, MOD_PATH,
+};
 
-const CLASS_PATH : &str = "account";
+const CLASS_PATH: &str = "account";
 
 /// Billing Account
-#[derive( Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasDescription, Serialize,
+)]
+#[serde(rename_all = "camelCase")]
 pub struct BillingAccount {
-    id: Option<String>,
-    href: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    account_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    credit_limit: Option<Money>,
+    /// Account Description
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    /// Unique Identifier
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
+    /// HTTP URI
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub href: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    last_modified: Option<DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
-    last_update : Option<DateTime>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    payment_status: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    rating_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    state: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    last_update: Option<DateTime>,
+    related_party: Vec<RelatedParty>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    contact: Option<Vec<Contact>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    account_balance: Option<Vec<AccountBalance>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    tax_exemption: Option<Vec<AccountTaxExemption>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    financial_account: Option<FinancialAccountRef>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    payment_plan: Option<Vec<PaymentPlan>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    default_payment_method: Option<PaymentMethodRef>,
 }
 
 impl BillingAccount {
     /// Create new Billing Account
-    pub fn new(name :impl Into<String>) -> BillingAccount {
+    pub fn new(name: impl Into<String>) -> BillingAccount {
         let mut account = BillingAccount::create();
         account.name = Some(name.into());
         account
     }
 }
 
+impl From<BillingAccount> for AccountRef {
+    fn from(value: BillingAccount) -> Self {
+        AccountRef {
+            id: value.get_id(),
+            href: value.get_href(),
+            name: value.get_name(),
+            description: value.description.clone(),
+        }
+    }
+}
+
 /// Billing Account Reference
-#[derive( Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct BillingAccountRef {
     /// Referenced Id
     id: String,
@@ -41,9 +93,9 @@ pub struct BillingAccountRef {
 impl From<BillingAccount> for BillingAccountRef {
     fn from(value: BillingAccount) -> Self {
         BillingAccountRef {
-            id : value.id.unwrap_or_default(),
-            href : value.href.unwrap_or_default(),
-            name: value.name.unwrap_or_default(),
+            id: value.get_id(),
+            href: value.get_href(),
+            name: value.get_name(),
         }
     }
 }
@@ -52,12 +104,34 @@ impl From<BillingAccount> for BillingAccountRef {
 mod test {
     use super::*;
 
-    const ACCOUNT : &str = "BillingAccount";
+    const ACCOUNT: &str = "BillingAccount";
 
     #[test]
     fn test_billing_account_new_name() {
         let account = BillingAccount::new(ACCOUNT);
 
-        assert_eq!(account.name,Some(ACCOUNT.into()));
+        assert_eq!(account.name, Some(ACCOUNT.into()));
+    }
+
+    #[test]
+    fn test_ref_from_billing_account() {
+        let account = BillingAccount::new(ACCOUNT);
+
+        let account_ref = AccountRef::from(account.clone());
+
+        assert_eq!(account_ref.id, account.get_id());
+        assert_eq!(account_ref.href, account.get_href());
+        assert_eq!(account_ref.name, account.get_name());
+    }
+
+    #[test]
+    fn test_billingref_from_billing_account() {
+        let account = BillingAccount::new(ACCOUNT);
+
+        let account_ref = BillingAccountRef::from(account.clone());
+
+        assert_eq!(account_ref.id, account.get_id());
+        assert_eq!(account_ref.href, account.get_href());
+        assert_eq!(account_ref.name, account.get_name());
     }
 }

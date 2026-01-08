@@ -1,0 +1,2000 @@
+openapi: 3.0.1
+info:
+  title: Promotion Management
+  description: >-
+    This API is used to provide additional discounts, vouchers, bonuses, or gifts to customers who
+    meet predefined criteria. By using promotions, the enterprise can attract users and encourage
+    more consumption, especially continuous purchases. Normally, promotions are not considered a
+    specific type of product or product offering. They are often applied when customers purchase
+    product offerings that exceed a certain price or amount limit.
+  version: 5.0.0
+servers:
+  - url: '{apiRoot}'
+    variables:
+      apiRoot:
+        default: 'https://serverRoot/tmf-api/promotionManagement/v5'
+        enum:
+          - 'https://serverRoot/tmf-api/promotionManagement/v5'
+tags:
+  - name: promotion
+    description: Operations for Promotion Resource
+  - name: notification listener
+    description: Notifications for Resource Lifecycle and event notifications
+  - name: events subscription
+    description: Endpoints to register and terminate an Event Listener
+paths:
+  /hub:
+    post:
+      operationId: createHub
+      summary: Create a subscription (hub) to receive Events
+      description: Sets the communication endpoint to receive Events.
+      tags:
+        - events subscription
+      requestBody:
+        $ref: '#/components/requestBodies/Hub_FVO'
+      responses:
+        '201':
+          $ref: '#/components/responses/Hub'
+        default:
+          $ref: '#/components/responses/Error'
+  '/hub/{id}':
+    get:
+      operationId: hubGet
+      summary: Retrieve a subscription (hub)
+      description: ''
+      tags:
+        - events subscription
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          $ref: '#/components/responses/Hub'
+        default:
+          $ref: '#/components/responses/Error'
+    delete:
+      operationId: hubDelete
+      summary: Remove a subscription (hub) to receive Events
+      description: ''
+      tags:
+        - events subscription
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '204':
+          description: Deleted
+        default:
+          $ref: '#/components/responses/Error'
+  /listener/promotionAttributeValueChangeEvent:
+    post:
+      tags:
+        - notification listener
+      summary: Client listener for entity PromotionAttributeValueChangeEvent
+      description: >-
+        Example of a client listener for receiving the notification
+        PromotionAttributeValueChangeEvent
+      operationId: promotionAttributeValueChangeEvent
+      requestBody:
+        $ref: '#/components/requestBodies/PromotionAttributeValueChangeEvent'
+      responses:
+        '204':
+          description: Notified
+        default:
+          $ref: '#/components/responses/Error'
+  /listener/promotionCreateEvent:
+    post:
+      tags:
+        - notification listener
+      summary: Client listener for entity PromotionCreateEvent
+      description: Example of a client listener for receiving the notification PromotionCreateEvent
+      operationId: promotionCreateEvent
+      requestBody:
+        $ref: '#/components/requestBodies/PromotionCreateEvent'
+      responses:
+        '204':
+          description: Notified
+        default:
+          $ref: '#/components/responses/Error'
+  /listener/promotionDeleteEvent:
+    post:
+      tags:
+        - notification listener
+      summary: Client listener for entity PromotionDeleteEvent
+      description: Example of a client listener for receiving the notification PromotionDeleteEvent
+      operationId: promotionDeleteEvent
+      requestBody:
+        $ref: '#/components/requestBodies/PromotionDeleteEvent'
+      responses:
+        '204':
+          description: Notified
+        default:
+          $ref: '#/components/responses/Error'
+  /listener/promotionStateChangeEvent:
+    post:
+      tags:
+        - notification listener
+      summary: Client listener for entity PromotionStateChangeEvent
+      description: Example of a client listener for receiving the notification PromotionStateChangeEvent
+      operationId: promotionStateChangeEvent
+      requestBody:
+        $ref: '#/components/requestBodies/PromotionStateChangeEvent'
+      responses:
+        '204':
+          description: Notified
+        default:
+          $ref: '#/components/responses/Error'
+  /promotion:
+    get:
+      tags:
+        - promotion
+      summary: List or find Promotion objects
+      description: List or find Promotion objects
+      operationId: listPromotion
+      parameters:
+        - $ref: '#/components/parameters/Fields'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Limit'
+      responses:
+        '200':
+          $ref: '#/components/responses/200PromotionArray'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+        '501':
+          $ref: '#/components/responses/501'
+        '503':
+          $ref: '#/components/responses/503'
+    post:
+      tags:
+        - promotion
+      summary: Creates a Promotion
+      description: This operation creates a Promotion entity.
+      operationId: createPromotion
+      parameters:
+        - $ref: '#/components/parameters/Fields'
+      requestBody:
+        $ref: '#/components/requestBodies/Promotion_FVO'
+      responses:
+        '201':
+          $ref: '#/components/responses/201Promotion'
+        '202':
+          description: Accepted
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '409':
+          $ref: '#/components/responses/409'
+        '500':
+          $ref: '#/components/responses/500'
+        '501':
+          $ref: '#/components/responses/501'
+        '503':
+          $ref: '#/components/responses/503'
+  '/promotion/{id}':
+    get:
+      tags:
+        - promotion
+      summary: Retrieves a Promotion by ID
+      description: >-
+        This operation retrieves a Promotion entity. Attribute selection enabled for all first level
+        attributes.
+      operationId: retrievePromotion
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Fields'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Promotion_Get'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+        '501':
+          $ref: '#/components/responses/501'
+        '503':
+          $ref: '#/components/responses/503'
+    patch:
+      tags:
+        - promotion
+      summary: Updates partially a Promotion
+      description: This operation updates partially a Promotion entity.
+      operationId: patchPromotion
+      parameters:
+        - $ref: '#/components/parameters/Id'
+        - $ref: '#/components/parameters/Fields'
+      requestBody:
+        $ref: '#/components/requestBodies/Promotion_MVO'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Promotion_Patch'
+        '202':
+          description: Accepted
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '409':
+          $ref: '#/components/responses/409'
+        '500':
+          $ref: '#/components/responses/500'
+        '501':
+          $ref: '#/components/responses/501'
+        '503':
+          $ref: '#/components/responses/503'
+    delete:
+      tags:
+        - promotion
+      summary: Deletes a Promotion
+      description: This operation deletes a Promotion entity.
+      operationId: deletePromotion
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '202':
+          $ref: '#/components/responses/202'
+        '204':
+          $ref: '#/components/responses/204'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '409':
+          $ref: '#/components/responses/409'
+        '500':
+          $ref: '#/components/responses/500'
+        '501':
+          $ref: '#/components/responses/501'
+        '503':
+          $ref: '#/components/responses/503'
+components:
+  schemas:
+    Addressable:
+      type: object
+      description: Base schema for addressable entities
+      properties:
+        href:
+          type: string
+          description: Hyperlink reference
+        id:
+          type: string
+          description: unique identifier
+    BaseEvent:
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          description: Base event with common attributes.
+          properties:
+            event:
+              type: object
+              description: The event linked to the involved resource object
+            eventId:
+              type: string
+              description: The identifier of the notification.
+            eventTime:
+              type: string
+              format: date-time
+              description: Time of the event occurrence.
+            eventType:
+              type: string
+              description: The type of the notification.
+            correlationId:
+              type: string
+              description: The correlation id for this event.
+            domain:
+              type: string
+              description: The domain of the event.
+            title:
+              type: string
+              description: The title of the event.
+            description:
+              type: string
+              description: An explanatory of the event.
+            priority:
+              type: string
+              description: A priority.
+            timeOcurred:
+              type: string
+              format: date-time
+              description: The time the event occurred.
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          BaseEvent: '#/components/schemas/BaseEvent'
+    Characteristic:
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+        - type: object
+          description: >-
+            Describes a given characteristic of an object or entity through a name/value pair. This
+            is an abstract base class, the actual value is in one of the strongly-typed subclasses :
+            StringCharacteristic, ObjectCharacteristic, FloatCharacteristic, BooleanCharacteristic,
+            NumberCharacteristic, IntegerCharacteristic, StringArrayCharacteristic,
+            ObjectArrayCharacteristic, BooleanArrayCharacteristic, NumberArrayCharacteristic,
+            IntegerArrayCharacteristic...
+          properties:
+            id:
+              type: string
+              description: Unique identifier of the characteristic
+            name:
+              type: string
+              description: Name of the characteristic
+            valueType:
+              type: string
+              description: Data type of the value of the characteristic
+            characteristicRelationship:
+              type: array
+              description: Collection of characteristic relationships
+              items:
+                $ref: '#/components/schemas/CharacteristicRelationship'
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          Characteristic: '#/components/schemas/Characteristic'
+    CharacteristicRelationship:
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+        - type: object
+          description: Another Characteristic that is related to the current Characteristic;
+          properties:
+            id:
+              type: string
+              description: Unique identifier of the characteristic
+            relationshipType:
+              type: string
+              description: The type of relationship
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          CharacteristicRelationship: '#/components/schemas/CharacteristicRelationship'
+    Entity:
+      type: object
+      description: Base entity schema for use in TMForum Open-APIs. Property.
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+        - $ref: '#/components/schemas/Addressable'
+    EntityRef:
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+        - $ref: '#/components/schemas/Addressable'
+        - type: object
+          description: Entity reference schema to be use for all entityRef class.
+          properties:
+            id:
+              type: string
+              description: The identifier of the referred entity.
+            href:
+              type: string
+              description: The URI of the referred entity.
+            name:
+              type: string
+              description: Name of the referred entity.
+            '@referredType':
+              type: string
+              description: The actual type of the target instance when needed for disambiguation.
+          required:
+            - id
+    EntityRef_FVO:
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+        - $ref: '#/components/schemas/Addressable'
+        - type: object
+          description: Entity reference schema to be use for all entityRef class.
+          properties:
+            id:
+              type: string
+              description: The identifier of the referred entity.
+            name:
+              type: string
+              description: Name of the referred entity.
+            '@referredType':
+              type: string
+              description: The actual type of the target instance when needed for disambiguation.
+    EntityRef_MVO:
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+        - $ref: '#/components/schemas/Addressable'
+        - type: object
+          description: Entity reference schema to be use for all entityRef class.
+          properties:
+            id:
+              type: string
+              description: The identifier of the referred entity.
+            name:
+              type: string
+              description: Name of the referred entity.
+            '@referredType':
+              type: string
+              description: The actual type of the target instance when needed for disambiguation.
+    Entity_MVO:
+      type: object
+      description: Base entity schema for use in TMForum Open-APIs. Property.
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+    Event:
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+        - type: object
+          description: event with common attributes.
+          properties:
+            href:
+              type: string
+              description: Hyperlink reference
+            id:
+              type: string
+              description: unique identifier
+            correlationId:
+              type: string
+              description: The correlation id for this event.
+            domain:
+              type: string
+              description: The domain of the event.
+            title:
+              type: string
+              description: The title of the event.
+            description:
+              type: string
+              description: An explanation of the event.
+            priority:
+              type: string
+              description: A priority.
+            timeOccurred:
+              type: string
+              format: date-time
+              description: The time the event occurred.
+            source:
+              $ref: '#/components/schemas/EntityRef'
+            reportingSystem:
+              $ref: '#/components/schemas/EntityRef'
+            relatedParty:
+              type: array
+              description: Collection of related parties
+              items:
+                $ref: '#/components/schemas/RelatedPartyRefOrPartyRoleRef'
+            analyticCharacteristic:
+              type: array
+              description: Collection of analytic characteristics
+              items:
+                $ref: '#/components/schemas/Characteristic'
+            eventId:
+              type: string
+              description: The identifier of the notification.
+            eventTime:
+              type: string
+              format: date-time
+              description: Time of the event occurrence.
+            eventType:
+              type: string
+              description: The type of the notification.
+            event:
+              description: The event linked to the involved resource object
+              type: object
+    Extensible:
+      type: object
+      description: >-
+        Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means
+        that the Entity described by the schema  MUST be extended with the @type
+      properties:
+        '@type':
+          type: string
+          description: 'When sub-classing, this defines the sub-class Extensible name'
+        '@baseType':
+          type: string
+          description: 'When sub-classing, this defines the super-class'
+        '@schemaLocation':
+          type: string
+          description: A URI to a JSON-Schema file that defines additional attributes and relationships
+      required:
+        - '@type'
+    PartyRef:
+      type: object
+      description: A Party reference
+      allOf:
+        - $ref: '#/components/schemas/EntityRef'
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          PartyRef: '#/components/schemas/PartyRef'
+    PartyRefOrPartyRoleRef:
+      type: object
+      description: ''
+      oneOf:
+        - $ref: '#/components/schemas/PartyRef'
+        - $ref: '#/components/schemas/PartyRoleRef'
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          PartyRef: '#/components/schemas/PartyRef'
+          PartyRoleRef: '#/components/schemas/PartyRoleRef'
+    PartyRoleRef:
+      allOf:
+        - $ref: '#/components/schemas/EntityRef'
+        - type: object
+          description: >-
+            Party role reference. A party role represents the part played by a party in a given
+            context.
+          properties:
+            partyId:
+              type: string
+              description: The identifier of the engaged party that is linked to the PartyRole object.
+            partyName:
+              type: string
+              description: The name of the engaged party that is linked to the PartyRole object.
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          PartyRoleRef: '#/components/schemas/PartyRoleRef'
+    Promotion:
+      type: object
+      description: >-
+        Promotion Resource is used to provide additional discounts, vouchers, bonuses, or gifts to
+        customers who meet predefined criteria. By using promotions, the enterprise can attract
+        users and encourage more consumption, especially continuous purchases. Normally, promotions
+        are not considered a specific type of product or product offering. They are often applied
+        when customers purchase product offerings that exceed a certain price or amount limit.
+      properties:
+        description:
+          type: string
+          description: Description of Promotion
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Latest update date of Promotion
+        lifecycleStatus:
+          type: string
+          description: 'Status of Promotion, including draft/Test/WaitForApproval/Release/Suspend/Retirement.'
+        pattern:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionPattern'
+        type:
+          type: string
+          description: >-
+            Type of promotion.The basic type is Award/Discount/Reduction. More types can be extended
+            in future.
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+        name:
+          type: string
+          description: Name of Promotion.
+    PromotionAction:
+      type: object
+      description: >-
+        Action of the promotion. When the customer meets the conditions in the promotion pattern,
+        the customer can be given the benefits in the action.
+      properties:
+        '@baseType':
+          type: string
+          description: The base type for use in polymorphic collections
+        '@schemaLocation':
+          type: string
+          description: A link to the schema describing a resource (for type extension).
+        '@type':
+          type: string
+          description: The class type of the actual resource (for type extension).
+        actionEntityRef:
+          $ref: '#/components/schemas/EntityRef'
+        actionType:
+          type: string
+          description: >-
+            Action type can be one of the following: voice (minute), data (MB), data (GB), SMS,
+            bonus point, physical gift, voucher, promotion code, an existing offering, currency.
+        actionValue:
+          type: string
+          description: >-
+            When the Promotion type is 1: Award, it means the amount or value of the awards decided
+            by actionType, such as: Amount of gift, Amount of bonus, Value of discount;  
+             • When the Promotion type is 2: Discount, it means the value of the discount;  
+             • When the Promotion type is 3: reduction, it means the value of the reduced money.
+        id:
+          type: string
+          description: Unique identifier.
+    PromotionAction_FVO:
+      type: object
+      description: >-
+        Action of the promotion. When the customer meets the conditions in the promotion pattern,
+        the customer can be given the benefits in the action.
+      properties:
+        actionEntityRef:
+          $ref: '#/components/schemas/EntityRef_FVO'
+        actionType:
+          type: string
+          description: >-
+            Action type can be one of the following: voice (minute), data (MB), data (GB), SMS,
+            bonus point, physical gift, voucher, promotion code, an existing offering, currency.
+        actionValue:
+          type: string
+          description: >-
+            When the Promotion type is 1: Award, it means the amount or value of the awards decided
+            by actionType, such as: Amount of gift, Amount of bonus, Value of discount;  
+             • When the Promotion type is 2: Discount, it means the value of the discount;  
+             • When the Promotion type is 3: reduction, it means the value of the reduced money.
+    PromotionAction_MVO:
+      type: object
+      description: >-
+        Action of the promotion. When the customer meets the conditions in the promotion pattern,
+        the customer can be given the benefits in the action.
+      properties:
+        actionEntityRef:
+          $ref: '#/components/schemas/EntityRef_MVO'
+        actionType:
+          type: string
+          description: >-
+            Action type can be one of the following: voice (minute), data (MB), data (GB), SMS,
+            bonus point, physical gift, voucher, promotion code, an existing offering, currency.
+        actionValue:
+          type: string
+          description: >-
+            When the Promotion type is 1: Award, it means the amount or value of the awards decided
+            by actionType, such as: Amount of gift, Amount of bonus, Value of discount;  
+             • When the Promotion type is 2: Discount, it means the value of the discount;  
+             • When the Promotion type is 3: reduction, it means the value of the reduced money.
+    PromotionAttributeValueChangeEvent:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - type: object
+          description: PromotionAttributeValueChangeEvent generic structure
+          properties:
+            event:
+              $ref: '#/components/schemas/PromotionAttributeValueChangeEventPayload'
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          PromotionAttributeValueChangeEvent: '#/components/schemas/PromotionAttributeValueChangeEvent'
+    PromotionAttributeValueChangeEventPayload:
+      type: object
+      description: PromotionAttributeValueChangeEventPayload generic structure
+      properties:
+        promotion:
+          $ref: '#/components/schemas/Promotion'
+    PromotionCreateEvent:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - type: object
+          description: PromotionCreateEvent generic structure
+          properties:
+            event:
+              $ref: '#/components/schemas/PromotionCreateEventPayload'
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          PromotionCreateEvent: '#/components/schemas/PromotionCreateEvent'
+    PromotionCreateEventPayload:
+      type: object
+      description: PromotionCreateEventPayload generic structure
+      properties:
+        promotion:
+          $ref: '#/components/schemas/Promotion'
+    PromotionCriteria:
+      type: object
+      description: Set of criteria to be followed by all parties.
+      properties:
+        '@baseType':
+          type: string
+          description: The base type for use in polymorphic collections
+        '@schemaLocation':
+          type: string
+          description: A link to the schema describing a resource (for type extension).
+        '@type':
+          type: string
+          description: The class type of the actual resource (for type extension).
+        criteriaOperator:
+          type: string
+          description: 'Logic operator of this criteria instruction: ''='' or ''>'' or ''<'' or ''>='' or ''<='' or ''<>''.'
+        criteriaParameter:
+          type: string
+          description: >-
+            The parameter (factor) of the criteria.The basic factors are abstracted from these data
+            sources.There are several detail parameters.
+        criteriaValue:
+          type: string
+          description: The value is filled for the comparison of the criteria.
+        id:
+          type: string
+          description: Unique identifier.
+    PromotionCriteriaGroup:
+      type: object
+      description: 'Set of group criteria to promotion. Fulfilling these criteria, parties will receice benefits'
+      properties:
+        '@baseType':
+          type: string
+          description: The base type for use in polymorphic collections
+        '@schemaLocation':
+          type: string
+          description: A link to the schema describing a resource (for type extension).
+        '@type':
+          type: string
+          description: The class type of the actual resource (for type extension).
+        criteria:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionCriteria'
+        groupName:
+          type: string
+          description: Name of the group to be easily identified
+        id:
+          type: string
+          description: Unique Identifier
+        criteriaLogicalRelationship:
+          type: string
+          description: Logical relation followed by all criteria.
+          enum:
+            - AND
+            - OR
+    PromotionCriteriaGroup_FVO:
+      type: object
+      description: 'Set of group criteria to promotion. Fulfilling these criteria, parties will receice benefits'
+      properties:
+        criteria:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionCriteria_FVO'
+        groupName:
+          type: string
+          description: Name of the group to be easily identified
+        criteriaLogicalRelationship:
+          type: string
+          description: Logical relation followed by all criteria.
+          enum:
+            - AND
+            - OR
+    PromotionCriteriaGroup_MVO:
+      type: object
+      description: 'Set of group criteria to promotion. Fulfilling these criteria, parties will receice benefits'
+      properties:
+        criteria:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionCriteria_MVO'
+        groupName:
+          type: string
+          description: Name of the group to be easily identified
+        criteriaLogicalRelationship:
+          type: string
+          description: Logical relation followed by all criteria.
+          enum:
+            - AND
+            - OR
+    PromotionCriteria_FVO:
+      type: object
+      description: Set of criteria to be followed by all parties.
+      properties:
+        '@baseType':
+          type: string
+          description: The base type for use in polymorphic collections
+        '@schemaLocation':
+          type: string
+          description: A link to the schema describing a resource (for type extension).
+        '@type':
+          type: string
+          description: The class type of the actual resource (for type extension).
+        criteriaOperator:
+          type: string
+          description: 'Logic operator of this criteria instruction: ''='' or ''>'' or ''<'' or ''>='' or ''<='' or ''<>''.'
+        criteriaParameter:
+          type: string
+          description: >-
+            The parameter (factor) of the criteria.The basic factors are abstracted from these data
+            sources.There are several detail parameters.
+        criteriaValue:
+          type: string
+          description: The value is filled for the comparison of the criteria.
+    PromotionCriteria_MVO:
+      type: object
+      description: Set of criteria to be followed by all parties.
+      properties:
+        '@baseType':
+          type: string
+          description: The base type for use in polymorphic collections
+        '@schemaLocation':
+          type: string
+          description: A link to the schema describing a resource (for type extension).
+        '@type':
+          type: string
+          description: The class type of the actual resource (for type extension).
+        criteriaOperator:
+          type: string
+          description: 'Logic operator of this criteria instruction: ''='' or ''>'' or ''<'' or ''>='' or ''<='' or ''<>''.'
+        criteriaParameter:
+          type: string
+          description: >-
+            The parameter (factor) of the criteria.The basic factors are abstracted from these data
+            sources.There are several detail parameters.
+        criteriaValue:
+          type: string
+          description: The value is filled for the comparison of the criteria.
+    PromotionDeleteEvent:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - type: object
+          description: PromotionDeleteEvent generic structure
+          properties:
+            event:
+              $ref: '#/components/schemas/PromotionDeleteEventPayload'
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          PromotionDeleteEvent: '#/components/schemas/PromotionDeleteEvent'
+    PromotionDeleteEventPayload:
+      type: object
+      description: PromotionDeleteEventPayload generic structure
+      properties:
+        promotion:
+          $ref: '#/components/schemas/Promotion'
+    PromotionPattern:
+      type: object
+      description: >-
+        Detailed pattern of the promotion.The pattern decides the conditions of promotion and the
+        benefit of the promotion to be given to the eligible customer.
+      properties:
+        description:
+          type: string
+          description: Description
+        priority:
+          type: integer
+          description: Priority. Smaller number means high.
+        relationTypeAmongGroup:
+          type: string
+          description: 'AND/OR ,The logical relation type amongst the promotion criteria group.'
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+        action:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionAction'
+        criteriaGroup:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionCriteriaGroup'
+        id:
+          type: string
+          description: Unique identifier.
+        name:
+          type: string
+          description: Name
+    PromotionPattern_FVO:
+      type: object
+      description: >-
+        Detailed pattern of the promotion.The pattern decides the conditions of promotion and the
+        benefit of the promotion to be given to the eligible customer.
+      properties:
+        description:
+          type: string
+          description: Description
+        priority:
+          type: integer
+          description: Priority. Smaller number means high.
+        relationTypeAmongGroup:
+          type: string
+          description: 'AND/OR ,The logical relation type amongst the promotion criteria group.'
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+        action:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionAction_FVO'
+        criteriaGroup:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionCriteriaGroup_FVO'
+        name:
+          type: string
+          description: Name
+    PromotionPattern_MVO:
+      type: object
+      description: >-
+        Detailed pattern of the promotion.The pattern decides the conditions of promotion and the
+        benefit of the promotion to be given to the eligible customer.
+      properties:
+        description:
+          type: string
+          description: Description
+        priority:
+          type: integer
+          description: Priority. Smaller number means high.
+        relationTypeAmongGroup:
+          type: string
+          description: 'AND/OR ,The logical relation type amongst the promotion criteria group.'
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+        action:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionAction_MVO'
+        criteriaGroup:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionCriteriaGroup_MVO'
+        name:
+          type: string
+          description: Name
+    PromotionStateChangeEvent:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - type: object
+          description: PromotionStateChangeEvent generic structure
+          properties:
+            event:
+              $ref: '#/components/schemas/PromotionStateChangeEventPayload'
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          PromotionStateChangeEvent: '#/components/schemas/PromotionStateChangeEvent'
+    PromotionStateChangeEventPayload:
+      type: object
+      description: PromotionStateChangeEventPayload generic structure
+      properties:
+        promotion:
+          $ref: '#/components/schemas/Promotion'
+    Promotion_FVO:
+      type: object
+      description: >-
+        Promotion Resource is used to provide additional discounts, vouchers, bonuses, or gifts to
+        customers who meet predefined criteria. By using promotions, the enterprise can attract
+        users and encourage more consumption, especially continuous purchases. Normally, promotions
+        are not considered a specific type of product or product offering. They are often applied
+        when customers purchase product offerings that exceed a certain price or amount limit.
+      properties:
+        description:
+          type: string
+          description: Description of Promotion
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Latest update date of Promotion
+        lifecycleStatus:
+          type: string
+          description: 'Status of Promotion, including draft/Test/WaitForApproval/Release/Suspend/Retirement.'
+        pattern:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionPattern_FVO'
+        type:
+          type: string
+          description: >-
+            Type of promotion.The basic type is Award/Discount/Reduction. More types can be extended
+            in future.
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+        name:
+          type: string
+          description: Name of Promotion.
+      required:
+        - name
+    Promotion_MVO:
+      type: object
+      description: >-
+        Promotion Resource is used to provide additional discounts, vouchers, bonuses, or gifts to
+        customers who meet predefined criteria. By using promotions, the enterprise can attract
+        users and encourage more consumption, especially continuous purchases. Normally, promotions
+        are not considered a specific type of product or product offering. They are often applied
+        when customers purchase product offerings that exceed a certain price or amount limit.
+      properties:
+        description:
+          type: string
+          description: Description of Promotion
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Latest update date of Promotion
+        lifecycleStatus:
+          type: string
+          description: 'Status of Promotion, including draft/Test/WaitForApproval/Release/Suspend/Retirement.'
+        pattern:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionPattern_MVO'
+        type:
+          type: string
+          description: >-
+            Type of promotion.The basic type is Award/Discount/Reduction. More types can be extended
+            in future.
+        validFor:
+          $ref: '#/components/schemas/TimePeriod'
+        name:
+          type: string
+          description: Name of Promotion.
+    RelatedPartyRefOrPartyRoleRef:
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+        - type: object
+          description: >-
+            RelatedParty reference. A related party defines party or party role or its reference,
+            linked to a specific entity
+          properties:
+            role:
+              description: >-
+                Role played by the related party or party role in the context of the specific entity
+                it is linked to. Such as 'initiator', 'customer',  'salesAgent', 'user'
+              type: string
+            partyOrPartyRole:
+              $ref: '#/components/schemas/PartyRefOrPartyRoleRef'
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          RelatedPartyRefOrPartyRoleRef: '#/components/schemas/RelatedPartyRefOrPartyRoleRef'
+    TimePeriod:
+      type: object
+      description: 'A period of time, either as a deadline (endDateTime only) a startDateTime only, or both'
+      properties:
+        startDateTime:
+          description: 'Start of the time period, using IETC-RFC-3339 format'
+          type: string
+          format: date-time
+          example: '1985-04-12T23:20:50.52Z'
+        endDateTime:
+          description: 'End of the time period, using IETC-RFC-3339 format'
+          type: string
+          format: date-time
+          example: '1985-04-12T23:20:50.52Z'
+    Error:
+      discriminator:
+        propertyName: '@type'
+        mapping:
+          Error: '#/components/schemas/Error'
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+        - type: object
+          required:
+            - code
+            - reason
+          properties:
+            code:
+              type: string
+              description: 'Application relevant detail, defined in the API or a common list.'
+            reason:
+              type: string
+              description: Explanation of the reason for the error which can be shown to a client user.
+            message:
+              type: string
+              description: >-
+                More details and corrective actions related to the error which can be shown to a
+                client user.
+            status:
+              type: string
+              description: HTTP Error code extension
+            referenceError:
+              type: string
+              description: URI of documentation describing the error.
+      description: 'Used when an API throws an Error, typically with a HTTP error response-code (3xx, 4xx, 5xx)'
+    Hub_FVO:
+      type: object
+      description: >-
+        Sets the communication endpoint address the service instance must use to deliver
+        notification information
+      required:
+        - callback
+      allOf:
+        - $ref: '#/components/schemas/Extensible'
+        - properties:
+            callback:
+              type: string
+              description: The callback being registered.
+            query:
+              type: string
+              description: additional data to be passed
+    Hub:
+      type: object
+      description: >-
+        Sets the communication endpoint address the service instance must use to deliver
+        notification information
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - properties:
+            id:
+              type: string
+              description: Id of the listener
+            callback:
+              type: string
+              description: The callback being registered.
+            query:
+              type: string
+              description: additional data to be passed
+          required:
+            - callback
+    JsonPatch:
+      type: object
+      description: A JSONPatch document as defined by RFC 6902
+      required:
+        - op
+        - path
+      properties:
+        op:
+          type: string
+          description: The operation to be performed
+          enum:
+            - add
+            - remove
+            - replace
+            - move
+            - copy
+            - test
+        path:
+          type: string
+          description: A JSON-Pointer
+        value:
+          description: The value to be used within the operations.
+        from:
+          type: string
+          description: A string containing a JSON Pointer value.
+    JsonPatchOperations:
+      description: JSONPatch Operations document as defined by RFC 6902
+      type: array
+      items:
+        $ref: '#/components/schemas/JsonPatch'
+  parameters:
+    Id:
+      name: id
+      required: true
+      schema:
+        type: string
+      in: path
+      description: Identifier of the Resource
+    Fields:
+      name: fields
+      in: query
+      description: Comma-separated properties to be provided in response
+      schema:
+        type: string
+    Offset:
+      name: offset
+      in: query
+      description: Requested index for start of resources to be provided in response
+      schema:
+        type: integer
+    Limit:
+      name: limit
+      in: query
+      description: Requested number of resources to be provided in response
+      schema:
+        type: integer
+  requestBodies:
+    Promotion_FVO:
+      description: The Promotion to be created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Promotion_FVO'
+          examples:
+            Promotion_create_example:
+              $ref: '#/components/examples/Promotion_create_example_request'
+      required: true
+    Promotion_MVO:
+      description: The Promotion to be patched
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Promotion_MVO'
+        application/merge-patch+json:
+          schema:
+            $ref: '#/components/schemas/Promotion_MVO'
+          examples:
+            Promotion_update_example:
+              $ref: '#/components/examples/Promotion_update_example_request'
+        application/json-patch+json:
+          schema:
+            $ref: '#/components/schemas/JsonPatchOperations'
+          examples:
+            Promotion_update_example_with_JSON_Patch:
+              $ref: '#/components/examples/Promotion_update_example_with_JSON_Patch_request'
+        application/json-patch-query+json:
+          schema:
+            $ref: '#/components/schemas/JsonPatchOperations'
+          examples:
+            Promotion_update_example_with_JSON_Patch_Query:
+              $ref: '#/components/examples/Promotion_update_example_with_JSON_Patch_Query_request'
+      required: true
+    PromotionCreateEvent:
+      description: Promotion create Event payload
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PromotionCreateEvent'
+          examples:
+            Create:
+              $ref: '#/components/examples/Create_request'
+      required: true
+    PromotionDeleteEvent:
+      description: Promotion delete Event payload
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PromotionDeleteEvent'
+          examples:
+            Delete:
+              $ref: '#/components/examples/Delete_request'
+      required: true
+    PromotionAttributeValueChangeEvent:
+      description: Promotion attributeValueChange Event payload
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PromotionAttributeValueChangeEvent'
+          examples:
+            AttributeValueChange:
+              $ref: '#/components/examples/AttributeValueChange_request'
+      required: true
+    PromotionStateChangeEvent:
+      description: Promotion stateChange Event payload
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PromotionStateChangeEvent'
+          examples:
+            StateChange:
+              $ref: '#/components/examples/StateChange_request'
+      required: true
+    Hub_FVO:
+      description: Data containing the callback endpoint to deliver the information
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Hub_FVO'
+          examples:
+            Basic Hub Example Request:
+              value:
+                '@type': Hub
+                callback: 'https://host/tmf-api/specificAPIName/v5/listener/specificEventListener'
+                query: data
+      required: true
+  responses:
+    '200':
+      description: OK
+    '202':
+      description: Accepted
+    '204':
+      description: Deleted
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            basic:
+              summary: Bad Request Error
+              value:
+                '@type': Error
+                code: ERR400
+                reason: Bad Request
+                message: >-
+                  The server could not understand the request due to invalid syntax. Please correct
+                  the syntax and try again.
+                referenceError: 'https://host/errors'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            basic:
+              summary: Unauthorized Error
+              value:
+                '@type': Error
+                code: ERR401
+                reason: Unauthorized
+                message: >-
+                  You are not authorized to access the requested resource. Please provide the
+                  correct credentials.
+                referenceError: 'https://host/errors'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            basic:
+              summary: Forbidden Error
+              value:
+                '@type': Error
+                code: ERR403
+                reason: Forbidden
+                message: >-
+                  You don't have the permission to access the requested resource. It is either
+                  read-protected or not readable by the server.
+                referenceError: 'https://host/errors'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            basic:
+              summary: Not Found Error
+              value:
+                '@type': Error
+                code: ERR404
+                reason: Not Found
+                message: The requested URL was not found on the server.
+                referenceError: 'https://host/errors'
+    '405':
+      description: Method Not allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            basic:
+              summary: Method Not allowed Error
+              value:
+                '@type': Error
+                code: ERR405
+                reason: Method Not allowed
+                message: The method is not allowed for the requested URL.
+                referenceError: 'https://host/errors'
+    '409':
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            basic:
+              summary: Conflict Error
+              value:
+                '@type': Error
+                code: ERR409
+                reason: Conflict
+                message: >-
+                  The request could not be completed due to a conflict with the current state of the
+                  target resource.
+                referenceError: 'https://host/errors'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            basic:
+              summary: Internal Server Error example
+              value:
+                '@type': Error
+                code: ERR500
+                reason: Internal Server Error
+                message: The server encountered an internal error. Please contact the system administrator.
+                referenceError: 'https://host/errors'
+    '501':
+      description: Not Implemented
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            basic:
+              summary: Not Implemented Error
+              value:
+                '@type': Error
+                code: ERR501
+                reason: The requested operation is not implemented
+                message: >-
+                  The requested operation is not implemented. Please contact the system
+                  administrator.
+                referenceError: 'https://host/errors'
+    '503':
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            basic:
+              summary: Service Unavailable Error
+              value:
+                '@type': Error
+                code: ERR503
+                reason: Service Unavailable
+                message: The service is currently unavailable. Please try again later.
+                referenceError: 'https://host/errors'
+    200PromotionArray:
+      description: Success
+      headers:
+        X-Total-Count:
+          $ref: '#/components/headers/X-Total-Count'
+        X-Result-Count:
+          $ref: '#/components/headers/X-Result-Count'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Promotion'
+          examples:
+            Promotion_list_example:
+              $ref: '#/components/examples/Promotion_list_example_response'
+    200Promotion_Get:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Promotion'
+          examples:
+            Promotion_retrieve_example:
+              $ref: '#/components/examples/Promotion_retrieve_example_response'
+    200Promotion_Patch:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Promotion'
+        application/merge-patch+json:
+          schema:
+            $ref: '#/components/schemas/Promotion'
+          examples:
+            Promotion_update_example:
+              $ref: '#/components/examples/Promotion_update_example_response'
+        application/json-patch+json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/Promotion'
+              - type: array
+                items:
+                  $ref: '#/components/schemas/Promotion'
+              - type: string
+                nullable: true
+          examples:
+            Promotion_update_example_with_JSON_Patch:
+              $ref: '#/components/examples/Promotion_update_example_with_JSON_Patch_response'
+        application/json-patch-query+json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/Promotion'
+              - type: array
+                items:
+                  $ref: '#/components/schemas/Promotion'
+              - type: string
+                nullable: true
+          examples:
+            Promotion_update_example_with_JSON_Patch_Query:
+              $ref: '#/components/examples/Promotion_update_example_with_JSON_Patch_Query_response'
+    201Promotion:
+      description: OK/Created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Promotion'
+          examples:
+            Promotion_create_example:
+              $ref: '#/components/examples/Promotion_create_example_response'
+    Error:
+      description: Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            basic:
+              summary: Error example
+              value:
+                '@type': Error
+                code: ERR001
+                reason: Missing information
+                message: Please provide the additional example information
+                referenceError: 'https://host/errors'
+    Hub:
+      description: Notified
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Hub'
+          examples:
+            basic:
+              summary: Hub example
+              value:
+                '@type': Hub
+                callback: 'https://host/tmf-api/specificAPIName/v5/listener/specificEventListener'
+  headers:
+    X-Total-Count:
+      description: Total number of items matching criteria
+      schema:
+        type: integer
+    X-Result-Count:
+      description: Actual number of items returned in the response body
+      schema:
+        type: integer
+  securitySchemes: {}
+  examples:
+    Promotion_list_example_response:
+      value:
+        - id: CUSTBIRTHDAY
+          href: 'https:/host:port/tmf-api/promotion/v5/promotion/CUSTBIRTHDAY'
+          description: It's your birthday! 50 loyalty points will be added to your account
+          lastUpdate: '2000-01-19T00:00:00.000Z'
+          lifecycleStatus: retirement
+          name: 50 loyalty points just to you
+          pattern:
+            - '@type': PromotionPattern
+              id: PATTERN_50_LOYALTY POINTS
+              action:
+                - '@type': PromotionAction
+                  id: ACTION_50_LOYALTY POINTS
+                  actionType: '10'
+                  actionValue: 50 loyalty points
+              criteriaGroup:
+                - '@type': PromotionCriteriaGroup
+                  id: GROUP_50_LOYALTY POINTS
+                  criteria:
+                    - '@type': PromotionCriteria
+                      id: CRITERIA_50_LOYALTY POINTS
+                      criteriaOperator: '='
+                      criteriaParameter: '1.3'
+                      criteriaValue: 02-09
+          promotionType: Award
+          validFor:
+            startDateTime: '2020-01-05T12:00:56.982Z'
+            endDateTime: '9999-12-31T23:59:59.999Z'
+          '@type': Promotion
+        - id: RETENTIONNETFLIX3M
+          href: 'https:/host:port/tmf-api/promotion/v5/promotion/RETENTIONNETFLIX3M'
+          description: Retention for more 24 months gives free Netflix for 3months
+          lastUpdate: '2021-02-10T00:00:00.000Z'
+          lifecycleStatus: draft
+          name: 3months of free Netflix when retention for more 24 months
+          pattern:
+            - '@type': PromotionPattern
+              action:
+                - '@type': PromotionAction
+                  actionEntityRef:
+                    '@type': EntityRef
+                    id: POSTPAID_PRODUCT_OFFERING_NETFLIX
+                    href: >-
+                      https://mycsp.com:8080/tmf-api/productCatalogManagement/v5/productOffering/PRODUCT_OFFERING_NETFLIX
+                    name: Netflix 3MFree
+                  actionType: '9'
+              criteriaGroup:
+                - '@type': PromotionCriteriaGroup
+                  criteria:
+                    - '@type': PromotionCriteria
+                      criteriaOperator: '='
+                      criteriaParameter: '3.2'
+                      criteriaValue: '24'
+                    - '@type': PromotionCriteria
+                      criteriaOperator: '='
+                      criteriaParameter: '3.3'
+                      criteriaValue: months
+          promotionType: Award
+          validFor:
+            startDateTime: '2020-01-05T12:00:56.982Z'
+            endDateTime: '9999-12-31T23:59:59.999Z'
+          '@type': Promotion
+        - id: PREPAIDOFFER_5GB
+          href: 'https:/host:port/tmf-api/promotion/v5/promotion/PREPAIDOFFER_5GB'
+          description: Top-up by £20 or more and get 5GB of data for only £5
+          lastUpdate: '2021-02-10T00:00:00.000Z'
+          lifecycleStatus: release
+          name: More 5GB data when 20euros top-up
+          pattern:
+            - '@type': PromotionPattern
+              id: PATTERN_PREPAID_PRODUCT_OFFERING_5GB
+              action:
+                - '@type': PromotionAction
+                  id: ACTION_PREPAID_PRODUCT_OFFERING_5GB
+                  actionEntityId:
+                    '@type': EntityRef
+                    id: PRODUCT_OFFERING_5GB
+                    href: >-
+                      https://mycsp.com:8080/tmf-api/productCatalogManagement/v5/productOffering/PRODUCT_OFFERING_5GB
+                    name: 5GB data add-on
+                  actionType: '3'
+                  actionValue: '5'
+              criteriaGroup:
+                - '@type': PromotionCriteriaGroup
+                  id: GROUP_PREPAID_PRODUCT_OFFERING_5GB
+                  criteria:
+                    - '@type': PromotionCriteria
+                      id: CRITERIA_PREPAID_PRODUCT_OFFERING_5GB
+                      criteriaOperator: '>='
+                      criteriaParameter: '5.1'
+                      criteriaValue: £20
+          promotionType: Reduction
+          validFor:
+            startDateTime: '2020-01-05T12:00:56.982Z'
+            endDateTime: '9999-12-31T23:59:59.999Z'
+          '@type': Promotion
+      description: Here is an example of a response for retrieving multiple Promotions.
+    Promotion_retrieve_example_response:
+      value:
+        id: RETENTIONNETFLIX3M
+        href: 'https:/host:port/tmf-api/promotion/v5/promotion/RETENTIONNETFLIX3M'
+        description: Retention for more 24 months gives free Netflix for 3 months
+        lastUpdate: '2021-02-10T00:00:00.000Z'
+        lifecycleStatus: draft
+        name: 3 months of free Netflix when retention for more 24 months
+        pattern:
+          - '@type': PromotionPattern
+            action:
+              - '@type': PromotionAction
+                actionEntityRef:
+                  '@type': EntityRef
+                  id: POSTPAID_PRODUCT_OFFERING_NETFLIX
+                  href: >-
+                    https://mycsp.com:8080/tmf-api/productCatalogManagement/v5/productOffering/PRODUCT_OFFERING_NETFLIX
+                  name: Netflix 3MFree
+                actionType: '9'
+            criteriaGroup:
+              - '@type': PromotionCriteriaGroup
+                criteria:
+                  - '@type': PromotionCriteria
+                    criteriaOperator: '='
+                    criteriaParameter: '3.2'
+                    criteriaValue: '24'
+                  - '@type': PromotionCriteria
+                    criteriaOperator: '='
+                    criteriaParameter: '3.3'
+                    criteriaValue: months
+        promotionType: Award
+        validFor:
+          startDateTime: '2020-01-05T12:00:56.982Z'
+          endDateTime: '9999-12-31T23:59:59.999Z'
+        '@type': Promotion
+      description: Here is an example of a response for retrieving a specific Promotion.
+    Promotion_create_example_request:
+      value:
+        description: Retention for more 24 months gives free Netflix for 3 months
+        lastUpdate: '2021-01-19T00:00:00.000Z'
+        lifecycleStatus: draft
+        name: 3 months of free Netflix when retention for more 24 months
+        pattern:
+          - '@type': PromotionPattern
+            action:
+              - actionEntityRef:
+                  '@type': EntityRef
+                  id: POSTPAID_PRODUCT_OFFERING_NETFLIX
+                  href: >-
+                    https://mycsp.com:8080/tmf-api/productCatalogManagement/v5/productOffering/PRODUCT_OFFERING_NETFLIX
+                  name: Netflix 3MFree
+                actionType: '9'
+            criteriaGroup:
+              - '@type': PromotionCriteriaGroup
+                criteria:
+                  - '@type': PromotionCriteria
+                    criteriaOperator: '='
+                    criteriaParameter: '3.2'
+                    criteriaValue: '24'
+                  - '@type': PromotionCriteria
+                    criteriaOperator: '='
+                    criteriaParameter: '3.3'
+                    criteriaValue: months
+        promotionType: Award
+        '@type': Promotion
+        validFor:
+          startDateTime: '2020-01-05T12:00:56.982Z'
+          endDateTime: '9999-12-31T23:59:59.999Z'
+      description: Here is an example of a response for creating a Promotion.
+    Promotion_create_example_response:
+      value:
+        id: RETENTIONNETFLIX3M
+        href: 'https:/host:port/tmf-api/promotion/v5/promotion/RETENTIONNETFLIX3M'
+        description: Retention for more 24 months gives free Netflix for 3 months
+        lastUpdate: '2021-01-19T00:00:00.000Z'
+        lifecycleStatus: draft
+        name: 3 months of free Netflix when retention for more 24 months
+        pattern:
+          - '@type': PromotionPattern
+            id: POSTPAID_PRODUCT_OFFERING_NETFLIX
+            action:
+              - actionEntityRef:
+                  '@type': EntityRef
+                  id: POSTPAID_PRODUCT_OFFERING_NETFLIX
+                  href: >-
+                    https://mycsp.com:8080/tmf-api/productCatalogManagement/v5/productOffering/PRODUCT_OFFERING_NETFLIX
+                  name: Netflix 3MFree
+                actionType: '9'
+            criteriaGroup:
+              - '@type': PromotionCriteriaGroup
+                id: POSTPAID_PRODUCT_OFFERING_NETFLIX
+                criteria:
+                  - '@type': PromotionCriteria
+                    id: POSTPAID_PRODUCT_OFFERING_NETFLIX
+                    criteriaOperator: '='
+                    criteriaParameter: '3.2'
+                    criteriaValue: '24'
+                  - '@type': PromotionCriteria
+                    id: POSTPAID_PRODUCT_OFFERING_NETFLIX
+                    criteriaOperator: '='
+                    criteriaParameter: '3.3'
+                    criteriaValue: months
+        promotionType: Award
+        '@type': Promotion
+        validFor:
+          startDateTime: '2020-01-05T12:00:56.982Z'
+          endDateTime: '9999-12-31T23:59:59.999Z'
+      description: Here is an example of a response for creating a Promotion.
+    Promotion_update_example_request:
+      value:
+        lifecycleStatus: retirement
+        '@type': Promotion
+      description: Here is an example of a request for partially updating a Promotion.
+    Promotion_update_example_response:
+      value:
+        id: CUSTBIRTHDAY
+        href: 'https:/host:port/tmf-api/promotion/v5/promotion/CUSTBIRTHDAY'
+        description: It's your birthday! 50 loyalty points will be added to your account
+        lastUpdate: '2000-01-19T00:00:00.000Z'
+        lifecycleStatus: retirement
+        name: 50 loyalty points just to you
+        pattern:
+          - '@type': PromotionPattern
+            id: PATTERN_50_LOYALTY POINTS
+            action:
+              - '@type': PromotionAction
+                id: ACTION_50_LOYALTY POINTS
+                actionType: '10'
+                actionValue: 50 loyalty points
+            criteriaGroup:
+              - '@type': PromotionCriteriaGroup
+                id: GROUP_50_LOYALTY POINTS
+                criteria:
+                  - '@type': PromotionCriteria
+                    id: CRITERIA_50_LOYALTY POINTS
+                    criteriaOperator: '='
+                    criteriaParameter: '1.3'
+                    criteriaValue: 03-09
+        promotionType: Award
+        validFor:
+          startDateTime: '2020-01-05T12:00:56.982Z'
+          endDateTime: '9999-12-31T23:59:59.999Z'
+        '@type': Promotion
+      description: Here is an example of a response for partially updating a Promotion.
+    Promotion_update_example_with_JSON_Patch_request:
+      value:
+        - op: replace
+          path: /lifecycleStatus
+          value: retirement
+      description: Here is an example of a request for partially updating a Promotion.
+    Promotion_update_example_with_JSON_Patch_response:
+      value:
+        id: CUSTBIRTHDAY
+        href: 'https:/host:port/tmf-api/promotion/v5/promotion/CUSTBIRTHDAY'
+        description: It's your birthday! 50 loyalty points will be added to your account
+        lastUpdate: '2000-01-19T00:00:00.000Z'
+        lifecycleStatus: retirement
+        name: 50 loyalty points just to you
+        pattern:
+          - '@type': PromotionPattern
+            id: PATTERN_50_LOYALTY POINTS
+            action:
+              - '@type': PromotionAction
+                id: ACTION_50_LOYALTY POINTS
+                actionType: '10'
+                actionValue: 50 loyalty points
+            criteriaGroup:
+              - '@type': PromotionCriteriaGroup
+                id: GROUP_50_LOYALTY POINTS
+                criteria:
+                  - '@type': PromotionCriteria
+                    id: CRITERIA_50_LOYALTY POINTS
+                    criteriaOperator: '='
+                    criteriaParameter: '1.3'
+                    criteriaValue: 03-09
+        promotionType: Award
+        validFor:
+          startDateTime: '2020-01-05T12:00:56.982Z'
+          endDateTime: '9999-12-31T23:59:59.999Z'
+        '@type': Promotion
+      description: Here is an example of a response for partially updating a Promotion.
+    Promotion_update_example_with_JSON_Patch_Query_request:
+      value:
+        - op: replace
+          path: /criteriaGroup/criteria/criteriaValue?id=CRITERIA_50_LOYALTY POINTS
+          value: 03-09
+      description: Here is an example of a request for partially updating a Promotion.
+    Promotion_update_example_with_JSON_Patch_Query_response:
+      value:
+        id: CUSTBIRTHDAY
+        href: 'https:/host:port/tmf-api/promotion/v5/promotion/CUSTBIRTHDAY'
+        description: It's your birthday! 50 loyalty points will be added to your account
+        lastUpdate: '2000-01-19T00:00:00.000Z'
+        lifecycleStatus: retirement
+        name: 50 loyalty points just to you
+        pattern:
+          - '@type': PromotionPattern
+            id: PATTERN_50_LOYALTY POINTS
+            action:
+              - '@type': PromotionAction
+                id: ACTION_50_LOYALTY POINTS
+                actionType: '10'
+                actionValue: 50 loyalty points
+            criteriaGroup:
+              - '@type': PromotionCriteriaGroup
+                id: GROUP_50_LOYALTY POINTS
+                criteria:
+                  - '@type': PromotionCriteria
+                    id: CRITERIA_50_LOYALTY POINTS
+                    criteriaOperator: '='
+                    criteriaParameter: '1.3'
+                    criteriaValue: 03-09
+        promotionType: Award
+        validFor:
+          startDateTime: '2020-01-05T12:00:56.982Z'
+          endDateTime: '9999-12-31T23:59:59.999Z'
+        '@type': Promotion
+      description: Here is an example of a response for partially updating a Promotion.
+    Create_request:
+      value:
+        correlationId: 80c3041f-75f0
+        description: PromotionCreateEvent illustration
+        domain: Commercial
+        eventId: 4598-9729-305e4be5fb40
+        eventTime: '2024-04-26T06:49:11.086Z'
+        eventType: PromotionCreateEvent
+        priority: '2'
+        timeOcurred: '2024-04-26T06:49:01.548Z'
+        title: PromotionCreateEvent
+        event:
+          promotion:
+            id: PREPAIDOFFER_5GB
+            href: 'http://servername/promotion/PREPAIDOFFER_5GB'
+            description: Top-up by £20 or more and get 5GB of data for only £5
+            lastUpdate: '2021-01-19T00:00:00.000Z'
+            lifecycleStatus: release
+            name: More 5GB data when £20 top-up
+            pattern:
+              - '@type': PromotionPattern
+                id: PATTERN_PREPAID_PRODUCT_OFFERING_5GB
+                action:
+                  - '@type': PromotionAction
+                    id: ACTION_PREPAID_PRODUCT_OFFERING_5GB
+                    actionEntityRef:
+                      '@type': EntityRef
+                      id: PRODUCT_OFFERING_5GB
+                      href: >-
+                        https://mycsp.com:8080/tmf-api/productCatalogManagement/v5/productOffering/PRODUCT_OFFERING_5GB
+                      name: 5GB data add-on
+                    actionType: '3'
+                    actionValue: '5'
+                criteriaGroup:
+                  - '@type': PromotionCriteriaGroup
+                    id: GROUP_PREPAID_PRODUCT_OFFERING_5GB
+                    criteria:
+                      - '@type': PromotionCriteria
+                        id: CRITERIA_PREPAID_PRODUCT_OFFERING_5GB
+                        criteriaOperator: '>='
+                        criteriaParameter: '5.3'
+                        criteriaValue: £20
+            '@type': Promotion
+            promotionType: Reduction
+            validFor:
+              startDateTime: '2020-01-05T12:00:56.982Z'
+              endDateTime: '9999-12-31T23:59:59.999Z'
+        reportingSystem:
+          id: '634'
+          name: APP-849
+          '@type': ReportingResource
+          '@referredType': LogicalResource
+        source:
+          id: '657'
+          name: APP-400
+          '@type': ReportingResource
+          '@referredType': LogicalResource
+        '@baseType': Event
+        '@type': PromotionCreateEvent
+      description: Message example for the PromotionCreateEvent event.
+    Delete_request:
+      value:
+        correlationId: 7651dffe-da1a
+        description: PromotionDeleteEvent illustration
+        domain: Commercial
+        eventId: 48ab-8286-421f5ebc94d5
+        eventTime: '2024-04-26T06:49:11.087Z'
+        eventType: PromotionDeleteEvent
+        priority: '1'
+        timeOcurred: '2024-04-26T06:49:09.867Z'
+        title: PromotionDeleteEvent
+        event:
+          promotion:
+            id: PREPAIDOFFER_5GB
+            href: 'http://servername/promotion/PREPAIDOFFER_5GB'
+            '@type': Promotion
+        reportingSystem:
+          id: '634'
+          name: APP-849
+          '@type': ReportingResource
+          '@referredType': LogicalResource
+        source:
+          id: '657'
+          name: APP-400
+          '@type': ReportingResource
+          '@referredType': LogicalResource
+        '@baseType': Event
+        '@type': PromotionDeleteEvent
+      description: Message example for the PromotionDeleteEvent event.
+    AttributeValueChange_request:
+      value:
+        correlationId: d71f301f-36d7
+        description: PromotionAttributeValueChangeEvent illustration
+        domain: Commercial
+        eventId: 46be-b942-f9e7f72886ae
+        eventTime: '2024-04-26T06:49:11.087Z'
+        eventType: PromotionAttributeValueChangeEvent
+        priority: '1'
+        timeOcurred: '2024-04-26T06:49:04.322Z'
+        title: PromotionAttributeValueChangeEvent
+        event:
+          promotion:
+            href: 'http://servername/promotion/PREPAIDOFFER_5GB'
+            id: PREPAIDOFFER_5GB
+            validFor:
+              startDateTime: '2020-01-05T12:00:56.982Z'
+              endDateTime: '9999-12-31T23:59:59.999Z'
+            '@type': Promotion
+        reportingSystem:
+          id: '634'
+          name: APP-849
+          '@type': ReportingResource
+          '@referredType': LogicalResource
+        source:
+          id: '657'
+          name: APP-400
+          '@type': ReportingResource
+          '@referredType': LogicalResource
+        '@baseType': Event
+        '@type': PromotionAttributeValueChangeEvent
+      description: Message example for the PromotionAttributeValueChangeEvent event.
+    StateChange_request:
+      value:
+        correlationId: 54a25dc9-51da
+        description: PromotionStateChangeEvent illustration
+        domain: Commercial
+        eventId: 4529-a42e-715cb69ecfaf
+        eventTime: '2024-04-26T06:49:11.087Z'
+        eventType: PromotionStateChangeEvent
+        priority: '3'
+        timeOcurred: '2024-04-26T06:49:04.495Z'
+        title: PromotionStateChangeEvent
+        event:
+          promotion:
+            id: PREPAIDOFFER_5GB
+            href: 'http://servername/promotion/PREPAIDOFFER_5GB'
+            lifecycleStatus: retirement
+            '@type': Promotion
+        reportingSystem:
+          id: '634'
+          name: APP-849
+          '@type': ReportingResource
+          '@referredType': LogicalResource
+        source:
+          id: '657'
+          name: APP-400
+          '@type': ReportingResource
+          '@referredType': LogicalResource
+        '@baseType': Event
+        '@type': PromotionStateChangeEvent
+      description: Message example for the PromotionStateChangeEvent event with ?fields=state property only.

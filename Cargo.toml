@@ -1,36 +1,275 @@
 [package]
 name = "tmflib"
-version = "0.1.11"
+version = "0.1.37"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "Interface library for processing TMF payloads"
 repository = "https://github.com/rruckley/tmflib"
+license = "Apache-2.0"
 
 [features]
-tmf620-v4 = []
-tmf620-v5 = []
-tmf622-v4 = []
-tmf622-v5 = []
-tmf674-v4 = []
-tmf674-v5 = []
-default = ["v4"]
-v4 = ["tmf620-v4","tmf622-v4","tmf674-v4"]
-v5 = ["tmf620-v5","tmf622-v5","tmf674-v5"]
+# TMF620 Product Catalogue Module
+tmf620 = ["tmf633","tmf634","tmf651"]
+# TMF621 Trouble Ticket Module
+tmf621 = []
+# TMF622 Product Order Module
+tmf622 = ["tmf641"]
+tmf628 = []
+# TMF629 Customer Module
+tmf629 = []
+tmf632 = []
+# TMF633 Service Catalogue Module
+tmf633 = []
+tmf634 = []
+tmf635 = []
+tmf637 = []
+tmf638 = []
+tmf639 = []
+tmf640 = []
+# TMF641 Service Order Module
+tmf641 = ["tmf646"]
+tmf642 = []
+tmf644 = []
+# TMF645 Service Qualification Module
+tmf645 = ["tmf633","tmf641"]
+tmf646 = []
+tmf648 = ["tmf620"]
+tmf651 = ["tmf648"]
+tmf652 = []
+tmf653 = []
+tmf657 = []
+tmf662 = []
+tmf663 = []
+tmf664 = []
+tmf666 = []
+tmf667 = []
+tmf669 = []
+tmf671 = []
+tmf672 = []
+tmf673 = []
+tmf674 = ["tmf673"]
+tmf675 = []
+tmf676 = ["tmf666"]
+tmf678 = []
+tmf679 = []
+tmf680 = []
+tmf681 = []
+tmf687 = []
+tmf688 = []
+tmf696 = []
+tmf697 = []
+tmf699 = []
+# TMF700 Shipping Order Module
+tmf700 = []
+tmf701 = []
+tmf717 = ["tmf632","tmf651","tmf620","tmf666"]
+tmf720 = []
+tmf724 = []
+tmf760 = []
+tmf764 = []
+tmf909 = []
+tmf921 = []
+
+# Build all APIs
+all = [
+    "tmf620",
+    "tmf621",
+    "tmf622",
+    "tmf628",
+    "tmf629",
+    "tmf632",
+    "tmf633",
+    "tmf634",
+    "tmf635",
+    "tmf637",
+    "tmf638",
+    "tmf639",
+    "tmf640",
+    "tmf641",
+    "tmf642",
+    "tmf644",
+    "tmf645",
+    "tmf646",
+    "tmf648",
+    "tmf653",
+    "tmf657",
+    "tmf662",
+    "tmf663",
+    "tmf664",
+    "tmf666",
+    "tmf667",
+    "tmf669",
+    "tmf671",
+    "tmf672",
+    "tmf673",
+    "tmf674",
+    "tmf676",
+    "tmf678",
+    "tmf679",
+    "tmf680",
+    "tmf681",
+    "tmf687",
+    "tmf696",
+    "tmf697",
+    "tmf699",
+    "tmf700",
+    "tmf701",
+    "tmf717",
+    "tmf720",
+    "tmf724",
+    "tmf760",
+    "tmf764",
+    "tmf909",
+    "tmf921"
+]
+
+# Build V4 version of APIs
+build-V4 = []
+# Build V5 version of APIs
+build-V5 = []
+
+# Specifications referenced from common module
+common = ["tmf620","tmf629","tmf632","tmf666","tmf667","tmf669","tmf674"]
+
+# ODA Component features
+# Product Catalog Management
+TMFC001 = ["common","tmf620","tmf633","tmf669","tmf632","tmf634","tmf651","tmf673","tmf674","tmf675","tmf672","tmf662","tmf701","tmf671","tmf688"]
+# Product Order Capture and Validation
+TMFC002 = ["tmf622","tmf648","tmf663","common"]
+## Product Order Delivery Orchestration and Management
+TMFC003 = ["tmf620","tmf622","tmf637","tmf641","common"]
+# TMFC004 = ["common"]
+# Product Inventory
+TMFC005 = ["tmf620","tmf637","common"]
+# Service Catalog Management
+TMFC006 = ["tmf633","tmf657","tmf634","tmf669","tmf632","tmf662","common"]
+# Service Order Management
+TMFC007 = ["tmf641","tmf632","tmf634","tmf639","tmf640","common"]
+# Service Inventory
+TMFC008 = ["tmf638","tmf633"]
+# Servicve Qualification Management
+TMFC009 = ["tmf645"]
+# Resource Catalog Management
+TMFC010 = ["tmf634","common"]
+# Resource Order Management
+TMFC011 = ["tmf652"]
+# Resource Inventory
+TMFC012 = ["tmf639"]
+# Service Balance Management
+TMFC013 = ["common"]
+# Location Management
+TMFC014 = ["tmf673","tmf674","common"]
+# Service Usage Management
+TMFC015 = ["common"]
+# Resource Usage Management
+TMFC016 = ["common"]
+# API Management
+TMFC017 = ["common"]
+# Enterprise Integration
+TMFC018 = ["common"]
+# Event Management
+TMFC019 = ["common"]
+# Digital Identity Management
+TMFC020 = ["tmf720","tmf632","tmf669","common"]
+# Party Privacy Management
+TMFC022 = ["common"]
+# Party Interaction Management
+TMFC023 = ["common"]
+# Billing Account Management
+TMFC024 = ["tmf666","common"]
+# Billing Inquiries Management
+TMFC025 = ["common"]
+# Debt Collection Management
+TMFC026 = ["common"]
+# Product Configurator
+TMFC027 = ["tmf679","tmf760","tmf637","tmf622","tmf673","tmf662","tmf921","common"]
+# Party Management
+TMFC028 = ["common"]
+# Payment Management
+TMFC029 = ["common"]
+# Bill Generation Management
+TMFC030 = ["tmf678","common"]
+# Bill Calculation Management
+TMFC031 = ["tmf678","common"]
+# Supply Chain Management
+TMFC032 = ["common"]
+# Purchase Management
+TMFC033 = ["common"]
+# Party Roles Permissions Management
+TMFC035 = ["tmf672","tmf669","common"]
+# Lead and Opportunity Management
+TMFC036 = ["tmf699","common"]
+# Service Performance Management
+TMFC037 = ["common"]
+# Resource Performance Management
+TMFC038 = ["common"]
+# Agreement Management
+TMFC039 = ["tmf651","common"]
+# Product Usage Management
+TMFC040 = ["tmf635","tmf632","tmf669","tmf620","tmf637","common"]
+# Anomaly Detector
+TMFC041 = ["common"]
+# Anomaly Predictor
+TMFC042 = ["common"]
+# Anomaly Mitigator
+TMFC043 = ["common"]
+# Strategic Resource Planning
+TMFC044 = ["common"]
+# Resource Discovery and Reconciliation
+TMFC045 = ["common"]
+# Workforce Management
+TMFC046 = ["tmf646"]
+# Party Problem Management
+TMFC047 = ["common"]
+# Sales Strategy & Planning
+TMFC048 = ["common"]
+# Marketing Communications
+TMFC049 = ["common"]
+# Recommendation Management
+TMFC050 = ["tmf680","tmf620","common"]
+# Document Management
+TMFC051 = ["common"]
+# IT and Network Infrastructure Management
+TMFC052 = ["common"]
+# Service Quality Management
+TMFC053 = ["common"]
+# Product Test Management
+TMFC054 = ["common"]
+# Service Test Management
+TMFC055 = ["common"]
+# Resouce Test Management
+TMFC056 = ["common"]
+# Campaign Management
+TMFC057 = ["common"]
+# Product/Sales Performance Management
+TMFC058 = ["common"]
+# Commission Management
+TMFC059 = ["common"]
+# Knowledge Management
+TMFC060 = ["common"]
+# Work Order Management
+TMFC061 = ["common"]
+# Resource Configuration and Activation
+TMFC062 = ["tmf664"]
+
+default = ["all","build-V4"]
 
 [dependencies]
-chrono = "0.4.33"
+chrono = "0.4.41"
 rust_iso4217 = "0.1.1"
-serde = { version = "1.0.196", features = ["derive"]}
-serde_json = "1.0.113"
-sha256 = { version = "1.5", default-features = false }
-uuid = { version = "1.7.0", features = ["v4"]}
-tmflib-derive = { path = "tmflib-derive" }
-openapiv3 = "2.0"
+serde = { version = "1.0.228", features = ["derive"]}
+serde_json = "1.0.143"
+sha256 = { version = "1.6.0", default-features = false }
+uuid = { version = "1.19.0", features = ["v4"]}
+tmflib-derive = { version = "0.1.35" }
+# tmflib-derive = { path = "tmflib-derive"}
+hex = "0.4.3"
+base32 = "0.5.1"
+openapiv3 = "2.2.0"
+rust_decimal = "1.39.0"
+rust_decimal_macros = "1.39.0"
+thiserror = "2.0.17"
+regex = "1.12.2"
 
-[build-dependencies]
-openapiv3 = "2.0"
-quote = "1.0.35"
-serde = { version = "1.0.196", features = ["derive"]}
-serde_json = "1.0.113"
-proc-macro2 = "1.0.76"
-convert_case = "0.6"
+[dev-dependencies]
+

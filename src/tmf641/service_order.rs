@@ -1,18 +1,19 @@
 use serde::{Deserialize, Serialize};
 
 // URL Path components
-use crate::LIB_PATH;
-use super::MOD_PATH;
-use crate::{HasId,CreateTMF,DateTime};
-use tmflib_derive::HasId;
-use crate::common::note::Note;
 use super::service_order_item::ServiceOrderItem;
+use super::MOD_PATH;
+use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
+use crate::common::tmf_error::TMFError;
+
+use crate::{DateTime, HasDescription, HasId, HasNote, HasRelatedParty};
+use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty};
 
 const CLASS_PATH: &str = "serviceOrder";
 
 /// Service Order Status
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 pub enum ServiceOrderStateType {
     /// Acknowledged
     #[default]
@@ -40,7 +41,9 @@ pub enum ServiceOrderStateType {
 }
 
 /// Service Order Object
-#[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, HasId, HasNote, HasRelatedParty, HasDescription, Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct ServiceOrder {
     /// Cancellation Date
@@ -50,7 +53,7 @@ pub struct ServiceOrder {
     pub cancellation_reason: Option<String>,
     /// Order Category
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub category : Option<String>,
+    pub category: Option<String>,
     /// Completion Date
     #[serde(skip_serializing_if = "Option::is_none")]
     pub completion_date: Option<DateTime>,
@@ -61,7 +64,7 @@ pub struct ServiceOrder {
     /// Expected Completion Date
     pub expected_completion_date: Option<DateTime>,
     /// External Id
-    pub external_id : Option<String>,
+    pub external_id: Option<String>,
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
@@ -94,10 +97,10 @@ pub struct ServiceOrder {
     pub note: Option<Vec<Note>>,
     /// Service Order Items
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub servce_order_item: Option<Vec<ServiceOrderItem>>,
+    pub service_order_item: Option<Vec<ServiceOrderItem>>,
     /// Related Parties
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub related_party : Option<Vec<RelatedParty>>,
+    pub related_party: Option<Vec<RelatedParty>>,
 }
 
 impl ServiceOrder {
@@ -106,7 +109,53 @@ impl ServiceOrder {
         let mut so = ServiceOrder::create();
         so.note = Some(vec![]);
         so.related_party = Some(vec![]);
-        so.servce_order_item = Some(vec![]);
         so
+    }
+
+    /// Safely add a new [ServiceOrderItem] to this ServiceOrder
+    pub fn add_item(&mut self, item: ServiceOrderItem) {
+        match self.service_order_item.as_mut() {
+            Some(v) => v.push(item),
+            None => self.service_order_item = Some(vec![item]),
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    const SERVICEORDERSTATE_JSON: &str = "\"Acknowledged\"";
+    const SERVICEORDER_JSON: &str = "{
+        \"description\" : \"Description\"
+    }";
+    const NOTE_TEXT: &str = "A Note";
+    #[test]
+    fn test_serviceorderstate_deserialize() {
+        let serviceorderstate: ServiceOrderStateType =
+            serde_json::from_str(SERVICEORDERSTATE_JSON).unwrap();
+
+        assert_eq!(serviceorderstate, ServiceOrderStateType::Acknowledged);
+    }
+
+    #[test]
+    fn test_serviceorder_deserialize() {
+        let serviceorder: ServiceOrder = serde_json::from_str(SERVICEORDER_JSON).unwrap();
+
+        assert_eq!(serviceorder.description.is_some(), true);
+        assert_eq!(serviceorder.description.unwrap().as_str(), "Description");
+    }
+
+    #[test]
+    fn test_serviceorder_hasnote() {
+        let mut serviceorder = ServiceOrder::new();
+        let note1 = Note::new(NOTE_TEXT);
+        let note2 = Note::new(NOTE_TEXT);
+
+        serviceorder.add_note(note1);
+        serviceorder.add_note(note2);
+
+        assert_eq!(serviceorder.note.is_some(), true);
+        assert_eq!(serviceorder.note.unwrap().len(), 2);
     }
 }

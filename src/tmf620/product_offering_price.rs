@@ -1,14 +1,18 @@
 //! Product Offering Price Module
 
-use serde::{Deserialize,Serialize};
+use chrono::Utc;
+use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 use super::MOD_PATH;
-use crate::{HasId,HasName, CreateTMF, HasLastUpdate, CreateTMFWithTime, LIB_PATH, HasValidity, TimePeriod};
+use crate::common::event::{Event, EventPayload};
 use crate::common::money::Money;
-use tmflib_derive::{HasId,HasLastUpdate,HasName, HasValidity};
+use crate::common::tax_item::TaxItem;
+use crate::{HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent, TimePeriod};
+use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
 
-const CLASS_PATH : &str = "productOfferingPrice";
-const PRICE_VERS : &str = "1.0";
+const CLASS_PATH: &str = "productOfferingPrice";
+const PRICE_VERS: &str = "1.0";
 
 /// Constraints
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -23,15 +27,6 @@ pub struct ConstraintRef {
     /// Version
     #[serde(skip_serializing_if = "Option::is_none")]
     version: Option<String>,
-}
-
-/// Tax Details
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct TaxItem {
-    tax_category: String,
-    tax_rate: f32,
-    tax_amount: Money,
 }
 
 /// Product Offering Price Reference
@@ -49,17 +44,26 @@ pub struct ProductOfferingPriceRef {
 }
 
 impl From<ProductOfferingPrice> for ProductOfferingPriceRef {
-    fn from(pop : ProductOfferingPrice) -> ProductOfferingPriceRef {
-        ProductOfferingPriceRef { 
-            id: pop.id.clone(), 
-            href: pop.href.clone(), 
-            name: pop.name.as_ref().unwrap().clone(),
+    fn from(pop: ProductOfferingPrice) -> ProductOfferingPriceRef {
+        ProductOfferingPriceRef {
+            id: pop.id.clone(),
+            href: pop.href.clone(),
+            name: pop.get_name(),
         }
     }
 }
 
+impl HasReference for ProductOfferingPrice {
+    type RefType = ProductOfferingPriceRef;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(ProductOfferingPriceRef::from(self.clone()))
+    }
+}
+
 /// Pricing linked to a Product Offering
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
+#[derive(
+    Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOfferingPrice {
     /// Unique Id
@@ -104,7 +108,7 @@ pub struct ProductOfferingPrice {
 
 impl ProductOfferingPrice {
     /// Create a new Price Offering Price object
-    pub fn new(name :  impl Into<String>) -> ProductOfferingPrice {
+    pub fn new(name: impl Into<String>) -> ProductOfferingPrice {
         let mut pop = ProductOfferingPrice::create_with_time();
         pop.version = Some(PRICE_VERS.to_string());
         pop.name = Some(name.into());
@@ -112,23 +116,90 @@ impl ProductOfferingPrice {
     }
 }
 
+/// Container for the payload that generated the event
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct ProductOfferingPriceEvent {
+    /// Struct that this event relates to
+    pub pop: ProductOfferingPrice,
+}
+
+impl TMFEvent<ProductOfferingPriceEvent> for ProductOfferingPrice {
+    fn event(&self) -> ProductOfferingPriceEvent {
+        ProductOfferingPriceEvent { pop: self.clone() }
+    }
+}
+
+impl EventPayload<ProductOfferingPriceEvent> for ProductOfferingPrice {
+    type Subject = ProductOfferingPrice;
+    type EventType = ProductOfferingPriceEventType;
+    fn to_event(
+        &self,
+        event_type: ProductOfferingPriceEventType,
+    ) -> Event<ProductOfferingPriceEvent, ProductOfferingPriceEventType> {
+        let now = Utc::now();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
+        let desc = format!("{:?} for {}", event_type, self.get_name());
+        Event {
+            correlation_id: None,
+            description: Some(desc),
+            domain: Some(ProductOfferingPrice::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: self.href.clone(),
+            id: self.id.clone(),
+            title: self.name.clone(),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: None,
+            event_type,
+            event: self.event(),
+        }
+    }
+}
+
+/// Product Offering Price Event Type
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+pub enum ProductOfferingPriceEventType {
+    /// POP Created
+    #[default]
+    ProductOfferingPriceCreateEvent,
+    /// POP Attribute Value Changed
+    ProductOfferingPriceAttributeValueChangeEvent,
+    /// POP State Changed
+    ProductOfferingPriceStateChangeEvent,
+    /// POP Deleted
+    ProductOfferingPriceDeleteEvent,
+}
+
 #[cfg(test)]
 mod test {
+
     use super::*;
 
-    const POP : &str = "APrice";
+    const POP: &str = "APrice";
 
     #[test]
     fn test_price_new_name() {
         let pop = ProductOfferingPrice::new(POP);
 
-        assert_eq!(pop.name,Some(POP.into()));
+        assert_eq!(pop.name, Some(POP.into()));
     }
 
     #[test]
     fn test_price_new_version() {
         let pop = ProductOfferingPrice::new(POP);
 
-        assert_eq!(pop.version,Some(PRICE_VERS.into()));    
+        assert_eq!(pop.version, Some(PRICE_VERS.into()));
+    }
+
+    #[test]
+    fn test_priceref_from_price() {
+        let price = ProductOfferingPrice::new(POP);
+
+        let price_ref = ProductOfferingPriceRef::from(price.clone());
+
+        assert_eq!(price.id, price_ref.id);
+        assert_eq!(price.href, price_ref.href);
+        assert_eq!(price.get_name(), price_ref.name);
     }
 }

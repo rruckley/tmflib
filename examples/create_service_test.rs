@@ -1,10 +1,14 @@
 //! Create a service test
-//! 
+//!
 
+#[cfg(all(feature = "tmf653", feature = "build-V4"))]
 use tmflib::tmf653::service_test::ServiceTest;
 
 fn main() {
-    let st = ServiceTest::new("MyServiceTest");
+    #[cfg(all(feature = "tmf653", feature = "build-V4"))]
+    {
+        let st = ServiceTest::new("MyServiceTest");
 
-    dbg!(st);
+        dbg!(st);
+    }
 }

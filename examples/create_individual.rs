@@ -1,6 +1,9 @@
 //! Create Individual EXample
-//! 
-use tmflib::tmf632::individual::Individual;
+//!
+#[cfg(all(feature = "tmf632", feature = "build-V4"))]
+use tmflib::tmf632::individual_v4::Individual;
+#[cfg(all(feature = "tmf632", feature = "build-V5"))]
+use tmflib::tmf632::individual_v5::Individual;
 
 fn main() {
     let individual = Individual::new("John Bagford Smith")

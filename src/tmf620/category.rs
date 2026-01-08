@@ -1,24 +1,38 @@
 //! Category Module
 
-#[cfg(feature = "v4")]
+#[cfg(all(feature = "tmf620", feature = "build-V4"))]
 use crate::tmf620::product_offering::ProductOfferingRef;
-#[cfg(feature = "v5")]
+#[cfg(all(feature = "tmf620", feature = "build-V5"))]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
-use super::LIB_PATH;
 use super::MOD_PATH;
-use crate::{HasId,HasName,HasLastUpdate,DateTime,HasValidity,TimePeriod,CreateTMF};
-use tmflib_derive::{HasId,HasLastUpdate,HasName,HasValidity};
-
-use crate::CreateTMFWithTime;
+use crate::common::event::{Event, EventPayload};
+use crate::{
+    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent,
+    TimePeriod, Uri,
+};
+use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
 const CLASS_PATH: &str = "category";
 const CAT_VERS: &str = "1.0";
 
 /// Category Resource
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize)]
+#[derive(
+    Clone,
+    Default,
+    Debug,
+    Deserialize,
+    HasDescription,
+    HasId,
+    HasLastUpdate,
+    HasName,
+    HasValidity,
+    Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct Category {
     // Scalar fields
@@ -58,6 +72,17 @@ pub struct Category {
     /// Product Offering
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_offering: Option<Vec<ProductOfferingRef>>,
+
+    // META
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@baseType")]
+    base_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@schemaLocation")]
+    schema_location: Option<Uri>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@type")]
+    r#type: Option<String>,
 }
 
 impl Category {
@@ -116,13 +141,60 @@ impl Category {
     ///     .is_root(true);
     /// ```
     pub fn is_root(mut self, root: bool) -> Category {
-        self.is_root = Some(root);
-        if self.is_root.unwrap() {
-            // Remove parent
+        // Two steps 1) delete parent if root= true
+        // update is_root
+        if root {
             self.parent_id = None;
-        }
+        };
+        self.is_root = Some(root);
         self
     }
+}
+
+/// Container for the payload that generated the event
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct CategoryEvent {
+    /// Impacted Category
+    pub category: Category,
+}
+
+impl TMFEvent<CategoryEvent> for Category {
+    fn event(&self) -> CategoryEvent {
+        CategoryEvent {
+            category: self.clone(),
+        }
+    }
+}
+
+impl EventPayload<CategoryEvent> for Category {
+    type Subject = Category;
+    type EventType = CategoryEventType;
+
+    fn to_event(&self, event_type: Self::EventType) -> Event<CategoryEvent, Self::EventType> {
+        let now = Utc::now();
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
+        Event {
+            domain: Some(Category::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            href: self.href.clone(),
+            id: self.id.clone(),
+            title: self.name.clone(),
+            event_time: event_time.to_string(),
+            event_type,
+            event: self.event(),
+            ..Event::default()
+        }
+    }
+}
+
+/// Category Event Type
+#[derive(Clone, Default, Debug)]
+pub enum CategoryEventType {
+    /// Category Created
+    #[default]
+    CategoryCreateEvent,
+    /// Category Deleted
+    CategoryDeleteEvent,
 }
 
 #[cfg(test)]
@@ -131,6 +203,8 @@ mod tests {
     use super::CAT_VERS;
     use super::CLASS_PATH;
     use crate::HasId;
+
+    const DESC: &str = "A Description";
     #[test]
     fn cat_test_name() {
         let cat = Category::new(String::from("MyCategory"));
@@ -158,8 +232,34 @@ mod tests {
 
     #[test]
     fn cat_test_class() {
-        
-        assert_eq!(Category::get_class(),CLASS_PATH);
+        assert_eq!(Category::get_class(), CLASS_PATH);
+    }
+
+    #[test]
+    fn test_cat_root() {
+        let cat = Category::new("A Category");
+
+        assert_eq!(cat.root(), false);
+    }
+
+    #[test]
+    fn test_cat_description() {
+        let cat = Category::new("A Category").description(DESC.to_string());
+
+        assert_eq!(cat.description.unwrap(), DESC.to_string());
+    }
+
+    #[test]
+    fn test_cat_set_parent_root() {
+        let parent = Category::new("Parent");
+        let child = Category::new("Child")
+            // Make root=true
+            .is_root(true)
+            // Should make root=false
+            .parent(parent.get_id());
+
+        // Child should no longer be root
+        assert_eq!(child.is_root.unwrap(), false);
     }
 }
 
@@ -170,6 +270,19 @@ pub struct CategoryRef {
     href: Option<String>,
     name: Option<String>,
     version: Option<String>,
+    // META
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@baseType")]
+    base_type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@schemaLocation")]
+    schema_location: Option<Uri>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@type")]
+    r#type: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "@referredType")]
+    referred_type: Option<String>,
 }
 
 impl From<&Category> for CategoryRef {
@@ -179,22 +292,79 @@ impl From<&Category> for CategoryRef {
             href: cat.href.clone(),
             name: cat.name.clone(),
             version: cat.version.clone(),
+            base_type: Some(Category::get_class()),
+            r#type: Some(Category::get_class()),
+            schema_location: None,
+            referred_type: Some(Category::get_class()),
         }
+    }
+}
+
+impl HasReference for Category {
+    type RefType = CategoryRef;
+    fn as_ref(&self) -> Option<Self::RefType> {
+        Some(CategoryRef::from(self))
     }
 }
 
 #[cfg(test)]
 mod test {
-    use crate::tmf620::category::CAT_VERS;
-
     use super::{Category, CategoryRef};
-    #[test]
+    use crate::{tmf620::category::CAT_VERS, HasName, HasValidity, TimePeriod};
 
+    const CAT_NAME: &str = "CategoryName";
+
+    const CAT_JSON: &str = "{
+        \"name\" : \"CategoryName\"
+    }";
+
+    const CATREF_JSON: &str = "{
+        \"name\" : \"CategoryName\",
+        \"version\" : \"1.0\"
+    }";
+
+    #[test]
     fn catref_test_from() {
         let cat = Category::new(String::from("MyCategory"));
         let cat_ref = CategoryRef::from(&cat);
 
         assert_eq!(cat_ref.name, Some(String::from("MyCategory")));
         assert_eq!(cat_ref.version, Some(CAT_VERS.to_string()));
+    }
+
+    #[test]
+    fn cat_hasname() {
+        let cat = Category::new(CAT_NAME);
+
+        assert_eq!(cat.get_name().as_str(), CAT_NAME);
+    }
+
+    #[test]
+    fn cat_deserialize() {
+        let cat: Category = serde_json::from_str(CAT_JSON).unwrap();
+
+        assert_eq!(cat.name.is_some(), true);
+        assert_eq!(cat.get_name().as_str(), "CategoryName");
+    }
+
+    #[test]
+    fn cat_hasvalidity() {
+        let mut cat = Category::new(CAT_NAME);
+
+        cat.set_validity(TimePeriod::period_30days());
+
+        assert_eq!(cat.valid_for.is_some(), true);
+        assert_eq!(cat.get_validity().unwrap().started(), true);
+        assert_eq!(cat.get_validity().unwrap().finished(), false);
+        assert_eq!(cat.get_validity_start().is_some(), true);
+        assert_eq!(cat.get_validity_end().is_some(), true);
+    }
+
+    #[test]
+    fn catref_deserialize() {
+        let catref: CategoryRef = serde_json::from_str(CATREF_JSON).unwrap();
+
+        assert_eq!(catref.name.is_some(), true);
+        assert_eq!(catref.name.unwrap().as_str(), "CategoryName");
     }
 }

@@ -1,14 +1,21 @@
 //! Quote Module
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 use super::quote_item::QuoteItem;
-use super::MOD_PATH;
 use super::quote_price::QuotePrice;
+use super::MOD_PATH;
+use crate::common::event::{Event, EventPayload};
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
-use crate::{LIB_PATH, HasId, CreateTMF, HasValidity, TimePeriod, DateTime};
+use crate::common::tmf_error::TMFError;
 use crate::tmf651::agreement::AgreementRef;
-use tmflib_derive::{HasId,HasValidity};
+use crate::{
+    DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, TMFEvent,
+    TimePeriod,
+};
+use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty, HasValidity};
 
 const CLASS_PATH: &str = "quote";
 const QUOTE_VERS: &str = "1.0";
@@ -33,7 +40,18 @@ pub enum QuoteStateType {
 }
 
 /// Product Quote
-#[derive(Clone, Default, Debug, Deserialize, HasId, HasValidity, Serialize)]
+#[derive(
+    Clone,
+    Default,
+    Debug,
+    Deserialize,
+    HasId,
+    HasValidity,
+    HasNote,
+    HasDescription,
+    HasRelatedParty,
+    Serialize,
+)]
 #[serde(rename_all = "camelCase")]
 pub struct Quote {
     /// Unique Id
@@ -44,7 +62,7 @@ pub struct Quote {
     pub href: Option<String>,
     /// Quote Category
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub category : Option<String>,
+    pub category: Option<String>,
     /// Quote description
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -96,10 +114,10 @@ pub struct Quote {
     pub start_date: Option<DateTime>,
     /// Total Quote Pricing
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub quote_total_price : Option<Vec<QuotePrice>>,
+    pub quote_total_price: Option<Vec<QuotePrice>>,
     /// Related Parties for this Quote
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub related_party : Option<Vec<RelatedParty>>,
+    pub related_party: Option<Vec<RelatedParty>>,
 }
 
 impl Quote {
@@ -108,8 +126,6 @@ impl Quote {
         let mut quote = Quote::create();
         quote.version = Some(QUOTE_VERS.to_string());
         quote.state = Some(QuoteStateType::Accepted);
-        quote.quote_item = Some(vec![]);
-        quote.quote_total_price = Some(vec![]);
         quote
     }
 
@@ -119,14 +135,25 @@ impl Quote {
     }
 
     /// Add a quote item into a product quote
-    pub fn add_quote(&mut self, item: QuoteItem) -> Result<String, String> {
-        self.quote_item.as_mut().unwrap().push(item);
-        Ok(String::from("Quote Item Added"))
+    pub fn add_quote_item(&mut self, item: QuoteItem) -> Result<String, TMFError> {
+        match self.quote_item.as_mut() {
+            Some(v) => {
+                v.push(item);
+                Ok(String::from("Quote Item Added"))
+            }
+            None => {
+                self.quote_item = Some(vec![item]);
+                Ok(String::from("Vector created and quote Item Added"))
+            }
+        }
     }
 
     /// Add a price entry to this quote
-    pub fn price(&mut self, price : QuotePrice) {
-        self.quote_total_price.as_mut().unwrap().push(price);
+    pub fn price(&mut self, price: QuotePrice) {
+        match self.quote_total_price.as_mut() {
+            Some(v) => v.push(price),
+            None => self.quote_total_price = Some(vec![price]),
+        }
     }
 
     /// Get a description for this quote
@@ -134,20 +161,109 @@ impl Quote {
         match &self.description {
             Some(d) => d.clone(),
             None => {
-                format!("Quote-{}",self.get_id())
+                format!("Quote-{}", self.get_id())
             }
         }
     }
+}
 
+impl HasName for Quote {
+    fn find(&self, pattern: &str) -> bool {
+        self.description.as_ref().unwrap() == pattern
+    }
+    fn get_name(&self) -> String {
+        self.description
+            .as_ref()
+            .unwrap_or(&String::from("INVALID"))
+            .clone()
+    }
+    fn set_name(&mut self, name: impl Into<String>) {
+        self.description = Some(name.into())
+    }
+
+    fn name(mut self, name: impl Into<String>) -> Self {
+        self.set_name(name);
+        self
+    }
+}
+
+/// Container for the Quote
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct QuoteEvent {
+    /// Struct that this event relates to
+    pub quote: Quote,
+}
+
+/// Types of Quote Events
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub enum QuoteEventType {
+    /// Quote created
+    QuoteCreateEvent,
+    /// Quote changed State
+    QuoteStateChangeEvent,
+    /// Quote deleted
+    QuoteDeleteEvent,
+    /// Quote requires further information
+    QuoteInformationRequiredEvent,
+    /// Quote attribute changed values
+    QuoteAttributeValueChangeEvent,
+}
+
+impl TMFEvent<QuoteEvent> for Quote {
+    fn event(&self) -> QuoteEvent {
+        QuoteEvent {
+            quote: self.clone(),
+        }
+    }
+}
+
+impl EventPayload<QuoteEvent> for Quote {
+    type Subject = Quote;
+    type EventType = QuoteEventType;
+    fn to_event(
+        &self,
+        event_type: Self::EventType,
+    ) -> crate::common::event::Event<QuoteEvent, Self::EventType> {
+        let now = Utc::now();
+        let desc = format!(
+            "{:?} for {} [{}]",
+            event_type,
+            self.get_name(),
+            self.get_id()
+        );
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
+
+        Event {
+            correlation_id: None,
+            description: Some(desc),
+            domain: Some(Quote::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: Some(self.get_href()),
+            id: Some(self.get_id()),
+            title: Some(self.get_name()),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: Some(event_time.to_string()),
+            event_type,
+            event: self.event(),
+        }
+    }
 }
 
 #[cfg(test)]
 mod test {
-    use super::QuoteStateType;
-    use crate::tmf648::quote::QUOTE_VERS;
-    use crate::HasId;
-
     use super::Quote;
+    use super::QuoteEventType;
+    use super::QuoteStateType;
+    use crate::common::event::EventPayload;
+    use crate::tmf648::quote::QUOTE_VERS;
+    use crate::tmf648::quote_item::QuoteItem;
+    use crate::tmf648::quote_price::QuotePrice;
+    use crate::{HasId, HasName};
+
+    const QUOTE_EXTERNAL: &str = "ExternalId";
+    const QUOTE_PRICE: &str = "QuotePrice";
     #[test]
     fn quote_test_new_vers() {
         let quote = Quote::new();
@@ -173,7 +289,60 @@ mod test {
     #[test]
     fn quote_test_no_description() {
         let quote = Quote::new();
-        
-        assert_eq!(quote.description(),format!("Quote-{}",quote.get_id()));
+
+        assert_eq!(quote.description(), format!("Quote-{}", quote.get_id()));
+    }
+
+    #[test]
+    fn test_quote_external_id() {
+        let mut quote = Quote::new();
+
+        quote.with_external_id(QUOTE_EXTERNAL.to_string());
+
+        assert_eq!(quote.external_id, Some(QUOTE_EXTERNAL.to_string()));
+    }
+
+    #[test]
+    fn test_quote_event() {
+        let quote = Quote::new();
+
+        let event = quote.to_event(QuoteEventType::QuoteCreateEvent);
+
+        // assert_eq!(quote.description,event.description);
+        assert_eq!(event.href, quote.href);
+        assert_eq!(event.id, quote.id);
+        assert_eq!(event.title.unwrap(), quote.get_name());
+    }
+
+    #[test]
+    fn test_quote_add_item() {
+        let item1 = QuoteItem::new();
+        let mut quote = Quote::new();
+
+        let res1 = quote.add_quote_item(item1);
+
+        assert_eq!(res1.is_ok(), true);
+
+        let item2 = QuoteItem::new();
+
+        let res2 = quote.add_quote_item(item2);
+
+        assert_eq!(res2.is_ok(), true);
+
+        assert_eq!(quote.quote_item.is_some(), true);
+        assert_eq!(quote.quote_item.unwrap().len(), 2);
+    }
+
+    #[test]
+    fn test_quote_add_price() {
+        let mut quote = Quote::new();
+        let price1 = QuotePrice::new(QUOTE_PRICE);
+        quote.price(price1);
+
+        let price2 = QuotePrice::new(QUOTE_PRICE);
+        quote.price(price2);
+
+        assert_eq!(quote.quote_total_price.is_some(), true);
+        assert_eq!(quote.quote_total_price.unwrap().len(), 2);
     }
 }
