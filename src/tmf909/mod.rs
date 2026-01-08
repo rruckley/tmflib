@@ -483,3 +483,5 @@ mod usage_consumption_report_request_create;
 mod usage_volume_balance;
 mod usage_volume_product;
 mod usage_volume_product_ref;
+
+const MOD_PATH: &str = "tmf909/v5";
