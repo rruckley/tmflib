@@ -1,7 +1,7 @@
 use serde::{Serialize, Deserialize};
 ///Extra information about a given entity
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
-pub struct Note {
+pub struct NoteXXX {
     ///When sub-classing, this defines the super-class
     #[serde(rename = "@baseType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -26,7 +26,7 @@ pub struct Note {
     ///Text of the note
     pub text: String,
 }
-impl std::fmt::Display for Note {
+impl std::fmt::Display for NoteXXX {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
