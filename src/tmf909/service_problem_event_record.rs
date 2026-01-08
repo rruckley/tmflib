@@ -17,12 +17,14 @@ pub struct ServiceProblemEventRecord {
     ///Identifier of the service problem event record.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
+    ///The event payload
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub notification: Option<Any>,
     ///Time at which the record was created
     #[serde(rename = "recordTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub record_time: Option<crate::DateTime>,
+    ///Service Problem involved in the event
     #[serde(rename = "serviceProblem")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service_problem: Option<ServiceProblemRef>,

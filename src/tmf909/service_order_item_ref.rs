@@ -1,4 +1,6 @@
 use serde::{Serialize, Deserialize};
+
+///An item of a service order reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceOrderItemRef {
     ///When sub-classing, this defines the super-class

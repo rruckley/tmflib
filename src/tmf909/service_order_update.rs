@@ -1,8 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    ExternalReference, Note, RelatedParty, ServiceOrderItem, ServiceOrderRelationship,
+    ExternalReference, RelatedParty, ServiceOrderItem, ServiceOrderRelationship,
     ServiceOrderStateType,
 };
+use crate::common::note::Note;
+
 ///Skipped properties: id,href,orderDate,jeopardyAlert,errorMessage,milestone,@baseType,@schemaLocation,@type,cancellationDate,cancellationReason,category,completionDate,startDate
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServiceOrderUpdate {
@@ -17,6 +19,7 @@ pub struct ServiceOrderUpdate {
     #[serde(rename = "externalId")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub external_id: Option<String>,
+    ///List of external references associated with this order
     #[serde(rename = "externalReference")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub external_reference: Option<Vec<ExternalReference>>,

@@ -1,9 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    Characteristic, EventRef, ExternalIdentifier, ImpactPattern, Note, RelatedEntity,
+    Characteristic, EventRef, ExternalIdentifier, ImpactPattern, RelatedEntity,
     RelatedParty, RelatedPlace, ResourceAlarmRef, ResourceRef, ServiceProblemRef,
     ServiceProblemStateType, ServiceRef, SlaViolationRef, TroubleTicketRef,
 };
+use crate::common::note::Note;
 /**The problem information for Middle B which is abstracted in the service layer from the issued event information by First B
 Skipped properties: id,href,firstAlert,originatingSystem,trackingRecord*/
 #[derive(Debug, Clone, Serialize, Deserialize)]

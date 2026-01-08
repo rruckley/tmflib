@@ -1,7 +1,8 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    ExternalReference, Note, RelatedParty, ServiceOrderItem, ServiceOrderRelationship,
+    ExternalReference, RelatedParty, ServiceOrderItem, ServiceOrderRelationship,
 };
+use crate::common::note::Note;
 ///Skipped properties: id,href,orderDate,completionDate,expectedCompletionDate,startDate,state,jeopardyAlert,errorMessage,milestone
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceOrderCreate {

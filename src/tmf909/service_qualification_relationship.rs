@@ -1,4 +1,6 @@
 use serde::{Serialize, Deserialize};
+
+///Relationship between Service Qualifications
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceQualificationRelationship {
     ///When sub-classing, this defines the super-class

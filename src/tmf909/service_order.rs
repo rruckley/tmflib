@@ -1,10 +1,23 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    ExternalReference, Note, RelatedParty, ServiceOrderErrorMessage, ServiceOrderItem,
+    ExternalReference, RelatedParty, ServiceOrderErrorMessage, ServiceOrderItem,
     ServiceOrderJeopardyAlert, ServiceOrderMilestone, ServiceOrderRelationship,
-    ServiceOrderStateType,
+    ServiceOrderStateType,MOD_PATH,
 };
-#[derive(Debug, Clone, Serialize, Deserialize)]
+use crate::common::note::Note;
+use crate::{
+    HasId,
+    HasDescription,
+};
+use tmflib_derive::{
+    HasId,
+    HasDescription,
+};
+
+const CLASS_PATH: &str = "serviceOrder";
+
+///A service order is a request from a customer or a system that initiates activities
+#[derive(Debug, Default, Clone, HasId,HasDescription, Serialize, Deserialize)]
 pub struct ServiceOrder {
     ///When sub-classing, this defines the super-class
     #[serde(rename = "@baseType")]
@@ -48,6 +61,7 @@ pub struct ServiceOrder {
     #[serde(rename = "externalId")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub external_id: Option<String>,
+    ///List of external references associated with this order
     #[serde(rename = "externalReference")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub external_reference: Option<Vec<ExternalReference>>,
@@ -71,6 +85,7 @@ pub struct ServiceOrder {
     #[serde(rename = "notificationContact")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub notification_contact: Option<String>,
+    ///Date when the order was placed
     #[serde(rename = "orderDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub order_date: Option<crate::DateTime>,

@@ -15,6 +15,7 @@ pub struct ServiceOrderItemRelationship {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
+    ///Reference to the related order item
     #[serde(rename = "orderItem")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub order_item: Option<ServiceOrderItemRef>,

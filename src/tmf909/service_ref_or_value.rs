@@ -1,9 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    Characteristic, Feature, Note, RelatedEntityRefOrValue, RelatedParty,
+    Characteristic, Feature, RelatedEntityRefOrValue, RelatedParty,
     RelatedPlaceRefOrValue, RelatedServiceOrderItem, ResourceRef, ServiceRelationship,
     ServiceSpecificationRef, ServiceStateType,
 };
+use crate::common::note::Note;
 ///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the RelatedServiceRefOrValue class itself
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServiceRefOrValue {

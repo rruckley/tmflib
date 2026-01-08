@@ -1,4 +1,6 @@
 use serde::{Serialize, Deserialize};
+
+///Reference to a SLA Violation
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct SlaViolationRef {
     ///When sub-classing, this defines the super-class
@@ -21,7 +23,7 @@ pub struct SlaViolationRef {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     ///unique identifier
-    pub id: String,
+    pub id: Option<String>,
     ///Name of the related entity.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,

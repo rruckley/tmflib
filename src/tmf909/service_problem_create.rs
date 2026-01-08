@@ -1,12 +1,14 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    Characteristic, EventRef, ExternalIdentifier, ImpactPattern, Note, RelatedEntity,
+    Characteristic, EventRef, ExternalIdentifier, ImpactPattern, RelatedEntity,
     RelatedParty, RelatedPlace, ResourceAlarmRef, ResourceRef, ServiceProblemRef,
     ServiceProblemStateType, ServiceRef, SlaViolationRef, TrackingRecord,
     TroubleTicketRef,
 };
-/**The problem information for Middle B which is abstracted in the service layer from the issued event information by First B
-Skipped properties: id,href*/
+use crate::common::note::Note;
+
+/// The problem information for Middle B which is abstracted in the service layer from the issued event information by First B
+/// Skipped properties: id,href*/
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServiceProblemCreate {
     ///When sub-classing, this defines the super-class
@@ -35,6 +37,7 @@ pub struct ServiceProblemCreate {
     pub affected_service: Option<Vec<ServiceRef>>,
     ///Classifier for the problem. Settable. For example, this is used for distinguish the category of problem originator in [role].[category] format. Example: serviceProvider.declarer, supplier.originated, system.originated
     pub category: String,
+    ///This is a list of characteristics associated with the Service Problem
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub characteristic: Option<Vec<Characteristic>>,
     ///Time the problem was created
@@ -43,6 +46,7 @@ pub struct ServiceProblemCreate {
     pub creation_date: Option<crate::DateTime>,
     ///Free form text describing the Service Problem
     pub description: String,
+    ///This is a list of external identifiers associated with the Service Problem
     #[serde(rename = "externalIdentifier")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub external_identifier: Option<Vec<ExternalIdentifier>>,
