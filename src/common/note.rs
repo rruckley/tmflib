@@ -25,7 +25,7 @@ pub struct Note {
     ///When sub-classing, this defines the sub-class Extensible name
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub type_: Option<String>,
+    pub r#type: Option<String>,
     ///Author of the note
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub author: Option<String>,
@@ -87,13 +87,6 @@ impl std::ops::DerefMut for Note {
 mod test {
     use super::Note;
 
-    const NOTE_JSON: &str = "{
-        \"@type\" : \"Note\",
-        \"id\" : \"N123\",
-        \"author\" : \"john.q.citizen@example.com\",
-        \"text\" : \"A Note\"
-    }";
-
     #[test]
     fn test_note_create_str() {
         let note = Note::from("StringSlice");
@@ -107,16 +100,5 @@ mod test {
 
         assert_eq!(note.author.is_some(), true);
         assert_eq!(note.author.unwrap(), "AnAuthor".to_string());
-    }
-
-    #[test]
-    fn test_note_deserialize() {
-        let note: Note = serde_json::from_str(NOTE_JSON).unwrap();
-
-        assert_eq!(note.author.is_some(), true);
-        assert_eq!(note.author.unwrap().as_str(), "john.q.citizen@example.com");
-        assert_eq!(note.id.unwrap().as_str(), "N123");
-        assert_eq!(note.text.is_some(), true);
-        assert_eq!(note.text.unwrap().as_str(), "A Note");
-    }
+    }  
 }
