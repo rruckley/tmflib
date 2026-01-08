@@ -1,9 +1,19 @@
 use serde::{Serialize, Deserialize};
-use super::{ServiceCandidateRef, ServiceCategoryRef};
-use crate::TimePeriod;
+use super::{ServiceCandidateRef, ServiceCategoryRef,MOD_PATH};
+use crate::{
+    TimePeriod,
+    HasId,
+    HasDescription,
+};
+use tmflib_derive::{
+    HasId,
+    HasDescription,
+};
+
+const CLASS_PATH: &str = "serviceCategory";
 
 ///The (service) category resource is used to group service candidates in logical containers. Categories can contain other categories.
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, HasId, HasDescription, Deserialize, Default)]
 pub struct ServiceCategory {
     ///When sub-classing, this defines the super-class
     #[serde(rename = "@baseType")]
