@@ -64,6 +64,7 @@ tmf700 = []
 tmf701 = []
 tmf717 = ["tmf632","tmf651","tmf620","tmf666"]
 tmf720 = []
+tmf723 = []
 tmf724 = []
 tmf760 = []
 tmf764 = []
@@ -116,6 +117,7 @@ all = [
     "tmf701",
     "tmf717",
     "tmf720",
+    "tmf723",
     "tmf724",
     "tmf760",
     "tmf764",
@@ -265,11 +267,13 @@ tmflib-derive = { version = "0.1.35" }
 # tmflib-derive = { path = "tmflib-derive"}
 hex = "0.4.3"
 base32 = "0.5.1"
-openapiv3 = "2.2.0"
+# openapiv3 = "2.2.0"
 rust_decimal = "1.39.0"
 rust_decimal_macros = "1.39.0"
 thiserror = "2.0.17"
 regex = "1.12.2"
 
-[dev-dependencies]
+
+[build-dependencies]
+env = "1.0.1"
 

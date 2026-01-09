@@ -5,7 +5,6 @@ use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 use uuid::Uuid;
-/// Notes object for journaling against many TMF objects
 
 /// A note is a comment, observation, or remark made by a user or system about a particular entity. It typically contains textual information that provides additional context, insights, or feedback related to the entity it is associated with. Notes can be used for various purposes, such as documenting important details, sharing observations, or recording feedback.
 #[derive(Clone, Debug, Deserialize, PartialEq, Default,Serialize)]
