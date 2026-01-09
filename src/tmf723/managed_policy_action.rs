@@ -3,9 +3,10 @@ use super::{PolicyAction, PolicyManagedEntity};
 ///Managed PolicyAction
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyAction {
-    ///
+    /// PolicyAction
     #[serde(flatten)]
     pub policy_action: PolicyAction,
+    /// Managed PolicyManagedEntity
     #[serde(flatten)]
     pub policy_managed_entity: PolicyManagedEntity,
 }

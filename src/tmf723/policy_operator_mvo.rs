@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{Extensible, PolicyVariableRefOrValueMvo};
+use super::{PolicyVariableRefOrValueMvo};
+use crate::common::extensible::Extensible;
+
+/// PolicyOperatorMvo represents a managed policy operator with extensible attributes.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyOperatorMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

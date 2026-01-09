@@ -3,6 +3,7 @@ use super::{PolicyManagedEntityMvo, PolicyMvo};
 ///Managed Policy
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyMvo {
+    /// Inlined fields from PolicyManagedEntityMvo
     #[serde(flatten)]
     pub policy_managed_entity_mvo: PolicyManagedEntityMvo,
     ///Policy is a set of rules that are used to manage and control the state and state transitions of one or more managed objects.

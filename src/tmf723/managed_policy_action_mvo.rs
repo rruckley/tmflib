@@ -3,9 +3,10 @@ use super::{PolicyActionMvo, PolicyManagedEntityMvo};
 ///Managed PolicyAction
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyActionMvo {
-    ///
+    /// Inlined fields from PolicyActionMvo
     #[serde(flatten)]
     pub policy_action_mvo: PolicyActionMvo,
+    ///Inlined fields from PolicyManagedEntityMvo
     #[serde(flatten)]
     pub policy_managed_entity_mvo: PolicyManagedEntityMvo,
 }

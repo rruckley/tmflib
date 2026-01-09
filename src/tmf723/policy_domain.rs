@@ -1,7 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::{PolicyManagedEntity, Reference};
+
+/// PolicyDomain represents a domain for managing policies within a specific scope.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyDomain {
+    ///Inlined fields from PolicyManagedEntity
     #[serde(flatten)]
     pub policy_managed_entity: PolicyManagedEntity,
     ///List of entities to which this PolicyDomain applies

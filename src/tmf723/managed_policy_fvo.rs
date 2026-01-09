@@ -3,6 +3,7 @@ use super::{PolicyFvo, PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo};
 ///Managed Policy
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyFvo {
+    ///Managed Entity FVO attributes
     #[serde(flatten)]
     pub policy_managed_entity_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo: PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo,
     ///Policy is a set of rules that are used to manage and control the state and state transitions of one or more managed objects.

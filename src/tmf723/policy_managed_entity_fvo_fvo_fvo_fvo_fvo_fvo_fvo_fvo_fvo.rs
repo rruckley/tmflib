@@ -1,6 +1,8 @@
 use serde::{Serialize, Deserialize};
 use super::{EntityFvo, NoteFvo};
 use crate::TimePeriod;
+
+/// PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo represents a managed entity for policies with various attributes.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo {
     ///Base entity schema for use in TMForum Open-APIs. Property.

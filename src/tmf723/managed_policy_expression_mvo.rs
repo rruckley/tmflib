@@ -6,6 +6,7 @@ pub struct ManagedPolicyExpressionMvo {
     ///PolicyExpression is a constraint based on text expression and parsed by an Expression Language (SpEL, JS, Groovy, FEEL, ...)
     #[serde(flatten)]
     pub policy_expression_mvo: PolicyExpressionMvo,
+    ///Managed Entity MVO attributes
     #[serde(flatten)]
     pub policy_managed_entity_mvo: PolicyManagedEntityMvo,
 }

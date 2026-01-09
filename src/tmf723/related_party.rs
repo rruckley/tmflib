@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{EntityRef, Extensible, Reference};
+use super::{EntityRef, Reference};
+use crate::common::extensible::Extensible;
+
+///Related party involved in the policy management entity
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedParty {
     ///Entity reference schema to be use for all entityRef class.

@@ -3,8 +3,10 @@ use super::{PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo, PolicyOperatorFvo};
 ///Managed PolicyOperator
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyOperatorFvo {
+    ///Managed Entity FVO attributes
     #[serde(flatten)]
     pub policy_managed_entity_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo: PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo,
+    ///A PolicyOperator defines a logical operator (AND, OR, NOT, ...) that is used to combine multiple PolicyConditions or PolicyExpressions together into a single logical unit that can be evaluated as TRUE or FALSE
     #[serde(flatten)]
     pub policy_operator_fvo: PolicyOperatorFvo,
 }

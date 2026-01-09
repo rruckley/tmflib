@@ -1,7 +1,7 @@
 use serde::{Serialize, Deserialize};
 ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
-pub struct Extensible {
+pub struct ExtensibleZZZ {
     ///When sub-classing, this defines the super-class
     #[serde(rename = "@baseType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -14,7 +14,7 @@ pub struct Extensible {
     #[serde(rename = "@type")]
     pub type_: String,
 }
-impl std::fmt::Display for Extensible {
+impl std::fmt::Display for ExtensibleZZZ {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }

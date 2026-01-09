@@ -6,6 +6,7 @@ pub struct ManagedPolicy {
     ///Policy is a set of rules that are used to manage and control the state and state transitions of one or more managed objects.
     #[serde(flatten)]
     pub policy: Policy,
+    /// Inlined fields from PolicyManagedEntity
     #[serde(flatten)]
     pub policy_managed_entity: PolicyManagedEntity,
 }

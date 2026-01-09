@@ -2,6 +2,7 @@ use serde::{Serialize, Deserialize};
 ///PolicyExpression is a constraint based on text expression and parsed by an Expression Language (SpEL, JS, Groovy, FEEL, ...)
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyExpressionFvoFvoFvo {
+    ///Type of the expression
     #[serde(rename = "@type")]
     pub type_: String,
     ///Expression language command

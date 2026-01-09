@@ -3,6 +3,7 @@ use super::{PolicyManagedEntity, PolicyVariable};
 ///Managed PolicyVariable
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyVariable {
+    /// Inlined fields from PolicyManagedEntity
     #[serde(flatten)]
     pub policy_managed_entity: PolicyManagedEntity,
     ///A PolicyVariable is an entity for modeling different types of variables that can be used to form a PolicyCondition statement. It can be static or dynamic.

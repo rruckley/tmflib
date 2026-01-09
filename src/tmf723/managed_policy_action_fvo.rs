@@ -6,6 +6,7 @@ pub struct ManagedPolicyActionFvo {
     ///
     #[serde(flatten)]
     pub policy_action_fvo: PolicyActionFvo,
+    /// Managed PolicyManagedEntity
     #[serde(flatten)]
     pub policy_managed_entity_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo: PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo,
 }

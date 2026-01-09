@@ -1,6 +1,8 @@
 use serde::{Serialize, Deserialize};
 use super::{EntityMvo, NoteMvo};
 use crate::TimePeriod;
+
+///Policy Managed Entity MVO attributes
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyManagedEntityMvo {
     ///Base entity schema for use in TMForum Open-APIs. Property.
