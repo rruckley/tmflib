@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-///
+/// Policy Action attributes
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyAction {}
 impl std::fmt::Display for PolicyAction {

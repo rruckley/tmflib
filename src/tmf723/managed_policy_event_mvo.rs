@@ -6,6 +6,7 @@ pub struct ManagedPolicyEventMvo {
     ///A PolicyEvent is an occurrence of an important event or multiple events, and can be used to trigger the evaluation of a Policy
     #[serde(flatten)]
     pub policy_event_mvo: PolicyEventMvo,
+    ///Managed Entity MVO attributes
     #[serde(flatten)]
     pub policy_managed_entity_mvo: PolicyManagedEntityMvo,
 }

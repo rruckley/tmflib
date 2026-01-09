@@ -3,7 +3,7 @@ use super::{PolicyActionFvo, PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo};
 ///Managed PolicyAction
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyActionFvo {
-    ///
+    /// A PolicyAction defines the specific action(s) to be taken when all the conditions of a PolicyRule are met. PolicyActions can include operations such as modifying resource attributes, triggering notifications, or invoking external services. Each PolicyAction is associated with a PolicyRule and is executed in accordance with the defined policy framework.
     #[serde(flatten)]
     pub policy_action_fvo: PolicyActionFvo,
     /// Managed PolicyManagedEntity

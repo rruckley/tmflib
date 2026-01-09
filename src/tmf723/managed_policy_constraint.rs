@@ -6,6 +6,7 @@ pub struct ManagedPolicyConstraint {
     ///Any kind of condition that needs to be confirmed in order to proceed with next step
     #[serde(flatten)]
     pub policy_constraint: PolicyConstraint,
+    ///Managed Entity attributes
     #[serde(flatten)]
     pub policy_managed_entity: PolicyManagedEntity,
 }
