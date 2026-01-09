@@ -8,7 +8,7 @@
 // include!(concat!(env!("OUT_DIR"), "/auto-lib.rs"));
 
 // This module and struct are auto-generated
-use tmf723::managed_policy::ManagedPolicy;
+use tmflib::tmf723::ManagedPolicy;
 
 fn main() {
     let policy = ManagedPolicy::default();
