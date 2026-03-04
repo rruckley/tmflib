@@ -1,5 +1,7 @@
-use serde::{Serialize, Deserialize};
 use super::{ResourceReservationRef, TaskStateType};
+use serde::{Deserialize, Serialize};
+
+///The data structure of a CancelResourceReservation
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CancelResourceReservation {
     ///When sub-classing, this defines the super-class
@@ -32,6 +34,7 @@ pub struct CancelResourceReservation {
     #[serde(rename = "requestedCancellationDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub requested_cancellation_date: Option<String>,
+    ///The resource reservation to be cancelled
     #[serde(rename = "resourceReservation")]
     pub resource_reservation: ResourceReservationRef,
     ///Possible values for the state of a task

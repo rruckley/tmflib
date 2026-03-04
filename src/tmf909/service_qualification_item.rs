@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{ServiceCategoryRef, ServiceRefOrValue};
+use serde::{Deserialize, Serialize};
 ///A ServiceQualificationItem relates to a specific service being checked in a qualification operation.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServiceQualificationItem {

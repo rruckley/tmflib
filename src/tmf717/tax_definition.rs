@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use crate::TimePeriod;
 use crate::common::extensible::Extensible;
+use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// Tax Definition
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

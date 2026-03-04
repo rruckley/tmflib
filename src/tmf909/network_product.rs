@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{ConsumptionSummary, RelatedParty};
+use serde::{Deserialize, Serialize};
 ///An instantiated network product (specialization of a product) subscribed by a customer.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct NetworkProduct {

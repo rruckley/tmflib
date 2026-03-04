@@ -1,5 +1,5 @@
 // //! Build module to generate new modules from OAS / Swagger files
-// //! 
+// //!
 
 // TODO: Refactor to use a proper code generation library
 
@@ -89,7 +89,7 @@ use std::env;
 //         self.generic = swu.generic.clone();
 //         if swu.uses.is_some() {
 //             let new_uses = swu.uses.as_mut().unwrap();
-//             self.uses.as_mut().unwrap().append(new_uses);    
+//             self.uses.as_mut().unwrap().append(new_uses);
 //         }
 //     }
 // }
@@ -115,7 +115,7 @@ use std::env;
 //     match d {
 //         Some(d) => format!("\n/*\n\t{}\n*/\n",d),
 //         None => String::default(),
-//     }    
+//     }
 // }
 
 // fn property_type_array(a: ArrayType, schema_hash: &mut Vec<String>) -> StringWithUse {
@@ -277,10 +277,10 @@ use std::env;
 //             .replace("type", "r#type")
 //             .to_case(Case::Snake);
 //         let mut prop_ref = property_ref(schema,schema_vec);
-        
+
 //         let line = format!("\n\t{}: {},",name,prop_ref.string);
 //         out.push_str(line.as_str());
-        
+
 //         let vec_size = schema_vec.len();
 //         schema_vec.push(line);
 //         // out.push_str(format!("\t// Added line to vec, now: {}\n",vec_size).as_str());
@@ -289,7 +289,6 @@ use std::env;
 //     out2.string = out;
 //     out2
 // }
-
 
 // fn schema_array(name: String, array : ArrayType,schema_vec: &mut Vec<String>) -> String {
 //     let mut out = String::default();
@@ -305,11 +304,11 @@ use std::env;
 //     for r in all_of {
 //         out.push_str(match r {
 //             ReferenceOr::Item(i) => {
-               
+
 //                let mut props = property_schema(&i,&mut prop_vec);
 //                let vec_len = prop_vec.len();
 //                props.string.push_str(format!("\t// Found {} properties, adding to hash",vec_len).as_str());
-               
+
 //                uses.merge(&mut props);
 //                props.string
 //             },
@@ -340,7 +339,7 @@ use std::env;
 //                         format!("\t//{}:\t{},\n",name,split_ref)
 //                     }
 //                 }
-                
+
 //             }
 //         }.as_str());
 //     }
@@ -349,7 +348,7 @@ use std::env;
 //     let struct_def = match uses.generic {
 //         Some(g) => format!("\n#[derive(Debug,Default,Deserialize,Serialize)]\npub struct {}<{}> {{\n",name,g),
 //         None => format!("\n#[derive(Debug,Default,Deserialize,Serialize)]\npub struct {} {{\n",name),
-//     }; 
+//     };
 //     // Generate final output, uses, then struct
 //     format!("\n// Uses\n{}\n{}\n{}",mod_uses(uses.uses),struct_def,out)
 // }
@@ -361,7 +360,7 @@ use std::env;
 //     out.push_str("#[derive(Debug,Default,Deserialize,Serialize)]\n");
 //     out.push_str(format!("pub struct {} {{\n",name).as_str());
 //     out.push_str("\n}\n");
-//     out    
+//     out
 // }
 
 // fn schema_any(name : String, any : AnySchema, schema_hash : &mut HashMap<String,Vec<String>>, mode: BuildMode) -> String {
@@ -372,7 +371,7 @@ use std::env;
 //     out.push_str("#[derive(Debug,Default,Deserialize,Serialize)]\n");
 //     out.push_str(format!("pub struct {} {{\n",name).as_str());
 //     for (name,r) in any.properties {
-        
+
 //         out.push_str(match r {
 //             // We can add the item onto the has here
 //             ReferenceOr::Item(i) => {
@@ -408,7 +407,7 @@ use std::env;
 //                     }
 //                 }
 //                 out.push_str(format!("\t//FINISH:\t{},\n",split_ref).as_str());
-                
+
 //                 out
 //             }
 //         }.as_str());
@@ -446,9 +445,9 @@ use std::env;
 //                         out.push_str("\n\t// Vec was empty");
 //                     }
 //                 }
-                
+
 //                 out
-//             }  
+//             }
 //         }.as_str());
 //     }
 //     for ref_or in any.all_of {
@@ -484,9 +483,9 @@ use std::env;
 //                         out.push_str("\n\t// Vec was empty");
 //                     }
 //                 }
-                
+
 //                 out
-//             }  
+//             }
 //         }.as_str());
 //     }
 //     schema_hash.insert(name,outer_vec);
@@ -495,7 +494,7 @@ use std::env;
 // }
 
 // fn schema_not(name : String, _not: Box<ReferenceOr<Schema>>) -> String {
-//     format!("// Kind Not not implemented for {}\n",name) 
+//     format!("// Kind Not not implemented for {}\n",name)
 // }
 
 // fn schema_oneof(name : String, oneof : Vec<ReferenceOr<Schema>>) -> String {
@@ -509,14 +508,12 @@ use std::env;
 //             },
 //             ReferenceOr::Reference { reference } => {
 //                 // Not sure how to manage a reference inside an enum
-//             }       
+//             }
 //         }
 //     }
 //     out.push_str(format!("pub enum {} {{\n }}\n",name).as_str());
 //     format!("// Kind OneOf not implemented for {}\n",name)
 // }
-
-
 
 // fn mod_uses(uses : Option<Vec<String>>) -> String {
 //     let mut out = String::default();
@@ -528,7 +525,7 @@ use std::env;
 //             u.dedup();
 //             for uses in u.into_iter() {
 //                 out.push_str(&reference_to_uses(uses).as_str());
-//             }    
+//             }
 //         },
 //         None => (),
 //     };
@@ -554,7 +551,6 @@ use std::env;
 //                 }
 //             }
 
-            
 //         },
 //         None => {
 //             out.push_str("//! Empty Module\n")
@@ -568,47 +564,47 @@ fn main() {
     let _out_dir = env::var_os("OUT_DIR").unwrap();
     // let _dest_path = Path::new(&out_dir).join("auto-lib.rs");
 
-//     // Open a OAS file
-//     let data = include_str!("open_api/TMF723-Policy_Management-v5.0.0.oas.json");
-//     let openapi : OpenAPI = serde_json::from_str(data).expect("Could not parse YAML");
-//     let components = openapi.components.expect("No components found!");
-//     let schemas = components.schemas;
-//     // Iterate through all schemas generating a file in module directory
-//     let mod_dir : &str = "tmf723";
-//     let mod_path = Path::new(&out_dir).join(mod_dir);
-//     let mut mod_list = String::default();
-//     let mut schema_hash : HashMap<String,Vec<String>> = HashMap::new();
-//     // Will throw error if path already exists but we don't care about that situation
-//     let _ = fs::create_dir(mod_path);
-//     for (name,schema) in schemas.iter() {
-//         // Initial pass just builds out the Hash
-//         let camel_name = name.to_case(Case::UpperCamel);
-//         let _ = generate_schema_mod(camel_name,schema.clone().into_item(),&mut schema_hash,BuildMode::HashOnly);    
-//     }
-//     for (name,schema) in schemas.iter() {
-//         // The output here is the contents for the schema file 'name'
-//         // We need to write this to the appropriate filename'
-//         if name.find("FVO").is_some() || name.find("MVO").is_some() {
-//             continue;
-//         }
-//         let snake_mod = name.to_case(Case::Snake);
-//         mod_list.push_str(format!("pub mod {};\n",snake_mod).as_str());
-//         let file_name = format!("{}.rs",snake_mod);
-//         let schema_path = Path::new(&out_dir).join(mod_dir).join(file_name.as_str());
-//         let camel_name = name.to_case(Case::UpperCamel);
-//         let out = generate_schema_mod(camel_name,schema.clone().into_item(),&mut schema_hash,BuildMode::FullBuild);
-//         fs::write(&schema_path,out).unwrap();
-//     }
-//     // Now we have a list of modules to include, we can create tmf723/mod.rs
-//     let mod_rs_path = Path::new(&out_dir).join(mod_dir).join("mod.rs");
-//     let mod_rs_contents = format!("pub struct GenericType<T : Sized> {{ }}\n\n{}",mod_list).to_string();
-//     let _ = fs::write(&mod_rs_path,mod_rs_contents);
-//     let auto_lib_contents = quote!{
-//         pub mod tmf723;
+    //     // Open a OAS file
+    //     let data = include_str!("open_api/TMF723-Policy_Management-v5.0.0.oas.json");
+    //     let openapi : OpenAPI = serde_json::from_str(data).expect("Could not parse YAML");
+    //     let components = openapi.components.expect("No components found!");
+    //     let schemas = components.schemas;
+    //     // Iterate through all schemas generating a file in module directory
+    //     let mod_dir : &str = "tmf723";
+    //     let mod_path = Path::new(&out_dir).join(mod_dir);
+    //     let mut mod_list = String::default();
+    //     let mut schema_hash : HashMap<String,Vec<String>> = HashMap::new();
+    //     // Will throw error if path already exists but we don't care about that situation
+    //     let _ = fs::create_dir(mod_path);
+    //     for (name,schema) in schemas.iter() {
+    //         // Initial pass just builds out the Hash
+    //         let camel_name = name.to_case(Case::UpperCamel);
+    //         let _ = generate_schema_mod(camel_name,schema.clone().into_item(),&mut schema_hash,BuildMode::HashOnly);
+    //     }
+    //     for (name,schema) in schemas.iter() {
+    //         // The output here is the contents for the schema file 'name'
+    //         // We need to write this to the appropriate filename'
+    //         if name.find("FVO").is_some() || name.find("MVO").is_some() {
+    //             continue;
+    //         }
+    //         let snake_mod = name.to_case(Case::Snake);
+    //         mod_list.push_str(format!("pub mod {};\n",snake_mod).as_str());
+    //         let file_name = format!("{}.rs",snake_mod);
+    //         let schema_path = Path::new(&out_dir).join(mod_dir).join(file_name.as_str());
+    //         let camel_name = name.to_case(Case::UpperCamel);
+    //         let out = generate_schema_mod(camel_name,schema.clone().into_item(),&mut schema_hash,BuildMode::FullBuild);
+    //         fs::write(&schema_path,out).unwrap();
+    //     }
+    //     // Now we have a list of modules to include, we can create tmf723/mod.rs
+    //     let mod_rs_path = Path::new(&out_dir).join(mod_dir).join("mod.rs");
+    //     let mod_rs_contents = format!("pub struct GenericType<T : Sized> {{ }}\n\n{}",mod_list).to_string();
+    //     let _ = fs::write(&mod_rs_path,mod_rs_contents);
+    //     let auto_lib_contents = quote!{
+    //         pub mod tmf723;
 
-//     }.to_string();
-//     let _ = fs::write(&dest_path,auto_lib_contents);
-//     // Generate output for each Swagger / OAS file found
-    
+    //     }.to_string();
+    //     let _ = fs::write(&dest_path,auto_lib_contents);
+    //     // Generate output for each Swagger / OAS file found
+
     println!("cargo:rerun-if-changed=build.rs");
 }

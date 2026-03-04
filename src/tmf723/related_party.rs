@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{EntityRef, Reference};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Related party involved in the policy management entity
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

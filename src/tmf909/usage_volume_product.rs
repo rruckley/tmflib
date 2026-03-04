@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{ConsumptionSummary, NetworkProduct, UsageVolumeBalance};
+use serde::{Deserialize, Serialize};
 ///A bucket (called UsageVolumeProduct in the SID model) represents a quantity of usage, as 2 hours national calls or 50 sms for example. It could be either a quantity or an amount in a currency (i.e. It could represent a fixed number of SMS, MMS, minutes of calls, quantity of data, number of events as well as a specific amount in a given currency). It requires one or more network products from which usages will debit the bucket.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct UsageVolumeProduct {

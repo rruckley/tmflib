@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Entity reference schema to be use for all entityRef class.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityRef {

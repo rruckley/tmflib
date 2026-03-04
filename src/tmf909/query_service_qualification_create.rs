@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{RelatedParty, ServiceQualificationItem};
+use serde::{Deserialize, Serialize};
 /**QueryServiceQualification is used to retrieve a list of services that are technically available in the context of the interaction (place, party, service characteristics, ...).
 Skipped properties: id,href,serviceQualificationItem,state,effectiveQualificationDate,expirationDate,estimatedResponseDate,queryServiceQualificationDate*/
 #[derive(Debug, Clone, Serialize, Deserialize)]

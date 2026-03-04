@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ResourceReservationRef;
+use serde::{Deserialize, Serialize};
 ///Skipped properties: id,href,state,effectiveCancellationDate
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CancelResourceReservationCreate {
@@ -23,6 +23,7 @@ pub struct CancelResourceReservationCreate {
     #[serde(rename = "requestedCancellationDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub requested_cancellation_date: Option<String>,
+    ///The resource reservation to be cancelled
     #[serde(rename = "resourceReservation")]
     pub resource_reservation: ResourceReservationRef,
 }

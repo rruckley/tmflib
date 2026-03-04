@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Reason for eligibility result if the ServiceQualification result is no (meaning the Service is not available)
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceEligibilityUnavailabilityReason {

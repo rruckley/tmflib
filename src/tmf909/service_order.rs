@@ -1,23 +1,17 @@
-use serde::{Serialize, Deserialize};
 use super::{
     ExternalReference, RelatedParty, ServiceOrderErrorMessage, ServiceOrderItem,
     ServiceOrderJeopardyAlert, ServiceOrderMilestone, ServiceOrderRelationship,
-    ServiceOrderStateType,MOD_PATH,
+    ServiceOrderStateType, MOD_PATH,
 };
 use crate::common::note::Note;
-use crate::{
-    HasId,
-    HasDescription,
-};
-use tmflib_derive::{
-    HasId,
-    HasDescription,
-};
+use crate::{HasDescription, HasId};
+use serde::{Deserialize, Serialize};
+use tmflib_derive::{HasDescription, HasId};
 
 const CLASS_PATH: &str = "serviceOrder";
 
 ///A service order is a request from a customer or a system that initiates activities
-#[derive(Debug, Default, Clone, HasId,HasDescription, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, HasId, HasDescription, Serialize, Deserialize)]
 pub struct ServiceOrder {
     ///When sub-classing, this defines the super-class
     #[serde(rename = "@baseType")]

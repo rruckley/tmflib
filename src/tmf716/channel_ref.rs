@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///The channel to which the resource reference to. e.g. channel for selling product offerings, channel for opening a trouble ticket etc..
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ChannelRef {

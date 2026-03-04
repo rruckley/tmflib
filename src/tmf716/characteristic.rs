@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Any, CharacteristicRelationship};
+use serde::{Deserialize, Serialize};
 ///Describes a given characteristic of an object or entity through a name/value pair.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Characteristic {
@@ -15,6 +15,7 @@ pub struct Characteristic {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
+    ///A list of characteristics relationships related to this characteristic.
     #[serde(rename = "characteristicRelationship")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub characteristic_relationship: Option<Vec<CharacteristicRelationship>>,
@@ -23,6 +24,7 @@ pub struct Characteristic {
     pub id: Option<String>,
     ///Name of the characteristic
     pub name: String,
+    ///Value of the characteristic
     pub value: Any,
     ///Data type of the value of the characteristic
     #[serde(rename = "valueType")]

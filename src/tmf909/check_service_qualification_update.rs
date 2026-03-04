@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{CheckServiceQualificationItem, RelatedParty, TaskStateType};
+use serde::{Deserialize, Serialize};
 /**CheckServiceQualification is used to perform a technical eligibility on service configuration(s). It allows to retrieve services that are technically available in the context of the interaction (place, party, service characteristics, ...).
 Skipped properties: id,href,checkServiceQualificationDate,@type,@schemaLocation,@baseType*/
 #[derive(Debug, Clone, Serialize, Deserialize)]

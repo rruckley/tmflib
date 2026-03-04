@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::Characteristic;
+use serde::{Deserialize, Serialize};
 ///Tracking records allow the tracking of modifications on the problem. The tracking records should not be embedded in the problem to allow retrieving the problem without the tracking records
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TrackingRecord {

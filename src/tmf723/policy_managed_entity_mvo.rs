@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{EntityMvo, NoteMvo};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///Policy Managed Entity MVO attributes
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

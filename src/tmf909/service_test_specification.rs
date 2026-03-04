@@ -1,10 +1,10 @@
-use serde::{Serialize, Deserialize};
 use super::{
     AttachmentRefOrValue, CharacteristicSpecification, ConstraintRef,
     EntitySpecificationRelationship, RelatedParty, ServiceSpecificationRef,
     ServiceTestSpecRelationship, TargetEntitySchema, TestMeasureDefinition,
 };
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// The service test specification describes the service test in terms of parameters to be configured and
 /// measures to be taken.   

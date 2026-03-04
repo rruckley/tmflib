@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Another Characteristic that is related to the current Characteristic;
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicRelationship {

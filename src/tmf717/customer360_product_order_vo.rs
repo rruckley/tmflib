@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::ProductOrderStateType;
 use crate::common::entity::Entity;
+use serde::{Deserialize, Serialize};
 
 ///Base entity schema for use in TMForum Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize)]

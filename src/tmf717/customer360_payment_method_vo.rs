@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use crate::common::entity::Entity;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///Base entity schema for use in TMForum Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

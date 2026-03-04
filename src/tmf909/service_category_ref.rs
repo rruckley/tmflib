@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///The (service) category resource is used to group service candidates in logical containers. Categories can contain other categories.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceCategoryRef {

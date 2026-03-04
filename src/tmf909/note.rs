@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Extra information about a given entity
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct NoteXXX {

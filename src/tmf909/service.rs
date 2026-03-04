@@ -1,26 +1,20 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    Characteristic, Feature, RelatedEntityRefOrValue, RelatedParty,
-    RelatedPlaceRefOrValue, RelatedServiceOrderItem, ResourceRef, ServiceRefOrValue,
-    ServiceRelationship, ServiceSpecificationRef, ServiceStateType,
+    Characteristic, Feature, RelatedEntityRefOrValue, RelatedParty, RelatedPlaceRefOrValue,
+    RelatedServiceOrderItem, ResourceRef, ServiceRefOrValue, ServiceRelationship,
+    ServiceSpecificationRef, ServiceStateType,
 };
 use crate::common::note::Note;
-use crate::{
-    HasId,
-    HasDescription,
-};
+use crate::{HasDescription, HasId};
+use serde::{Deserialize, Serialize};
 
-use tmflib_derive::{
-    HasId,
-    HasDescription,
-};
+use tmflib_derive::{HasDescription, HasId};
 
 use super::MOD_PATH;
 
 const CLASS_PATH: &str = "service";
 
 ///Service is a base class for defining the Service hierarchy. All Services are characterized as either being possibly visible and usable by a Customer or not. This gives rise to the two subclasses of Service: CustomerFacingService and ResourceFacingService.
-#[derive(Debug, Default, Clone,HasId,HasDescription, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, HasId, HasDescription, Serialize, Deserialize)]
 pub struct Service {
     ///When sub-classing, this defines the super-class
     #[serde(rename = "@baseType")]

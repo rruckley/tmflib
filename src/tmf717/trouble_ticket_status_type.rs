@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Possible values for the status of the trouble ticket
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum TroubleTicketStatusType {

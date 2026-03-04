@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ExtensibleFvo;
+use serde::{Deserialize, Serialize};
 
 /// NoteFvo represents a note with author, date, id, and text fields.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

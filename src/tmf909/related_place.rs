@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///A  Place and an associated role as installation adress, delivery address, etc....
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPlace {

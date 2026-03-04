@@ -1,9 +1,9 @@
-use serde::{Serialize, Deserialize};
 use super::{
     AttachmentRefOrValue, CharacteristicSpecification, ConstraintRef,
     EntitySpecificationRelationship, RelatedParty, ServiceSpecificationRef,
     ServiceTestSpecRelationship, TargetEntitySchema, TestMeasureDefinition,
 };
+use serde::{Deserialize, Serialize};
 /**The service test specification describes the service test in terms of parameters to be configured and
 measures to be taken.
 Skipped properties: id,href,validFor*/

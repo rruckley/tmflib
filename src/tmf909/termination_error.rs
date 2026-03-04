@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///This indicates an error that caused a qualificationItem to be terminated.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TerminationError {

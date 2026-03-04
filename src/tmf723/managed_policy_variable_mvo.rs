@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{PolicyManagedEntityMvo, PolicyVariableMvo};
+use serde::{Deserialize, Serialize};
 ///Managed PolicyVariable
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyVariableMvo {

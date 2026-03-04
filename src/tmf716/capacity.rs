@@ -1,7 +1,5 @@
-use serde::{Serialize, Deserialize};
-use super::{
-    ApplicableTimePeriod, CapacityAmount, CapacityRef, CapacitySpecRef, PlaceRefOrValue,
-};
+use super::{ApplicableTimePeriod, CapacityAmount, CapacityRef, CapacitySpecRef, PlaceRefOrValue};
+use serde::{Deserialize, Serialize};
 ///Specific ability of an entity measured in quantity and units of quantity over an extended period.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Capacity {
@@ -25,6 +23,7 @@ pub struct Capacity {
     #[serde(rename = "capacityAmount")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub capacity_amount: Option<CapacityAmount>,
+    ///A reference to a Capacity.
     #[serde(rename = "capacitySpec")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub capacity_spec: Option<CapacitySpecRef>,

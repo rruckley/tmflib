@@ -1,8 +1,8 @@
-use serde::{Serialize, Deserialize};
 use super::{
     AppointmentRef, OrderItemActionType, ServiceOrderItemErrorMessage,
     ServiceOrderItemRelationship, ServiceOrderItemStateType, ServiceRefOrValue,
 };
+use serde::{Deserialize, Serialize};
 
 ///An item of a service order
 #[derive(Debug, Clone, Serialize, Deserialize)]

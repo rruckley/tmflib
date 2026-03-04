@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Events linked with service problem
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EventRef {

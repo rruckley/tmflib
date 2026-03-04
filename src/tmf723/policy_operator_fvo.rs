@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{ExtensibleFvo, PolicyVariableRefOrValueFvo};
+use serde::{Deserialize, Serialize};
 
 ///PolicyOperatorFvo represents a policy operator with an extensible schema and an optional policy variable.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

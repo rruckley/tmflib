@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::common::entity::EntityRef;
+use serde::{Deserialize, Serialize};
 
 /// Agreement Specification Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

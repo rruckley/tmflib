@@ -1,4 +1,6 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
+
+///CapacitySpecRef struct
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceReservationRef {
     ///When sub-classing, this defines the super-class

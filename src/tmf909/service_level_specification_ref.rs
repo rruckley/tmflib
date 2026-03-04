@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 /**A Service Level Specification represents a pre-defined or negotiated set of Service Level
 Objectives. In addition, certain consequences are associated with not meeting the Service Level
 Objectives. Service Level Agreements are expressed in terms of Service Level Specifications.*/

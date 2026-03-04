@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
-use crate::TimePeriod;
-use crate::common::note::Note;
 use crate::common::entity::Entity;
+use crate::common::note::Note;
+use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// PolicyManagedEntity represents a managed entity for policies.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

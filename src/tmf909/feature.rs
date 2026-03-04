@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Characteristic, ConstraintRef, FeatureRelationship};
+use serde::{Deserialize, Serialize};
 ///Configuration feature.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Feature {

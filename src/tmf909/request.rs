@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::HeaderItem;
+use serde::{Deserialize, Serialize};
 ///A response to a request
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Request {

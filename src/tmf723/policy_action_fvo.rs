@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 /// Policy Action attributes
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyActionFvo {}

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ServiceOrderItemRef;
+use serde::{Deserialize, Serialize};
 ///A ServiceOrderJeopardyAlert represents a predicted exception during a service order processing that would brings risk to complete successfully the ordetr.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceOrderJeopardyAlert {

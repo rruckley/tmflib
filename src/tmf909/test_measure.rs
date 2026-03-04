@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Characteristic, MeasureThresholdRuleViolation};
+use serde::{Deserialize, Serialize};
 ///A TestMeasure specifies a measure of a specific aspect of a product, service, or resource test, such as lost packets or connectivity status
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TestMeasure {

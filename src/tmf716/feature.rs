@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Characteristic, ConstraintRef, FeatureRelationship};
+use serde::{Deserialize, Serialize};
 ///Configuration feature.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Feature {
@@ -22,6 +22,7 @@ pub struct Feature {
     #[serde(rename = "featureCharacteristic")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub feature_characteristic: Vec<Characteristic>,
+    ///This is a list of relationships between this feature and other features.
     #[serde(rename = "featureRelationship")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub feature_relationship: Option<Vec<FeatureRelationship>>,

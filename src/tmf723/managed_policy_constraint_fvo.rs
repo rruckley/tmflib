@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{PolicyConstraintFvo, PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo};
+use serde::{Deserialize, Serialize};
 ///Managed PolicyConstraint
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyConstraintFvo {
@@ -8,7 +8,8 @@ pub struct ManagedPolicyConstraintFvo {
     pub policy_constraint_fvo: PolicyConstraintFvo,
     ///Managed Entity FVO attributes
     #[serde(flatten)]
-    pub policy_managed_entity_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo: PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo,
+    pub policy_managed_entity_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo:
+        PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo,
 }
 impl std::fmt::Display for ManagedPolicyConstraintFvo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {

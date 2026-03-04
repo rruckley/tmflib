@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
 use super::QuoteStateType;
 use crate::common::entity::Entity;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// Customer360 Quote VO
 #[derive(Debug, Clone, Serialize, Deserialize)]

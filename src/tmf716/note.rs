@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Extra information about a given entity
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
-pub struct Note {
+pub struct NoteXXX {
     ///When sub-classing, this defines the super-class
     #[serde(rename = "@baseType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -19,7 +19,7 @@ pub struct Note {
     pub author: Option<String>,
     ///Date of the note
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub date: Option<chrono::DateTime<chrono::Utc>>,
+    pub date: Option<crate::DateTime>,
     ///Identifier of the note within its containing entity
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
@@ -27,7 +27,7 @@ pub struct Note {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
-impl std::fmt::Display for Note {
+impl std::fmt::Display for NoteXXX {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }

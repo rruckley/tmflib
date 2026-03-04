@@ -1,14 +1,29 @@
+// Copyright [2026] [Ryan Ruckley]
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//! TMF716 Resource Reservation Management API Specification
+
 pub use any::*;
 pub use applicable_time_period::*;
 pub use attachment_ref_or_value::*;
 pub use cancel_resource_reservation::*;
+pub use cancel_resource_reservation_create::*;
 pub use cancel_resource_reservation_create_event::*;
 pub use cancel_resource_reservation_create_event_payload::*;
 pub use cancel_resource_reservation_information_required_event::*;
 pub use cancel_resource_reservation_information_required_event_payload::*;
 pub use cancel_resource_reservation_state_change_event::*;
 pub use cancel_resource_reservation_state_change_event_payload::*;
-pub use cancel_resource_reservation_create::*;
 pub use capacity::*;
 pub use capacity_amount::*;
 pub use capacity_ref::*;
@@ -38,6 +53,7 @@ pub use resource_relationship::*;
 pub use resource_reservation::*;
 pub use resource_reservation_attribute_value_change_event::*;
 pub use resource_reservation_attribute_value_change_event_payload::*;
+pub use resource_reservation_create::*;
 pub use resource_reservation_create_event::*;
 pub use resource_reservation_create_event_payload::*;
 pub use resource_reservation_delete_event::*;
@@ -48,7 +64,6 @@ pub use resource_reservation_item::*;
 pub use resource_reservation_ref::*;
 pub use resource_reservation_state_change_event::*;
 pub use resource_reservation_state_change_event_payload::*;
-pub use resource_reservation_create::*;
 pub use resource_reservation_update::*;
 pub use resource_specification_ref::*;
 pub use resource_status_type::*;
@@ -59,13 +74,13 @@ mod any;
 mod applicable_time_period;
 mod attachment_ref_or_value;
 mod cancel_resource_reservation;
+mod cancel_resource_reservation_create;
 mod cancel_resource_reservation_create_event;
 mod cancel_resource_reservation_create_event_payload;
 mod cancel_resource_reservation_information_required_event;
 mod cancel_resource_reservation_information_required_event_payload;
 mod cancel_resource_reservation_state_change_event;
 mod cancel_resource_reservation_state_change_event_payload;
-mod cancel_resource_reservation_create;
 mod capacity;
 mod capacity_amount;
 mod capacity_ref;
@@ -95,6 +110,7 @@ mod resource_relationship;
 mod resource_reservation;
 mod resource_reservation_attribute_value_change_event;
 mod resource_reservation_attribute_value_change_event_payload;
+mod resource_reservation_create;
 mod resource_reservation_create_event;
 mod resource_reservation_create_event_payload;
 mod resource_reservation_delete_event;
@@ -105,7 +121,6 @@ mod resource_reservation_item;
 mod resource_reservation_ref;
 mod resource_reservation_state_change_event;
 mod resource_reservation_state_change_event_payload;
-mod resource_reservation_create;
 mod resource_reservation_update;
 mod resource_specification_ref;
 mod resource_status_type;

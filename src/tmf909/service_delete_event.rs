@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ServiceDeleteEventPayload;
+use serde::{Deserialize, Serialize};
 ///The notification data structure
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServiceDeleteEvent {

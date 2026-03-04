@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{CustomerBillStateType};
+use super::CustomerBillStateType;
 use crate::common::entity::Entity;
+use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Serialize, Deserialize)]
 
 /// Customer360 Customer Bill VO

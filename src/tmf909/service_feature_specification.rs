@@ -1,8 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{
-    CharacteristicSpecification, ConstraintRef, FeatureSpecificationRelationship,
-};
+use super::{CharacteristicSpecification, ConstraintRef, FeatureSpecificationRelationship};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///Specification for service features
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

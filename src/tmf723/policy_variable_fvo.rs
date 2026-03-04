@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///A PolicyVariable is an entity for modeling different types of variables that can be used to form a PolicyCondition statement. It can be static or dynamic.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyVariableFvo {}

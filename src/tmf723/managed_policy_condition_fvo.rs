@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{PolicyConditionFvo, PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo};
+use serde::{Deserialize, Serialize};
 ///Managed PolicyCondition
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyConditionFvo {
@@ -8,7 +8,8 @@ pub struct ManagedPolicyConditionFvo {
     pub policy_condition_fvo: PolicyConditionFvo,
     ///Managed Entity FVO attributes
     #[serde(flatten)]
-    pub policy_managed_entity_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo: PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo,
+    pub policy_managed_entity_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo:
+        PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo,
 }
 impl std::fmt::Display for ManagedPolicyConditionFvo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {

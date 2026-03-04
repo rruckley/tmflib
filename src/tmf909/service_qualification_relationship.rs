@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 ///Relationship between Service Qualifications
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

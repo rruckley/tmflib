@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::Characteristic;
+use serde::{Deserialize, Serialize};
 ///Define the patterns of impact (optional), such as other service characteristics- Used when defining impact through another pattern than the pre-defined attributes
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ImpactPattern {

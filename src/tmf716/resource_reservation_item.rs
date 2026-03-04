@@ -1,8 +1,10 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    Capacity, RelatedEntity, RelatedPartyRef, ReservationItemActionType,
-    ReservationItemStateType, ResourceRefOrValue, TimePeriod,
+    Capacity, RelatedEntity, RelatedPartyRef, ReservationItemActionType, ReservationItemStateType,
+    ResourceRefOrValue, TimePeriod,
 };
+use serde::{Deserialize, Serialize};
+
+///ResourceReservationItem struct
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResourceReservationItem {
     ///When sub-classing, this defines the super-class
@@ -31,14 +33,18 @@ pub struct ResourceReservationItem {
     ///A string. Identifier of the item.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
+    /// Quantity of the reservation item
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub quantity: Option<i64>,
+    ///A string used to give a name to the reservation item
     #[serde(rename = "relatedEntity")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub related_entity: Option<Vec<RelatedEntity>>,
+    ///A string used to give a name to the reservation item
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedPartyRef>>,
+    ///A string used to give a name to the reservation item
     #[serde(rename = "reservationItem")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub reservation_item: Option<Vec<ResourceReservationItem>>,
@@ -55,7 +61,7 @@ pub struct ResourceReservationItem {
     ///The date and time the state changed.
     #[serde(rename = "stateChangeDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub state_change_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub state_change_date: Option<crate::DateTime>,
     ///The reason for changing the state
     #[serde(rename = "stateChangeReason")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

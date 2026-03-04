@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ServiceOrderItemRef;
+use serde::{Deserialize, Serialize};
 ///ServiceOrderMilestone represents an action or event marking a significant change or stage in processing of a service order.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceOrderMilestone {

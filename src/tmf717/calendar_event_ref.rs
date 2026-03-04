@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Reference of a CalendarEvent
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CalendarEventRef {}

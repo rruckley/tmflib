@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///External reference of the individual or reference in other system
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ExternalReference {

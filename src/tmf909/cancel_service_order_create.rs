@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ServiceOrderRef;
+use serde::{Deserialize, Serialize};
 /**Request for cancellation an existing Service order
 Skipped properties: id,href,state,effectiveCancellationDate,completionMessage,errorMessage*/
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

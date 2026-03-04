@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::PartyRefOrPartyRoleRef;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 /// Related Party Reference or Party Role Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

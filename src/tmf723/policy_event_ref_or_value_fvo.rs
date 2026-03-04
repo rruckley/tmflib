@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Container for PolicyEvent Reference or PolicyEvent object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyEventRefOrValueFvo {}

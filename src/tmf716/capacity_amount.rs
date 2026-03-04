@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Quantity that defines the Capacity.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CapacityAmount {
@@ -26,8 +26,8 @@ pub struct CapacityAmount {
     #[serde(rename = "capacityAmountTo")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub capacity_amount_to: Option<String>,
-    /**An indicator that specifies the inclusion or exclusion of the capacityAmount From and capacityAmountTo attributes. 
-Possible values are "open", "closed", "closedBottom" and "closedTop".*/
+    /**An indicator that specifies the inclusion or exclusion of the capacityAmount From and capacityAmountTo attributes.
+    Possible values are "open", "closed", "closedBottom" and "closedTop".*/
     #[serde(rename = "rangeInterval")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub range_interval: Option<String>,

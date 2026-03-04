@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{PolicyVariableRefOrValueMvo};
+use super::PolicyVariableRefOrValueMvo;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 /// PolicyOperatorMvo represents a managed policy operator with extensible attributes.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

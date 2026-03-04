@@ -7,10 +7,10 @@ use std::convert::From;
 use uuid::Uuid;
 
 /// A note is a comment, observation, or remark made by a user or system about a particular entity. It typically contains textual information that provides additional context, insights, or feedback related to the entity it is associated with. Notes can be used for various purposes, such as documenting important details, sharing observations, or recording feedback.
-#[derive(Clone, Debug, Deserialize, PartialEq, Default,Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Default, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Note {
-        ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///When sub-classing, this defines the super-class
@@ -99,5 +99,5 @@ mod test {
 
         assert_eq!(note.author.is_some(), true);
         assert_eq!(note.author.unwrap(), "AnAuthor".to_string());
-    }  
+    }
 }

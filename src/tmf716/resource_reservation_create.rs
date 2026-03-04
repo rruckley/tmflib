@@ -1,8 +1,8 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    ChannelRef, RelatedEntity, RelatedPartyRef, ReservationStateType,
-    ResourceReservationItem, TimePeriod,
+    ChannelRef, RelatedEntity, RelatedPartyRef, ReservationStateType, ResourceReservationItem,
+    TimePeriod,
 };
+use serde::{Deserialize, Serialize};
 ///Skipped properties: id,href
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResourceReservationCreate {
@@ -36,7 +36,7 @@ pub struct ResourceReservationCreate {
     ///Date when the reservation was created
     #[serde(rename = "creationDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub creation_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub creation_date: Option<crate::DateTime>,
     ///A string. free-text description of the reservation.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -44,9 +44,11 @@ pub struct ResourceReservationCreate {
     #[serde(rename = "expectedCompletionDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub expected_completion_date: Option<String>,
+    ///Related Entity involved in the reservation
     #[serde(rename = "relatedEntity")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub related_entity: Option<Vec<RelatedEntity>>,
+    ///Related Party involved in the reservation
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedPartyRef>>,
@@ -58,6 +60,7 @@ pub struct ResourceReservationCreate {
     #[serde(rename = "requestedStartDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub requested_start_date: Option<String>,
+    ///Reservation fulfillment end date wished by the requestor. This is used when, for any reason, requestor cannot allow the reservation to end after a specific date.
     #[serde(rename = "reservationItem")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub reservation_item: Option<Vec<ResourceReservationItem>>,
@@ -71,7 +74,7 @@ pub struct ResourceReservationCreate {
     ///The date and time the state changed.
     #[serde(rename = "stateChangeDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub state_change_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub state_change_date: Option<crate::DateTime>,
     ///The reason for changing the state
     #[serde(rename = "stateChangeReason")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

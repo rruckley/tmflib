@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Constraint reference. The Constraint resource represents a policy/rule applied to an entity or entity spec.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ConstraintRef {

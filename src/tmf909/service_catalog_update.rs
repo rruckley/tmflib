@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{RelatedParty, ServiceCategoryRef};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// The root entity for service catalog management.
 /// A service catalog is a group of service specifications made available through service candidates that an organization provides to the consumers (internal consumers like its employees or B2B customers or B2C customers).

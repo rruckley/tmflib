@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///A reference to an entity, where the type of the entity is not known in advance.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedEntity {

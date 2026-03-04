@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Related Entity reference. A related place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the RelatedPlaceRefOrValue class itself
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPlaceRefOrValue {
@@ -27,6 +27,7 @@ pub struct RelatedPlaceRefOrValue {
     ///A user-friendly name for the place, such as [Paris Store], [London Store], [Main Home]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    ///A description of the place
     pub role: String,
 }
 impl std::fmt::Display for RelatedPlaceRefOrValue {

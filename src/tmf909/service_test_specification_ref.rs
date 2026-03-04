@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///The service test specification used by the service test.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceTestSpecificationRef {

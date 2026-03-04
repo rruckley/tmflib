@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::common::entity::Entity;
+use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 
 /// Customer360 Account VO

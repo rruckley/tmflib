@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 /// Party or Party Role
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

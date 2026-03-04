@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///A Party reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyRef {}

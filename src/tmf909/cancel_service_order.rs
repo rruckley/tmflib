@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{ErrorMessage, ServiceOrderRef, TaskStateType};
+use serde::{Deserialize, Serialize};
 ///Request for cancellation an existing Service order
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CancelServiceOrder {

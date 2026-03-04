@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{PolicyEventMvo, PolicyManagedEntityMvo};
+use serde::{Deserialize, Serialize};
 ///Managed PolicyEvent
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyEventMvo {

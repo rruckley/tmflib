@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::EntityRef;
+use serde::{Deserialize, Serialize};
 ///A set of alarm ids identifying the alarms that are underlying this problem.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceAlarmRef {

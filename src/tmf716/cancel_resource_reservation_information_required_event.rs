@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::CancelResourceReservationInformationRequiredEventPayload;
+use serde::{Deserialize, Serialize};
 ///The notification data structure
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CancelResourceReservationInformationRequiredEvent {
@@ -23,7 +23,7 @@ pub struct CancelResourceReservationInformationRequiredEvent {
     ///Time of the event occurrence.
     #[serde(rename = "eventTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub event_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub event_time: Option<crate::DateTime>,
     ///The type of the notification.
     #[serde(rename = "eventType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -38,7 +38,7 @@ pub struct CancelResourceReservationInformationRequiredEvent {
     ///The time the event occured.
     #[serde(rename = "timeOcurred")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub time_ocurred: Option<chrono::DateTime<chrono::Utc>>,
+    pub time_ocurred: Option<crate::DateTime>,
     ///The title of the event.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,

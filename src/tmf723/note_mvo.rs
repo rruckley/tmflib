@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 /// NoteMvo represents a note with author, date, id, and text fields.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

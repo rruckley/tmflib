@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Refers an appointment, such as a Customer presentation or internal meeting or site visit
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AppointmentRef {

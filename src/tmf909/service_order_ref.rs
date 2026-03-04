@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Service Order reference. Useful to understand the which was the Service order through which the service was instantiated in the service inventory
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceOrderRef {

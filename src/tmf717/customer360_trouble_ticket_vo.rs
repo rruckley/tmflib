@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::TroubleTicketStatusType;
 use crate::common::entity::Entity;
+use serde::{Deserialize, Serialize};
 // use crate::TimePeriod;
 
 /// Customer360 Trouble Ticket VO
@@ -39,7 +39,7 @@ pub struct Customer360TroubleTicketVo {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub requested_resolution_date: Option<crate::DateTime>,
     /**The severity of the issue. Indicate the implication of the issue on the expected functionality e.g. of a system, application, service etc..
-Severity values can be for example : Critical, Major, Minor*/
+    Severity values can be for example : Critical, Major, Minor*/
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub severity: Option<String>,
     ///Possible values for the status of the trouble ticket

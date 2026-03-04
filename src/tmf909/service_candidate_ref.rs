@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///ServiceCandidate reference. ServiceCandidate is an entity that makes a ServiceSpecification available to a catalog.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceCandidateRef {

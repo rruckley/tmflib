@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///An amount in a given unit
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Quantity {

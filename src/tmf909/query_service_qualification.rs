@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{RelatedParty, ServiceQualificationItem, TaskStateType};
+use serde::{Deserialize, Serialize};
 ///QueryServiceQualification is used to retrieve a list of services that are technically available in the context of the interaction (place, party, service characteristics, ...).
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QueryServiceQualification {
