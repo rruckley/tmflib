@@ -14,8 +14,7 @@ fn test_service_bandwidth_upgrade() {
     let current_bandwidth = service.get_characteristics("bandwidth");
 
     assert_eq!(current_bandwidth.is_some(), true);
-    assert_eq!(current_bandwidth.unwrap().len(),1);
-
+    assert_eq!(current_bandwidth.unwrap().len(), 1);
 
     // let service_order =
     // // Check if the event is generated correctly

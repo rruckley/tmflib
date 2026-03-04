@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 ///A dependency, substitution or exclusivity relationship between/among service specifications.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceSpecRelationship {

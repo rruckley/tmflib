@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{AppliedConsequence, Duration};
+use serde::{Deserialize, Serialize};
 /**A measureThresholdRuleViolation is a violation of a rule that defines the in the
 MericDefMeasureThresholdRule.*/
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -21,17 +21,17 @@ pub struct MeasureThresholdRuleViolation {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub applied_consequence: Option<Vec<AppliedConsequence>>,
     /**An operator that when applied on a value specifies whether it
-is the same target value or not. This operator is used to compare with the conformanceTargetExact if used.*/
+    is the same target value or not. This operator is used to compare with the conformanceTargetExact if used.*/
     #[serde(rename = "conformanceComparatorExact")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub conformance_comparator_exact: Option<bool>,
     /**An operator that when applied on a value specifies whether a
-threshold is crossed or ceased to be crossed. This operator is used to compare with the conformanceTargetLower if used.*/
+    threshold is crossed or ceased to be crossed. This operator is used to compare with the conformanceTargetLower if used.*/
     #[serde(rename = "conformanceComparatorLower")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub conformance_comparator_lower: Option<String>,
     /**An operator that when applied on a value specifies whether a
-threshold is crossed or ceased to be crossed. This operator is used to compare with the conformanceTargetUpper if used.*/
+    threshold is crossed or ceased to be crossed. This operator is used to compare with the conformanceTargetUpper if used.*/
     #[serde(rename = "conformanceComparatorUpper")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub conformance_comparator_upper: Option<String>,
@@ -40,12 +40,12 @@ threshold is crossed or ceased to be crossed. This operator is used to compare w
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub conformance_target_exact: Option<String>,
     /**A value used to determine if the threshold is crossed or ceases
-to be crossed. It represents the lower limit. The value should be less than the conformanceTargetUpper if used. The conformance comparators should also be logically defined so as to not lead to a logically impossible condition.*/
+    to be crossed. It represents the lower limit. The value should be less than the conformanceTargetUpper if used. The conformance comparators should also be logically defined so as to not lead to a logically impossible condition.*/
     #[serde(rename = "conformanceTargetLower")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub conformance_target_lower: Option<String>,
     /**A value used to determine if the threshold is crossed or ceases
-to be crossed. It represents the Upper limit. The value should be greater than the conformanceTargetLower if used. The conformance comparators should also be logically defined so as to not lead to a logically impossible condition.*/
+    to be crossed. It represents the Upper limit. The value should be greater than the conformanceTargetLower if used. The conformance comparators should also be logically defined so as to not lead to a logically impossible condition.*/
     #[serde(rename = "conformanceTargetUpper")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub conformance_target_upper: Option<String>,
@@ -56,12 +56,12 @@ to be crossed. It represents the Upper limit. The value should be greater than t
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /**The number of allowed crossing occurrences in reference to the
-tolerancePeriod without a consequence being initiated.*/
+    tolerancePeriod without a consequence being initiated.*/
     #[serde(rename = "numberOfAllowedCrossing")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub number_of_allowed_crossing: Option<i64>,
     /**A threshold can be generated in different severity levels. A
-crossing for each level may require a different condition and possibly trigger a different consequence.*/
+    crossing for each level may require a different condition and possibly trigger a different consequence.*/
     #[serde(rename = "thresholdRuleSeverity")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub threshold_rule_severity: Option<String>,

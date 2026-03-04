@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
 use super::{AttachmentRefOrValue, TaxDefinition};
 use crate::common::extensible::Extensible;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// Tax Exemption Certificate
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

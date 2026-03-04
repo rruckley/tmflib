@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ServiceCandidateCreateEventPayload;
+use serde::{Deserialize, Serialize};
 ///The notification data structure
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceCandidateCreateEvent {

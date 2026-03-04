@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::ServiceRef;
 use crate::common::entity::Entity;
+use serde::{Deserialize, Serialize};
 // use crate::TimePeriod;
 
 /// Customer360 Service Problem VO

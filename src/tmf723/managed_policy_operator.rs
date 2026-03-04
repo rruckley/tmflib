@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{PolicyManagedEntity, PolicyOperator};
+use serde::{Deserialize, Serialize};
 ///Managed PolicyOperator
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyOperator {

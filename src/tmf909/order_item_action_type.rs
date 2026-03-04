@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///action to be performed on the product
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum OrderItemActionType {

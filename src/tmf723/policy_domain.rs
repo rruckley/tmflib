@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{PolicyManagedEntity, Reference};
+use serde::{Deserialize, Serialize};
 
 /// PolicyDomain represents a domain for managing policies within a specific scope.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

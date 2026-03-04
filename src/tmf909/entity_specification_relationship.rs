@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{AssociationSpecificationRef};
+use super::AssociationSpecificationRef;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///A migration, substitution, dependency or exclusivity relationship between/among entity specifications.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{ ProductOfferingRef, ProductStatusType};
+use super::{ProductOfferingRef, ProductStatusType};
 use crate::common::entity::Entity;
+use serde::{Deserialize, Serialize};
 
 /// Customer360 Product VO
 #[derive(Debug, Clone, Serialize, Deserialize)]

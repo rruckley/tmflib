@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ServiceOrderItemRef;
+use serde::{Deserialize, Serialize};
 ///Linked service order item to the one containing this attribute
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceOrderItemRelationship {

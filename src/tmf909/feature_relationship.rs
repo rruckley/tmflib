@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 ///Configuration feature
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct FeatureRelationship {

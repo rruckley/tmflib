@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use crate::common::entity::Entity;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 
 /// Customer360 Party Interaction VO

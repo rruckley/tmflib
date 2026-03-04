@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{EntityFvo, NoteFvo};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo represents a managed entity for policies with various attributes.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

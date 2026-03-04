@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Policy is a set of rules that are used to manage and control the state and state transitions of one or more managed objects.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Policy {}

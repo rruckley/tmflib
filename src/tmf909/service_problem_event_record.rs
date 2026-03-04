@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Any, ServiceProblemRef};
+use serde::{Deserialize, Serialize};
 ///A record of an event (related to a service problem) received from another system
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceProblemEventRecord {

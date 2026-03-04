@@ -1,9 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{
-    NetworkProductRef, RelatedParty, UsageConsumptionReportRef,
-    UsageVolumeProductRef,
-};
+use super::{NetworkProductRef, RelatedParty, UsageConsumptionReportRef, UsageVolumeProductRef};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// An UsageConsumptionReportRequest allows to manage the calculation request of an usage consumption report
 /// Skipped properties: id,href*/

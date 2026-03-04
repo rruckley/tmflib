@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{PolicyEventFvo, PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo};
+use serde::{Deserialize, Serialize};
 ///Managed PolicyEvent
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyEventFvo {
@@ -8,7 +8,8 @@ pub struct ManagedPolicyEventFvo {
     pub policy_event_fvo: PolicyEventFvo,
     ///Inlined fields from PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo
     #[serde(flatten)]
-    pub policy_managed_entity_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo: PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo,
+    pub policy_managed_entity_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo:
+        PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo,
 }
 impl std::fmt::Display for ManagedPolicyEventFvo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {

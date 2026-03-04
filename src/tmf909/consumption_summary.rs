@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{NetworkProductRef, Quantity, RelatedParty};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///The consumption counters (called ConsumptionSummary in the SID model) detail for example the different kind of consumption done on the bucket.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

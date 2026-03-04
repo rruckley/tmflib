@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///represents an Error
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ErrorMessage {

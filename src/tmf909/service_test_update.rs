@@ -1,8 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{
-    Characteristic, RelatedParty, ServiceRef, ServiceTestSpecificationRef, TestMeasure,
-};
+use super::{Characteristic, RelatedParty, ServiceRef, ServiceTestSpecificationRef, TestMeasure};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// A service test is an entity that exists for a controlled test invocation on a service. The service
 /// test is executed according to a schedule and contains service test configuration parameters that are to be
@@ -21,7 +19,7 @@ pub struct ServiceTestUpdate {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub end_date_time: Option<crate::DateTime>,
     /**An indication of whether the service test is running in
-"PROACTIVE" or "ONDEMAND" mode*/
+    "PROACTIVE" or "ONDEMAND" mode*/
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub mode: Option<String>,
     ///The name of the service test

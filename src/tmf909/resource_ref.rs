@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 ///Reference to a resource.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

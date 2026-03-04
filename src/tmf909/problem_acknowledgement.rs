@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{ServiceProblemRef, TrackingRecord};
+use serde::{Deserialize, Serialize};
 ///Task resource that requests acknowledgement of problems by the problem handler.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ProblemAcknowledgement {

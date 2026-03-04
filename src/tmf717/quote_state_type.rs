@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Possible values for the state of the quote
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum QuoteStateType {

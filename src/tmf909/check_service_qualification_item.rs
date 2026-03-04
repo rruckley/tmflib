@@ -1,9 +1,9 @@
-use serde::{Serialize, Deserialize};
 use super::{
     AlternateServiceProposal, ServiceCategoryRef, ServiceEligibilityUnavailabilityReason,
-    ServiceQualificationItemRelationship, ServiceQualificationRelationship,
-    ServiceRefOrValue, TerminationError,
+    ServiceQualificationItemRelationship, ServiceQualificationRelationship, ServiceRefOrValue,
+    TerminationError,
 };
+use serde::{Deserialize, Serialize};
 ///A ServiceQualificationItem relates to a specific service being checked in a qualification operation.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CheckServiceQualificationItem {
@@ -29,9 +29,7 @@ pub struct CheckServiceQualificationItem {
     ///A list of eligibility unavailability reasons (EligibilityUnavailabilityReason [*]). Reason for eligibility result if the serviceQualification result is no (meaning the service is not available).
     #[serde(rename = "eligibilityUnavailabilityReason")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub eligibility_unavailability_reason: Option<
-        Vec<ServiceEligibilityUnavailabilityReason>,
-    >,
+    pub eligibility_unavailability_reason: Option<Vec<ServiceEligibilityUnavailabilityReason>>,
     ///The date when the service is expected to be activated
     #[serde(rename = "expectedActivationDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -53,9 +51,7 @@ pub struct CheckServiceQualificationItem {
     ///A list of qualification item relationships used to describe relationship between serviceQualification item from the same serviceQualification.
     #[serde(rename = "qualificationItemRelationship")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub qualification_item_relationship: Option<
-        Vec<ServiceQualificationItemRelationship>,
-    >,
+    pub qualification_item_relationship: Option<Vec<ServiceQualificationItemRelationship>>,
     ///Structure used to describe relationship between serviceQualification item from the same serviceQualification.
     #[serde(rename = "qualificationRelationship")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 /**A MetricDefMeasureConsequence defines the action (prescribed action or notification) to take when a
 MetricDefMeasureThresholdRule is crossed.*/
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -20,17 +20,17 @@ pub struct MetricDefMeasureConsequence {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     /**A word, term, or phrase by which a
-MetricDefMeasureConsequence is known and distinguished from other MetricDefMeasureConsequences.*/
+    MetricDefMeasureConsequence is known and distinguished from other MetricDefMeasureConsequences.*/
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /**Recommended remedy for a violated threshold. This could be
-the hyperlink to the action.*/
+    the hyperlink to the action.*/
     #[serde(rename = "prescribeAction")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub prescribe_action: Option<String>,
     /**An indicator used to specify that a consequence should cease
-being applied if a value is in the same range as the previous value or continue being applied if a value is in the same range as the previous value.
-If the repeatAction is True, if the consequence is always applied as soon as the MetricMeasure value is in the range of values and if the repeatAction is False, the consequence is applied only if the previous MetricMeasure value was not in the same range.*/
+    being applied if a value is in the same range as the previous value or continue being applied if a value is in the same range as the previous value.
+    If the repeatAction is True, if the consequence is always applied as soon as the MetricMeasure value is in the range of values and if the repeatAction is False, the consequence is applied only if the previous MetricMeasure value was not in the same range.*/
     #[serde(rename = "repeatAction")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub repeat_action: Option<bool>,

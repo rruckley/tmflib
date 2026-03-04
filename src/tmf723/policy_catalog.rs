@@ -1,9 +1,9 @@
-use serde::{Serialize, Deserialize};
 use super::{
     ManagedPolicy, ManagedPolicyAction, ManagedPolicyCondition, ManagedPolicyConstraint,
-    ManagedPolicyEvent, ManagedPolicyExpression, ManagedPolicyOperator,
-    ManagedPolicyVariable, PolicyManagedEntity, Reference,
+    ManagedPolicyEvent, ManagedPolicyExpression, ManagedPolicyOperator, ManagedPolicyVariable,
+    PolicyManagedEntity, Reference,
 };
+use serde::{Deserialize, Serialize};
 
 /// PolicyCatalog represents a collection of managed policies and related entities.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

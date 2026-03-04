@@ -1,14 +1,7 @@
-use serde::{Serialize, Deserialize};
-use super::{ServiceCandidateRef, ServiceCategoryRef,MOD_PATH};
-use crate::{
-    TimePeriod,
-    HasId,
-    HasDescription,
-};
-use tmflib_derive::{
-    HasId,
-    HasDescription,
-};
+use super::{ServiceCandidateRef, ServiceCategoryRef, MOD_PATH};
+use crate::{HasDescription, HasId, TimePeriod};
+use serde::{Deserialize, Serialize};
+use tmflib_derive::{HasDescription, HasId};
 
 const CLASS_PATH: &str = "serviceCategory";
 

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Characteristic, ServiceRefOrValue};
+use serde::{Deserialize, Serialize};
 
 ///Relationship between a service and another service.
 #[derive(Debug, Clone, Serialize, Deserialize)]

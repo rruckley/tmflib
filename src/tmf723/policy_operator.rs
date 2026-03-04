@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::PolicyVariableRefOrValue;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///PolicyOperator schema definition
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

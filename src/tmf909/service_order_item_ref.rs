@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 ///An item of a service order reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Reference of an usage consumption report
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct UsageConsumptionReportRef {

@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use crate::common::extensible::Extensible;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// Contact Medium
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

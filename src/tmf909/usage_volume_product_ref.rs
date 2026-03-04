@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Reference of a bucket
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct UsageVolumeProductRef {

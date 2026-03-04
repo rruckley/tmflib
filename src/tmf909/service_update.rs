@@ -1,10 +1,10 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    Characteristic, Feature, RelatedEntityRefOrValue, RelatedParty,
-    RelatedPlaceRefOrValue, RelatedServiceOrderItem, ResourceRef, ServiceRefOrValue,
-    ServiceRelationship, ServiceSpecificationRef, ServiceStateType,
+    Characteristic, Feature, RelatedEntityRefOrValue, RelatedParty, RelatedPlaceRefOrValue,
+    RelatedServiceOrderItem, ResourceRef, ServiceRefOrValue, ServiceRelationship,
+    ServiceSpecificationRef, ServiceStateType,
 };
 use crate::common::note::Note;
+use serde::{Deserialize, Serialize};
 /**Service is a base class for defining the Service hierarchy. All Services are characterized as either being possibly visible and usable by a Customer or not. This gives rise to the two subclasses of Service: CustomerFacingService and ResourceFacingService.
 Skipped properties: id,href,serviceDate*/
 #[derive(Debug, Clone, Serialize, Deserialize)]

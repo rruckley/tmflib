@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ServiceRefOrValue;
+use serde::{Deserialize, Serialize};
 ///Alternate service proposal is used when the requested service is not available with characteristic and date asked for. An alternate proposal could be a distinct serviceSpecification close to requested one or same as requested but with a different activation date
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AlternateServiceProposal {

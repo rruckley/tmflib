@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Linked service order to the one containing this attribute
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceOrderRelationship {

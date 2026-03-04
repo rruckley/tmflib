@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 // use super::{Addressable, Extensible};
 use crate::common::addressable::Addressable;
 

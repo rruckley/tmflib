@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::{Duration, MetricDefMeasureThresholdRule};
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///A TestMeasureDefinition specifies a measure of a specific aspect of a product, service, or resource test, such as lost packets or connectivity status
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

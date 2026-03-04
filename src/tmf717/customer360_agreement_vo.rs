@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
 use super::AgreementSpecificationRef;
 use crate::common::entity::Entity;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// Customer360 Agreement VO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

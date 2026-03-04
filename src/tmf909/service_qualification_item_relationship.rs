@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Structure used to describe relationship between serviceQualification items from the same serviceQualification.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceQualificationItemRelationship {

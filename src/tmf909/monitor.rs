@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Request, Response};
+use serde::{Deserialize, Serialize};
 ///Monitoring of resources
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Monitor {

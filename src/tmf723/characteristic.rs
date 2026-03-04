@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use super::{CharacteristicRelationship};
+use super::CharacteristicRelationship;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Characteristic schema definition
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

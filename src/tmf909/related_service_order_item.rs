@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::OrderItemActionType;
+use serde::{Deserialize, Serialize};
 ///RelatedServiceOrderItem (a ServiceOrder item) .The service order item which triggered service creation/change/termination.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RelatedServiceOrderItem {

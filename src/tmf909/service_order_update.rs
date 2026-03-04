@@ -1,9 +1,9 @@
-use serde::{Serialize, Deserialize};
 use super::{
     ExternalReference, RelatedParty, ServiceOrderItem, ServiceOrderRelationship,
     ServiceOrderStateType,
 };
 use crate::common::note::Note;
+use serde::{Deserialize, Serialize};
 
 ///Skipped properties: id,href,orderDate,jeopardyAlert,errorMessage,milestone,@baseType,@schemaLocation,@type,cancellationDate,cancellationReason,category,completionDate,startDate
 #[derive(Debug, Clone, Serialize, Deserialize)]

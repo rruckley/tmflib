@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ServiceCategoryChangeEventPayload;
+use serde::{Deserialize, Serialize};
 ///The notification data structure
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceCategoryChangeEvent {

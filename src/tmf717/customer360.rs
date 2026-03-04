@@ -1,13 +1,13 @@
-use serde::{Serialize, Deserialize};
 use super::{
     Customer360AccountVo, Customer360AgreementVo, Customer360AppointmentVo,
     Customer360CustomerBillVo, Customer360CustomerVo, Customer360LoyaltyAccountVo,
     Customer360PartyInteractionVo, Customer360PaymentMethodVo, Customer360ProductOrderVo,
-    Customer360ProductVo, Customer360PromotionVo, Customer360QuoteVo,
-    Customer360RecommendationVo, Customer360ServiceProblemVo, Customer360TroubleTicketVo,
+    Customer360ProductVo, Customer360PromotionVo, Customer360QuoteVo, Customer360RecommendationVo,
+    Customer360ServiceProblemVo, Customer360TroubleTicketVo,
 };
 use crate::common::entity::Entity;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 /// Customer360
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
