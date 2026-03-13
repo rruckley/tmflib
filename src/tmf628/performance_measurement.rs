@@ -14,7 +14,7 @@
 //! Performance Measurement object model for TMF628 Performance Management
 
 use super::{MeasurementCollectionJobRef, PerformanceMeasurementRelationship};
-use crate::{common::entity::Entity, HasDescription, HasId,HasEntity, TimePeriod};
+use crate::{common::entity::Entity, HasDescription, HasId, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasEntity,HasDescription};
 use super::MOD_PATH;
