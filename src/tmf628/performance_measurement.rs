@@ -13,15 +13,16 @@
 // limitations under the License.
 //! Performance Measurement object model for TMF628 Performance Management
 
-use super::{MeasurementCollectionJobRef, PerformanceMeasurementRelationship, MOD_PATH};
-use crate::{common::entity::Entity, HasDescription, HasEntity, TimePeriod};
+use super::{MeasurementCollectionJobRef, PerformanceMeasurementRelationship};
+use crate::{common::entity::Entity, HasDescription, HasId,HasEntity, TimePeriod};
 use serde::{Deserialize, Serialize};
-use tmflib_derive::HasDescription;
+use tmflib_derive::{HasEntity,HasDescription};
+use super::MOD_PATH;
 
 const CLASS_PATH: &str = "measurement";
 
 /// Performance Measurement
-#[derive(Debug, Clone, Serialize, HasDescription, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, HasEntity,HasDescription, Deserialize, Default)]
 pub struct PerformanceMeasurement {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
@@ -46,62 +47,6 @@ pub struct PerformanceMeasurement {
     pub valid_for: Option<TimePeriod>,
 }
 
-impl HasEntity for PerformanceMeasurement {
-    fn generate_id(&mut self) {
-        let id = PerformanceMeasurement::get_uuid();
-        self.id = id.into();
-        self.generate_href();
-    }
-    fn generate_href(&mut self) {
-        let href = format!(
-            "{}/{}",
-            PerformanceMeasurement::get_class_href(),
-            self.get_id()
-        );
-        self.href = href.into();
-    }
-
-    fn get_id(&self) -> String {
-        match self.id.as_ref() {
-            Some(id) => id.clone(),
-            None => String::default(),
-        }
-    }
-
-    fn get_href(&self) -> String {
-        match self.href.as_ref() {
-            Some(href) => href.clone(),
-            None => String::default(),
-        }
-    }
-
-    fn get_class() -> String {
-        CLASS_PATH.to_string()
-    }
-
-    fn get_class_href() -> String {
-        format!(
-            "/{}/{}/{}",
-            crate::get_lib_path(),
-            MOD_PATH,
-            PerformanceMeasurement::get_class()
-        )
-    }
-
-    fn get_mod_path() -> String {
-        format!("/{}/{}", crate::get_lib_path(), MOD_PATH)
-    }
-
-    fn set_id(&mut self, id: impl Into<String>) {
-        self.id = Some(id.into());
-        self.generate_href();
-    }
-
-    fn id(mut self, id: impl Into<String>) -> Self {
-        self.set_id(id);
-        self
-    }
-}
 impl std::fmt::Display for PerformanceMeasurement {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
