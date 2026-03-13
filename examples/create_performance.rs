@@ -2,7 +2,7 @@
 //!
 
 use tmflib::tmf628::performance_measurement::PerformanceMeasurement;
-use tmflib::{HasDescription, HasEntity};
+use tmflib::{HasDescription,HasId};
 
 fn main() {
     let perf = PerformanceMeasurement::create().description("Example Performance Measurement");
