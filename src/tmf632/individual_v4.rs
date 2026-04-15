@@ -12,7 +12,7 @@ use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
 
-use crate::{gen_code, DateTime, HasId, HasName, HasReference, HasRelatedParty, TMFEvent};
+use crate::{gen_code, DateTime, HasId, HasName, HasReference, HasRelatedParty, TMFEvent, IsAddressable};
 use tmflib_derive::{HasId, HasRelatedParty};
 
 const CLASS_PATH: &str = "individual";
@@ -276,6 +276,12 @@ impl Individual {
         };
         self.replace_characteristic(code_char);
         self.replace_characteristic(hash_char);
+    }
+}
+
+impl IsAddressable for Individual {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

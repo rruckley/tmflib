@@ -20,6 +20,76 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, Data, DeriveInput};
 
+/// Derive macro for HasEntity trait. This will generate the necessary code to implement the HasEntity trait for any struct that has an "entity" field of type Entity.
+#[proc_macro_derive(HasEntity)]
+pub fn hasentity_derive(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+
+    let fields = match input.data {
+        Data::Struct(s) => s
+            .fields
+            .into_iter()
+            .map(|f| f.ident.unwrap().to_string())
+            .collect::<Vec<_>>(),
+        _ => panic!("HasId only supports Struct"),
+    };
+
+     let name = input.ident;
+    // Ensure id field is present
+    let _entity = fields
+        .iter()
+        .find(|s| *s == "entity")
+        .expect("No entity field present");
+
+    let out = quote! {
+
+        impl HasId for #name {
+            fn generate_id(&mut self) {
+                let id = #name::get_uuid();
+                self.id = id.into();
+                self.generate_href();
+            }
+            fn generate_href(&mut self) {
+                let href = format!("{}/{}",#name::get_class_href(),self.get_id());
+                self.href = href.into();
+            }
+            fn get_id(&self) -> String {
+                match self.id.as_ref() {
+                    Some(i) => i.clone(),
+                    None => String::default(),
+                }
+            }
+            fn get_href(&self) -> String {
+                match self.href.as_ref() {
+                    Some(h) => h.clone(),
+                    None => String::default(),
+                }
+            }
+            fn get_class() -> String {
+                CLASS_PATH.to_string()
+            }
+            fn get_class_href() -> String {
+                format!("/{}/{}/{}",crate::get_lib_path(),MOD_PATH,#name::get_class())
+            }
+            fn get_mod_path() -> String {
+                format!("/{}/{}",crate::get_lib_path(),MOD_PATH)
+            }
+            fn set_id(&mut self, id : impl Into<String>) {
+                self.id = Some(id.into());
+                // Since we have changed the Id, the href will be invalid.
+                self.generate_href();
+            }
+
+            fn id(mut self, id : impl Into<String>) -> Self {
+                self.set_id(id);
+                self
+            }
+        }
+    };
+    
+    out.into()
+}
+
 /// Generate code for struct when HasId trait is required.
 /// NB: This trait requires both id and href fields to be present.
 #[proc_macro_derive(HasId)]

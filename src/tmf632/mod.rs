@@ -46,6 +46,10 @@ pub struct Characteristic {
     r#type: Option<String>,
 }
 
+fn get_objects() -> Vec<&'static str> {
+    vec!["individual","organization"]
+}
+
 #[cfg(test)]
 mod test {
 

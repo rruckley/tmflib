@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{gen_code, HasId, HasName, HasReference, TMFEvent, TimePeriod};
+use crate::{gen_code, HasId, HasName, HasReference, TMFEvent, TimePeriod,IsAddressable};
 use tmflib_derive::{HasId, HasName};
 
 use crate::common::{
@@ -167,6 +167,12 @@ impl Organization {
                 None
             }
         }
+    }
+}
+
+impl IsAddressable for Organization {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 
