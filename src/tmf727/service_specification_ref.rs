@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use super::{EntityRef, Extensible};
+use super::EntityRef;
 use crate::common::extensible::Extensible;
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

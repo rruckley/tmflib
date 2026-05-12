@@ -2,6 +2,7 @@ use serde::{Serialize, Deserialize};
 use super::CharacteristicRelationshipMvo;
 use crate::common::extensible::Extensible;
 
+///A characteristic is a quality or distinctive feature of an entity. It represents a specific attribute or property that helps to define and differentiate the entity from others. Characteristics can be used to describe various aspects of an entity, such as its physical attributes, behavior, or performance. They play a crucial role in understanding and categorizing entities based on their unique features and qualities.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
