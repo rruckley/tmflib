@@ -20,10 +20,21 @@ use super::{
 };
 use crate::common::entity::Entity;
 use serde::{Deserialize, Serialize};
+use crate::IsAddressable;
+use crate::HasId;
+
+use tmflib_derive::HasId;
+use super::MOD_PATH;
+
+const CLASS_PATH: &str = "serviceUsage";
 
 ///Service Usage represents the actual usage of a service by a customer or other party. It is used to track the usage of a service in a specific context, e.g. for a specific customer or in a specific environment.
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default,HasId)]
 pub struct ServiceUsage {
+    ///Unique identifier for this service usage
+    pub id : Option<String>,
+    ///Unique identifier for this service usage
+    pub href : Option<String>,
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
@@ -70,6 +81,13 @@ pub struct ServiceUsage {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub usage_type: Option<String>,
 }
+
+impl IsAddressable for ServiceUsage {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 impl std::fmt::Display for ServiceUsage {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())

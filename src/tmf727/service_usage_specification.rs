@@ -3,10 +3,19 @@ use super::{
     ServiceUsageSpecRelationship, ServiceUsageSpecificationRef,
 };
 use serde::{Deserialize, Serialize};
+use crate::{HasId,IsAddressable};
+use tmflib_derive::HasId;
+use super::MOD_PATH;
+
+const CLASS_PATH: &str = "serviceUsageSpecification";
 
 ///Service Usage Specification represents a usage of a service specification, which may be part of a bundle and may have relationships to other service usage specifications and resource usage specifications. It is used to define the usage of a service specification in a specific context, e.g. for a specific customer or in a specific environment.
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default, HasId)]
 pub struct ServiceUsageSpecification {
+    ///Unique identifier for this service usage specification
+    pub id : Option<String>,
+    ///Unique identifier for this service usage specification
+    pub href : Option<String>,
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity_specification: EntitySpecification,
@@ -26,6 +35,12 @@ pub struct ServiceUsageSpecification {
     #[serde(rename = "serviceUsageSpecRelationship")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub service_usage_spec_relationship: Vec<ServiceUsageSpecRelationship>,
+}
+
+impl IsAddressable for ServiceUsageSpecification {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 impl std::fmt::Display for ServiceUsageSpecification {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {

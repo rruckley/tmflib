@@ -47,7 +47,7 @@ pub struct Characteristic {
 }
 
 fn get_objects() -> Vec<&'static str> {
-    vec!["individual", "organization"]
+    vec!["serviceUsage", "serviceUsageSpecification"]
 }
 
 #[cfg(test)]

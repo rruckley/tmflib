@@ -156,3 +156,9 @@ mod service_usage_specification_ref_mvo;
 mod target_entity_schema;
 mod target_entity_schema_mvo;
 // mod time_period;
+
+const MOD_PATH: &str = "serviceUsageManagement";
+
+fn get_objects() -> Vec<&'static str> {
+    vec!["individual", "organization"]
+}
