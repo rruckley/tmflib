@@ -578,6 +578,8 @@ pub mod tmf717;
 pub mod tmf723;
 #[cfg(feature = "tmf724")]
 pub mod tmf724;
+#[cfg(feature = "tmf727")]
+pub mod tmf727;
 #[cfg(feature = "tmf760")]
 pub mod tmf760;
 #[cfg(feature = "tmf764")]
