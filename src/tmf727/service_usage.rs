@@ -16,9 +16,11 @@
 
 use serde::{Serialize, Deserialize};
 use super::{
-    Characteristic, Entity, ExternalIdentifier, RelatedPartyRefOrPartyRoleRef,
+    Characteristic, ExternalIdentifier, RelatedPartyRefOrPartyRoleRef,
     ResourceUsageRef, ServiceRef, ServiceUsageRef, ServiceUsageSpecificationRef,
 };
+use crate::common::entity::Entity;
+
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceUsage {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -57,7 +59,7 @@ pub struct ServiceUsage {
     ///Date of usage
     #[serde(rename = "usageDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub usage_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub usage_date: Option<crate::DateTime>,
     ///UsageSpecification reference. UsageSpecification is a detailed description of a service usage event that are of interest to the business. It is comprised of characteristics, which define all attributes known for a particular type of usage.
     #[serde(rename = "usageSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

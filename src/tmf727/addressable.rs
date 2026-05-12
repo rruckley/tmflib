@@ -9,7 +9,7 @@ pub struct AddressableXX {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
 }
-impl std::fmt::Display for Addressable {
+impl std::fmt::Display for AddressableXX {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }

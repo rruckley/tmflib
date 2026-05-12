@@ -1,9 +1,13 @@
 use serde::{Serialize, Deserialize};
 use super::{
-    AttachmentRefOrValue, CharacteristicSpecification, ConstraintRef, Entity,
+    AttachmentRefOrValue, CharacteristicSpecification, ConstraintRef,
     EntitySpecificationRelationship, RelatedPartyRefOrPartyRoleRef, TargetEntitySchema,
-    TimePeriod,
+    // TimePeriod,
 };
+use crate::common::entity::Entity;
+// use crate::common::addressable::Addressable;
+use crate::TimePeriod;
+
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntitySpecification {
     ///Base entity schema for use in TMForum Open-APIs. Property.
@@ -29,7 +33,7 @@ pub struct EntitySpecification {
     ///Date and time of the last update of the specification
     #[serde(rename = "lastUpdate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub last_update: Option<chrono::DateTime<chrono::Utc>>,
+    pub last_update: Option<crate::DateTime>,
     ///Used to indicate the current lifecycle status of this catalog item
     #[serde(rename = "lifecycleStatus")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

@@ -14,7 +14,7 @@
 
 //! TMF727 Service Usage Management Module
 
-pub use addressable::*;
+// pub use addressable::*;
 pub use association_specification_ref::*;
 pub use association_specification_ref_fvo::*;
 pub use association_specification_ref_mvo::*;
@@ -48,7 +48,7 @@ pub use entity_specification_relationship_fvo::*;
 pub use entity_specification_relationship_mvo::*;
 pub use entity_fvo::*;
 pub use entity_mvo::*;
-pub use extensible::*;
+// pub use extensible::*;
 pub use external_identifier::*;
 pub use external_identifier_fvo::*;
 pub use external_identifier_mvo::*;
@@ -84,8 +84,8 @@ pub use service_usage_specification_ref_fvo::*;
 pub use service_usage_specification_ref_mvo::*;
 pub use target_entity_schema::*;
 pub use target_entity_schema_mvo::*;
-pub use time_period::*;
-mod addressable;
+// pub use time_period::*;
+// mod addressable;
 mod association_specification_ref;
 mod association_specification_ref_fvo;
 mod association_specification_ref_mvo;
@@ -155,4 +155,4 @@ mod service_usage_specification_ref_fvo;
 mod service_usage_specification_ref_mvo;
 mod target_entity_schema;
 mod target_entity_schema_mvo;
-mod time_period;
+// mod time_period;

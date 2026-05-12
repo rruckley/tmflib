@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{EntityRef, Extensible};
+// use super::{EntityRef, Extensible};
+use crate::common::extensible::Extensible;
+use crate::common::entity::EntityRef;
+
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceSpecificationRefFvo {
     #[serde(flatten)]

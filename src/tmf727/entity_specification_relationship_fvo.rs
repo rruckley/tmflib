@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
-use super::{AssociationSpecificationRefFvo, TimePeriod};
+use super::AssociationSpecificationRefFvo;
+use crate::TimePeriod;
+
 ///A migration, substitution, dependency or exclusivity relationship between/among entity specifications.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntitySpecificationRelationshipFvo {

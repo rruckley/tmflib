@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{EntityRefMvo, TimePeriod};
+use super::EntityRefMvo;
+use crate::TimePeriod;
+
+/// A migration, substitution, dependency or exclusivity relationship between/among service usage specifications.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceUsageSpecRelationshipMvo {
     #[serde(flatten)]

@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{Extensible, TimePeriod};
+// use super::{Extensible, TimePeriod};
+use crate::common::extensible::Extensible;
+use crate::TimePeriod;
+
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicSpecificationRelationshipMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

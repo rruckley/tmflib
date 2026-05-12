@@ -1,8 +1,10 @@
 use serde::{Serialize, Deserialize};
 use super::{
     CharacteristicSpecificationRelationshipFvo, CharacteristicValueSpecificationFvo,
-    Extensible, TimePeriod,
 };
+use crate::common::extensible::Extensible;
+use crate::TimePeriod;
+
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicSpecificationFvo {
     ///This (optional) field provides a link to the schema describing the value type.
@@ -11,7 +13,7 @@ pub struct CharacteristicSpecificationFvo {
     pub value_schema_location: Option<String>,
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
-    pub extensible: Extensible,
+    pub _extensible: Extensible,
     ///An aggregation, migration, substitution, dependency or exclusivity relationship between/among Specification Characteristics.
     #[serde(rename = "charSpecRelationship")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -65,11 +67,11 @@ impl std::fmt::Display for CharacteristicSpecificationFvo {
 impl std::ops::Deref for CharacteristicSpecificationFvo {
     type Target = Extensible;
     fn deref(&self) -> &Self::Target {
-        &self.extensible
+        &self._extensible
     }
 }
 impl std::ops::DerefMut for CharacteristicSpecificationFvo {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.extensible
+        &mut self._extensible
     }
 }

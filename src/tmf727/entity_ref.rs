@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{Addressable, Extensible};
+// use super::{Addressable, Extensible};
+use crate::common::extensible::Extensible;
+use crate::common::addressable::Addressable;
+// use crate::TimePeriod;
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityRef {
     ///The actual type of the target instance when needed for disambiguation.

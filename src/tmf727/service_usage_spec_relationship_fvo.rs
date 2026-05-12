@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
-use super::{EntityRef, TimePeriod};
+// use super::{EntityRef, TimePeriod};
+use crate::common::entity::EntityRef;
+use crate::TimePeriod;
+
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceUsageSpecRelationshipFvo {
     #[serde(flatten)]
