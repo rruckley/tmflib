@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///ResourceUsage reference. ResourceUsage is usage event for Resource.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceUsageRefMvo {}

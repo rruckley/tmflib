@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///UsageSpecification reference. UsageSpecification is a detailed description of a service usage event that are of interest to the business. It is comprised of characteristics, which define all attributes known for a particular type of usage.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceUsageSpecificationRef {}

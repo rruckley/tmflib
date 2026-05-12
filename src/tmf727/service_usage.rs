@@ -14,12 +14,12 @@
 
 //! TMF727 - Service Usage Module
 
-use serde::{Serialize, Deserialize};
 use super::{
-    Characteristic, ExternalIdentifier, RelatedPartyRefOrPartyRoleRef,
-    ResourceUsageRef, ServiceRef, ServiceUsageRef, ServiceUsageSpecificationRef,
+    Characteristic, ExternalIdentifier, RelatedPartyRefOrPartyRoleRef, ResourceUsageRef,
+    ServiceRef, ServiceUsageRef, ServiceUsageSpecificationRef,
 };
 use crate::common::entity::Entity;
+use serde::{Deserialize, Serialize};
 
 ///Service Usage represents the actual usage of a service by a customer or other party. It is used to track the usage of a service in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

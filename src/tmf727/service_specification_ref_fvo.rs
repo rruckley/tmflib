@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 // use super::{EntityRef, Extensible};
-use crate::common::extensible::Extensible;
 use crate::common::entity::EntityRef;
+use crate::common::extensible::Extensible;
 
 ///A reference to a service specification, used to link an entity to a service specification in the TMF domain model. The version of the service specification can be specified through the 'version' attribute.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

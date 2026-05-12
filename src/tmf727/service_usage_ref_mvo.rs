@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::EntityMvo;
+use serde::{Deserialize, Serialize};
 
 ///Reference to a service usage, which is a specialization of an entity reference with a name and referredType
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

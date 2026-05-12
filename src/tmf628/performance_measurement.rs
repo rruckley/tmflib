@@ -13,16 +13,16 @@
 // limitations under the License.
 //! Performance Measurement object model for TMF628 Performance Management
 
+use super::MOD_PATH;
 use super::{MeasurementCollectionJobRef, PerformanceMeasurementRelationship};
 use crate::{common::entity::Entity, HasDescription, HasId, TimePeriod};
 use serde::{Deserialize, Serialize};
-use tmflib_derive::{HasEntity,HasDescription};
-use super::MOD_PATH;
+use tmflib_derive::{HasDescription, HasEntity};
 
 const CLASS_PATH: &str = "measurement";
 
 /// Performance Measurement
-#[derive(Debug, Clone, Serialize, HasEntity,HasDescription, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, HasEntity, HasDescription, Deserialize, Default)]
 pub struct PerformanceMeasurement {
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]

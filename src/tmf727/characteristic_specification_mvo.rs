@@ -1,9 +1,7 @@
-use serde::{Serialize, Deserialize};
-use super::{
-    CharacteristicSpecificationRelationshipMvo, CharacteristicValueSpecificationMvo,
-};
+use super::{CharacteristicSpecificationRelationshipMvo, CharacteristicValueSpecificationMvo};
 use crate::common::extensible::Extensible;
 use crate::TimePeriod;
+use serde::{Deserialize, Serialize};
 
 ///A detailed description of a characteristic that can be used to define a characteristic of an entity specification. The characteristic specification may include the version of the characteristic specification. It is used to define the specification of a characteristic in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

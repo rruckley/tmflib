@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 // use super::{Addressable, Extensible};
-use crate::common::extensible::Extensible;
 use crate::common::addressable::Addressable;
+use crate::common::extensible::Extensible;
 // use crate::TimePeriod;
 
 ///EntityRef represents a reference to an entity, which may include the version of the entity. It is used to define the reference to an entity in a specific context, e.g. for a specific customer or in a specific environment.

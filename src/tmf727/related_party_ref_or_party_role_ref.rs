@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::PartyRefOrPartyRoleRef;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///Role played by the related party or party role in the context of the specific entity it is linked to. Such as 'initiator', 'customer',  'salesAgent', 'user'
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

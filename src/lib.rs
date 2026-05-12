@@ -271,9 +271,7 @@ pub fn get_lib_path() -> String {
 }
 
 /// Trait indicating a TMF struct has and id, href fields defined in an Entity struct
-pub trait HasEntity: Default {
-
-}
+pub trait HasEntity: Default {}
 
 /// IsAddressable Trait, aligned to TMF definitions of addressable entities, i.e. those with id and href fields.
 pub trait IsAddressable: HasId {
@@ -283,7 +281,7 @@ pub trait IsAddressable: HasId {
 
 /// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId: Default {
-        /// Get a new UUID in simple format (no seperators)
+    /// Get a new UUID in simple format (no seperators)
     fn get_uuid() -> String {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
         Uuid::new_v4().simple().to_string()

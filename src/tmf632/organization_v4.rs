@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{gen_code, HasId, HasName, HasReference, TMFEvent, TimePeriod,IsAddressable};
+use crate::{gen_code, HasId, HasName, HasReference, IsAddressable, TMFEvent, TimePeriod};
 use tmflib_derive::{HasId, HasName};
 
 use crate::common::{

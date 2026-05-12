@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 // use super::{Extensible, TimePeriod};
 use crate::common::extensible::Extensible;
 use crate::TimePeriod;

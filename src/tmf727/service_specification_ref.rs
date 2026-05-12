@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 // use super::EntityRef;
 use crate::common::entity::EntityRef;
 use crate::common::extensible::Extensible;

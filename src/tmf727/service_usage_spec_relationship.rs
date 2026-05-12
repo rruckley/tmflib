@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 // use super::{EntityRef, TimePeriod};
-use crate::TimePeriod;
 use crate::common::entity::EntityRef;
+use crate::TimePeriod;
 
 /// A migration, substitution, dependency or exclusivity relationship between/among service usage specifications.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

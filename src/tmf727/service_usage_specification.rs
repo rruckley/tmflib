@@ -1,8 +1,8 @@
-use serde::{Serialize, Deserialize};
 use super::{
     EntitySpecification, ResourceUsageSpecificationRef, ServiceSpecificationRef,
     ServiceUsageSpecRelationship, ServiceUsageSpecificationRef,
 };
+use serde::{Deserialize, Serialize};
 
 ///Service Usage Specification represents a usage of a service specification, which may be part of a bundle and may have relationships to other service usage specifications and resource usage specifications. It is used to define the usage of a service specification in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

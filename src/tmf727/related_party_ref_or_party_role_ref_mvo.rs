@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::PartyRefOrPartyRoleRefMvo;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///A reference to a related party or party role, used to link an entity to a related party or party role in the TMF domain model. The role played by the related party or party role in the context of the specific entity it is linked to can be specified through the 'role' attribute.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

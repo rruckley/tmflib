@@ -1,10 +1,14 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    AttachmentRefOrValue, CharacteristicSpecification, ConstraintRef,
-    EntitySpecificationRelationship, RelatedPartyRefOrPartyRoleRef, TargetEntitySchema,
+    AttachmentRefOrValue,
+    CharacteristicSpecification,
+    ConstraintRef,
+    EntitySpecificationRelationship,
+    RelatedPartyRefOrPartyRoleRef,
+    TargetEntitySchema,
     // TimePeriod,
 };
 use crate::common::entity::Entity;
+use serde::{Deserialize, Serialize};
 // use crate::common::addressable::Addressable;
 use crate::TimePeriod;
 

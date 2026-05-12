@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::EntityRefMvo;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///ServiceSpecificationRefMvo represents a reference to a service specification, which may include the version of the service specification. It is used to define the reference to a service specification in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

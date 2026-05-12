@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
 use super::CharacteristicRelationshipFvo;
 use crate::common::extensible::Extensible;
+use serde::{Deserialize, Serialize};
 
 ///A characteristic is a specification that describes a property that can be used to describe an entity. It is used to specify the properties of an entity, such as a product or service, and can be used to define the characteristics of a product or service specification.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
