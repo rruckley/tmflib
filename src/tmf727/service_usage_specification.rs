@@ -1,11 +1,11 @@
+use super::MOD_PATH;
 use super::{
     EntitySpecification, ResourceUsageSpecificationRef, ServiceSpecificationRef,
     ServiceUsageSpecRelationship, ServiceUsageSpecificationRef,
 };
+use crate::{HasId, IsAddressable};
 use serde::{Deserialize, Serialize};
-use crate::{HasId,IsAddressable};
 use tmflib_derive::HasId;
-use super::MOD_PATH;
 
 const CLASS_PATH: &str = "serviceUsageSpecification";
 
@@ -13,9 +13,9 @@ const CLASS_PATH: &str = "serviceUsageSpecification";
 #[derive(Debug, Clone, Serialize, Deserialize, Default, HasId)]
 pub struct ServiceUsageSpecification {
     ///Unique identifier for this service usage specification
-    pub id : Option<String>,
+    pub id: Option<String>,
     ///Unique identifier for this service usage specification
-    pub href : Option<String>,
+    pub href: Option<String>,
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity_specification: EntitySpecification,

@@ -19,22 +19,22 @@ use super::{
     ServiceRef, ServiceUsageRef, ServiceUsageSpecificationRef,
 };
 use crate::common::entity::Entity;
-use serde::{Deserialize, Serialize};
-use crate::IsAddressable;
 use crate::HasId;
+use crate::IsAddressable;
+use serde::{Deserialize, Serialize};
 
-use tmflib_derive::HasId;
 use super::MOD_PATH;
+use tmflib_derive::HasId;
 
 const CLASS_PATH: &str = "serviceUsage";
 
 ///Service Usage represents the actual usage of a service by a customer or other party. It is used to track the usage of a service in a specific context, e.g. for a specific customer or in a specific environment.
-#[derive(Debug, Clone, Serialize, Deserialize, Default,HasId)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default, HasId)]
 pub struct ServiceUsage {
     ///Unique identifier for this service usage
-    pub id : Option<String>,
+    pub id: Option<String>,
     ///Unique identifier for this service usage
-    pub href : Option<String>,
+    pub href: Option<String>,
     ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
