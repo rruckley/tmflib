@@ -1,0 +1,33 @@
+use super::EntityMvo;
+use serde::{Deserialize, Serialize};
+
+///Reference to a service usage, which is a specialization of an entity reference with a name and referredType
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct ServiceUsageRefMvo {
+    ///The actual type of the target instance when needed for disambiguation.
+    #[serde(rename = "@referredType")]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub referred_type: Option<String>,
+    ///Base entity schema for use in TMForum Open-APIs. Property.
+    #[serde(flatten)]
+    pub entity_mvo: EntityMvo,
+    ///The name of the usage
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+}
+impl std::fmt::Display for ServiceUsageRefMvo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+impl std::ops::Deref for ServiceUsageRefMvo {
+    type Target = EntityMvo;
+    fn deref(&self) -> &Self::Target {
+        &self.entity_mvo
+    }
+}
+impl std::ops::DerefMut for ServiceUsageRefMvo {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.entity_mvo
+    }
+}
