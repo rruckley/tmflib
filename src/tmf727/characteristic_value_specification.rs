@@ -3,6 +3,7 @@ use serde::{Serialize, Deserialize};
 use crate::common::extensible::Extensible;
 use crate::TimePeriod;
 
+///A detailed description of a characteristic that can be used to define a characteristic of an entity specification. The characteristic specification may include the version of the characteristic specification. It is used to define the specification of a characteristic in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicValueSpecification {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

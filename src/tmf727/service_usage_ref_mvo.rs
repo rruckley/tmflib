@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use super::EntityMvo;
+
+///Reference to a service usage, which is a specialization of an entity reference with a name and referredType
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceUsageRefMvo {
     ///The actual type of the target instance when needed for disambiguation.

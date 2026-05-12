@@ -2,6 +2,7 @@ use serde::{Serialize, Deserialize};
 // use super::Extensible;
 use crate::common::extensible::Extensible;
 
+///A reference to an identifier of an entity in an external system, used to link the entity in the external system to an entity in the TMF domain model. The identifier is owned by the external system and is not intended to be used as a primary key within the TMF domain model.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ExternalIdentifierMvo {
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

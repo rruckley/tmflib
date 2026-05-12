@@ -6,6 +6,7 @@ use crate::common::entity::EntityRef;
 /// A migration, substitution, dependency or exclusivity relationship between/among service usage specifications.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceUsageSpecRelationship {
+    ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Type of relationship such as dependency, substitution or exclusivity

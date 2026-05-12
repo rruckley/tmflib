@@ -1,9 +1,12 @@
 use serde::{Serialize, Deserialize};
-use super::EntityRef;
+// use super::EntityRef;
+use crate::common::entity::EntityRef;
 use crate::common::extensible::Extensible;
 
+///ServiceSpecificationRef represents a reference to a service specification, which may include the version of the service specification. It is used to define the reference to a service specification in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceSpecificationRef {
+    ///Base schema for addressable entities
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

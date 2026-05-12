@@ -2,8 +2,10 @@ use serde::{Serialize, Deserialize};
 use super::EntityRefMvo;
 use crate::common::extensible::Extensible;
 
+///ServiceSpecificationRefMvo represents a reference to a service specification, which may include the version of the service specification. It is used to define the reference to a service specification in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceSpecificationRefMvo {
+    ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref_mvo: EntityRefMvo,
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

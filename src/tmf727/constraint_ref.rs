@@ -1,7 +1,11 @@
 use serde::{Serialize, Deserialize};
-use super::EntityRef;
+// use super::EntityRef;
+use crate::common::entity::EntityRef;
+
+///ConstraintRef represents a reference to a constraint, which may include the version of the constraint. It is used to define the reference to a constraint in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ConstraintRef {
+    ///Base schema for addressable entities
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///constraint version

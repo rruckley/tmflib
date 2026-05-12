@@ -5,6 +5,7 @@ use super::{
 use crate::common::extensible::Extensible;
 use crate::TimePeriod;
 
+///CharacteristicSpecificationFvo represents the specification of a characteristic, which may include the type of value, the relationships to other characteristics, and other attributes. It is used to define the specification of a characteristic in a specific context, e.g. for a specific product or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicSpecificationFvo {
     ///This (optional) field provides a link to the schema describing the value type.

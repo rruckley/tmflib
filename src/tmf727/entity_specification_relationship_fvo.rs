@@ -5,17 +5,21 @@ use crate::TimePeriod;
 ///A migration, substitution, dependency or exclusivity relationship between/among entity specifications.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntitySpecificationRelationshipFvo {
+    ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(rename = "@baseType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub base_type: Option<String>,
+    ///A URI to a JSON-Schema file that defines additional attributes and relationships
     #[serde(rename = "@schemaLocation")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub schema_location: Option<String>,
     ///reference to an AssociationSpecification object
     #[serde(rename = "associationSpec")]
     pub association_spec: AssociationSpecificationRefFvo,
+    ///Hyperlink reference to the entity specification that is the target of this relationship
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
+    ///Name of the entity specification that is the target of this relationship
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     ///Type of relationship such as migration, substitution, dependency, exclusivity

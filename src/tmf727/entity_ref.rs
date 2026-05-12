@@ -3,8 +3,10 @@ use serde::{Serialize, Deserialize};
 use crate::common::extensible::Extensible;
 use crate::common::addressable::Addressable;
 // use crate::TimePeriod;
+
+///EntityRef represents a reference to an entity, which may include the version of the entity. It is used to define the reference to an entity in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
-pub struct EntityRef {
+pub struct EntityRefXXX {
     ///The actual type of the target instance when needed for disambiguation.
     #[serde(rename = "@referredType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -24,18 +26,18 @@ pub struct EntityRef {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 }
-impl std::fmt::Display for EntityRef {
+impl std::fmt::Display for EntityRefXXX {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
-impl std::ops::Deref for EntityRef {
+impl std::ops::Deref for EntityRefXXX {
     type Target = Addressable;
     fn deref(&self) -> &Self::Target {
         &self.addressable
     }
 }
-impl std::ops::DerefMut for EntityRef {
+impl std::ops::DerefMut for EntityRefXXX {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.addressable
     }

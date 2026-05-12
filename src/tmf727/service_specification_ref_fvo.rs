@@ -3,8 +3,10 @@ use serde::{Serialize, Deserialize};
 use crate::common::extensible::Extensible;
 use crate::common::entity::EntityRef;
 
+///A reference to a service specification, used to link an entity to a service specification in the TMF domain model. The version of the service specification can be specified through the 'version' attribute.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceSpecificationRefFvo {
+    ///Base schema for addressable entities
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type

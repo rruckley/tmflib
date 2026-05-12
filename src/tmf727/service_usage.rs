@@ -21,6 +21,7 @@ use super::{
 };
 use crate::common::entity::Entity;
 
+///Service Usage represents the actual usage of a service by a customer or other party. It is used to track the usage of a service in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceUsage {
     ///Base entity schema for use in TMForum Open-APIs. Property.

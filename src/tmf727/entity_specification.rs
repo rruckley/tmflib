@@ -8,6 +8,7 @@ use crate::common::entity::Entity;
 // use crate::common::addressable::Addressable;
 use crate::TimePeriod;
 
+///EntitySpecification represents a detailed description of an entity, which may include the version of the entity. It is used to define the specification of an entity in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntitySpecification {
     ///Base entity schema for use in TMForum Open-APIs. Property.

@@ -119,7 +119,7 @@ mod entity_specification_relationship_fvo;
 mod entity_specification_relationship_mvo;
 mod entity_fvo;
 mod entity_mvo;
-mod extensible;
+// mod extensible;
 mod external_identifier;
 mod external_identifier_fvo;
 mod external_identifier_mvo;

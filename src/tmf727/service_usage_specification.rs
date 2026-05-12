@@ -3,8 +3,11 @@ use super::{
     EntitySpecification, ResourceUsageSpecificationRef, ServiceSpecificationRef,
     ServiceUsageSpecRelationship, ServiceUsageSpecificationRef,
 };
+
+///Service Usage Specification represents a usage of a service specification, which may be part of a bundle and may have relationships to other service usage specifications and resource usage specifications. It is used to define the usage of a service specification in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceUsageSpecification {
+    ///Base entity schema for use in TMForum Open-APIs. Property.
     #[serde(flatten)]
     pub entity_specification: EntitySpecification,
     ///Relationship to Service specification in bundle
@@ -15,6 +18,7 @@ pub struct ServiceUsageSpecification {
     #[serde(rename = "resourceUsageSpecification")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub resource_usage_specification: Vec<ResourceUsageSpecificationRef>,
+    ///Service specification reference. Service specification is a detailed description of a service that are of interest to the business. It is comprised of characteristics, which define all attributes known for a particular type of service.
     #[serde(rename = "serviceSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service_specification: Option<ServiceSpecificationRef>,

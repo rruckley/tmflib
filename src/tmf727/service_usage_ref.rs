@@ -1,5 +1,7 @@
 use serde::{Serialize, Deserialize};
 use crate::common::entity::Entity;
+
+///Reference to a service usage, which is a specialization of an entity reference with a name and referredType
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceUsageRef {
     ///The actual type of the target instance when needed for disambiguation.

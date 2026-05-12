@@ -2,6 +2,8 @@ use serde::{Serialize, Deserialize};
 // use super::{Addressable, Extensible};
 use crate::common::extensible::Extensible;
 use crate::common::addressable::Addressable;
+
+///EntityRefMvo represents a reference to an entity, which may include the version of the entity. It is used to define the reference to an entity in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityRefMvo {
     ///The actual type of the target instance when needed for disambiguation.
