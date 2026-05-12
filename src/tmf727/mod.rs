@@ -162,3 +162,7 @@ const MOD_PATH: &str = "serviceUsageManagement";
 fn get_objects() -> Vec<&'static str> {
     vec!["individual", "organization"]
 }
+
+fn get_version() -> &'static str {
+    "v5"
+}

@@ -277,6 +277,8 @@ pub trait HasEntity: Default {}
 pub trait IsAddressable: HasId {
     /// Return the list of objects managed by this API
     fn get_objects() -> Vec<&'static str>;
+    /// Return the version of the API supported by this library
+    fn get_version() -> &'static str;
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field

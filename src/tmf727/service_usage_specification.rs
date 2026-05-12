@@ -41,6 +41,9 @@ impl IsAddressable for ServiceUsageSpecification {
     fn get_objects() -> Vec<&'static str> {
         super::get_objects()
     }
+    fn get_version() -> &'static str {
+        super::get_version()
+    }
 }
 impl std::fmt::Display for ServiceUsageSpecification {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {

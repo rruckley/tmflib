@@ -174,6 +174,9 @@ impl IsAddressable for Organization {
     fn get_objects() -> Vec<&'static str> {
         super::get_objects()
     }
+    fn get_version() -> &'static str {
+        super::get_version()
+    }
 }
 
 impl From<String> for Organization {

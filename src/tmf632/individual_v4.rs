@@ -285,6 +285,9 @@ impl IsAddressable for Individual {
     fn get_objects() -> Vec<&'static str> {
         super::get_objects()
     }
+    fn get_version() -> &'static str {
+        super::get_version()
+    }
 }
 
 impl HasName for Individual {
