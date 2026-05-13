@@ -12,7 +12,7 @@ pub struct CharacteristicSpecification {
     pub value_schema_location: Option<String>,
     ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
-    pub _extensible: Extensible,
+    pub exten: Extensible,
     ///An aggregation, migration, substitution, dependency or exclusivity relationship between/among Specification Characteristics.
     #[serde(rename = "charSpecRelationship")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -68,11 +68,11 @@ impl std::fmt::Display for CharacteristicSpecification {
 impl std::ops::Deref for CharacteristicSpecification {
     type Target = Extensible;
     fn deref(&self) -> &Self::Target {
-        &self._extensible
+        &self.exten
     }
 }
 impl std::ops::DerefMut for CharacteristicSpecification {
     fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self._extensible
+        &mut self.exten
     }
 }

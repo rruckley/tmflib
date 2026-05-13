@@ -133,6 +133,7 @@ impl Individual {
     /// let individual = Individual::new("John Smith")
     ///     .title("Mr");
     /// ```
+    #[must_use]
     pub fn title(mut self, title: impl Into<String>) -> Individual {
         self.title = Some(title.into());
         self
@@ -145,7 +146,8 @@ impl Individual {
     ///
     /// let individual = Individual::new("John Smith")
     ///     .gender("Unspecified");
-    /// ```
+    /// ``` 
+    #[must_use]
     pub fn gender(mut self, gender: impl Into<String>) -> Individual {
         self.gender = Some(gender.into());
         self
@@ -159,6 +161,7 @@ impl Individual {
     /// let individual = Individual::new("John Smith")
     ///     .gender("Unspecified");
     /// ```
+    #[must_use]
     pub fn preferred(mut self, preferred: impl Into<String>) -> Individual {
         self.preferred_given_name = Some(preferred.into());
         self
@@ -301,9 +304,6 @@ impl HasName for Individual {
         let name_parts = name_str.split(' ');
         // Determine the number of parts the name is given in
         match name_parts.clone().count() {
-            1 => {
-                // Only a single name, nothing to do here.
-            }
             2 => {
                 // two parts
                 let parts_vec: Vec<&str> = name_parts.collect();

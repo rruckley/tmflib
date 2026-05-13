@@ -136,6 +136,22 @@ impl Quote {
     }
 
     /// Add a quote item into a product quote
+    /// # Errors
+    /// Will return an error if the quote item provided is invalid and cannot be added to the quote
+     /// ```
+     /// use tmflib::tmf648::quote::{Quote, QuoteStateType};
+     /// use tmflib::tmf648::quote_item::QuoteItem;
+     /// let mut quote = Quote::new();
+     /// let item = QuoteItem::new();
+     /// let res = quote.add_quote_item(item);
+     /// assert_eq!(res.is_ok(), true);
+     /// ```
+     /// ```
+     /// use tmflib::tmf648::quote::{Quote, QuoteStateType};
+     /// let mut quote = Quote::new();
+     /// let res = quote.add_quote_item(QuoteItem::default());
+     /// assert_eq!(res.is_err(), true);
+     /// ```
     pub fn add_quote_item(&mut self, item: QuoteItem) -> Result<String, TMFError> {
         if let Some(v) = self.quote_item.as_mut() {
             v.push(item);

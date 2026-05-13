@@ -59,6 +59,8 @@ impl CharacteristicValueSpecification {
     /// let cvs = CharacteristicValueSpecification::new()
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap();
     /// ```
+    /// # Errors
+    /// Returns an error if the regex pattern provided is not a valid regex
     pub fn regex(mut self, regex: String) -> Result<CharacteristicValueSpecification, TMFError> {
         let _re = Regex::new(&regex)?;
         self.regex = Some(regex);
@@ -74,6 +76,8 @@ impl CharacteristicValueSpecification {
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
     ///     .value("100Mb".into()).unwrap();
     /// ```
+    /// # Errors
+    /// Returns an error if the value does not match the regex pattern set for this characteristic value specification
     pub fn value(
         mut self,
         value: serde_json::Value,
@@ -175,6 +179,7 @@ impl CharacteristicSpecification {
     }
 
     /// Set the description of this characteristic
+    #[must_use]
     pub fn description(mut self, description: impl Into<String>) -> CharacteristicSpecification {
         self.description = Some(description.into());
         self

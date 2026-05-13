@@ -165,8 +165,8 @@ impl Customer {
     }
 
     /// Set the name of the customer
-    pub fn name(&mut self, name: String) {
-        self.name = Some(name.clone());
+    pub fn name(&mut self, name: &str) {
+        self.name = Some(name.to_string());
     }
 
     /// Set the market segment

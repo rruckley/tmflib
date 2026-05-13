@@ -159,6 +159,8 @@ impl CharacteristicValueSpecification {
     /// let cvs = CharacteristicValueSpecification::new()
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap();
     /// ```
+    /// # Errors
+    /// Will return an error if the regex pattern provided is invalid
     pub fn regex(mut self, regex: String) -> Result<CharacteristicValueSpecification, TMFError> {
         let _re = Regex::new(&regex)?;
         self.regex = Some(regex);
