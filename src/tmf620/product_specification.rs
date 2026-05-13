@@ -305,16 +305,16 @@ impl From<&ServiceSpecification> for ProductSpecification {
             ps.description = Some(format!("{} [{}]", value.get_description(), SPEC_CONV_VERB));
         }
         ps.is_bundle = value.is_bundle;
-        if value.last_update.is_some() {
-            ps.set_last_update(value.last_update.as_ref().unwrap());
+        if let Some(last_update) = value.last_update.as_ref() {
+            ps.set_last_update(last_update);
         }
-        if value.spec_characteristics.is_some() {
+        if let Some(spec_characteristics) = value.spec_characteristics.as_ref() {
+        // if value.spec_characteristics.is_some() {
             // We have characteristics that require conversion
             let mut out: Vec<ProductSpecificationCharacteristic> = Vec::new();
-            value
-                .spec_characteristics
-                .as_ref()
-                .unwrap()
+            spec_characteristics
+                // .as_ref()
+                // .unwrap()
                 .iter()
                 .for_each(|cs| {
                     let psc = ProductSpecificationCharacteristic::from(cs.clone());

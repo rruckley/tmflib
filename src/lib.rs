@@ -331,7 +331,6 @@ pub trait HasId: Default {
 
 /// IsAddressable Trait, aligned to TMF definitions of addressable entities, i.e. those with id and href fields.
 /// This is a supertrait of HasId and HasEntity, but can be used to indicate that an object is addressable without necessarily having the full requirements of those traits.
-
 /// Trait indicating a TMF sturct has a last_update or similar timestamp field.
 pub trait HasLastUpdate: HasId {
     /// Geneate a timestamp for now(), useful for updating last_updated fields

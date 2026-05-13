@@ -252,8 +252,8 @@ impl From<ShoppingCart> for ProductOrder {
         let mut order = ProductOrder::new();
         order.description = Some("Order from Cart".into());
         // Bring across the cart items
-        if value.cart_item.is_some() {
-            value.cart_item.unwrap().into_iter().for_each(|i| {
+        if let Some(cart_item) = value.cart_item {
+            cart_item.into_iter().for_each(|i| {
                 order
                     .product_order_item
                     .as_mut()
@@ -262,8 +262,8 @@ impl From<ShoppingCart> for ProductOrder {
             });
         }
         // Bring across the related parties
-        if value.related_party.is_some() {
-            value.related_party.unwrap().into_iter().for_each(|rp| {
+        if let Some(party) = value.related_party {
+            party.into_iter().for_each(|rp| {
                 order.add_party(rp);
             });
         }

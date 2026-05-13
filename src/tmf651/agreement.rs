@@ -108,8 +108,8 @@ impl From<&Quote> for Agreement {
             agreement.engaged_party = vec![party.cloned().unwrap()];
         }
         // Iterate through
-        if value.quote_item.is_some() {
-            let items = value.quote_item.as_ref().unwrap();
+        if let Some(items) = value.quote_item.as_ref() {
+            // let items = value.quote_item.as_ref().unwrap();
             items.iter().for_each(|i| {
                 // Take each QuoteItem and convert to AgreementItem
                 let agreement_item = AgreementItem::from(i);
