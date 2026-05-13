@@ -29,6 +29,7 @@ impl Permission {
     }
 
     /// Set the description of this permission
+    #[must_use]
     pub fn desc(mut self, description: impl Into<String>) -> Permission {
         self.description = Some(description.into());
         self

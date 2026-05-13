@@ -16,7 +16,7 @@ fn main() {
     {
         let mut order = ProductOrder::new();
         order.description = Some("A Customer Order".to_string());
-        let mut risk = ProductOrderRiskAssessment::new(ProductOrderRef::from(&order));
+        let mut risk = ProductOrderRiskAssessment::new(&ProductOrderRef::from(&order));
         let char = Characteristic::new("name", "value");
         risk.replace_characteristic(char);
 

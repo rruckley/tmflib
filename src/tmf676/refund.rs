@@ -65,7 +65,8 @@ impl Refund {
         }
     }
 
-    /// Set the requestor
+    /// Set the requestor   
+    #[must_use]
     pub fn requestor(mut self, party: impl Into<RelatedParty>) -> Refund {
         self.requestor = Some(party.into());
         self

@@ -23,8 +23,8 @@ fn main() {
         let party = Individual::new("John Quinton Smith");
         let method = PaymentMethodRefOrValue::default().name("Credit Card");
         let account = AccountRef::default();
-        let item1 = PaymentItem::new(product1).amount(100.0);
-        let item2 = PaymentItem::new(product2).amount(23.45);
+        let item1 = PaymentItem::new(&product1).amount(100.0);
+        let item2 = PaymentItem::new(&product2).amount(23.45);
 
         let payment = Payment::new(method, account)
             .payer(&party)

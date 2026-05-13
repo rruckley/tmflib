@@ -38,7 +38,7 @@ pub struct ProductOrderRiskAssessment {
 impl ProductOrderRiskAssessment {
     /// Create a new instance of Product Order Risk Assessment
     #[must_use] 
-    pub fn new(order: ProductOrderRef) -> ProductOrderRiskAssessment {
+    pub fn new(order: &ProductOrderRef) -> ProductOrderRiskAssessment {
         ProductOrderRiskAssessment {
             product_order: order.clone(),
             ..ProductOrderRiskAssessment::create()
@@ -100,7 +100,7 @@ mod test {
     #[test]
     fn test_pora_new() {
         let order = ProductOrderRef::from(&ProductOrder::new());
-        let pora = ProductOrderRiskAssessment::new(order.clone());
+        let pora = ProductOrderRiskAssessment::new(&order);
 
         assert_eq!(pora.product_order.id, order.id);
     }
@@ -111,7 +111,7 @@ mod test {
         let char2 = Characteristic::new("Char", "Value2");
 
         let order = ProductOrderRef::from(&ProductOrder::new());
-        let mut pora = ProductOrderRiskAssessment::new(order.clone());
+        let mut pora = ProductOrderRiskAssessment::new(&order);
 
         // Add char in new
         pora.replace_characteristic(char1);

@@ -61,12 +61,12 @@ impl FinancialAccount {
         let total = match self.account_balance.as_ref() {
             Some(v) => {
                 let mut out = Money::from(0.0);
-                v.iter().for_each(|ab| {
+                for ab in v.iter() {
                     out += match ab.amount.as_ref() {
                         Some(m) => m.clone(),
                         None => Money::default(),
                     }
-                });
+                }
                 out
             }
             None => Money::from(0.0),

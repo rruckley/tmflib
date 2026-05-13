@@ -59,6 +59,7 @@ impl ShippingInstruction {
     }
 
     /// Set the label message for this instructions
+    #[must_use]
     pub fn message(mut self, message: impl Into<String>) -> ShippingInstruction {
         self.label_message = Some(message.into());
         self

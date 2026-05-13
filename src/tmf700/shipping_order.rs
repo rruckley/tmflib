@@ -28,6 +28,7 @@ pub struct RelatedShippingOrder {
 
 impl RelatedShippingOrder {
     /// Set the role for this `RelatedShippingOrder`
+    #[must_use]
     pub fn role(mut self, role: impl Into<String>) -> RelatedShippingOrder {
         self.role = Some(role.into());
         self

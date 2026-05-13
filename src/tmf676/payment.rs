@@ -27,7 +27,7 @@ pub struct PaymentItem {
 
 impl PaymentItem {
     /// Create new Payment Item
-    pub fn new(entity: impl HasName) -> PaymentItem {
+    pub fn new(entity: &impl HasName) -> PaymentItem {
         PaymentItem {
             item: entity.as_entity(),
             ..Default::default()
@@ -105,6 +105,7 @@ impl Payment {
     }
 
     /// Set the payer
+    #[must_use]
     pub fn payer(mut self, party: impl Into<RelatedParty>) -> Payment {
         self.payer = Some(party.into());
         self
@@ -169,7 +170,7 @@ mod test {
         let account = AccountRef::default();
         let payer = Individual::new("John Quinton Smith");
         let product1 = Product::new("Mobile Phone");
-        let item1 = PaymentItem::new(product1).amount(100.0).tax(10.0);
+        let item1 = PaymentItem::new(&product1).amount(100.0).tax(10.0);
         let payment = Payment::new(method, account).payer(&payer).item(item1);
 
         assert!(payment.payment_item.is_some());

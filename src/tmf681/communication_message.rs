@@ -106,24 +106,28 @@ impl CommunicationMessage {
     }
 
     /// Set content of message
+    #[must_use]
     pub fn content(mut self, content: impl Into<String>) -> CommunicationMessage {
         self.content = content.into();
         self
     }
 
     /// Add subject to message
+    #[must_use]
     pub fn subject(mut self, subject: impl Into<String>) -> CommunicationMessage {
         self.subject = Some(subject.into());
         self
     }
 
     /// Set message description
+    #[must_use]
     pub fn description(mut self, description: impl Into<String>) -> CommunicationMessage {
         self.description = Some(description.into());
         self
     }
 
     /// Set type of message
+    #[must_use]
     pub fn message_type(mut self, msg_type: impl Into<String>) -> CommunicationMessage {
         self.message_type = msg_type.into();
         self
@@ -139,9 +143,12 @@ impl CommunicationMessage {
     /// Set the receivers for this message
     #[must_use] 
     pub fn to(mut self, recievers: Vec<&Individual>) -> CommunicationMessage {
-        recievers.into_iter().for_each(|i| {
-            self.receiver.push(Receiver::from(i));
-        });
+        // recievers.into_iter().for_each(|i| {
+        //     self.receiver.push(Receiver::from(i));
+        // });
+        for i in recievers {
+             self.receiver.push(Receiver::from(i));
+        }
         self
     }
 }

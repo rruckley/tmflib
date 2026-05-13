@@ -174,6 +174,9 @@ impl CharacteristicValueSpecification {
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
     ///     .value("100Mb".into()).unwrap();
     /// ```
+    /// # Errors
+    /// Will return an error if the value does not match the regex pattern set for this characteristic value specification
+    /// Can also return an error if the regex pattern is invalid
     pub fn value(
         mut self,
         value: serde_json::Value,

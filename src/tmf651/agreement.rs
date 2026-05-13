@@ -110,11 +110,10 @@ impl From<&Quote> for Agreement {
         // Iterate through
         if let Some(items) = value.quote_item.as_ref() {
             // let items = value.quote_item.as_ref().unwrap();
-            items.iter().for_each(|i| {
-                // Take each QuoteItem and convert to AgreementItem
+            for i in items {
                 let agreement_item = AgreementItem::from(i);
                 agreement.add_item(agreement_item);
-            });
+            }
         }
         agreement
     }

@@ -103,12 +103,14 @@ impl Document {
     /// let doc = Document::new("My Document")
     ///     .doc_type("PDF");
     /// ```
+    #[must_use]
     pub fn doc_type(mut self, r#type: impl Into<String>) -> Document {
         self.document_type = Some(r#type.into());
         self
     }
 
     /// Link another TMF entity during creation
+    #[must_use]
     pub fn link<T: HasName>(mut self, entity: T) -> Document {
         self.link_entity(entity);
         self
