@@ -11,10 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//! Reference to object which affected by Alarm (AlarmedObject).
+//! Reference to object which affected by Alarm (`AlarmedObject`).
 
 use serde::{Deserialize, Serialize};
-///Reference to object which affected by Alarm (AlarmedObject).
+///Reference to object which affected by Alarm (`AlarmedObject`).
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AlarmedObjectRef {}
 impl std::fmt::Display for AlarmedObjectRef {

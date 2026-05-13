@@ -1,12 +1,12 @@
 use super::{PolicyEvent, PolicyManagedEntity};
 use serde::{Deserialize, Serialize};
-///Managed PolicyEvent
+///Managed `PolicyEvent`
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyEvent {
-    ///A PolicyEvent is an occurrence of an important event or multiple events, and can be used to trigger the evaluation of a Policy
+    ///A `PolicyEvent` is an occurrence of an important event or multiple events, and can be used to trigger the evaluation of a Policy
     #[serde(flatten)]
     pub policy_event: PolicyEvent,
-    /// Inlined fields from PolicyManagedEntity
+    /// Inlined fields from `PolicyManagedEntity`
     #[serde(flatten)]
     pub policy_managed_entity: PolicyManagedEntity,
 }

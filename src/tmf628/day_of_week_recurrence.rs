@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///Day Of Week Recurrence
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DayOfWeekRecurrence {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Dates of the month for the recurrence

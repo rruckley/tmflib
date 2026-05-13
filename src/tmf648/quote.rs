@@ -122,6 +122,7 @@ pub struct Quote {
 
 impl Quote {
     /// Create a new Product Quote
+    #[must_use] 
     pub fn new() -> Quote {
         let mut quote = Quote::create();
         quote.version = Some(QUOTE_VERS.to_string());
@@ -136,15 +137,12 @@ impl Quote {
 
     /// Add a quote item into a product quote
     pub fn add_quote_item(&mut self, item: QuoteItem) -> Result<String, TMFError> {
-        match self.quote_item.as_mut() {
-            Some(v) => {
-                v.push(item);
-                Ok(String::from("Quote Item Added"))
-            }
-            None => {
-                self.quote_item = Some(vec![item]);
-                Ok(String::from("Vector created and quote Item Added"))
-            }
+        if let Some(v) = self.quote_item.as_mut() {
+            v.push(item);
+            Ok(String::from("Quote Item Added"))
+        } else {
+            self.quote_item = Some(vec![item]);
+            Ok(String::from("Vector created and quote Item Added"))
         }
     }
 
@@ -157,6 +155,7 @@ impl Quote {
     }
 
     /// Get a description for this quote
+    #[must_use] 
     pub fn description(&self) -> String {
         match &self.description {
             Some(d) => d.clone(),
@@ -178,7 +177,7 @@ impl HasName for Quote {
             .clone()
     }
     fn set_name(&mut self, name: impl Into<String>) {
-        self.description = Some(name.into())
+        self.description = Some(name.into());
     }
 
     fn name(mut self, name: impl Into<String>) -> Self {

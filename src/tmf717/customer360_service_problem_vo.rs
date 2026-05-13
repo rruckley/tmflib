@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 /// Customer360 Service Problem VO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Customer360ServiceProblemVo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///List of affected services. At least one of affectedResource, affectedService or affectedLocation should be present.

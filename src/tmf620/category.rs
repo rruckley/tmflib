@@ -101,6 +101,7 @@ impl Category {
     }
 
     /// Is this a root category
+    #[must_use] 
     pub fn root(&self) -> bool {
         // Extract is_root in a safe manner
         self.is_root.unwrap_or(false)
@@ -113,6 +114,7 @@ impl Category {
     /// let cat = Category::new(String::from("MyCategory"))
     ///     .description(String::from("Library of product components"));
     /// ```
+    #[must_use] 
     pub fn description(mut self, description: String) -> Category {
         self.description = Some(description);
         self
@@ -125,6 +127,7 @@ impl Category {
     /// let cat = Category::new(String::from("MyCategory"))
     ///     .parent(String::from("23948-234908"));
     /// ```
+    #[must_use] 
     pub fn parent(mut self, parent_id: String) -> Category {
         // Since we are setting a parent, we cannot be root anymore
         self.is_root = Some(false);
@@ -132,20 +135,21 @@ impl Category {
         self
     }
 
-    /// Set is_root, will remove parent linkage if true.
+    /// Set `is_root`, will remove parent linkage if true.
     /// # Examples
-    /// Setting is_root=true will also set parent_id to None.
+    /// Setting `is_root=true` will also set `parent_id` to None.
     /// ```
     /// # use tmflib::tmf620::category::Category;
     /// let cat = Category::new(String::from("MyCategory"))
     ///     .is_root(true);
     /// ```
+    #[must_use] 
     pub fn is_root(mut self, root: bool) -> Category {
         // Two steps 1) delete parent if root= true
         // update is_root
         if root {
             self.parent_id = None;
-        };
+        }
         self.is_root = Some(root);
         self
     }

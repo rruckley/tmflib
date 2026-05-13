@@ -56,6 +56,7 @@ pub struct Refund {
 
 impl Refund {
     /// Create a new Refund object
+    #[must_use] 
     pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Refund {
         Refund {
             account,
@@ -71,18 +72,20 @@ impl Refund {
     }
 
     /// Set the amount for this refund
+    #[must_use] 
     pub fn amount(mut self, amount: f32) -> Refund {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount of this refund
+    #[must_use] 
     pub fn tax(mut self, tax: f32) -> Refund {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
         if let Some(amount) = self.amount.clone() {
             self.total_amount = Some(amount + tax);
-        };
+        }
         self
     }
 }

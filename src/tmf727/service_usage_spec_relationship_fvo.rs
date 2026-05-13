@@ -6,7 +6,7 @@ use crate::TimePeriod;
 ///Relationship between service usage specifications such as dependency, substitution or exclusivity
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceUsageSpecRelationshipFvo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Type of relationship such as dependency, substitution or exclusivity

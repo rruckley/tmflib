@@ -1,6 +1,6 @@
 use super::TimePeriod;
 use serde::{Deserialize, Serialize};
-///The period of time for which Capacity or CapacityDemand applies.
+///The period of time for which Capacity or `CapacityDemand` applies.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ApplicableTimePeriod {
     ///When sub-classing, this defines the super-class
@@ -23,7 +23,7 @@ pub struct ApplicableTimePeriod {
     #[serde(rename = "fromToDateTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub from_to_date_time: Option<TimePeriod>,
-    /**An indicator that specifies the inclusion or exclusion of the from and to DateTime attributes.
+    /**An indicator that specifies the inclusion or exclusion of the from and to `DateTime` attributes.
     Possible values are "open", "closed", "closedBottom" and "closedTop".*/
     #[serde(rename = "rangeInterval")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

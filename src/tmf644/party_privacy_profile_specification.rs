@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 /// Specification of a Party Privacy Profile
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyPrivacyProfileSpecification {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///A list of roles to which this specification can apply. For example: Shop Agent, Call Center Agent.

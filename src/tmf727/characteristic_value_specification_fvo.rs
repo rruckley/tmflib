@@ -3,10 +3,10 @@ use serde::{Deserialize, Serialize};
 use crate::common::extensible::Extensible;
 use crate::TimePeriod;
 
-///CharacteristicValueSpecificationFvo represents the specification of a characteristic value, which may include the type of value, the relationships to other characteristics, and other attributes. It is used to define the specification of a characteristic value in a specific context, e.g. for a specific product or in a specific environment.
+///`CharacteristicValueSpecificationFvo` represents the specification of a characteristic value, which may include the type of value, the relationships to other characteristics, and other attributes. It is used to define the specification of a characteristic value in a specific context, e.g. for a specific product or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicValueSpecificationFvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///If true, the Boolean Indicates if the value is the default value for a characteristic

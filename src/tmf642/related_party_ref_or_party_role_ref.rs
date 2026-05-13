@@ -1,10 +1,10 @@
 use super::{Extensible, PartyRefOrPartyRoleRef};
 use serde::{Deserialize, Serialize};
 
-/// RelatedPartyRefOrPartyRoleRef defines a related party or party role for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+/// `RelatedPartyRefOrPartyRoleRef` defines a related party or party role for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPartyRefOrPartyRoleRef {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     /// Reference to a party or party role

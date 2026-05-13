@@ -27,7 +27,7 @@ pub struct RelatedShippingOrder {
 }
 
 impl RelatedShippingOrder {
-    /// Set the role for this RelatedShippingOrder
+    /// Set the role for this `RelatedShippingOrder`
     pub fn role(mut self, role: impl Into<String>) -> RelatedShippingOrder {
         self.role = Some(role.into());
         self
@@ -85,12 +85,14 @@ pub struct ShippingOrder {
 }
 
 impl ShippingOrder {
-    /// Create new ShippingOrder
+    /// Create new `ShippingOrder`
+    #[must_use] 
     pub fn new() -> ShippingOrder {
         ShippingOrder::create()
     }
 
     /// Set shipping instructions for this shipping order
+    #[must_use] 
     pub fn instruction(mut self, instruction: ShippingInstruction) -> ShippingOrder {
         self.shipping_instruction = Some(instruction);
         self
@@ -104,7 +106,7 @@ impl ShippingOrder {
         }
     }
 
-    /// Add a RelatedShippingOrder to this order
+    /// Add a `RelatedShippingOrder` to this order
     pub fn link_order(&mut self, shipping_order: &ShippingOrder, role: impl Into<String>) {
         self.related_shipping_order = Some(RelatedShippingOrder::from(shipping_order).role(role));
     }

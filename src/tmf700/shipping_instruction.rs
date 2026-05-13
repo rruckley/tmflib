@@ -65,20 +65,18 @@ impl ShippingInstruction {
     }
 
     /// Set the signature requirements
+    #[must_use] 
     pub fn signature_required_by(
         mut self,
         signature: Option<SignatureRequiredByType>,
     ) -> ShippingInstruction {
-        match signature {
-            Some(s) => {
-                self.signature_required_by = Some(s);
-                self.signature_required = true;
-            }
-            None => {
-                self.signature_required_by = None;
-                self.signature_required = false;
-            }
-        };
+        if let Some(s) = signature {
+            self.signature_required_by = Some(s);
+            self.signature_required = true;
+        } else {
+            self.signature_required_by = None;
+            self.signature_required = false;
+        }
         self
     }
 }

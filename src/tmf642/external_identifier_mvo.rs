@@ -1,10 +1,10 @@
 use crate::common::extensible::Extensible;
 use serde::{Deserialize, Serialize};
 
-/// ExternalIdentifierMvo defines an external identifier for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+/// `ExternalIdentifierMvo` defines an external identifier for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ExternalIdentifierMvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Type of the identification, typically would be the type of the entity within the external system

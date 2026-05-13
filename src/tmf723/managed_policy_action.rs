@@ -1,12 +1,12 @@
 use super::{PolicyAction, PolicyManagedEntity};
 use serde::{Deserialize, Serialize};
-///Managed PolicyAction
+///Managed `PolicyAction`
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyAction {
-    /// PolicyAction
+    /// `PolicyAction`
     #[serde(flatten)]
     pub policy_action: PolicyAction,
-    /// Managed PolicyManagedEntity
+    /// Managed `PolicyManagedEntity`
     #[serde(flatten)]
     pub policy_managed_entity: PolicyManagedEntity,
 }

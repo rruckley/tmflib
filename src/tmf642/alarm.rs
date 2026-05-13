@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//! Alarm defines an alarm for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+//! Alarm defines an alarm for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 
 use super::{
     AlarmRef, AlarmType, AlarmedObjectRef, Comment, CrossedThresholdInformation, PerceivedSeverity,
@@ -24,10 +24,10 @@ const CLASS_PATH: &str = "alarm";
 
 use tmflib_derive::HasId;
 
-///Alarm defines an alarm for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+///Alarm defines an alarm for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Default, Debug, Clone, Serialize, Deserialize, HasId)]
 pub struct Alarm {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     /// Unique identifier of the alarm
@@ -79,7 +79,7 @@ pub struct Alarm {
     #[serde(rename = "alarmType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub alarm_type: Option<AlarmType>,
-    ///Reference to object which affected by Alarm (AlarmedObject).
+    ///Reference to object which affected by Alarm (`AlarmedObject`).
     #[serde(rename = "alarmedObject")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub alarmed_object: Option<AlarmedObjectRef>,

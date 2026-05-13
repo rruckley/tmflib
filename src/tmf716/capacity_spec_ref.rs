@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-///CapacitySpecRef struct
+///`CapacitySpecRef` struct
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CapacitySpecRef {
     ///When sub-classing, this defines the super-class

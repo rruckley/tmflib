@@ -2,10 +2,10 @@ use super::ExternalIdentifierMvo;
 use crate::common::entity::Entity;
 use serde::{Deserialize, Serialize};
 
-/// PlaceMvo defines a place for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+/// `PlaceMvo` defines a place for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PlaceMvo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Collection of external identifiers

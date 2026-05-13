@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 /// Customer360 Agreement VO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Customer360AgreementVo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///A period of time, either as a deadline (endDateTime only) a startDateTime only, or both

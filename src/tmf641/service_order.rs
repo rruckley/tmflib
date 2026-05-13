@@ -24,7 +24,7 @@ pub enum ServiceOrderStateType {
     Pending,
     /// Held
     Held,
-    /// InProgress
+    /// `InProgress`
     InProgress,
     /// Cancelled
     Cancelled,
@@ -68,7 +68,7 @@ pub struct ServiceOrder {
     /// Unique Id
     #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    /// URi
+    /// `URi`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
     /// Notification Contact
@@ -105,6 +105,7 @@ pub struct ServiceOrder {
 
 impl ServiceOrder {
     /// Create a new service order object
+    #[must_use] 
     pub fn new() -> ServiceOrder {
         let mut so = ServiceOrder::create();
         so.note = Some(vec![]);
@@ -112,7 +113,7 @@ impl ServiceOrder {
         so
     }
 
-    /// Safely add a new [ServiceOrderItem] to this ServiceOrder
+    /// Safely add a new [`ServiceOrderItem`] to this `ServiceOrder`
     pub fn add_item(&mut self, item: ServiceOrderItem) {
         match self.service_order_item.as_mut() {
             Some(v) => v.push(item),

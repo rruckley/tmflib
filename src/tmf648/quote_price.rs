@@ -31,7 +31,7 @@ pub struct QuotePrice {
 }
 
 impl QuotePrice {
-    /// Create a new QuotePrice object with a given name
+    /// Create a new `QuotePrice` object with a given name
     pub fn new(name: impl Into<String>) -> QuotePrice {
         QuotePrice {
             name: Some(name.into()),
@@ -39,6 +39,7 @@ impl QuotePrice {
         }
     }
     /// Return the price inclusive of Tax
+    #[must_use] 
     pub fn inc_tax(&self) -> Decimal {
         match self.price.as_ref() {
             Some(p) => p.tax_included_amount.value,
@@ -46,6 +47,7 @@ impl QuotePrice {
         }
     }
     /// Return the price exclusive of Tax
+    #[must_use] 
     pub fn ex_tax(&self) -> Decimal {
         match self.price.as_ref() {
             Some(p) => p.duty_free_amount.value,
@@ -53,13 +55,15 @@ impl QuotePrice {
         }
     }
 
-    /// Add pricing to this QuotePrice
+    /// Add pricing to this `QuotePrice`
+    #[must_use] 
     pub fn price(mut self, price: Price) -> QuotePrice {
         self.price = Some(price);
         self
     }
 
     /// Set the period
+    #[must_use] 
     pub fn period(mut self, period: &str) -> QuotePrice {
         self.recurring_charge_period = Some(period.to_owned());
         self

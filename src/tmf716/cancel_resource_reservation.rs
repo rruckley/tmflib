@@ -1,7 +1,7 @@
 use super::{ResourceReservationRef, TaskStateType};
 use serde::{Deserialize, Serialize};
 
-///The data structure of a CancelResourceReservation
+///The data structure of a `CancelResourceReservation`
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CancelResourceReservation {
     ///When sub-classing, this defines the super-class

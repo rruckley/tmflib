@@ -39,6 +39,7 @@ pub struct CheckProductConfiguration {
 
 impl CheckProductConfiguration {
     /// Create a product configuration check request
+    #[must_use] 
     pub fn new() -> CheckProductConfiguration {
         CheckProductConfiguration::create()
     }

@@ -33,7 +33,7 @@ pub struct ServiceOrderItem {
     ///Quantity ordered
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub quantity: Option<i64>,
-    ///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the RelatedServiceRefOrValue class itself
+    ///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the `RelatedServiceRefOrValue` class itself
     pub service: ServiceRefOrValue,
     ///A list of order items embedded to this order item
     #[serde(rename = "serviceOrderItem")]

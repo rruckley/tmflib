@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use crate::common::addressable::Addressable;
 use crate::common::extensible::Extensible;
 
-///EntityRefMvo represents a reference to an entity, which may include the version of the entity. It is used to define the reference to an entity in a specific context, e.g. for a specific customer or in a specific environment.
+///`EntityRefMvo` represents a reference to an entity, which may include the version of the entity. It is used to define the reference to an entity in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityRefMvo {
     ///The actual type of the target instance when needed for disambiguation.
@@ -13,7 +13,7 @@ pub struct EntityRefMvo {
     ///Base schema for addressable entities
     #[serde(flatten)]
     pub addressable: Addressable,
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///The URI of the referred entity.

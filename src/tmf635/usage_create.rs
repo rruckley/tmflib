@@ -40,7 +40,7 @@ pub struct UsageCreate {
     #[serde(rename = "usageDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub usage_date: Option<crate::DateTime>,
-    ///UsageSpecification reference. UsageSpecification is a detailed description of a usage event that are of interest to the business and can have charges applied to it. It is comprised of characteristics, which define all attributes known for a particular type of usage.
+    ///`UsageSpecification` reference. `UsageSpecification` is a detailed description of a usage event that are of interest to the business and can have charges applied to it. It is comprised of characteristics, which define all attributes known for a particular type of usage.
     #[serde(rename = "usageSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub usage_specification: Option<UsageSpecificationRef>,

@@ -5,10 +5,10 @@ use serde::{Deserialize, Serialize};
 ///A related place, with a role.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPlaceRefOrValueFvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
-    ///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Place entity and not the PlaceRefOrValue class itself
+    ///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Place entity and not the `PlaceRefOrValue` class itself
     pub place: PlaceRefOrValueFvo,
     ///Role of the related place
     pub role: String,

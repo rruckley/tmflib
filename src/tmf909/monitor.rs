@@ -31,7 +31,7 @@ pub struct Monitor {
     #[serde(rename = "sourceHref")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub source_href: Option<String>,
-    ///The Monitor state of the resource.  InProgress, InError, Completed
+    ///The Monitor state of the resource.  `InProgress`, `InError`, Completed
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state: Option<String>,
 }

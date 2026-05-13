@@ -38,7 +38,7 @@ pub struct MeasurementJob {
     #[serde(rename = "producingApplicationId")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub producing_application_id: Option<String>,
-    ///Records tracking the changes of the MeasurementJob.
+    ///Records tracking the changes of the `MeasurementJob`.
     #[serde(rename = "trackingRecord")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub tracking_record: Vec<TrackingRecord>,

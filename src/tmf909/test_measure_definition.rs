@@ -2,7 +2,7 @@ use super::{Duration, MetricDefMeasureThresholdRule};
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
-///A TestMeasureDefinition specifies a measure of a specific aspect of a product, service, or resource test, such as lost packets or connectivity status
+///A `TestMeasureDefinition` specifies a measure of a specific aspect of a product, service, or resource test, such as lost packets or connectivity status
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TestMeasureDefinition {
     ///When sub-classing, this defines the super-class
@@ -41,7 +41,7 @@ pub struct TestMeasureDefinition {
     #[serde(rename = "metricName")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub metric_name: Option<String>,
-    ///The name of the TestMeasureDefinition
+    ///The name of the `TestMeasureDefinition`
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     ///The rule(s) associated with the measure threshold

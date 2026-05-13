@@ -1,6 +1,6 @@
 use super::{Characteristic, MeasureThresholdRuleViolation};
 use serde::{Deserialize, Serialize};
-///A TestMeasure specifies a measure of a specific aspect of a product, service, or resource test, such as lost packets or connectivity status
+///A `TestMeasure` specifies a measure of a specific aspect of a product, service, or resource test, such as lost packets or connectivity status
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TestMeasure {
     ///When sub-classing, this defines the super-class

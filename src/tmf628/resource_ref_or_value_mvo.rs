@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Resource entity and not the ResourceRefOrValue class itself
+///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Resource entity and not the `ResourceRefOrValue` class itself
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceRefOrValueMvo {}
 impl std::fmt::Display for ResourceRefOrValueMvo {

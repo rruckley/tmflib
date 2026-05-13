@@ -114,7 +114,7 @@ impl From<&Quote> for Agreement {
                 // Take each QuoteItem and convert to AgreementItem
                 let agreement_item = AgreementItem::from(i);
                 agreement.add_item(agreement_item);
-            })
+            });
         }
         agreement
     }

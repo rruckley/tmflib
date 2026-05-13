@@ -64,7 +64,8 @@ pub struct Characteristic {
 }
 
 impl Characteristic {
-    /// Create a new characteristic with a given name and value, value_type is determined automatically based on value enum.
+    /// Create a new characteristic with a given name and value, `value_type` is determined automatically based on value enum.
+    #[must_use] 
     pub fn new(name: String, value: serde_json::Value) -> Characteristic {
         let val_type = serde_value_to_type(&value);
         Characteristic {
@@ -158,12 +159,14 @@ impl Service {
     }
 
     /// Add a characterisitic during create
+    #[must_use] 
     pub fn with_characteristic(mut self, characteristic: Characteristic) -> Service {
         vec_insert(&mut self.service_characteristic, characteristic);
         self
     }
 
     /// Add relationships during create
+    #[must_use] 
     pub fn with_relationship(mut self, relationship: ServiceRelationship) -> Service {
         vec_insert(&mut self.service_relationship, relationship);
         self
@@ -206,32 +209,26 @@ impl Service {
         &mut self,
         characteristic: Characteristic,
     ) -> Option<Characteristic> {
-        match self.service_characteristic.as_mut() {
-            Some(c) => {
-                // Characteristic array exist
-                let pos = c.iter().position(|c| c.name == characteristic.name);
-                match pos {
-                    Some(u) => {
-                        // Clone old value for return
-                        let old = c[u].clone();
-                        // Replace
-                        c[u] = characteristic;
-                        Some(old)
-                    }
-                    None => {
-                        // This means the characteristic could not be found, instead we insert it
-                        // Additional we return None to indicate that no old value was found
-                        c.push(characteristic);
-                        None
-                    }
-                }
-            }
-            None => {
-                // Characteristic Vec was not created yet, create it now.
-                self.service_characteristic = Some(vec![characteristic]);
-                // Return None to show no previous value existed.
+        if let Some(c) = self.service_characteristic.as_mut() {
+            // Characteristic array exist
+            let pos = c.iter().position(|c| c.name == characteristic.name);
+            if let Some(u) = pos {
+                // Clone old value for return
+                let old = c[u].clone();
+                // Replace
+                c[u] = characteristic;
+                Some(old)
+            } else {
+                // This means the characteristic could not be found, instead we insert it
+                // Additional we return None to indicate that no old value was found
+                c.push(characteristic);
                 None
             }
+        } else {
+            // Characteristic Vec was not created yet, create it now.
+            self.service_characteristic = Some(vec![characteristic]);
+            // Return None to show no previous value existed.
+            None
         }
     }
 }

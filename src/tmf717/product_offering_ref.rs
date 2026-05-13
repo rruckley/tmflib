@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 /// Product Offering Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ProductOfferingRef {
-    /// Base entity reference schema for use in TMForum Open-APIs. Property.
+    /// Base entity reference schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Version of the product offering

@@ -56,7 +56,7 @@ pub struct Document {
     // HasName
     #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
-    /// For trait HasLastUpdate
+    /// For trait `HasLastUpdate`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_update: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -91,6 +91,7 @@ impl Document {
     }
 
     /// Set the attachment for this document.
+    #[must_use] 
     pub fn attachment(mut self, attachment: AttachmentRefOrValue) -> Document {
         self.attachment = attachment;
         self

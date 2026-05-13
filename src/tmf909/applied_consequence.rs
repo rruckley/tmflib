@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 /**An Applied Consequence defines the action (prescribed action or notification) to take when a
-MeasureThresholdRuleViolation occurs.*/
+`MeasureThresholdRuleViolation` occurs.*/
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AppliedConsequence {
     ///When sub-classing, this defines the super-class
@@ -24,12 +24,12 @@ pub struct AppliedConsequence {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     /**A word, term, or phrase by which Consequence is known and
-    distinguished from other MetricDefMeasureConsequences.*/
+    distinguished from other `MetricDefMeasureConsequences`.*/
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /**An indicator used to specify that a consequence should cease
     being applied if a value is in the same range as the previous value or continue being applied if a value is in the same range as the previous value.
-    If the repeatAction is True, if the consequence is always applied as soon as the MetricMeasure value is in the range of values and if the repeatAction is False, the consequence is applied only if the previous MetricMeasure value was not in the same range.*/
+    If the repeatAction is True, if the consequence is always applied as soon as the `MetricMeasure` value is in the range of values and if the repeatAction is False, the consequence is applied only if the previous `MetricMeasure` value was not in the same range.*/
     #[serde(rename = "repeatAction")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub repeat_action: Option<bool>,

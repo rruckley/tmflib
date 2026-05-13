@@ -130,12 +130,14 @@ impl CommunicationMessage {
     }
 
     /// Set the Sender for this message
+    #[must_use] 
     pub fn from(mut self, sender: &Individual) -> CommunicationMessage {
         self.sender = Some(Sender::from(sender));
         self
     }
 
     /// Set the receivers for this message
+    #[must_use] 
     pub fn to(mut self, recievers: Vec<&Individual>) -> CommunicationMessage {
         recievers.into_iter().for_each(|i| {
             self.receiver.push(Receiver::from(i));

@@ -24,7 +24,7 @@ pub struct ResourceCandidate {
 }
 
 impl ResourceCandidate {
-    /// Create a new ResourceCandidate instance
+    /// Create a new `ResourceCandidate` instance
     pub fn new(name: impl Into<String>) -> ResourceCandidate {
         let mut rc = ResourceCandidate::create_with_time();
         rc.name = Some(name.into());
@@ -32,6 +32,7 @@ impl ResourceCandidate {
     }
 
     /// Set the description on this resource candidate
+    #[must_use] 
     pub fn description(mut self, description: &str) -> ResourceCandidate {
         self.description = Some(description.to_owned());
         self
@@ -51,7 +52,7 @@ impl HasLastUpdate for ResourceCandidate {
         match time {
             Some(t) => self.set_last_update(t),
             None => self.set_last_update(ResourceCandidate::get_timestamp()),
-        };
+        }
         self
     }
 }

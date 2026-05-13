@@ -164,12 +164,14 @@ impl ServiceCategory {
     }
 
     /// Add a child category to this category
+    #[must_use] 
     pub fn child_category(mut self, category: ServiceCategoryRef) -> ServiceCategory {
         vec_insert(&mut self.category, category);
         self
     }
 
-    /// Add a ServiceCandidate to this category
+    /// Add a `ServiceCandidate` to this category
+    #[must_use] 
     pub fn candidate(mut self, candidate: ServiceCandidateRef) -> ServiceCategory {
         vec_insert(&mut self.service_candidate, candidate);
         self

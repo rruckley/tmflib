@@ -3,13 +3,13 @@ use serde::{Deserialize, Serialize};
 use crate::common::entity::EntityRef;
 use crate::common::extensible::Extensible;
 
-/// Reference to an AgreementSpecification entity
+/// Reference to an `AgreementSpecification` entity
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AgreementSpecificationRefMvo {
-    ///Base entity reference schema for use in TMForum Open-APIs. Property.
+    ///Base entity reference schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref: EntityRef,
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///A narrative that explains in detail what the agreement specification is about.

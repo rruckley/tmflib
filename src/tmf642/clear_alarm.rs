@@ -2,10 +2,10 @@ use super::AlarmRefOrValue;
 use crate::{common::entity::Entity, DateTime};
 use serde::{Deserialize, Serialize};
 
-/// ClearAlarm defines a clear alarm operation for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+/// `ClearAlarm` defines a clear alarm operation for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ClearAlarm {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Time of the alarm clearing

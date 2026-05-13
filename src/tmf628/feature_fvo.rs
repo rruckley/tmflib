@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///Feature FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct FeatureFvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible_fvo: ExtensibleFvo,
     ///This is a list of Characteristics for a particular feature.

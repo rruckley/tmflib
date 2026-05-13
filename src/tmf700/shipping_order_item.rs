@@ -47,6 +47,7 @@ pub struct ShippingOrderItem {
 
 impl ShippingOrderItem {
     /// Create a new shipping order item
+    #[must_use] 
     pub fn new() -> ShippingOrderItem {
         ShippingOrderItem::create().status(NEW_STATUS)
     }
@@ -57,6 +58,7 @@ impl ShippingOrderItem {
     }
 
     /// Set shipping instructions for this order item
+    #[must_use] 
     pub fn instruction(mut self, instruction: ShippingInstruction) -> ShippingOrderItem {
         self.shipping_instruction = Some(instruction);
         self

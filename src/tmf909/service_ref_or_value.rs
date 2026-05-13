@@ -5,7 +5,7 @@ use super::{
 };
 use crate::common::note::Note;
 use serde::{Deserialize, Serialize};
-///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the RelatedServiceRefOrValue class itself
+///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the `RelatedServiceRefOrValue` class itself
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServiceRefOrValue {
     ///When sub-classing, this defines the super-class
@@ -47,7 +47,7 @@ pub struct ServiceRefOrValue {
     ///Unique identifier of the service
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    ///If true, the service is a ServiceBundle which regroup a service hierachy. If false, the service is a 'atomic' service (hierachy leaf).
+    ///If true, the service is a `ServiceBundle` which regroup a service hierachy. If false, the service is a 'atomic' service (hierachy leaf).
     #[serde(rename = "isBundle")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub is_bundle: Option<bool>,
@@ -72,11 +72,11 @@ pub struct ServiceRefOrValue {
     #[serde(rename = "relatedEntity")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub related_entity: Option<Vec<RelatedEntityRefOrValue>>,
-    ///A list of related party references (RelatedParty [*]). A related party defines party or party role linked to a specific entity
+    ///A list of related party references (`RelatedParty` [*]). A related party defines party or party role linked to a specific entity
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
-    ///A list of characteristics that characterize this service (ServiceCharacteristic [*])
+    ///A list of characteristics that characterize this service (`ServiceCharacteristic` [*])
     #[serde(rename = "serviceCharacteristic")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service_characteristic: Option<Vec<Characteristic>>,
@@ -88,11 +88,11 @@ pub struct ServiceRefOrValue {
     #[serde(rename = "serviceOrderItem")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service_order_item: Option<Vec<RelatedServiceOrderItem>>,
-    ///A list of service relationships (ServiceRelationship [*]). Describes links with other service(s) in the inventory.
+    ///A list of service relationships (`ServiceRelationship` [*]). Describes links with other service(s) in the inventory.
     #[serde(rename = "serviceRelationship")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service_relationship: Option<Vec<ServiceRelationship>>,
-    ///Service specification reference: ServiceSpecification(s) required to realize a ProductSpecification.
+    ///Service specification reference: ServiceSpecification(s) required to realize a `ProductSpecification`.
     #[serde(rename = "serviceSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service_specification: Option<ServiceSpecificationRef>,
@@ -111,11 +111,11 @@ pub struct ServiceRefOrValue {
     ///Valid values for the lifecycle state of the service
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state: Option<ServiceStateType>,
-    ///A list of supporting resources (SupportingResource [*]).Note: only Service of type RFS can be associated with Resources
+    ///A list of supporting resources (`SupportingResource` [*]).Note: only Service of type RFS can be associated with Resources
     #[serde(rename = "supportingResource")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub supporting_resource: Option<Vec<ResourceRef>>,
-    ///A list of supporting services (SupportingService [*]). A collection of services that support this service (bundling, link CFS to RFS)
+    ///A list of supporting services (`SupportingService` [*]). A collection of services that support this service (bundling, link CFS to RFS)
     #[serde(rename = "supportingService")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub supporting_service: Option<Vec<ServiceRefOrValue>>,

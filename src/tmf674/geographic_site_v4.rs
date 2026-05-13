@@ -69,6 +69,7 @@ pub struct CalendarPeriod {
 
 impl CalendarPeriod {
     /// Generate standard business hours calendar
+    #[must_use] 
     pub fn business_hours() -> CalendarPeriod {
         CalendarPeriod {
             day: Some(CALENDAR_WEEKDAYS.to_string()),
@@ -124,6 +125,7 @@ impl GeographicSite {
         site
     }
     /// Set the place on this Site
+    #[must_use] 
     pub fn place(mut self, place: PlaceRefOrValue) -> GeographicSite {
         match self.place.as_mut() {
             Some(v) => v.push(place),
@@ -133,12 +135,14 @@ impl GeographicSite {
     }
 
     /// Set the code for this site
+    #[must_use] 
     pub fn code(mut self, code: String) -> GeographicSite {
         self.code = Some(code);
         self
     }
 
     /// Set the calendar for this site
+    #[must_use] 
     pub fn calendar(mut self, calendar: CalendarPeriod) -> GeographicSite {
         match self.calendar.as_mut() {
             Some(v) => v.push(calendar),

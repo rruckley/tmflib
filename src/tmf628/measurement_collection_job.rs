@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 /// Measurement Collection Job
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MeasurementCollectionJob {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub measurement_job: MeasurementJob,
     ///Filter defining the subset of data to be collected by the job

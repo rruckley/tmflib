@@ -143,6 +143,7 @@ impl ActualCost {
     /// let cost = ActualCost::new("Example Cost")
     ///     .item(ActualCostItem::new("Item 1"));
     /// ```
+    #[must_use] 
     pub fn item(mut self, item: ActualCostItem) -> Self {
         vec_insert(&mut self.cost_item, item);
         self

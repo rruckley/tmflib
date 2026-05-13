@@ -12,7 +12,7 @@ use tmflib_derive::{HasAttachment, HasDescription, HasId, HasName, HasRelatedPar
 
 const CLASS_PATH: &str = "intent";
 
-/// Represents an Intent with various attributes such as id, href, name, description, version, status, and valid_for period.
+/// Represents an Intent with various attributes such as id, href, name, description, version, status, and `valid_for` period.
 ///
 /// # Fields
 ///

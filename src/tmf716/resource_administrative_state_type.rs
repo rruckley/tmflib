@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///ResourceAdministrativeStateType enumerations
+///`ResourceAdministrativeStateType` enumerations
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum ResourceAdministrativeStateType {
     ///The resource is in an unlocked state and can be used.

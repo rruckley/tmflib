@@ -2,10 +2,10 @@ use super::{EntityFvo, NoteFvo};
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
-/// PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo represents a managed entity for policies with various attributes.
+/// `PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo` represents a managed entity for policies with various attributes.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_fvo: EntityFvo,
     ///Description of the Policy Entity

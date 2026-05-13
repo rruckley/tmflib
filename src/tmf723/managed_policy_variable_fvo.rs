@@ -1,13 +1,13 @@
 use super::{PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo, PolicyVariableFvo};
 use serde::{Deserialize, Serialize};
-///Managed PolicyVariable
+///Managed `PolicyVariable`
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyVariableFvo {
-    /// Inlined fields from PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo
+    /// Inlined fields from `PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo`
     #[serde(flatten)]
     pub policy_managed_entity_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo_fvo:
         PolicyManagedEntityFvoFvoFvoFvoFvoFvoFvoFvoFvo,
-    ///A PolicyVariable is an entity for modeling different types of variables that can be used to form a PolicyCondition statement. It can be static or dynamic.
+    ///A `PolicyVariable` is an entity for modeling different types of variables that can be used to form a `PolicyCondition` statement. It can be static or dynamic.
     #[serde(flatten)]
     pub policy_variable_fvo: PolicyVariableFvo,
 }

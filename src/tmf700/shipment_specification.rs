@@ -145,6 +145,7 @@ pub struct CharacteristicValueSpecification {
 
 impl CharacteristicValueSpecification {
     /// Constructor
+    #[must_use] 
     pub fn new() -> CharacteristicValueSpecification {
         CharacteristicValueSpecification {
             ..Default::default()
@@ -184,8 +185,7 @@ impl CharacteristicValueSpecification {
                 let val_str = value.to_string().replace('\"', "");
                 if !re.is_match(&val_str) {
                     return Err(TMFError::GenericError(format!(
-                        "Value {} does not match regex {}",
-                        val_str, re_str
+                        "Value {val_str} does not match regex {re_str}"
                     )));
                 }
                 self.value = Some(value);

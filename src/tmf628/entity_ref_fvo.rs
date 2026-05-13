@@ -12,7 +12,7 @@ pub struct EntityRefFvo {
     ///Base schema for addressable entities
     #[serde(flatten)]
     pub addressable: Addressable,
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible_fvo: ExtensibleFvo,
     ///Name of the referred entity.

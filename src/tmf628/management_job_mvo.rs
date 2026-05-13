@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 /// Management Job Mvo
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagementJobMvo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     /// Data Access Endpoint

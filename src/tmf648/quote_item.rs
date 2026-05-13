@@ -126,6 +126,7 @@ pub struct QuoteItem {
 
 impl QuoteItem {
     /// Create a new quote item
+    #[must_use] 
     pub fn new() -> QuoteItem {
         let id = Uuid::new_v4().to_string();
         QuoteItem {
@@ -136,12 +137,13 @@ impl QuoteItem {
     }
 
     /// Set the product for this quoteItem
+    #[must_use] 
     pub fn product(mut self, product: ProductOffering) -> QuoteItem {
         self.product = Some(ProductRefOrValue::from(product));
         self
     }
 
-    /// Add QuotePrice to this QuoteItem
+    /// Add `QuotePrice` to this `QuoteItem`
     pub fn price(&mut self, price: QuotePrice) {
         match self.quote_item_price.as_mut() {
             Some(v) => v.push(price),
@@ -149,7 +151,8 @@ impl QuoteItem {
         }
     }
 
-    /// Get the ProductOffering for this QuoteItem
+    /// Get the `ProductOffering` for this `QuoteItem`
+    #[must_use] 
     pub fn get_offer(&self) -> Option<ProductRefOrValue> {
         self.product.clone()
     }

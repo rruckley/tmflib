@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///Performance Indicator Specification Relationship Full Value Object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PerformanceIndicatorSpecRelationshipFvo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     /// The type of relationship such as 'dependsOn', 'relatesTo', 'isComposedOf'

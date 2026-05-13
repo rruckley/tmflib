@@ -71,6 +71,7 @@ pub struct ShoppingCart {
 
 impl ShoppingCart {
     /// Create a new shopping cart
+    #[must_use] 
     pub fn new() -> ShoppingCart {
         // let mut cart = ShoppingCart::create();
         // cart.cart_item = Some(vec![]);

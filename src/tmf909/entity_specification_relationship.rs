@@ -21,7 +21,7 @@ pub struct EntitySpecificationRelationship {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    ///reference to an AssociationSpecification object
+    ///reference to an `AssociationSpecification` object
     #[serde(rename = "associationSpec")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub association_spec: Option<AssociationSpecificationRef>,

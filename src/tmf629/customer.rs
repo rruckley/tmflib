@@ -57,6 +57,7 @@ impl Customer {
     /// let org = Organization::new("Legal Entity");
     /// let cust = Customer::new(org);
     /// ```
+    #[must_use] 
     pub fn new(org: Organization) -> Customer {
         let mut cust = Customer::create();
         cust.name = Some(org.get_name());
@@ -72,14 +73,14 @@ impl Customer {
     }
 
     /// Geneate a unique customer code via cryptographic functions
-    /// Uses [crate::gen_code].
+    /// Uses [`crate::gen_code`].
     pub fn generate_code(&mut self, offset: Option<u32>) {
         // Generate a new code based on name
 
         // Generate Id if none exists
         if self.id.is_none() {
             self.generate_id();
-        };
+        }
 
         // Generate code
         let (code, hash) = gen_code(
@@ -111,6 +112,7 @@ impl Customer {
     }
 
     /// Try to find characteristic with given name
+    #[must_use] 
     pub fn get_characteristic(&self, characteristic: &str) -> Option<Characteristic> {
         match &self.characteristic {
             Some(c) => c.iter().find(|x| x.name == characteristic).cloned(),
@@ -139,32 +141,26 @@ impl Customer {
         &mut self,
         characteristic: Characteristic,
     ) -> Option<Characteristic> {
-        match self.characteristic.as_mut() {
-            Some(c) => {
-                // Characteristic array exist
-                let pos = c.iter().position(|c| c.name == characteristic.name);
-                match pos {
-                    Some(u) => {
-                        // Clone old value for return
-                        let old = c[u].clone();
-                        // Replace
-                        c[u] = characteristic;
-                        Some(old)
-                    }
-                    None => {
-                        // This means the characteristic could not be found, instead we insert it
-                        // Additional we return None to indicate that no old value was found
-                        c.push(characteristic);
-                        None
-                    }
-                }
-            }
-            None => {
-                // Characteristic Vec was not created yet, create it now.
-                self.characteristic = Some(vec![characteristic]);
-                // Return None to show no previous value existed.
+        if let Some(c) = self.characteristic.as_mut() {
+            // Characteristic array exist
+            let pos = c.iter().position(|c| c.name == characteristic.name);
+            if let Some(u) = pos {
+                // Clone old value for return
+                let old = c[u].clone();
+                // Replace
+                c[u] = characteristic;
+                Some(old)
+            } else {
+                // This means the characteristic could not be found, instead we insert it
+                // Additional we return None to indicate that no old value was found
+                c.push(characteristic);
                 None
             }
+        } else {
+            // Characteristic Vec was not created yet, create it now.
+            self.characteristic = Some(vec![characteristic]);
+            // Return None to show no previous value existed.
+            None
         }
     }
 
@@ -180,6 +176,7 @@ impl Customer {
     }
 
     /// Get the market segment
+    #[must_use] 
     pub fn get_market_segment(&self) -> Option<Characteristic> {
         self.get_characteristic(CUST_SEGMENT_CHAR)
     }
@@ -188,7 +185,7 @@ impl Customer {
     /// Will return the newly generated cryptographic code.
     /// Takes the following steps:
     /// -   Moves existing ID into characteristic of 'Id'
-    /// -   Generate cryptographic code via generate_code
+    /// -   Generate cryptographic code via `generate_code`
     /// -   Replace Id, with newly genreated code.
     /// -   Returns new code.
     ///

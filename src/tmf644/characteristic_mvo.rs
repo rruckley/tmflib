@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 /// Characteristic defined in terms of a base schema that is extended to add attributes specific to the kind of characteristic being described
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicMvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Relationships to other characteristics

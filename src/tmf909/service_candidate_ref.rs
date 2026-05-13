@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///ServiceCandidate reference. ServiceCandidate is an entity that makes a ServiceSpecification available to a catalog.
+///`ServiceCandidate` reference. `ServiceCandidate` is an entity that makes a `ServiceSpecification` available to a catalog.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceCandidateRef {
     ///When sub-classing, this defines the super-class

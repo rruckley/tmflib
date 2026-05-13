@@ -1,6 +1,6 @@
 use super::ServiceOrderItemRef;
 use serde::{Deserialize, Serialize};
-///A ServiceOrderJeopardyAlert represents a predicted exception during a service order processing that would brings risk to complete successfully the ordetr.
+///A `ServiceOrderJeopardyAlert` represents a predicted exception during a service order processing that would brings risk to complete successfully the ordetr.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceOrderJeopardyAlert {
     ///When sub-classing, this defines the super-class
@@ -15,14 +15,14 @@ pub struct ServiceOrderJeopardyAlert {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    ///A date time( DateTime). The date that the alert issued
+    ///A date time( `DateTime`). The date that the alert issued
     #[serde(rename = "alertDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub alert_date: Option<crate::DateTime>,
     ///The exception associated with this jeopardy alert
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub exception: Option<String>,
-    ///identifier of the JeopardyAlert
+    ///identifier of the `JeopardyAlert`
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     ///A string represents the type of jeopardy/risk like Normal, Hazard, Critical, ...

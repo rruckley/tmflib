@@ -1,10 +1,10 @@
 use crate::common::extensible::Extensible;
 use serde::{Deserialize, Serialize};
 
-/// NoteMvo represents a note with author, date, id, and text fields.
+/// `NoteMvo` represents a note with author, date, id, and text fields.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct NoteMvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Author of the note

@@ -92,7 +92,7 @@ pub struct FeatureRelationship {
 }
 
 /// # Resource Function
-/// A ResourceFunction is a behaviour to transform inputs of any nature into outputs of any
+/// A `ResourceFunction` is a behaviour to transform inputs of any nature into outputs of any
 /// nature independently from the way it is provided.
 #[derive(
     Clone,

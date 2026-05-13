@@ -129,6 +129,7 @@ impl From<Appointment> for AppointmentRef {
 
 impl Appointment {
     /// Create new appointment record
+    #[must_use] 
     pub fn new() -> Appointment {
         //let appointment =
         Appointment::create_with_time()

@@ -1,10 +1,10 @@
 use super::{Extensible, PartyRefOrPartyRoleRef};
 use serde::{Deserialize, Serialize};
 
-///RelatedPartyRefOrPartyRoleRef is used to reference a related party or party role in the context of the specific entity it is linked to.
+///`RelatedPartyRefOrPartyRoleRef` is used to reference a related party or party role in the context of the specific entity it is linked to.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPartyRefOrPartyRoleRef {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     /// Reference to a related party or party role.

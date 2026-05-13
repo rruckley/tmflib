@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///ResourceOperationalStateType enumerations
+///`ResourceOperationalStateType` enumerations
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum ResourceOperationalStateType {
     ///The resource is enabled and can be used.

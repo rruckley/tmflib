@@ -140,32 +140,26 @@ impl Organization {
         &mut self,
         characteristic: Characteristic,
     ) -> Option<Characteristic> {
-        match self.party_characteristic.as_mut() {
-            Some(c) => {
-                // Characteristic array exist
-                let pos = c.iter().position(|c| c.name == characteristic.name);
-                match pos {
-                    Some(u) => {
-                        // Clone old value for return
-                        let old = c[u].clone();
-                        // Replace
-                        c[u] = characteristic;
-                        Some(old)
-                    }
-                    None => {
-                        // This means the characteristic could not be found, instead we insert it
-                        // Additional we return None to indicate that no old value was found
-                        c.push(characteristic);
-                        None
-                    }
-                }
-            }
-            None => {
-                // Characteristic Vec was not created yet, create it now.
-                self.party_characteristic = Some(vec![characteristic]);
-                // Return None to show no previous value existed.
+        if let Some(c) = self.party_characteristic.as_mut() {
+            // Characteristic array exist
+            let pos = c.iter().position(|c| c.name == characteristic.name);
+            if let Some(u) = pos {
+                // Clone old value for return
+                let old = c[u].clone();
+                // Replace
+                c[u] = characteristic;
+                Some(old)
+            } else {
+                // This means the characteristic could not be found, instead we insert it
+                // Additional we return None to indicate that no old value was found
+                c.push(characteristic);
                 None
             }
+        } else {
+            // Characteristic Vec was not created yet, create it now.
+            self.party_characteristic = Some(vec![characteristic]);
+            // Return None to show no previous value existed.
+            None
         }
     }
 }

@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 /// Customer360 Trouble Ticket VO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Customer360TroubleTicketVo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///The date on which the trouble ticket was created

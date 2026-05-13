@@ -2,8 +2,8 @@ use super::{ServiceCategoryRef, ServiceSpecificationRef};
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
-/**ServiceCandidate is an entity that makes a service specification available to a catalog. A
-ServiceCandidate and its associated service specification may be published - made visible - in any number of service catalogs, or in none. One service specification can be composed of other service specifications.
+/**`ServiceCandidate` is an entity that makes a service specification available to a catalog. A
+`ServiceCandidate` and its associated service specification may be published - made visible - in any number of service catalogs, or in none. One service specification can be composed of other service specifications.
 Skipped properties: id,href*/
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceCandidateCreate {
@@ -35,7 +35,7 @@ pub struct ServiceCandidateCreate {
     pub lifecycle_status: Option<String>,
     ///Name given to this REST resource
     pub name: String,
-    ///Service specification reference: ServiceSpecification(s) required to realize a ProductSpecification.
+    ///Service specification reference: ServiceSpecification(s) required to realize a `ProductSpecification`.
     #[serde(rename = "serviceSpecification")]
     pub service_specification: ServiceSpecificationRef,
     ///A period of time, either as a deadline (endDateTime only) a startDateTime only, or both

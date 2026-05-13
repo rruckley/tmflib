@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 /// Customer360 Quote VO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Customer360QuoteVo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Used to categorize the quote from a business perspective that can be useful for the CRM system (e.g. "enterprise", "residential", ...)

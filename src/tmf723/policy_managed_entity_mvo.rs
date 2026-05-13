@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///Policy Managed Entity MVO attributes
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyManagedEntityMvo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_mvo: EntityMvo,
     ///Description of the Policy Entity

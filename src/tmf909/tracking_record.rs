@@ -21,7 +21,7 @@ pub struct TrackingRecord {
     ///Describes the action being done, such as: ack, clear
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    ///Identifier of the TrackingRecord
+    ///Identifier of the `TrackingRecord`
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     ///Describes the system Id from which the action was done

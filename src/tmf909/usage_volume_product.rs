@@ -1,6 +1,6 @@
 use super::{ConsumptionSummary, NetworkProduct, UsageVolumeBalance};
 use serde::{Deserialize, Serialize};
-///A bucket (called UsageVolumeProduct in the SID model) represents a quantity of usage, as 2 hours national calls or 50 sms for example. It could be either a quantity or an amount in a currency (i.e. It could represent a fixed number of SMS, MMS, minutes of calls, quantity of data, number of events as well as a specific amount in a given currency). It requires one or more network products from which usages will debit the bucket.
+///A bucket (called `UsageVolumeProduct` in the SID model) represents a quantity of usage, as 2 hours national calls or 50 sms for example. It could be either a quantity or an amount in a currency (i.e. It could represent a fixed number of SMS, MMS, minutes of calls, quantity of data, number of events as well as a specific amount in a given currency). It requires one or more network products from which usages will debit the bucket.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct UsageVolumeProduct {
     ///When sub-classing, this defines the super-class
@@ -15,11 +15,11 @@ pub struct UsageVolumeProduct {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    ///The balance(s) (called UsageVolumeBalance in the SID model) associated with the bucket
+    ///The balance(s) (called `UsageVolumeBalance` in the SID model) associated with the bucket
     #[serde(rename = "bucketBalance")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub bucket_balance: Option<Vec<UsageVolumeBalance>>,
-    ///The consumption counter(s) (called ConsumptionSummary in the SID model) associated with the bucket
+    ///The consumption counter(s) (called `ConsumptionSummary` in the SID model) associated with the bucket
     #[serde(rename = "bucketCounter")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub bucket_counter: Option<Vec<ConsumptionSummary>>,

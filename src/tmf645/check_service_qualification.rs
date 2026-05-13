@@ -158,12 +158,14 @@ impl CheckServiceQualification {
     }
 
     /// Set the status
+    #[must_use] 
     pub fn state(mut self, state: TaskStateType) -> CheckServiceQualification {
         self.state = Some(state);
         self
     }
 
     /// Add item to SQ Check
+    #[must_use] 
     pub fn item(mut self, item: CheckServiceQualificationItem) -> CheckServiceQualification {
         vec_insert(&mut self.service_qualification_item, item);
         self

@@ -118,6 +118,7 @@ impl Individual {
     /// let individual = Individual::new("John Smith")
     ///     .email("john.smith@example.com");
     /// ```
+    #[must_use] 
     pub fn email(mut self, email: &str) -> Individual {
         let medium = ContactMedium::email(email);
         self.add_contact(medium);
@@ -171,6 +172,7 @@ impl Individual {
     /// let individual = Individual::new("John Smith")
     ///     .mobile("0411 111 111");
     /// ```
+    #[must_use] 
     pub fn mobile(mut self, mobile: &str) -> Individual {
         let medium = ContactMedium::mobile(mobile);
         self.add_contact(medium);
@@ -204,6 +206,7 @@ impl Individual {
     }
 
     /// Get Mobile number from contact medium if present
+    #[must_use] 
     pub fn get_mobile(&self) -> Option<String> {
         // Optionally get the email address
         let medium = self.find_medium("mobile")?;
@@ -213,6 +216,7 @@ impl Individual {
     }
 
     /// Get Email address from contact medium if present
+    #[must_use] 
     pub fn get_email(&self) -> Option<String> {
         // Optionally get the email address
         let medium = self.find_medium("email")?;
@@ -226,32 +230,26 @@ impl Individual {
         &mut self,
         characteristic: Characteristic,
     ) -> Option<Characteristic> {
-        match self.party_characteristic.as_mut() {
-            Some(c) => {
-                // Characteristic array exist
-                let pos = c.iter().position(|c| c.name == characteristic.name);
-                match pos {
-                    Some(u) => {
-                        // Clone old value for return
-                        let old = c[u].clone();
-                        // Replace
-                        c[u] = characteristic;
-                        Some(old)
-                    }
-                    None => {
-                        // This means the characteristic could not be found, instead we insert it
-                        // Additional we return None to indicate that no old value was found
-                        c.push(characteristic);
-                        None
-                    }
-                }
-            }
-            None => {
-                // Characteristic Vec was not created yet, create it now.
-                self.party_characteristic = Some(vec![characteristic]);
-                // Return None to show no previous value existed.
+        if let Some(c) = self.party_characteristic.as_mut() {
+            // Characteristic array exist
+            let pos = c.iter().position(|c| c.name == characteristic.name);
+            if let Some(u) = pos {
+                // Clone old value for return
+                let old = c[u].clone();
+                // Replace
+                c[u] = characteristic;
+                Some(old)
+            } else {
+                // This means the characteristic could not be found, instead we insert it
+                // Additional we return None to indicate that no old value was found
+                c.push(characteristic);
                 None
             }
+        } else {
+            // Characteristic Vec was not created yet, create it now.
+            self.party_characteristic = Some(vec![characteristic]);
+            // Return None to show no previous value existed.
+            None
         }
     }
 

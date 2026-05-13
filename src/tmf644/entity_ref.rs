@@ -1,7 +1,7 @@
 use super::{Addressable, Extensible};
 use serde::{Deserialize, Serialize};
 
-///Base entity reference schema for use in TMForum Open-APIs. Property.
+///Base entity reference schema for use in `TMForum` Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityRefXXX {
     ///The actual type of the target instance when needed for disambiguation.
@@ -11,7 +11,7 @@ pub struct EntityRefXXX {
     ///Base schema for adressable entities
     #[serde(flatten)]
     pub addressable: Addressable,
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///The URI of the referred entity.

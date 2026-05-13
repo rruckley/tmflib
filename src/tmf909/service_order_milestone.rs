@@ -1,6 +1,6 @@
 use super::ServiceOrderItemRef;
 use serde::{Deserialize, Serialize};
-///ServiceOrderMilestone represents an action or event marking a significant change or stage in processing of a service order.
+///`ServiceOrderMilestone` represents an action or event marking a significant change or stage in processing of a service order.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceOrderMilestone {
     ///When sub-classing, this defines the super-class
@@ -24,7 +24,7 @@ pub struct ServiceOrderMilestone {
     ///A string represents the message of the milestone
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
-    ///A date time( DateTime). The date that the milestone happens
+    ///A date time( `DateTime`). The date that the milestone happens
     #[serde(rename = "milestoneDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub milestone_date: Option<crate::DateTime>,

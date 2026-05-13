@@ -64,7 +64,7 @@ pub struct ProductStock {
 }
 
 impl ProductStock {
-    /// Create a new ProductStock instance
+    /// Create a new `ProductStock` instance
     pub fn new(name: impl Into<String>) -> ProductStock {
         ProductStock {
             name: Some(name.into()),

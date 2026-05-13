@@ -6,14 +6,14 @@ use serde::{Deserialize, Serialize};
 /// Customer360 Appointment VO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Customer360AppointmentVo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
-    ///Reference of a CalendarEvent
+    ///Reference of a `CalendarEvent`
     #[serde(rename = "calendarEvent")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub calendar_event: Option<CalendarEventRef>,
-    ///Business category : intervention for example or to be more precise after SalesIntervention, orderDeliveryIntervention,...
+    ///Business category : intervention for example or to be more precise after `SalesIntervention`, orderDeliveryIntervention,...
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub category: Option<String>,
     ///Appointment creation date

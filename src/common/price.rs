@@ -27,6 +27,7 @@ pub struct Price {
 
 impl Price {
     /// Create a new Price object using a tax inclusive price
+    #[must_use] 
     pub fn new_inc(inc_price: f32) -> Price {
         let mut price = Price {
             tax_rate: AUS_TAX_RATE,
@@ -37,6 +38,7 @@ impl Price {
     }
 
     /// Create a new Price object using a tax exclusive price
+    #[must_use] 
     pub fn new_ex(ex_price: f32) -> Price {
         let mut price = Price {
             tax_rate: AUS_TAX_RATE,
@@ -158,15 +160,15 @@ impl Div<f32> for Price {
     type Output = Price;
 
     fn div(self, rhs: f32) -> Self::Output {
-        if rhs != 0.0 {
+        if rhs == 0.0 {
+            self
+        } else {
             Price {
                 percentage: self.percentage,
                 tax_rate: self.tax_rate,
                 tax_included_amount: self.tax_included_amount / rhs,
                 duty_free_amount: self.duty_free_amount / rhs,
             }
-        } else {
-            self
         }
     }
 }

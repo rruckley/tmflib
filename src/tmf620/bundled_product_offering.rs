@@ -29,7 +29,7 @@ pub struct BundledProductOffering {
 }
 
 impl BundledProductOffering {
-    /// Create new options for BundledProductOffering
+    /// Create new options for `BundledProductOffering`
     pub fn new(name: impl Into<String>) -> BundledProductOffering {
         let offer = ProductOffering::new(name.into().clone());
         // Update href to point to bundle instead of standard offer path
@@ -43,6 +43,7 @@ impl BundledProductOffering {
     }
 
     /// Add option into bundled product offering
+    #[must_use] 
     pub fn with_option(mut self, option: BundledProductOfferingOption) -> BundledProductOffering {
         self.bundled_product_offering_option = Some(option);
         self
@@ -64,6 +65,7 @@ impl BundledProductOfferingOption {
     /// Create a new Bundled Product Offering Option
     /// # Detalis
     /// This covers the cardinality of included bundeld offerings
+    #[must_use] 
     pub fn new(default: u8, min: u8, max: u8) -> BundledProductOfferingOption {
         BundledProductOfferingOption {
             number_rel_offer_default: default,

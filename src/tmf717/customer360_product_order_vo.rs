@@ -2,10 +2,10 @@ use super::ProductOrderStateType;
 use crate::common::entity::Entity;
 use serde::{Deserialize, Serialize};
 
-///Base entity schema for use in TMForum Open-APIs. Property.
+///Base entity schema for use in `TMForum` Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Customer360ProductOrderVo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Used to categorize the order from a business perspective that can be useful for the OM system (e.g. "enterprise", "residential", ...)

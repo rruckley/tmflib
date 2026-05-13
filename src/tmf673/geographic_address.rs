@@ -16,7 +16,7 @@ pub struct GeographicSubAddress {
     /// Building Name
     #[serde(skip_serializing_if = "Option::is_none")]
     pub building_name: Option<String>,
-    /// URI for SubAddress
+    /// URI for `SubAddress`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<Uri>,
     /// ID for Sub Address
@@ -117,6 +117,7 @@ impl GeographicAddress {
     }
 
     /// Set the street for this Address
+    #[must_use] 
     pub fn street(mut self, street: &str) -> GeographicAddress {
         if street.split(' ').count() > 1 {
             // Attempt to split string like "Lumeah Ave" into two parts
@@ -125,21 +126,25 @@ impl GeographicAddress {
         self
     }
     /// Set the street type for this address
+    #[must_use] 
     pub fn street_type(mut self, street_type: &str) -> GeographicAddress {
         self.street_type = Some(street_type.to_string());
         self
     }
     /// Set the street number of this address
+    #[must_use] 
     pub fn number(mut self, number: &str) -> GeographicAddress {
         self.street_nr = Some(number.to_string());
         self
     }
     /// Set the suburb (locality) for this address
+    #[must_use] 
     pub fn suburb(mut self, suburb: &str) -> GeographicAddress {
         self.locality = Some(suburb.to_string());
         self
     }
     /// Set the state (or province) for this address
+    #[must_use] 
     pub fn state(mut self, state: &str) -> GeographicAddress {
         self.state_or_province = Some(state.to_string());
         self

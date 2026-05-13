@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//! TMF909b Network as a Service (NaaS) API
+//! `TMF909b` Network as a Service (`NaaS`) API
 
 pub use alternate_service_proposal::*;
 pub use any::*;

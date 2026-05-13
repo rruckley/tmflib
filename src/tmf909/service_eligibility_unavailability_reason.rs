@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///Reason for eligibility result if the ServiceQualification result is no (meaning the Service is not available)
+///Reason for eligibility result if the `ServiceQualification` result is no (meaning the Service is not available)
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceEligibilityUnavailabilityReason {
     ///When sub-classing, this defines the super-class

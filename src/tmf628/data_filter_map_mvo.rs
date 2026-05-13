@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///Data Filter Map
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DataFilterMapMvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///A list of data filter map items

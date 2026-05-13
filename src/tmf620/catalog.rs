@@ -89,6 +89,7 @@ impl Catalog {
     }
 
     /// Set the name for this Catalog
+    #[must_use] 
     pub fn name(mut self, name: String) -> Catalog {
         self.name = Some(name.clone());
         self

@@ -19,7 +19,7 @@ pub struct CancelServiceOrder {
     #[serde(rename = "cancellationReason")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub cancellation_reason: Option<String>,
-    ///an optional message describing the completion of the task if it is done as expected or it is denied for a reason (like order in an state of PoNR).
+    ///an optional message describing the completion of the task if it is done as expected or it is denied for a reason (like order in an state of `PoNR`).
     #[serde(rename = "completionMessage")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub completion_message: Option<String>,

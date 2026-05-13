@@ -45,6 +45,7 @@ pub struct ProductOfferingQualification {
 
 impl ProductOfferingQualification {
     /// Create a new Product Offering Qualification from a Product Offering Reference
+    #[must_use] 
     pub fn new(offering_ref: Option<ProductOfferingRef>) -> ProductOfferingQualification {
         let mut poq = ProductOfferingQualification::create();
         let mut poqi = ProductOfferingQualificationItem::new();

@@ -1,11 +1,11 @@
 //! Entity Module
-//! Defines the base Entity struct used across TMForum Open-APIs
+//! Defines the base Entity struct used across `TMForum` Open-APIs
 
 use super::{addressable::Addressable, extensible::Extensible};
 use crate::Uri;
 
 use serde::{Deserialize, Serialize};
-///Base entity schema for use in TMForum Open-APIs. Property.
+///Base entity schema for use in `TMForum` Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Entity {
     /// Unique identifier of the entity
@@ -29,7 +29,7 @@ pub struct EntityRef {
     ///Base schema for addressable entities
     #[serde(flatten)]
     pub addressable: Addressable,
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///The URI of the referred entity.

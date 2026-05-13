@@ -15,7 +15,7 @@ pub struct PolicyRefFvo {
     ///When sub-classing, this defines the sub-class Extensible name
     #[serde(rename = "@type")]
     pub type_: String,
-    ///Base EntityRefFVO schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base `EntityRefFVO` schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub entity_ref_fvo: EntityRefFvo,
     ///unique identifier

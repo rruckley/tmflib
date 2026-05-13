@@ -16,7 +16,7 @@ pub struct ServiceUsageSpecification {
     pub id: Option<String>,
     ///Unique identifier for this service usage specification
     pub href: Option<String>,
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_specification: EntitySpecification,
     ///Relationship to Service specification in bundle

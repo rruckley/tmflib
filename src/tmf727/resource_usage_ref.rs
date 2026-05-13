@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///ResourceUsage reference. ResourceUsage is usage event for Resource.
+///`ResourceUsage` reference. `ResourceUsage` is usage event for Resource.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceUsageRef {}
 impl std::fmt::Display for ResourceUsageRef {

@@ -37,6 +37,7 @@ pub struct ProductOrderRiskAssessment {
 
 impl ProductOrderRiskAssessment {
     /// Create a new instance of Product Order Risk Assessment
+    #[must_use] 
     pub fn new(order: ProductOrderRef) -> ProductOrderRiskAssessment {
         ProductOrderRiskAssessment {
             product_order: order.clone(),
@@ -54,18 +55,15 @@ impl ProductOrderRiskAssessment {
         &mut self,
         characteristic: Characteristic,
     ) -> Option<Characteristic> {
-        match &self.characteristic {
-            Some(v) => match v.iter().find(|c| c.name == characteristic.name) {
-                Some(i) => {
-                    let out = i.clone();
-                    Some(out)
-                }
-                None => None,
-            },
-            None => {
-                self.characteristic = Some(vec![characteristic]);
-                None
+        if let Some(v) = &self.characteristic { match v.iter().find(|c| c.name == characteristic.name) {
+            Some(i) => {
+                let out = i.clone();
+                Some(out)
             }
+            None => None,
+        } } else {
+            self.characteristic = Some(vec![characteristic]);
+            None
         }
     }
 }

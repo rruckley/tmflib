@@ -15,7 +15,7 @@ pub struct Capacity {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    ///The period of time for which Capacity or CapacityDemand applies.
+    ///The period of time for which Capacity or `CapacityDemand` applies.
     #[serde(rename = "applicableTimePeriod")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub applicable_time_period: Option<Vec<ApplicableTimePeriod>>,
@@ -27,7 +27,7 @@ pub struct Capacity {
     #[serde(rename = "capacitySpec")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub capacity_spec: Option<CapacitySpecRef>,
-    ///A place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the RelatedPlaceRefOrValue class itself
+    ///A place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the `RelatedPlaceRefOrValue` class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub place: Option<PlaceRefOrValue>,
     ///An indicator that specifies whether the capacity is planned or actual.

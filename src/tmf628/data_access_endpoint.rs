@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///Data Access Endpoint schema
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DataAccessEndpoint {
-    ///Base Logical Resource schema for use in TMForum Open-APIs
+    ///Base Logical Resource schema for use in `TMForum` Open-APIs
     #[serde(flatten)]
     pub logical_resource: LogicalResource,
     ///The type of data access API (e.g. REST, SOAP)

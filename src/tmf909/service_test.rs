@@ -54,7 +54,7 @@ pub struct ServiceTest {
     #[serde(rename = "startDateTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub start_date_time: Option<crate::DateTime>,
-    ///The actual state the service test is in. Recommended states are found in ExecutionStateType schema possible values include acknowledged, rejected, pending, inProgress, cancelled, completed and failed
+    ///The actual state the service test is in. Recommended states are found in `ExecutionStateType` schema possible values include acknowledged, rejected, pending, inProgress, cancelled, completed and failed
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state: Option<String>,
     ///The results of the test in terms of the measured metrics

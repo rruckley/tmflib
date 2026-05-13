@@ -5,8 +5,8 @@ use tmflib_derive::{HasDescription, HasId};
 
 const CLASS_PATH: &str = "serviceCandidate";
 
-/// ServiceCandidate is an entity that makes a service specification available to a catalog. A
-/// ServiceCandidate and its associated service specification may be published - made visible - in any number of service catalogs, or in none. One service specification can be composed of other service specifications.*/
+/// `ServiceCandidate` is an entity that makes a service specification available to a catalog. A
+/// `ServiceCandidate` and its associated service specification may be published - made visible - in any number of service catalogs, or in none. One service specification can be composed of other service specifications.*/
 #[derive(Debug, Clone, Serialize, HasId, HasDescription, Deserialize, Default)]
 pub struct ServiceCandidate {
     ///When sub-classing, this defines the super-class
@@ -44,7 +44,7 @@ pub struct ServiceCandidate {
     ///Name given to this REST resource
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
-    ///Service specification reference: ServiceSpecification(s) required to realize a ProductSpecification.
+    ///Service specification reference: ServiceSpecification(s) required to realize a `ProductSpecification`.
     #[serde(rename = "serviceSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service_specification: Option<ServiceSpecificationRef>,

@@ -44,6 +44,7 @@ pub struct ProductOfferingQualificationItem {
 
 impl ProductOfferingQualificationItem {
     /// Create a new Product Offering Qualification Item
+    #[must_use] 
     pub fn new() -> ProductOfferingQualificationItem {
         let id = Uuid::new_v4().simple().to_string();
         ProductOfferingQualificationItem {

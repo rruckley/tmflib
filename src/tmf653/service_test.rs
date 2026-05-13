@@ -58,7 +58,7 @@ pub struct ServiceTest {
 }
 
 impl ServiceTest {
-    /// Create new ServiceTest
+    /// Create new `ServiceTest`
     pub fn new(name: impl Into<String>) -> ServiceTest {
         let mut st = ServiceTest::create();
         st.name = Some(name.into());

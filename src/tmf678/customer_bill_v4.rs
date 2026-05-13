@@ -89,6 +89,7 @@ pub struct CustomerBill {
 
 impl CustomerBill {
     /// Create a new customer bill
+    #[must_use] 
     pub fn new() -> CustomerBill {
         let mut bill = CustomerBill::create();
         bill.state = Some(CustomerBillStateType::default());

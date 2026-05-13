@@ -4,8 +4,8 @@ use serde::{Deserialize, Serialize};
 
 /// The root entity for service catalog management.
 /// A service catalog is a group of service specifications made available through service candidates that an organization provides to the consumers (internal consumers like its employees or B2B customers or B2C customers).
-/// A service catalog typically includes name, description and time period that is valid for. It will have a list of ServiceCandidate catalog items. A ServiceCandidate is an entity that makes a ServiceSpecification available to a catalog.
-/// A ServiceCandidate and its associated ServiceSpecification may be "published" - made visible -in any number of ServiceCatalogs, or in none.
+/// A service catalog typically includes name, description and time period that is valid for. It will have a list of `ServiceCandidate` catalog items. A `ServiceCandidate` is an entity that makes a `ServiceSpecification` available to a catalog.
+/// A `ServiceCandidate` and its associated `ServiceSpecification` may be "published" - made visible -in any number of `ServiceCatalogs`, or in none.
 /// Skipped properties: id,href,lastUpdate*/
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceCatalogUpdate {
@@ -42,7 +42,7 @@ pub struct ServiceCatalogUpdate {
     #[serde(rename = "validFor")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub valid_for: Option<TimePeriod>,
-    ///ServiceCatalog version
+    ///`ServiceCatalog` version
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
 }

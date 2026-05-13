@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// Related Party Reference or Party Role Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPartyRefOrPartyRoleRef {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     /// Reference to a Party or Party Role playing the role of a Related Party in the context of the specific entity it is linked to.

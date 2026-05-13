@@ -4,7 +4,7 @@ use super::{
 };
 use serde::{Deserialize, Serialize};
 
-///ResourceReservation represents the reservation of a resource. It includes the date and time of the reservation, the state of the reservation, and the reason for the reservation.
+///`ResourceReservation` represents the reservation of a resource. It includes the date and time of the reservation, the state of the reservation, and the reason for the reservation.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResourceReservation {
     ///When sub-classing, this defines the super-class

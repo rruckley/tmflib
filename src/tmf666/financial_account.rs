@@ -55,7 +55,8 @@ pub struct FinancialAccount {
 }
 
 impl FinancialAccount {
-    /// Get summed balance accross all AccountBalance records
+    /// Get summed balance accross all `AccountBalance` records
+    #[must_use] 
     pub fn get_balance(&self) -> AccountBalance {
         let total = match self.account_balance.as_ref() {
             Some(v) => {

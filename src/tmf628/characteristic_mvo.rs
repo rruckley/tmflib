@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///Characteristic Modify Value Object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicMvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Collection of characteristic relationships

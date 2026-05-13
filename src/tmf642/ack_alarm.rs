@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///Acknowledgement of alarms
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AckAlarm {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Name of the acknowledging system

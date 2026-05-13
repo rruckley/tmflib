@@ -34,7 +34,7 @@ pub struct Migrate {
     pub href: Option<Uri>,
     /// Migration Task Name
     pub name: Option<String>,
-    /// SubState required before migration is carried out.
+    /// `SubState` required before migration is carried out.
     pub admin_state_modification: Option<String>,
     /// Reason why migration is being requested.
     pub cause: Option<String>,
@@ -64,6 +64,7 @@ impl Migrate {
     }
 
     /// Builder function to set place on create
+    #[must_use] 
     pub fn place(mut self, place: PlaceRef) -> Self {
         self.place = Some(place);
         self

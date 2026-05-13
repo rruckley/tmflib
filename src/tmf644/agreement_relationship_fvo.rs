@@ -2,10 +2,10 @@ use super::EntityRefFvo;
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
-/// AgreementRelationshipFvo struct
+/// `AgreementRelationshipFvo` struct
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AgreementRelationshipFvo {
-    ///Base entity reference schema for use in TMForum Open-APIs. Property.
+    ///Base entity reference schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref_fvo: EntityRefFvo,
     ///Unique identifier of the related agreement

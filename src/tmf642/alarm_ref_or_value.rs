@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///An alarm defined by reference or value. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Alarm entity and not the AlarmRefOrValue class itself
+///An alarm defined by reference or value. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Alarm entity and not the `AlarmRefOrValue` class itself
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AlarmRefOrValue {}
 impl std::fmt::Display for AlarmRefOrValue {

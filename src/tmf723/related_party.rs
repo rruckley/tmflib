@@ -8,7 +8,7 @@ pub struct RelatedParty {
     ///Entity reference schema to be use for all entityRef class.
     #[serde(flatten)]
     pub entity_ref: EntityRef,
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Reference schema .

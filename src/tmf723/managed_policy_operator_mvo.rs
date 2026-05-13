@@ -1,12 +1,12 @@
 use super::{PolicyManagedEntityMvo, PolicyOperatorMvo};
 use serde::{Deserialize, Serialize};
-///Managed PolicyOperator
+///Managed `PolicyOperator`
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyOperatorMvo {
-    /// Inlined fields from PolicyManagedEntityMvo
+    /// Inlined fields from `PolicyManagedEntityMvo`
     #[serde(flatten)]
     pub policy_managed_entity_mvo: PolicyManagedEntityMvo,
-    ///A PolicyOperator is an entity that defines the logical operations that can be used to combine multiple PolicyConditions within a PolicyExpression.
+    ///A `PolicyOperator` is an entity that defines the logical operations that can be used to combine multiple `PolicyConditions` within a `PolicyExpression`.
     #[serde(flatten)]
     pub policy_operator_mvo: PolicyOperatorMvo,
 }

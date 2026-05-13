@@ -127,7 +127,7 @@ impl EventPayload<ProductOrderEvent> for ProductOrder {
     }
 }
 
-/// ProductOrder
+/// `ProductOrder`
 #[derive(
     Clone, Debug, Default, Deserialize, HasId, HasDescription, HasNote, HasRelatedParty, Serialize,
 )]
@@ -187,20 +187,21 @@ impl HasLastUpdate for ProductOrder {
         match time {
             Some(t) => self.set_last_update(t),
             None => self.set_last_update(ProductOrder::get_timestamp()),
-        };
+        }
         self
     }
 }
 
 impl ProductOrder {
     /// Create a new product order via trait
+    #[must_use] 
     pub fn new() -> ProductOrder {
         ProductOrder {
             ..ProductOrder::create_with_time()
         }
     }
 
-    /// Add an ProductOrderItem into the ProductOrder
+    /// Add an `ProductOrderItem` into the `ProductOrder`
     pub fn add_order_item(&mut self, order_item: ProductOrderItem) {
         vec_insert(&mut self.product_order_item, order_item);
         // self.product_order_item.as_mut().unwrap().push(order_item);

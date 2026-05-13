@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///A reference to a related party or party role, used to link an entity to a related party or party role in the TMF domain model. The role played by the related party or party role in the context of the specific entity it is linked to can be specified through the 'role' attribute.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPartyRefOrPartyRoleRefMvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Reference to the related party or party role

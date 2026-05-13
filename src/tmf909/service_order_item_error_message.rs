@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///AServiceOrderItemErrorMessage represents an error that causes a status change in a service order item.
+///`AServiceOrderItemErrorMessage` represents an error that causes a status change in a service order item.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceOrderItemErrorMessage {
     ///When sub-classing, this defines the super-class

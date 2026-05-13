@@ -23,7 +23,7 @@ const CLASS_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
 const CHAR_VALUE_MIN_CARD: Cardinality = 0;
 const CHAR_VALUE_MAX_CARD: Cardinality = 1;
-/// Verb to tag converted ServiceSpecifications with.
+/// Verb to tag converted `ServiceSpecifications` with.
 pub const SPEC_CONV_VERB: &str = "Imported";
 
 /// Product Specification Characteristic
@@ -75,24 +75,28 @@ impl ProductSpecificationCharacteristic {
     }
 
     /// Set configuraable flag
+    #[must_use] 
     pub fn configurable(mut self, configurable: bool) -> ProductSpecificationCharacteristic {
         self.configurable = configurable;
         self
     }
 
     /// Set description of characteristic
+    #[must_use] 
     pub fn description(mut self, description: String) -> ProductSpecificationCharacteristic {
         self.description = Some(description.clone());
         self
     }
 
     /// Set extensible flag
+    #[must_use] 
     pub fn extensible(mut self, extensible: bool) -> ProductSpecificationCharacteristic {
         self.extensible = Some(extensible);
         self
     }
 
     /// Set validity period
+    #[must_use] 
     pub fn validity(mut self, validity: Option<TimePeriod>) -> ProductSpecificationCharacteristic {
         self.valid_for = validity;
         self
@@ -106,6 +110,7 @@ impl ProductSpecificationCharacteristic {
     /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"))
     ///     .cardinality(0,1);
     /// ```
+    #[must_use] 
     pub fn cardinality(
         mut self,
         min: Cardinality,
@@ -208,6 +213,7 @@ impl ProductSpecification {
     }
 
     /// Add a new Characteristic into the specification
+    #[must_use] 
     pub fn with_charateristic(
         mut self,
         characteristic: ProductSpecificationCharacteristic,
@@ -217,6 +223,7 @@ impl ProductSpecification {
     }
 
     /// Get the class of this object
+    #[must_use] 
     pub fn characteristic_by_name(
         &self,
         name: &str,
@@ -422,6 +429,7 @@ impl ProductSpecificationCharacteristicValue {
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
     /// let pscv = ProductSpecificationCharacteristicValue::new();
     /// ```
+    #[must_use] 
     pub fn new() -> ProductSpecificationCharacteristicValue {
         ProductSpecificationCharacteristicValue {
             is_default: false,
@@ -467,8 +475,7 @@ impl ProductSpecificationCharacteristicValue {
                 let val_str = value.to_string();
                 if !re.is_match(&val_str) {
                     return Err(TMFError::GenericError(format!(
-                        "Value {} does not match regex {}",
-                        val_str, re_str
+                        "Value {val_str} does not match regex {re_str}"
                     )));
                 }
                 self.value = value;
@@ -480,7 +487,7 @@ impl ProductSpecificationCharacteristicValue {
     }
 
     /// Validate a value against the regex (if set) and return an updated
-    /// ProductSpecificationCharacteristicValue with the value set.
+    /// `ProductSpecificationCharacteristicValue` with the value set.
     /// # Example
     /// ```
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
@@ -499,8 +506,7 @@ impl ProductSpecificationCharacteristicValue {
             let val_str = value.to_string();
             if !re.is_match(&val_str) {
                 return Err(TMFError::GenericError(format!(
-                    "Value {} does not match regex {}",
-                    val_str, re_str
+                    "Value {val_str} does not match regex {re_str}"
                 )));
             }
         }
@@ -529,7 +535,7 @@ pub struct ProductSpecificationCharacteristicValueUse {
 }
 
 impl ProductSpecificationCharacteristicValueUse {
-    /// Create a new instance of ProductSpecificationCharacteristicValueUse
+    /// Create a new instance of `ProductSpecificationCharacteristicValueUse`
     pub fn new(name: impl Into<String>) -> ProductSpecificationCharacteristicValueUse {
         ProductSpecificationCharacteristicValueUse {
             description: None,
@@ -543,7 +549,7 @@ impl ProductSpecificationCharacteristicValueUse {
         }
     }
 
-    /// Add a specificatoin into the ProductSpecificationCharacteristicValueUse
+    /// Add a specificatoin into the `ProductSpecificationCharacteristicValueUse`
     pub fn with_spec(&mut self, specification: ProductSpecification) {
         self.product_specification = Some(ProductSpecificationRef::from(specification));
     }

@@ -24,13 +24,13 @@ const CLASS_PATH: &str = "measurement";
 /// Performance Measurement
 #[derive(Debug, Clone, Serialize, HasEntity, HasDescription, Deserialize, Default)]
 pub struct PerformanceMeasurement {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///A free-text description of the performance measurement
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    ///Reference to a MeasurementCollectionJob
+    ///Reference to a `MeasurementCollectionJob`
     #[serde(rename = "measurementCollectionJob")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub measurement_collection_job: Option<MeasurementCollectionJobRef>,

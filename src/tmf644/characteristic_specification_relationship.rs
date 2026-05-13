@@ -3,10 +3,10 @@ use serde::{Deserialize, Serialize};
 use crate::common::extensible::Extensible;
 use crate::TimePeriod;
 
-/// CharacteristicSpecificationRelationship defined in terms of a base schema that is extended to add attributes specific to the kind of characteristic specification relationship being described
+/// `CharacteristicSpecificationRelationship` defined in terms of a base schema that is extended to add attributes specific to the kind of characteristic specification relationship being described
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicSpecificationRelationship {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Unique identifier of the characteristic within the specification

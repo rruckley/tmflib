@@ -44,6 +44,7 @@ pub struct CharacteristicValueSpecification {
 
 impl CharacteristicValueSpecification {
     /// Constructor
+    #[must_use] 
     pub fn new() -> CharacteristicValueSpecification {
         CharacteristicValueSpecification {
             is_default: Some(false),
@@ -84,8 +85,7 @@ impl CharacteristicValueSpecification {
                 let val_str = value.to_string();
                 if !re.is_match(&val_str) {
                     return Err(TMFError::GenericError(format!(
-                        "Value {} does not match regex {}",
-                        val_str, re_str
+                        "Value {val_str} does not match regex {re_str}"
                     )));
                 }
                 self.value = Some(value);
@@ -147,6 +147,7 @@ impl CharacteristicSpecification {
         }
     }
     /// Set maximum cardinality
+    #[must_use] 
     pub fn cardinality(
         mut self,
         min_card: Cardinality,
@@ -158,6 +159,7 @@ impl CharacteristicSpecification {
     }
 
     /// Set characteristic as optional cardinality => (0..1)
+    #[must_use] 
     pub fn optional(mut self) -> CharacteristicSpecification {
         self.min_cardinality = Some(0);
         self.max_cardinality = Some(1);
@@ -165,6 +167,7 @@ impl CharacteristicSpecification {
     }
 
     /// Make this characteristic mandatory
+    #[must_use] 
     pub fn mandatory(mut self) -> CharacteristicSpecification {
         self.min_cardinality = Some(1);
         self.max_cardinality = Some(1);

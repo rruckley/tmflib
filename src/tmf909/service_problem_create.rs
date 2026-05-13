@@ -125,7 +125,7 @@ pub struct ServiceProblemCreate {
     #[serde(rename = "slaViolation")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sla_violation: Option<Vec<SlaViolationRef>>,
-    ///Possible values for the state of the ServiceProblem
+    ///Possible values for the state of the `ServiceProblem`
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status: Option<ServiceProblemStateType>,
     ///Time the problem was last status changed

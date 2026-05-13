@@ -10,7 +10,7 @@ use uuid::Uuid;
 #[derive(Clone, Debug, Deserialize, PartialEq, Default, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Note {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///When sub-classing, this defines the super-class
@@ -58,6 +58,7 @@ impl Note {
         }
     }
     /// Set author for note with builder pattern
+    #[must_use] 
     pub fn author(mut self, author: &str) -> Note {
         self.author = Some(author.to_string());
         self

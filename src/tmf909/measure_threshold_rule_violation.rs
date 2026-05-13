@@ -1,7 +1,7 @@
 use super::{AppliedConsequence, Duration};
 use serde::{Deserialize, Serialize};
 /**A measureThresholdRuleViolation is a violation of a rule that defines the in the
-MericDefMeasureThresholdRule.*/
+`MericDefMeasureThresholdRule`.*/
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct MeasureThresholdRuleViolation {
     ///When sub-classing, this defines the super-class
@@ -16,7 +16,7 @@ pub struct MeasureThresholdRuleViolation {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    ///An Applied Consequence defines the action (prescribed action or notification) to take when a MeasureThresholdRuleViolation occurs.
+    ///An Applied Consequence defines the action (prescribed action or notification) to take when a `MeasureThresholdRuleViolation` occurs.
     #[serde(rename = "appliedConsequence")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub applied_consequence: Option<Vec<AppliedConsequence>>,
@@ -49,10 +49,10 @@ pub struct MeasureThresholdRuleViolation {
     #[serde(rename = "conformanceTargetUpper")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub conformance_target_upper: Option<String>,
-    ///Description for the MetricDefMeasureThresholdRule .
+    ///Description for the `MetricDefMeasureThresholdRule` .
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    ///Name for the MetricDefMeasureThresholdRule .
+    ///Name for the `MetricDefMeasureThresholdRule` .
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /**The number of allowed crossing occurrences in reference to the

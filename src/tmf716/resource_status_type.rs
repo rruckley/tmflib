@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///ResourceStatusType enumerations
+///`ResourceStatusType` enumerations
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum ResourceStatusType {
     ///The resource is in a standby state and cannot be used.

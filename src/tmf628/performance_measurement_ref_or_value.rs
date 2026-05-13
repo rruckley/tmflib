@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///A PerformanceMeasurement to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the product entity and not the RelatedProductRefOrValue class itself
+///A `PerformanceMeasurement` to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the product entity and not the `RelatedProductRefOrValue` class itself
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PerformanceMeasurementRefOrValue {}
 impl std::fmt::Display for PerformanceMeasurementRefOrValue {

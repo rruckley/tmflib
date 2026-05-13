@@ -128,6 +128,7 @@ impl ServiceCatalog {
     }
 
     /// Add a category to this Service Candidate by passing in a Category reference
+    #[must_use] 
     pub fn category(mut self, category: ServiceCategoryRef) -> ServiceCatalog {
         vec_insert(&mut self.category, category);
         self

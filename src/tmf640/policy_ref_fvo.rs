@@ -1,7 +1,7 @@
 use super::EntityRef;
 use serde::{Deserialize, Serialize};
 
-///PolicyRefFvo
+///`PolicyRefFvo`
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyRefFvo {
     ///When sub-classing, this defines the super-class
@@ -16,7 +16,7 @@ pub struct PolicyRefFvo {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Hyperlink reference

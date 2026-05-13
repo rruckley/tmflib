@@ -35,18 +35,20 @@ impl PaymentItem {
     }
 
     /// Set the amount for this transaction
+    #[must_use] 
     pub fn amount(mut self, amount: f32) -> PaymentItem {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount for this payment
+    #[must_use] 
     pub fn tax(mut self, tax: f32) -> PaymentItem {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
         if let Some(amount) = self.amount.clone() {
             self.total_amount = Some(amount + tax);
-        };
+        }
         self
     }
 }
@@ -93,6 +95,7 @@ pub struct Payment {
 
 impl Payment {
     /// Create a new Payment from a payment method and account
+    #[must_use] 
     pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Payment {
         Payment {
             account,
@@ -108,24 +111,27 @@ impl Payment {
     }
 
     /// Add paymet item to the payment
+    #[must_use] 
     pub fn item(mut self, item: PaymentItem) -> Payment {
         vec_insert(&mut self.payment_item, item);
         self
     }
 
     /// Set the amount for this transaction
+    #[must_use] 
     pub fn amount(mut self, amount: f32) -> Payment {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount for this payment
+    #[must_use] 
     pub fn tax(mut self, tax: f32) -> Payment {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
         if let Some(amount) = self.amount.clone() {
             self.total_amount = Some(amount + tax);
-        };
+        }
         self
     }
 }

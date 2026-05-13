@@ -13,7 +13,7 @@ const CLASS_PATH: &str = "shoppingCartRiskAssessment";
 /// Shopping Cart Risk Assessment
 #[derive(Clone, Default, Debug, HasId, Deserialize, Serialize)]
 pub struct ShoppingCartRiskAssessment {
-    /// HRef
+    /// `HRef`
     pub href: Option<Uri>,
     /// Id
     pub id: Option<String>,

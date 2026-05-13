@@ -23,6 +23,7 @@ pub struct Permission {
 
 impl Permission {
     /// Create a new Permission
+    #[must_use] 
     pub fn new(party: RelatedParty) -> Permission {
         Permission::create().user(party)
     }
@@ -34,12 +35,14 @@ impl Permission {
     }
 
     /// Set the user for this permission
+    #[must_use] 
     pub fn user(mut self, party: RelatedParty) -> Permission {
         self.user = party;
         self
     }
 
     /// Set the graner for this permission
+    #[must_use] 
     pub fn granter(mut self, party: RelatedParty) -> Permission {
         self.granter = Some(party);
         self

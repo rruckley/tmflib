@@ -75,6 +75,7 @@ pub struct WorkOrder {
 
 impl WorkOrder {
     /// Create a new Work Order instance
+    #[must_use] 
     pub fn new() -> WorkOrder {
         // Use create() to define remainint fields
         WorkOrder {
@@ -85,7 +86,7 @@ impl WorkOrder {
         }
     }
 
-    /// Add a work order item to this WorkOrder
+    /// Add a work order item to this `WorkOrder`
     /// ```
     /// use tmflib::tmf697::v4::work_order::WorkOrder;
     /// use tmflib::tmf697::v4::work_order_item::WorkOrderItem;

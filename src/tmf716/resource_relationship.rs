@@ -18,7 +18,7 @@ pub struct ResourceRelationship {
     ///Type of the resource relationship, such as [bundled] if the resource is a bundle and you want to describe the bundled resources inside this bundle; [reliesOn] if the resource needs another already owned resource to rely on (eg: an option on an already owned mobile access resource) [targets] or [isTargeted] (depending on the way of expressing the link) for any other kind of links that may be useful
     #[serde(rename = "relationshipType")]
     pub relationship_type: String,
-    ///Resource is an abstract entity that describes the common set of attributes shared by all concrete resources. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Resource entity and not the related ResourceRefOrValue class itself
+    ///Resource is an abstract entity that describes the common set of attributes shared by all concrete resources. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Resource entity and not the related `ResourceRefOrValue` class itself
     pub resource: ResourceRefOrValue,
 }
 impl std::fmt::Display for ResourceRelationship {

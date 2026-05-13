@@ -2,8 +2,8 @@ use super::{ServiceCategoryRef, ServiceSpecificationRef};
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
-/// ServiceCandidate is an entity that makes a service specification available to a catalog. A
-/// ServiceCandidate and its associated service specification may be published - made visible - in any number of service catalogs, or in none. One service specification can be composed of other service specifications.
+/// `ServiceCandidate` is an entity that makes a service specification available to a catalog. A
+/// `ServiceCandidate` and its associated service specification may be published - made visible - in any number of service catalogs, or in none. One service specification can be composed of other service specifications.
 ///Skipped properties: id,href,lastUpdate
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -33,7 +33,7 @@ pub struct ServiceCandidateUpdate {
     ///Name given to this REST resource
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
-    ///Service specification reference: ServiceSpecification(s) required to realize a ProductSpecification.
+    ///Service specification reference: ServiceSpecification(s) required to realize a `ProductSpecification`.
     #[serde(rename = "serviceSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service_specification: Option<ServiceSpecificationRef>,

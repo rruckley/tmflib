@@ -1,6 +1,6 @@
 use super::{ServiceCategoryRef, ServiceRefOrValue};
 use serde::{Deserialize, Serialize};
-///A ServiceQualificationItem relates to a specific service being checked in a qualification operation.
+///A `ServiceQualificationItem` relates to a specific service being checked in a qualification operation.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ServiceQualificationItem {
     ///When sub-classing, this defines the super-class
@@ -36,7 +36,7 @@ pub struct ServiceQualificationItem {
     ///Id of the Service Qualification Item
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    ///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the RelatedServiceRefOrValue class itself
+    ///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the `RelatedServiceRefOrValue` class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service: Option<ServiceRefOrValue>,
 }

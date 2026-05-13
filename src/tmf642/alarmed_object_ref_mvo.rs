@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///Reference to object which affected by Alarm (AlarmedObject).
+///Reference to object which affected by Alarm (`AlarmedObject`).
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AlarmedObjectRefMvo {}
 impl std::fmt::Display for AlarmedObjectRefMvo {

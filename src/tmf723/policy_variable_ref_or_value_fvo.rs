@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///Container for PolicyVariable Reference or unmanaged PolicyVariable object
+///Container for `PolicyVariable` Reference or unmanaged `PolicyVariable` object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyVariableRefOrValueFvo {}
 impl std::fmt::Display for PolicyVariableRefOrValueFvo {

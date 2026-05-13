@@ -42,7 +42,7 @@ pub struct ProductOfferingRef {
 }
 
 impl From<ProductOffering> for ProductOfferingRef {
-    /// Convert from ProductOffering into ProductOfferingRef
+    /// Convert from `ProductOffering` into `ProductOfferingRef`
     fn from(po: ProductOffering) -> ProductOfferingRef {
         ProductOfferingRef {
             id: po.id.unwrap_or("MISSING".to_string()).clone(),
@@ -208,7 +208,7 @@ pub struct ProductOffering {
 }
 
 impl ProductOffering {
-    /// Create a new instance of ProductOffering object
+    /// Create a new instance of `ProductOffering` object
     /// # Examples
     /// ```
     /// # use tmflib::tmf620::product_offering::ProductOffering;
@@ -223,12 +223,12 @@ impl ProductOffering {
         offer
     }
 
-    /// Set status of this ProductOffering
+    /// Set status of this `ProductOffering`
     pub fn status(&mut self, status: &str) {
         self.lifecycle_status = Some(status.to_owned());
     }
 
-    /// Added category refernce to ProductOffering
+    /// Added category refernce to `ProductOffering`
     /// # Examples
     /// ```
     /// # use tmflib::tmf620::product_offering::ProductOffering;
@@ -237,6 +237,7 @@ impl ProductOffering {
     /// let cat= Category::new(String::from("MyCategory"));
     /// let result = po.with_category(CategoryRef::from(&cat));
     /// ```
+    #[must_use] 
     pub fn with_category(mut self, category: CategoryRef) -> ProductOffering {
         vec_insert(&mut self.category, category);
         // self.category.as_mut().unwrap().push(category);
@@ -244,12 +245,14 @@ impl ProductOffering {
     }
 
     /// Add specification into this Product Offering
+    #[must_use] 
     pub fn with_specification(mut self, specification: ProductSpecification) -> ProductOffering {
         self.product_specification = Some(ProductSpecificationRef::from(specification));
         self
     }
 
     /// Add characteristic value uses into this Product Offering
+    #[must_use] 
     pub fn with_char_value_use(
         mut self,
         char_value_use: ProductSpecificationCharacteristicValueUse,
@@ -261,7 +264,7 @@ impl ProductOffering {
         self
     }
 
-    /// Create a link between two ProductOfferings
+    /// Create a link between two `ProductOfferings`
     pub fn link_po(&mut self, remote_po: ProductOffering, relationship_type: &str, role: &str) {
         // Create a link from ourselves into remote_po using type and role prodived.
         let mut offer_rel = ProductOfferingRelationship::from(remote_po);
@@ -272,7 +275,7 @@ impl ProductOffering {
                 v.push(offer_rel);
             }
             None => self.product_offering_relationship = Some(vec![offer_rel]),
-        };
+        }
     }
 }
 

@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 /// Authorization related to an agreement
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AgreementAuthorization {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///The date associated with the authorization state.

@@ -2,7 +2,7 @@ use super::{NetworkProductRef, RelatedParty, UsageConsumptionReportRef, UsageVol
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
-///An UsageConsumptionReportRequest allows to manage the calculation request of an usage consumption report
+///An `UsageConsumptionReportRequest` allows to manage the calculation request of an usage consumption report
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct UsageConsumptionReportRequest {
     ///Reference of the buckets for which the usage consumption report is requested
@@ -29,7 +29,7 @@ pub struct UsageConsumptionReportRequest {
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
-    ///Status of the usage consumption report request (InProgress or done)
+    ///Status of the usage consumption report request (`InProgress` or done)
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status: Option<String>,
     ///Reference of an usage consumption report

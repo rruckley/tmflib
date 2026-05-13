@@ -38,7 +38,7 @@ pub struct Money {
 }
 
 impl Money {
-    /// Set currency for this Money with an optional currency_code.
+    /// Set currency for this Money with an optional `currency_code`.
     /// This code must confirm to ISO4217. If an invalid code is passed in, an
     /// Err is returned instead.
     /// ```
@@ -184,13 +184,13 @@ impl Div<f32> for Money {
 
     fn div(self, rhs: f32) -> Self::Output {
         let dec_val = Decimal::from_f32(rhs).unwrap_or_default();
-        if dec_val != Decimal::ZERO {
+        if dec_val == Decimal::ZERO {
+            self
+        } else {
             Self {
                 unit: self.unit.clone(),
                 value: self.value / dec_val,
             }
-        } else {
-            self
         }
     }
 }
@@ -200,13 +200,13 @@ impl Div<i32> for Money {
 
     fn div(self, rhs: i32) -> Self::Output {
         let dec_val = Decimal::from(rhs);
-        if dec_val != Decimal::ZERO {
+        if dec_val == Decimal::ZERO {
+            self
+        } else {
             Self {
                 unit: self.unit.clone(),
                 value: self.value / dec_val,
             }
-        } else {
-            self
         }
     }
 }

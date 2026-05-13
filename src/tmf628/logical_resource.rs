@@ -1,10 +1,10 @@
 use super::Resource;
 use serde::{Deserialize, Serialize};
 
-///Logical Resource schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+///Logical Resource schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LogicalResource {
-    ///Base Resource schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Resource schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub resource: Resource,
     ///the value of the logical resource. E.g '0746712345' for  MSISDN's

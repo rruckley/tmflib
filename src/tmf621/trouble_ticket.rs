@@ -144,7 +144,7 @@ pub struct TroubleTicketRelationship {
 }
 
 impl TroubleTicketRelationship {
-    /// Set the relationship on a TroubleTicketRelationship in builder pattern
+    /// Set the relationship on a `TroubleTicketRelationship` in builder pattern
     pub fn relationship(mut self, relationship: impl Into<String>) -> TroubleTicketRelationship {
         self.relationship_type = relationship.into();
         self

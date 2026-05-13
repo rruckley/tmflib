@@ -2,7 +2,7 @@ use super::Quantity;
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
-///The balance (called UsageVolumeBalance in the SID model) defines the remaining allowed product usage quantity in terms of volume, time, currency or events. It corresponds to the initial allowed usage quantity minus the usage consumed on the bucket.
+///The balance (called `UsageVolumeBalance` in the SID model) defines the remaining allowed product usage quantity in terms of volume, time, currency or events. It corresponds to the initial allowed usage quantity minus the usage consumed on the bucket.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct UsageVolumeBalance {
     ///When sub-classing, this defines the super-class
