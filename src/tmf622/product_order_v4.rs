@@ -229,13 +229,13 @@ impl From<ServiceOrder> for ProductOrder {
 
         // Iterate through service order items
         let items = match value.service_order_item {
-            Some(i) => {
+            Some(soi) => {
                 let mut out = vec![];
-                i.into_iter().for_each(|i| {
-                    // Conert i into ProductOrderItem
+                for i in soi {
+                    // Convert i into ProductOrderItem
                     let poi = ProductOrderItem::from(i);
                     out.push(poi);
-                });
+                }
                 Some(out)
             }
             None => None,
@@ -253,20 +253,20 @@ impl From<ShoppingCart> for ProductOrder {
         let mut order = ProductOrder::new();
         order.description = Some("Order from Cart".into());
         // Bring across the cart items
-        if let Some(cart_item) = value.cart_item {
-            cart_item.into_iter().for_each(|i| {
+        if let Some(cart_items) = value.cart_item {
+            for item in cart_items {
                 order
                     .product_order_item
                     .as_mut()
                     .unwrap()
-                    .push(ProductOrderItem::from(i));
-            });
+                    .push(ProductOrderItem::from(item));
+            }
         }
         // Bring across the related parties
         if let Some(party) = value.related_party {
-            party.into_iter().for_each(|rp| {
+            for rp in party {
                 order.add_party(rp);
-            });
+            }
         }
         order
     }

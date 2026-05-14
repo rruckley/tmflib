@@ -83,8 +83,8 @@ impl ProductSpecificationCharacteristic {
 
     /// Set description of characteristic
     #[must_use] 
-    pub fn description(mut self, description: String) -> ProductSpecificationCharacteristic {
-        self.description = Some(description.clone());
+    pub fn description<T: Into<String>>(mut self, description: T) -> ProductSpecificationCharacteristic {
+        self.description = Some(description.into());
         self
     }
 
@@ -316,17 +316,12 @@ impl From<&ServiceSpecification> for ProductSpecification {
             ps.set_last_update(last_update);
         }
         if let Some(spec_characteristics) = value.spec_characteristics.as_ref() {
-        // if value.spec_characteristics.is_some() {
             // We have characteristics that require conversion
             let mut out: Vec<ProductSpecificationCharacteristic> = Vec::new();
-            spec_characteristics
-                // .as_ref()
-                // .unwrap()
-                .iter()
-                .for_each(|cs| {
-                    let psc = ProductSpecificationCharacteristic::from(cs.clone());
-                    out.push(psc);
-                });
+            for characteristic in spec_characteristics {
+                let psc = ProductSpecificationCharacteristic::from(characteristic.clone());
+                out.push(psc);
+            }
             ps.product_spec_characteristic = Some(out);
         }
         if value.version.is_some() {
@@ -445,6 +440,8 @@ impl ProductSpecificationCharacteristicValue {
     /// let pscv = ProductSpecificationCharacteristicValue::new()
     ///     .regex(String::from("[0-9]+(Mb|Gb)"));
     /// ```
+    /// # Errors
+    /// Will return an error if the regex pattern is invalid.
     pub fn regex(
         mut self,
         regex: String,
@@ -464,6 +461,9 @@ impl ProductSpecificationCharacteristicValue {
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
     ///     .value("100Mb".into()).unwrap();
     /// ```
+    /// # Errors
+    /// Will return an error if the value does not match the regex pattern.
+    /// Will also return an error if the regex pattern is invalid.
     pub fn value(
         mut self,
         value: serde_json::Value,
@@ -496,6 +496,9 @@ impl ProductSpecificationCharacteristicValue {
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
     ///    .validate("200Mb".into()).unwrap();
     /// ```
+    /// # Errors
+    /// Will return an error if the value does not match the regex pattern.
+    /// Will also return an error if the regex pattern is invalid.
     pub fn validate(
         mut self,
         value: serde_json::Value,
@@ -630,7 +633,7 @@ mod test {
     #[test]
     fn test_spec_char_description() {
         let spec_char =
-            ProductSpecificationCharacteristic::new(SPEC_NAME).description(DESC.to_string());
+            ProductSpecificationCharacteristic::new(SPEC_NAME).description(DESC);
 
         assert_eq!(spec_char.description.unwrap(), DESC.to_string());
     }

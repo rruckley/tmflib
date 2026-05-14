@@ -46,6 +46,7 @@ pub struct Event<T, U> {
 
 impl<T, U> Event<T, U> {
     /// Set the field path for a attribute change event
+    #[must_use]
     pub fn path(mut self, path: impl Into<String>) -> Event<T, U> {
         self.field_path = Some(path.into());
         self

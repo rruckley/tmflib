@@ -267,12 +267,12 @@ serde = { version = "1.0.228", features = ["derive"]}
 serde_json = "1.0.143"
 sha256 = { version = "1.6.0", default-features = false }
 uuid = { version = "1.22.0", features = ["v4"]}
-# tmflib-derive = { version = "0.1.35" }
-tmflib-derive = { path = "tmflib-derive"}
+tmflib-derive = { version = "0.1.35" }
+# tmflib-derive = { path = "tmflib-derive"}
 hex = "0.4.3"
 base32 = "0.5.1"
 # openapiv3 = "2.2.0"
-rust_decimal = "1.39.0"
+rust_decimal = "1.42.0"
 rust_decimal_macros = "1.39.0"
 thiserror = "2.0.18"
 regex = "1.12.3"

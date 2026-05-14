@@ -67,7 +67,7 @@ impl Characteristic {
     /// Create a new characteristic with a given name and value, `value_type` is determined automatically based on value enum.
     #[must_use] 
     pub fn new(name: String, value: &serde_json::Value) -> Characteristic {
-        let val_type = serde_value_to_type(&value);
+        let val_type = serde_value_to_type(value);
         Characteristic {
             id: None,
             name,

@@ -90,8 +90,8 @@ impl Catalog {
 
     /// Set the name for this Catalog
     #[must_use] 
-    pub fn name(mut self, name: String) -> Catalog {
-        self.name = Some(name.clone());
+    pub fn name(mut self, name: impl Into<String>) -> Catalog {
+        self.name = Some(name.into());
         self
     }
 
@@ -209,7 +209,7 @@ mod tests {
 
     #[test]
     fn test_cat_rename() {
-        let cat = Catalog::new(CAT_NAME).name("NewName".to_string());
+        let cat = Catalog::new(CAT_NAME).name("NewName");
 
         assert_eq!(cat.get_name(), "NewName".to_string());
     }

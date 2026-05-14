@@ -48,6 +48,8 @@ impl Money {
     /// let mut money = Money::from(100);
     /// money.currency("AUD");
     /// ```
+    /// # Errors
+    /// Will return an error if the currency code is not found in the ISO4217 list.
     #[cfg(not(target_arch = "wasm32"))]
     pub fn currency(&mut self, currency_code: &str) -> Result<String, TMFError> {
         let c = rust_iso4217::from_code(currency_code);

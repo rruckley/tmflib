@@ -17,16 +17,20 @@ use super::MOD_PATH;
 use super::{MeasurementCollectionJobRef, PerformanceMeasurementRelationship};
 use crate::{common::entity::Entity, HasDescription, HasId, TimePeriod};
 use serde::{Deserialize, Serialize};
-use tmflib_derive::{HasDescription, HasEntity};
+use tmflib_derive::{HasDescription, HasId};
 
 const CLASS_PATH: &str = "measurement";
 
 /// Performance Measurement
-#[derive(Debug, Clone, Serialize, HasEntity, HasDescription, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, HasDescription, Deserialize, Default, HasId)]
 pub struct PerformanceMeasurement {
     ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
+    /// Unique identifier of the performance measurement
+    pub id : Option<String>,
+    ///A URI to the performance measurement resource
+    pub href : Option<String>,
     ///A free-text description of the performance measurement
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,

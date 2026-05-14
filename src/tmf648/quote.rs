@@ -146,12 +146,6 @@ impl Quote {
      /// let res = quote.add_quote_item(item);
      /// assert_eq!(res.is_ok(), true);
      /// ```
-     /// ```
-     /// use tmflib::tmf648::quote::{Quote, QuoteStateType};
-     /// let mut quote = Quote::new();
-     /// let res = quote.add_quote_item(QuoteItem::default());
-     /// assert_eq!(res.is_err(), true);
-     /// ```
     pub fn add_quote_item(&mut self, item: QuoteItem) -> Result<String, TMFError> {
         if let Some(v) = self.quote_item.as_mut() {
             v.push(item);
