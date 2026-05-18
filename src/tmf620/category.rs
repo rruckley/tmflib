@@ -14,10 +14,12 @@ use crate::common::event::{Event, EventPayload};
 use crate::{
     DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent,
     TimePeriod, Uri,
+    IsAddressable
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
-const CLASS_PATH: &str = "category";
+/// Path to this class
+pub const CLASS_PATH: &str = "category";
 const CAT_VERS: &str = "1.0";
 
 /// Category Resource
@@ -152,6 +154,12 @@ impl Category {
         }
         self.is_root = Some(root);
         self
+    }
+}
+
+impl IsAddressable for Category {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

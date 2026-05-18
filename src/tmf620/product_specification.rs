@@ -19,7 +19,8 @@ use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 use crate::tmf633::characteristic_specification::CharacteristicSpecification;
 use crate::tmf633::service_specification::{ServiceSpecification, ServiceSpecificationRef};
 
-const CLASS_PATH: &str = "productSpecification";
+/// Path to this class
+pub const CLASS_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
 const CHAR_VALUE_MIN_CARD: Cardinality = 0;
 const CHAR_VALUE_MAX_CARD: Cardinality = 1;

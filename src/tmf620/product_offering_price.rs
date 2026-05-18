@@ -11,7 +11,8 @@ use crate::common::tax_item::TaxItem;
 use crate::{HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent, TimePeriod};
 use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
 
-const CLASS_PATH: &str = "productOfferingPrice";
+/// Path to this class
+pub const CLASS_PATH: &str = "productOfferingPrice";
 const PRICE_VERS: &str = "1.0";
 
 /// Constraints

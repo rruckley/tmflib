@@ -28,7 +28,8 @@ use tmflib_derive::{HasAttachment, HasDescription, HasId, HasLastUpdate, HasName
 use super::MOD_PATH;
 
 const PO_VERS_INIT: &str = "1.0";
-const CLASS_PATH: &str = "productOffering";
+/// Path to this class
+pub const CLASS_PATH: &str = "productOffering";
 
 /// Product Offering Reference
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]

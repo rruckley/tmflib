@@ -8,6 +8,7 @@ use crate::tmf620::category::CategoryRef;
 use crate::{
     DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasReference, HasRelatedParty,
     HasValidity, TMFEvent, TimePeriod, Uri,
+    IsAddressable,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty, HasValidity};
 
@@ -18,7 +19,8 @@ use uuid::Uuid;
 // URL Path components
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "catalog";
+/// Path to this class
+pub const CLASS_PATH: &str = "catalog";
 const CAT_VERS: &str = "1.0";
 
 /// Catalogue
@@ -104,6 +106,11 @@ impl Catalog {
     }
 }
 
+impl IsAddressable for Catalog {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
 /// Container for the payload that generated the event
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct CatalogEvent {
