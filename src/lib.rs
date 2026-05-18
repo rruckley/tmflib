@@ -102,6 +102,8 @@ impl TimePeriod {
     /// let period = TimePeriod::period_days(10);
     /// assert!(period.end_date_time.is_some());
     /// ```
+    /// # Panics
+    /// Will panic if the current time cannot be parsed, but this is unlikely.
     #[must_use] 
     pub fn period_days(days: u64) -> TimePeriod {
         let now = Utc::now() + Days::new(days);
@@ -113,6 +115,8 @@ impl TimePeriod {
         }
     }
     /// Return true if start time of `TimePeriod` is in the past.
+    /// # Panics
+    /// Will panic if the start time cannot be parsed, but this is unlikely.
     #[must_use] 
     pub fn started(&self) -> bool {
         let now = Utc::now();
@@ -126,6 +130,8 @@ impl TimePeriod {
         false
     }
     /// Return true if the finish time is set and is in the past
+    /// # Panics
+    /// Will panic if the finish time is set but cannot be parsed, but this is unlikely.
     #[must_use] 
     pub fn finished(&self) -> bool {
         match &self.end_date_time {
@@ -217,15 +223,17 @@ impl Quantity {
 /// let (code,hash) = gen_code("John Q. Smith".to_string(),"USER123".to_string(),None,Some("U-".to_string()),None);
 /// assert_eq!(code,"U-SP7E6E".to_string());
 /// ```
+/// # Panics
+/// Will panic if the generated hash cannot be parsed as a HEX string, but this is unlikely.
 #[must_use] 
 pub fn gen_code(
-    name: String,
+    name: impl Into<String>,
     id: String,
     offset: Option<u32>,
     prefix: Option<String>,
     length: Option<usize>,
 ) -> (String, String) {
-    let hash_input = format!("{}:{}:{}", name, id, offset.unwrap_or_default());
+    let hash_input = format!("{}:{}:{}", name.into(), id, offset.unwrap_or_default());
     let sha = digest(hash_input);
     let hex = decode(sha);
     let base32 = encode(
@@ -371,7 +379,8 @@ pub trait HasLastUpdate: HasId {
     }
 
     /// Builder pattern for setting lastUpdate on create
-    /// If time is None, current time is used via ['`get_timestamp()`']
+    /// If time is None, current time is used via [`get_timestamp()`]
+    #[must_use]
     fn last_update(self, time: Option<String>) -> Self;
 }
 
@@ -395,6 +404,7 @@ pub trait HasValidity {
     /// - Otherwise return false.
     fn is_valid(&self) -> bool;
     /// Builder pattern function to add validity on create
+    #[must_use]
     fn validity(self, validity: TimePeriod) -> Self;
 }
 
@@ -409,6 +419,7 @@ pub trait HasName: HasId {
     /// Set the name, trimming any whitespace
     fn set_name(&mut self, name: impl Into<String>);
     /// Builder pattern to set name on create, usually coverered by `new()`
+    #[must_use]
     fn name(self, name: impl Into<String>) -> Self;
 
     /// Return a `EntityRef` for this object
@@ -428,8 +439,11 @@ pub trait HasNote: HasId {
     /// Add a new note
     fn add_note(&mut self, note: Note);
     /// Remove a note by index
+    /// # Errors
+    /// Will return an error if the index is out of bounds or if the note cannot be removed for any reason.
     fn remove_note(&mut self, idx: usize) -> Result<Note, TMFError>;
     /// Builder pattern to add note on create
+    #[must_use]
     fn note(self, note: Note) -> Self;
 }
 
@@ -440,10 +454,13 @@ pub trait HasRelatedParty: HasId {
     /// Add a new party
     fn add_party(&mut self, party: RelatedParty);
     /// Remote a party
+    /// # Errors
+    /// Will return an error if the index is out of bounds or if the party cannot be removed for any reason.
     fn remove_party(&mut self, idx: usize) -> Result<RelatedParty, TMFError>;
     /// Get a list of `RelatedParty` entries by role
     fn get_by_role(&self, role: String) -> Option<Vec<&RelatedParty>>;
     /// Builder pattern to add a party on create
+    #[must_use]
     fn party(self, party: RelatedParty) -> Self;
 }
 
@@ -467,12 +484,14 @@ pub trait HasAttachment {
     /// Remove an attachment at a particular position
     fn remove(&mut self, position: usize) -> Option<AttachmentRefOrValue>;
     /// builder pattern function to add attachment on create
+    #[must_use]
     fn attachment(self, attachment: AttachmentRefOrValue) -> Self;
 }
 
 /// Trait for managing a description field. Description field must be defined as `Option<String>`
 pub trait HasDescription {
     /// Builder pattern function to set the description on object creation
+    #[must_use]
     fn description(self, description: impl Into<String>) -> Self;
     /// Get the description by cloning it if set, returns empty string otherwise.
     fn get_description(&self) -> String;
@@ -628,7 +647,7 @@ mod test {
     #[test]
     fn test_gen_code() {
         // Generate a code with a known hash
-        let (code, hash) = gen_code("NAME".into(), "CODE".into(), None, Some("T-".into()), None);
+        let (code, hash) = gen_code("NAME", "CODE".into(), None, Some("T-".into()), None);
 
         assert_eq!(code, CODE.to_string());
         assert_eq!(hash, HASH.to_string());

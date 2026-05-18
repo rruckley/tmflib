@@ -56,7 +56,7 @@ impl Note {
      /// ```
      /// # Panics
      /// Will panic if the note text is empty.
-     /// May panic if now.timestamp() is unparsable, but this is unlikely.
+     /// May panic if `now.timestamp()` is unparsable, but this is unlikely.
     pub fn new(text: impl Into<String>) -> Note {
         let id = Uuid::new_v4().simple().to_string();
         let now = Utc::now();
