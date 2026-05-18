@@ -291,12 +291,21 @@ pub fn get_lib_path() -> String {
 /// Trait indicating a TMF struct has and id, href fields defined in an Entity struct
 pub trait HasEntity: Default {}
 
+#[cfg(feature = "build-V4")]
+const MOD_VERSION: &str = "v4";
+#[cfg(feature = "build-V5")]
+const MOD_VERSION: &str = "v5";
+
+
+
 /// `IsAddressable` Trait, aligned to TMF definitions of addressable entities, i.e. those with id and href fields.
 pub trait IsAddressable: HasId {
     /// Return the list of objects managed by this API
     fn get_objects() -> Vec<&'static str>;
     /// Return the version of the API supported by this library
-    fn get_version() -> &'static str;
+    fn get_version() -> &'static str {
+        MOD_VERSION
+    }
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
