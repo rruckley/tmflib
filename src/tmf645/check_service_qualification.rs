@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     common::related_party::RelatedParty, vec_insert, DateTime, HasDescription, HasId,
     HasRelatedParty, Uri,
+    IsAddressable,
 };
 
 use crate::common::tmf_error::TMFError;
@@ -13,7 +14,8 @@ use crate::tmf641::service_order_item::ServiceRefOrValue;
 
 use tmflib_derive::{HasDescription, HasId, HasRelatedParty};
 
-const CLASS_PATH: &str = "checkServiceQualification";
+/// TMF645 Service Qualification Module
+pub const CLASS_PATH: &str = "checkServiceQualification";
 use super::{TaskStateType, MOD_PATH};
 
 ///  Reason for service unavailability
@@ -96,6 +98,12 @@ impl CheckServiceQualificationItem {
             },
         );
     }
+}
+
+impl IsAddressable for CheckServiceQualification {
+   fn get_objects() -> Vec<&'static str> {
+       super::get_objects()
+   }
 }
 
 /// Check Service Qualification

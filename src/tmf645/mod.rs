@@ -27,3 +27,10 @@ pub enum TaskStateType {
     /// Done
     Done,
 }
+
+fn get_objects() -> Vec<&'static str> {
+    vec![
+        check_service_qualification::CLASS_PATH,
+        query_service_qualification::CLASS_PATH,
+    ]
+}
