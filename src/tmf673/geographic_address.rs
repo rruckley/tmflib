@@ -4,10 +4,11 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasName, Uri};
+use crate::{HasId, HasName, Uri,IsAddressable};
 use tmflib_derive::{HasId, HasName};
 
-const CLASS_PATH: &str = "geographicAddress";
+/// Path to this class
+pub const CLASS_PATH: &str = "geographicAddress";
 
 /// Geographic Sub Address
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasName, Serialize)]
@@ -46,6 +47,12 @@ pub struct GeographicSubAddress {
     /// Sub Unit
     #[serde(skip_serializing_if = "Option::is_none")]
     pub sub_unit: Option<String>,
+}
+
+impl IsAddressable for GeographicSubAddress {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 
 /// Geographic Location Ref or Value

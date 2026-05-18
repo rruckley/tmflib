@@ -4,14 +4,15 @@ use crate::common::money::Money;
 use crate::common::related_party::RelatedParty;
 use crate::tmf666::AccountRef;
 use crate::tmf676::PaymentMethodRefOrValue;
-use crate::{DateTime, HasDescription, HasId, HasName, Uri};
+use crate::{DateTime, HasDescription, HasId, HasName, Uri,IsAddressable};
 use serde::{Deserialize, Serialize};
 
 use tmflib_derive::{HasDescription, HasId, HasName};
 
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "refund";
+/// Path to this module
+pub const CLASS_PATH: &str = "refund";
 
 /// A Refund
 #[derive(Clone, Debug, Default, HasId, HasName, HasDescription, Serialize, Deserialize)]
@@ -88,6 +89,12 @@ impl Refund {
             self.total_amount = Some(amount + tax);
         }
         self
+    }
+}
+
+impl IsAddressable for Refund {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

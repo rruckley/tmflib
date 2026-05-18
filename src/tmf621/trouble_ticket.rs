@@ -14,12 +14,14 @@ use crate::common::tmf_error::TMFError;
 use crate::{
     DateTime, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasNote,
     HasRelatedParty, TMFEvent, Uri,
+    IsAddressable,
 };
 
 // URL Path components
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "troubleTicket";
+/// Path to this class
+pub const CLASS_PATH: &str = "troubleTicket";
 
 /// Trouble Ticket
 #[derive(
@@ -64,6 +66,12 @@ impl TroubleTicket {
             name: Some(name.into()),
             ..TroubleTicket::create_with_time()
         }
+    }
+}
+
+impl IsAddressable for TroubleTicket {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

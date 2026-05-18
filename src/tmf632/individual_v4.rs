@@ -17,7 +17,8 @@ use crate::{
 };
 use tmflib_derive::{HasId, HasRelatedParty};
 
-const CLASS_PATH: &str = "individual";
+/// Path to this class
+pub const CLASS_PATH: &str = "individual";
 const CODE_PREFIX: &str = "I-";
 const NAMENOTSET: &str = "NAMENOTSET";
 

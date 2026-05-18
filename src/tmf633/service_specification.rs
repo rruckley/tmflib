@@ -3,12 +3,13 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::related_party::RelatedParty;
-use crate::{vec_insert, HasDescription, HasId, HasLastUpdate, HasName, TimePeriod};
+use crate::{vec_insert, HasDescription, HasId, HasLastUpdate, HasName, TimePeriod,IsAddressable};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "serviceSpecification";
+/// Path to this class
+pub const CLASS_PATH: &str = "serviceSpecification";
 const SPEC_NEW_VERSION: &str = "1.0";
 const SPEC_NEW_STATUS: &str = "new";
 
@@ -74,6 +75,12 @@ impl ServiceSpecification {
     /// Add a characteristic to this service specification
     pub fn add_char(&mut self, characteristic: CharacteristicSpecification) {
         vec_insert(&mut self.spec_characteristics, characteristic);
+    }
+}
+
+impl IsAddressable for ServiceSpecification {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

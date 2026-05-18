@@ -7,11 +7,13 @@ use crate::common::event::{Event, EventPayload};
 use crate::{
     vec_insert, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TMFEvent, TimePeriod,
     TimeStamp, Uri,
+    IsAddressable,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
 use super::{service_candidate::ServiceCandidateRef, MOD_PATH};
-const CLASS_PATH: &str = "serviceCategory";
+/// Path to this class
+pub const CLASS_PATH: &str = "serviceCategory";
 const CAT_STATUS_NEW: &str = "new";
 const CAT_VERS_NEW: &str = "1.0";
 
@@ -150,6 +152,12 @@ pub struct ServiceCategory {
     category: Option<Vec<ServiceCategoryRef>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     service_candidate: Option<Vec<ServiceCandidateRef>>,
+}
+
+impl IsAddressable for ServiceCategory {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 
 impl ServiceCategory {

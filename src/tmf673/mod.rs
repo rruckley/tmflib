@@ -17,3 +17,9 @@
 pub mod geographic_address;
 
 const MOD_PATH: &str = "geographicAddressManagement/v4";
+
+fn get_objects() -> Vec<&'static str> {
+    vec![
+        geographic_address::CLASS_PATH,
+    ]
+}

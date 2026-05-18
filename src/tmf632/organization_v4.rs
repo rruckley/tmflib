@@ -15,7 +15,8 @@ use crate::common::{
 
 use super::{Characteristic, MOD_PATH};
 
-const CLASS_PATH: &str = "organization";
+/// Path to this class
+pub const CLASS_PATH: &str = "organization";
 const CODE_PREFIX: &str = "O-";
 
 /// Organization Status

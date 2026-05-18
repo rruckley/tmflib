@@ -6,14 +6,15 @@ use crate::common::related_entity::EntityRef;
 use crate::common::related_party::RelatedParty;
 use crate::tmf666::AccountRef;
 use crate::tmf676::PaymentMethodRefOrValue;
-use crate::{vec_insert, DateTime, HasDescription, HasId, HasName, Uri};
+use crate::{vec_insert, DateTime, HasDescription, HasId, HasName, Uri, IsAddressable};
 use serde::{Deserialize, Serialize};
 
 use tmflib_derive::{HasDescription, HasId, HasName};
 
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "payment";
+/// Path to this module
+pub const CLASS_PATH: &str = "payment";
 
 /// Reference to another TMF schema
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -134,6 +135,12 @@ impl Payment {
             self.total_amount = Some(amount + tax);
         }
         self
+    }
+}
+
+impl IsAddressable for Payment {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

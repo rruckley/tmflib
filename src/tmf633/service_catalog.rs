@@ -9,11 +9,13 @@ use crate::common::related_party::RelatedParty;
 use crate::{
     vec_insert, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TMFEvent, TimePeriod,
     TimeStamp, Uri,
+    IsAddressable,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
 use super::MOD_PATH;
-const CLASS_PATH: &str = "serviceCatalog";
+/// Path to this class
+pub const CLASS_PATH: &str = "serviceCatalog";
 const CAT_STATUS_NEW: &str = "new";
 const CAT_VERS_NEW: &str = "1.0";
 
@@ -114,6 +116,12 @@ pub struct ServiceCatalog {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@type")]
     pub r#type: Option<String>,
+}
+
+impl IsAddressable for ServiceCatalog {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 
 impl ServiceCatalog {

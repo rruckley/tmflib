@@ -37,3 +37,10 @@ pub struct PaymentMethodRefOrValue {
     name: Option<String>,
     description: Option<String>,
 }
+
+fn get_objects() -> Vec<&'static str> {
+    vec![
+        payment::CLASS_PATH,
+        refund::CLASS_PATH,
+    ]
+}

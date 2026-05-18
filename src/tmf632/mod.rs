@@ -56,7 +56,16 @@ fn get_version() -> &'static str {
 }
 
 fn get_objects() -> Vec<&'static str> {
-    vec!["serviceUsage", "serviceUsageSpecification"]
+    vec![
+        #[cfg(feature = "build-V4")]
+        individual_v4::CLASS_PATH,
+        #[cfg(feature = "build-V4")]
+        organization_v4::CLASS_PATH,
+        #[cfg(feature = "build-V5")]
+        individual_v5::CLASS_PATH,
+        #[cfg(feature = "build-V5")]
+        organization_v5::CLASS_PATH,
+    ]
 }
 
 #[cfg(test)]

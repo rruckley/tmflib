@@ -3,13 +3,15 @@
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 
-use crate::{vec_insert, HasId, HasLastUpdate, HasName, TimePeriod, TimeStamp, Uri};
+use crate::{vec_insert, HasId, HasLastUpdate, HasName, TimePeriod, TimeStamp, Uri,IsAddressable};
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
 use super::{
     service_category::ServiceCategoryRef, service_specification::ServiceSpecificationRef, MOD_PATH,
 };
-const CLASS_PATH: &str = "serviceCandidate";
+
+/// Path to this class
+pub const CLASS_PATH: &str = "serviceCandidate";
 const CANDIDATE_NEW_VERS: &str = "1.0";
 const CANDIDATE_NEW_STATUS: &str = "new";
 
@@ -26,6 +28,12 @@ pub struct ServiceCandidate {
     // References
     service_specification: ServiceSpecificationRef,
     category: Option<Vec<ServiceCategoryRef>>,
+}
+
+impl IsAddressable for ServiceCandidate {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 
 impl ServiceCandidate {
