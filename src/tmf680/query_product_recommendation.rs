@@ -95,10 +95,10 @@ pub struct QueryProductRecommendation {
 
 impl QueryProductRecommendation {
     /// Create a new Product Recommendation
-    pub fn new(name: impl Into<String>) -> QueryProductRecommendation {
-        QueryProductRecommendation {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
-            ..QueryProductRecommendation::create()
+            ..Self::create()
         }
     }
 }

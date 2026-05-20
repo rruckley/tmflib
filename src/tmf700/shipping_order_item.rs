@@ -11,7 +11,7 @@ const CLASS_PATH: &str = "shippingOrderItem";
 const NEW_STATUS: &str = "New";
 
 /// Shipping Item Action Type
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ShippingOrderItemActionType {
     /// Add new item
     #[default]
@@ -48,18 +48,18 @@ pub struct ShippingOrderItem {
 impl ShippingOrderItem {
     /// Create a new shipping order item
     #[must_use] 
-    pub fn new() -> ShippingOrderItem {
-        ShippingOrderItem::create().status(NEW_STATUS)
+    pub fn new() -> Self {
+        Self::create().status(NEW_STATUS)
     }
 
-    fn status(mut self, status: impl Into<String>) -> ShippingOrderItem {
+    fn status(mut self, status: impl Into<String>) -> Self {
         self.status = status.into();
         self
     }
 
     /// Set shipping instructions for this order item
     #[must_use] 
-    pub fn instruction(mut self, instruction: ShippingInstruction) -> ShippingOrderItem {
+    pub fn instruction(mut self, instruction: ShippingInstruction) -> Self {
         self.shipping_instruction = Some(instruction);
         self
     }

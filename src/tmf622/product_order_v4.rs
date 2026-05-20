@@ -52,7 +52,7 @@ impl From<ProductOrder> for ProductOrderRef {
             .description
             .as_deref()
             .unwrap_or("No Order Description");
-        ProductOrderRef {
+        Self {
             href: value.get_href(),
             id: value.get_id(),
             // Should ideally generate a useful name if description is missing
@@ -69,7 +69,7 @@ impl From<&ProductOrder> for ProductOrderRef {
             .description
             .as_deref()
             .unwrap_or("No Order Description");
-        ProductOrderRef {
+        Self {
             href: value.get_href(),
             id: value.get_id(),
             name: name.to_string(),
@@ -111,7 +111,7 @@ impl TMFEvent<ProductOrderEvent> for ProductOrder {
 }
 
 impl EventPayload<ProductOrderEvent> for ProductOrder {
-    type Subject = ProductOrder;
+    type Subject = Self;
     type EventType = ProductOrderEventType;
 
     fn to_event(&self, event_type: Self::EventType) -> Event<ProductOrderEvent, Self::EventType> {
@@ -188,7 +188,7 @@ impl HasLastUpdate for ProductOrder {
     fn last_update(mut self, time: Option<String>) -> Self {
         match time {
             Some(t) => self.set_last_update(t),
-            None => self.set_last_update(ProductOrder::get_timestamp()),
+            None => self.set_last_update(Self::get_timestamp()),
         }
         self
     }
@@ -197,10 +197,8 @@ impl HasLastUpdate for ProductOrder {
 impl ProductOrder {
     /// Create a new product order via trait
     #[must_use] 
-    pub fn new() -> ProductOrder {
-        ProductOrder {
-            ..ProductOrder::create_with_time()
-        }
+    pub fn new() -> Self {
+        Self::create_with_time()
     }
 
     /// Add an `ProductOrderItem` into the `ProductOrder`
@@ -218,7 +216,7 @@ impl IsAddressable for ProductOrder {
 
 impl From<ServiceOrder> for ProductOrder {
     fn from(value: ServiceOrder) -> Self {
-        let mut po = ProductOrder::new();
+        let mut po = Self::new();
 
         po.cancellation_reason
             .clone_from(&value.cancellation_reason);
@@ -258,7 +256,7 @@ impl From<ShoppingCart> for ProductOrder {
     fn from(value: ShoppingCart) -> Self {
         // Convert a Shopping cart into a product order.
         // Each CartItem converts into an order item using a conversion function.
-        let mut order = ProductOrder::new();
+        let mut order = Self::new();
         order.description = Some("Order from Cart".into());
         // Bring across the cart items
         if let Some(cart_items) = value.cart_item {

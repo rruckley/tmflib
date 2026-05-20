@@ -8,6 +8,7 @@ use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
 /// `ServiceSpecification` is a class that offers characteristics to describe a type of service.
+///
 /// Functionally, it acts as a template by which Services may be instantiated. By sharing the same specification, these services would therefore share the same set of characteristics.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceSpecification {

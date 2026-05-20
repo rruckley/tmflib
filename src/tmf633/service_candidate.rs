@@ -41,19 +41,19 @@ impl ServiceCandidate {
     pub fn new(
         name: impl Into<String>,
         specification_ref: ServiceSpecificationRef,
-    ) -> ServiceCandidate {
-        ServiceCandidate {
+    ) -> Self {
+        Self {
             name: Some(name.into()),
             lifecycle_status: Some(CANDIDATE_NEW_STATUS.into()),
             version: Some(CANDIDATE_NEW_VERS.into()),
             service_specification: specification_ref,
-            ..ServiceCandidate::create_with_time()
+            ..Self::create_with_time()
         }
     }
 
     /// Add a category to this Service Candidate by passing in a Category reference
     #[must_use] 
-    pub fn category(mut self, category: ServiceCategoryRef) -> ServiceCandidate {
+    pub fn category(mut self, category: ServiceCategoryRef) -> Self {
         vec_insert(&mut self.category, category);
         self
     }
@@ -69,7 +69,7 @@ pub struct ServiceCandidateRef {
 
 impl From<ServiceCandidate> for ServiceCandidateRef {
     fn from(value: ServiceCandidate) -> Self {
-        ServiceCandidateRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),

@@ -16,7 +16,7 @@ use super::MOD_PATH;
 const DOC_VERSION: &str = "1.0";
 
 /// Document State
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub enum DocumentStatusType {
     /// Document has been created but is not yet review or approved.
     #[default]
@@ -81,10 +81,10 @@ pub struct Document {
 
 impl Document {
     /// Create a new document
-    pub fn new(name: impl Into<String>) -> Document {
-        let mut doc = Document::create_with_time();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut doc = Self::create_with_time();
         doc.name = Some(name.into());
-        doc.creation_date = Some(Document::get_timestamp());
+        doc.creation_date = Some(Self::get_timestamp());
         doc.status = Some(DocumentStatusType::Created);
         doc.version = Some(DOC_VERSION.into());
         doc
@@ -92,7 +92,7 @@ impl Document {
 
     /// Set the attachment for this document.
     #[must_use] 
-    pub fn attachment(mut self, attachment: AttachmentRefOrValue) -> Document {
+    pub fn attachment(mut self, attachment: AttachmentRefOrValue) -> Self {
         self.attachment = attachment;
         self
     }
@@ -104,14 +104,14 @@ impl Document {
     ///     .doc_type("PDF");
     /// ```
     #[must_use]
-    pub fn doc_type(mut self, r#type: impl Into<String>) -> Document {
+    pub fn doc_type(mut self, r#type: impl Into<String>) -> Self {
         self.document_type = Some(r#type.into());
         self
     }
 
     /// Link another TMF entity during creation
     #[must_use]
-    pub fn link<T: HasName>(mut self, entity: T) -> Document {
+    pub fn link<T: HasName>(mut self, entity: T) -> Self {
         self.link_entity(entity);
         self
     }
@@ -124,7 +124,7 @@ impl Document {
 
 impl From<AttachmentRefOrValue> for Document {
     fn from(value: AttachmentRefOrValue) -> Self {
-        let mut document = Document::create_with_time();
+        let mut document = Self::create_with_time();
         document.set_name(value.get_name());
         document.description.clone_from(&value.description);
         document.status = Some(DocumentStatusType::Created);

@@ -20,7 +20,7 @@ pub const CLASS_PATH: &str = "organization";
 const CODE_PREFIX: &str = "O-";
 
 /// Organization Status
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum OrganizationStateType {
     /// Initialized
@@ -46,7 +46,7 @@ pub struct OrganizationRef {
 
 impl From<Organization> for OrganizationRef {
     fn from(value: Organization) -> Self {
-        OrganizationRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
@@ -104,8 +104,8 @@ pub struct Organization {
 
 impl Organization {
     /// Create a new organization record with a name
-    pub fn new(name: impl Into<String>) -> Organization {
-        let mut org = Organization::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut org = Self::create();
 
         // Ensure name has been trimmed before settings
         let name: String = name.into();
@@ -177,7 +177,7 @@ impl IsAddressable for Organization {
 impl From<String> for Organization {
     fn from(value: String) -> Self {
         // Generate an Organization from a given string, treating String as name
-        Organization::new(value)
+        Self::new(value)
     }
 }
 
@@ -217,7 +217,7 @@ impl TMFEvent<OrganizationEvent> for Organization {
 }
 
 impl EventPayload<OrganizationEvent> for Organization {
-    type Subject = Organization;
+    type Subject = Self;
     type EventType = OrganizationEventType;
 
     fn to_event(&self, event_type: Self::EventType) -> Event<OrganizationEvent, Self::EventType> {
@@ -233,7 +233,7 @@ impl EventPayload<OrganizationEvent> for Organization {
         Event {
             correlation_id: None,
             description: Some(desc),
-            domain: Some(Organization::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
             href: Some(self.get_href()),

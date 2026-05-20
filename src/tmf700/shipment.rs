@@ -23,7 +23,7 @@ pub struct ShipmentTrackingRef {
 }
 
 /// Shipment Item Action Type
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ShipmentItemActionType {
     /// Add new item
     Add,

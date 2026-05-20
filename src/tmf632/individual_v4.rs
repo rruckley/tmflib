@@ -100,8 +100,8 @@ pub struct Individual {
 
 impl Individual {
     /// Create a new instance of indiviudal object
-    pub fn new(name: impl Into<String>) -> Individual {
-        let mut ind = Individual::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut ind = Self::create();
         // Try to split name into two parts
         // If it splits, take 1st as given name, second as family name
         ind.set_name(name);
@@ -120,7 +120,7 @@ impl Individual {
     ///     .email("john.smith@example.com");
     /// ```
     #[must_use] 
-    pub fn email(mut self, email: &str) -> Individual {
+    pub fn email(mut self, email: &str) -> Self {
         let medium = ContactMedium::email(email);
         self.add_contact(medium);
         self
@@ -135,7 +135,7 @@ impl Individual {
     ///     .title("Mr");
     /// ```
     #[must_use]
-    pub fn title(mut self, title: impl Into<String>) -> Individual {
+    pub fn title(mut self, title: impl Into<String>) -> Self {
         self.title = Some(title.into());
         self
     }
@@ -149,7 +149,7 @@ impl Individual {
     ///     .gender("Unspecified");
     /// ``` 
     #[must_use]
-    pub fn gender(mut self, gender: impl Into<String>) -> Individual {
+    pub fn gender(mut self, gender: impl Into<String>) -> Self {
         self.gender = Some(gender.into());
         self
     }
@@ -163,7 +163,7 @@ impl Individual {
     ///     .gender("Unspecified");
     /// ```
     #[must_use]
-    pub fn preferred(mut self, preferred: impl Into<String>) -> Individual {
+    pub fn preferred(mut self, preferred: impl Into<String>) -> Self {
         self.preferred_given_name = Some(preferred.into());
         self
     }
@@ -177,7 +177,7 @@ impl Individual {
     ///     .mobile("0411 111 111");
     /// ```
     #[must_use] 
-    pub fn mobile(mut self, mobile: &str) -> Individual {
+    pub fn mobile(mut self, mobile: &str) -> Self {
         let medium = ContactMedium::mobile(mobile);
         self.add_contact(medium);
         self
@@ -373,7 +373,7 @@ impl TMFEvent<IndividualEvent> for Individual {
 }
 
 impl EventPayload<IndividualEvent> for Individual {
-    type Subject = Individual;
+    type Subject = Self;
     type EventType = IndividualEventType;
 
     fn to_event(&self, event_type: Self::EventType) -> Event<IndividualEvent, Self::EventType> {
@@ -389,7 +389,7 @@ impl EventPayload<IndividualEvent> for Individual {
         Event {
             correlation_id: None,
             description: Some(desc),
-            domain: Some(Individual::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
             href: Some(self.get_href()),

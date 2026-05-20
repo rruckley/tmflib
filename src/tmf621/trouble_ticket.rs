@@ -61,10 +61,10 @@ pub struct TroubleTicket {
 
 impl TroubleTicket {
     /// Create a new trouble ticket
-    pub fn new(name: impl Into<String>) -> TroubleTicket {
-        TroubleTicket {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
-            ..TroubleTicket::create_with_time()
+            ..Self::create_with_time()
         }
     }
 }
@@ -109,7 +109,7 @@ impl TMFEvent<TroubleTicketEvent> for TroubleTicket {
 }
 
 impl EventPayload<TroubleTicketEvent> for TroubleTicket {
-    type Subject = TroubleTicket;
+    type Subject = Self;
     type EventType = TroubleTicketEventType;
 
     fn to_event(
@@ -128,7 +128,7 @@ impl EventPayload<TroubleTicketEvent> for TroubleTicket {
             id: Some(self.get_id()),
             href: Some(self.get_href()),
             description: Some(desc),
-            domain: Some(TroubleTicket::get_class()),
+            domain: Some(Self::get_class()),
             title: Some(self.get_name()),
             time_occurred: Some(event_time.to_string()),
             event: self.event(),
@@ -154,7 +154,7 @@ pub struct TroubleTicketRelationship {
 impl TroubleTicketRelationship {
     /// Set the relationship on a `TroubleTicketRelationship` in builder pattern
     #[must_use]
-    pub fn relationship(mut self, relationship: impl Into<String>) -> TroubleTicketRelationship {
+    pub fn relationship(mut self, relationship: impl Into<String>) -> Self {
         self.relationship_type = relationship.into();
         self
     }
@@ -162,7 +162,7 @@ impl TroubleTicketRelationship {
 
 impl From<TroubleTicket> for TroubleTicketRelationship {
     fn from(value: TroubleTicket) -> Self {
-        TroubleTicketRelationship {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),

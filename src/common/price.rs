@@ -28,8 +28,8 @@ pub struct Price {
 impl Price {
     /// Create a new Price object using a tax inclusive price
     #[must_use] 
-    pub fn new_inc(inc_price: f32) -> Price {
-        let mut price = Price {
+    pub fn new_inc(inc_price: f32) -> Self {
+        let mut price = Self {
             tax_rate: AUS_TAX_RATE,
             ..Default::default()
         };
@@ -39,8 +39,8 @@ impl Price {
 
     /// Create a new Price object using a tax exclusive price
     #[must_use] 
-    pub fn new_ex(ex_price: f32) -> Price {
-        let mut price = Price {
+    pub fn new_ex(ex_price: f32) -> Self {
+        let mut price = Self {
             tax_rate: AUS_TAX_RATE,
             ..Default::default()
         };
@@ -77,14 +77,14 @@ impl Price {
 }
 
 impl Add for Price {
-    type Output = Price;
+    type Output = Self;
 
     fn add(self, rhs: Self) -> Self::Output {
         // Tax included amount must have the same currency
         // We could also validate ex tax amount but they are
         // set to gether with set_currency() function
         if self.tax_included_amount.unit == rhs.tax_included_amount.unit {
-            Price {
+            Self {
                 percentage: self.percentage,
                 tax_rate: self.tax_rate,
                 tax_included_amount: self.tax_included_amount + rhs.tax_included_amount,
@@ -97,11 +97,11 @@ impl Add for Price {
 }
 
 impl Sub for Price {
-    type Output = Price;
+    type Output = Self;
 
     fn sub(self, rhs: Self) -> Self::Output {
         if self.tax_included_amount.unit == rhs.tax_included_amount.unit {
-            Price {
+            Self {
                 percentage: self.percentage,
                 tax_rate: self.tax_rate,
                 tax_included_amount: self.tax_included_amount - rhs.tax_included_amount,
@@ -114,10 +114,10 @@ impl Sub for Price {
 }
 
 impl Mul<f32> for Price {
-    type Output = Price;
+    type Output = Self;
 
     fn mul(self, rhs: f32) -> Self::Output {
-        Price {
+        Self {
             percentage: self.percentage,
             tax_rate: self.tax_rate,
             tax_included_amount: self.tax_included_amount * rhs,
@@ -127,10 +127,10 @@ impl Mul<f32> for Price {
 }
 
 impl Mul<i32> for Price {
-    type Output = Price;
+    type Output = Self;
 
     fn mul(self, rhs: i32) -> Self::Output {
-        Price {
+        Self {
             percentage: self.percentage,
             tax_rate: self.tax_rate,
             tax_included_amount: self.tax_included_amount * rhs as f32,
@@ -140,11 +140,11 @@ impl Mul<i32> for Price {
 }
 
 impl Div for Price {
-    type Output = Price;
+    type Output = Self;
 
     fn div(self, rhs: Self) -> Self::Output {
         if self.tax_included_amount.unit == rhs.tax_included_amount.unit {
-            Price {
+            Self {
                 percentage: self.percentage,
                 tax_rate: self.tax_rate,
                 tax_included_amount: self.tax_included_amount / rhs.tax_included_amount,
@@ -157,13 +157,13 @@ impl Div for Price {
 }
 
 impl Div<f32> for Price {
-    type Output = Price;
+    type Output = Self;
 
     fn div(self, rhs: f32) -> Self::Output {
         if rhs == 0.0 {
             self
         } else {
-            Price {
+            Self {
                 percentage: self.percentage,
                 tax_rate: self.tax_rate,
                 tax_included_amount: self.tax_included_amount / rhs,
@@ -174,11 +174,11 @@ impl Div<f32> for Price {
 }
 
 impl Div<i32> for Price {
-    type Output = Price;
+    type Output = Self;
 
     fn div(self, rhs: i32) -> Self::Output {
         if rhs != 0 {
-            Price {
+            Self {
                 percentage: self.percentage,
                 tax_rate: self.tax_rate,
                 tax_included_amount: self.tax_included_amount / rhs,

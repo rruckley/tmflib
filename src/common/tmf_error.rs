@@ -47,6 +47,6 @@ pub enum TMFError {
 
 impl From<&str> for TMFError {
     fn from(msg: &str) -> Self {
-        TMFError::GenericError(msg.to_string())
+        Self::GenericError(msg.to_string())
     }
 }

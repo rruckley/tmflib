@@ -50,7 +50,7 @@ pub struct AgreementSpecificationRef {
 
 impl From<AgreementSpecification> for AgreementSpecificationRef {
     fn from(value: AgreementSpecification) -> Self {
-        AgreementSpecificationRef {
+        Self {
             description: value.description.as_ref().unwrap().clone(),
             id: value.get_id(),
             href: value.get_href(),

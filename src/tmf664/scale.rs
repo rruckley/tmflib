@@ -49,8 +49,8 @@ pub struct Scale {
 
 impl Scale {
     /// Create a new instance of Scale object
-    pub fn new(name: impl Into<String>) -> Scale {
-        Scale { ..Scale::create() }.name(name)
+    pub fn new(name: impl Into<String>) -> Self {
+        Self::create().name(name)
     }
 
     // pub fn schedule(mut self, )

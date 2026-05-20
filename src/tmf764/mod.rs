@@ -24,7 +24,7 @@ pub mod projected_cost;
 use crate::Uri;
 
 /// Cost Reference
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct CostRef {
     /// Unique identifier
     pub id: String,

@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 use tmflib_derive::HasDescription;
 
 /// Status of product for Quote Item
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ProductStatusType {
     /// Created
     #[default]

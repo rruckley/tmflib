@@ -118,7 +118,7 @@ pub struct ServiceRefOrValue {
     ///A list of supporting services (`SupportingService` [*]). A collection of services that support this service (bundling, link CFS to RFS)
     #[serde(rename = "supportingService")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub supporting_service: Option<Vec<ServiceRefOrValue>>,
+    pub supporting_service: Option<Vec<Self>>,
 }
 impl std::fmt::Display for ServiceRefOrValue {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {

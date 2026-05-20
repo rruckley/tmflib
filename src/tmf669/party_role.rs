@@ -77,17 +77,17 @@ impl PartyRole {
     /// let individual = Individual::new("John Smith");
     /// let role = PartyRole::new("Account Manager",RelatedParty::from(&individual));
     /// ```
-    pub fn new(name: impl Into<String>, party: RelatedParty) -> PartyRole {
-        PartyRole {
+    pub fn new(name: impl Into<String>, party: RelatedParty) -> Self {
+        Self {
             name: Some(name.into()),
             engaged_party: Some(party),
-            ..PartyRole::create()
+            ..Self::create()
         }
     }
 
     /// Set engaged party (Using [`RelatedParty`] reference)
     #[must_use] 
-    pub fn engaged_party(mut self, related_party: RelatedParty) -> PartyRole {
+    pub fn engaged_party(mut self, related_party: RelatedParty) -> Self {
         self.engaged_party = Some(related_party);
         self
     }

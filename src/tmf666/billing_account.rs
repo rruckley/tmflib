@@ -61,8 +61,8 @@ pub struct BillingAccount {
 
 impl BillingAccount {
     /// Create new Billing Account
-    pub fn new(name: impl Into<String>) -> BillingAccount {
-        let mut account = BillingAccount::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut account = Self::create();
         account.name = Some(name.into());
         account
     }
@@ -70,11 +70,11 @@ impl BillingAccount {
 
 impl From<BillingAccount> for AccountRef {
     fn from(value: BillingAccount) -> Self {
-        AccountRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            description: value.description.clone(),
+            description: value.description,
         }
     }
 }
@@ -92,7 +92,7 @@ pub struct BillingAccountRef {
 
 impl From<BillingAccount> for BillingAccountRef {
     fn from(value: BillingAccount) -> Self {
-        BillingAccountRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),

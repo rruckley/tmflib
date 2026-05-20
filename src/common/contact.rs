@@ -40,8 +40,8 @@ pub struct ContactMedium {
 impl ContactMedium {
     /// Create a new contact medium
     #[must_use] 
-    pub fn new() -> ContactMedium {
-        ContactMedium::default()
+    pub fn new() -> Self {
+        Self::default()
     }
 
     /// Generate a new contact medium representing email address
@@ -51,13 +51,13 @@ impl ContactMedium {
     /// let medium = ContactMedium::email("john.smith@example.com");
     /// ````
     #[must_use] 
-    pub fn email(email: &str) -> ContactMedium {
+    pub fn email(email: &str) -> Self {
         let char = MediumCharacteristic {
             email_address: Some(email.to_string()),
             contact_type: Some(String::from(EMAIL_TYPE)),
             phone_number: None,
         };
-        ContactMedium {
+        Self {
             preferred: false,
             medium_type: Some(String::from(EMAIL_TYPE)),
             characteristic: Some(char),
@@ -71,13 +71,13 @@ impl ContactMedium {
     /// let medium = ContactMedium::mobile("0411 111 111");
     /// ```
     #[must_use] 
-    pub fn mobile(mobile: &str) -> ContactMedium {
+    pub fn mobile(mobile: &str) -> Self {
         let char = MediumCharacteristic {
             email_address: None,
             contact_type: Some(String::from(MOBILE_TYPE)),
             phone_number: Some(mobile.to_string()),
         };
-        ContactMedium {
+        Self {
             characteristic: Some(char),
             medium_type: Some(String::from(MOBILE_TYPE)),
             preferred: false,
@@ -105,8 +105,8 @@ pub struct Contact {
 
 impl Contact {
     /// Create a new contact
-    pub fn new(name: impl Into<String>) -> Contact {
-        Contact {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             contact_name: name.into(),
             ..Default::default()
         }
@@ -115,7 +115,7 @@ impl Contact {
 
 impl From<&Individual> for Contact {
     fn from(value: &Individual) -> Self {
-        Contact::new(value.get_name())
+        Self::new(value.get_name())
     }
 }
 

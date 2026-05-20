@@ -19,8 +19,8 @@ pub struct ItemRef {
 
 impl From<CartItem> for ItemRef {
     fn from(value: CartItem) -> Self {
-        ItemRef {
-            id: value.id.unwrap_or_default().clone(),
+        Self {
+            id: value.id.unwrap_or_default(),
         }
     }
 }
@@ -49,7 +49,7 @@ impl CartItem {
 impl From<ProductOfferingRef> for CartItem {
     fn from(value: ProductOfferingRef) -> Self {
         let id = Uuid::new_v4().simple().to_string();
-        CartItem {
+        Self {
             id: Some(id),
             quantity: 1,
             product_offering: Some(value),

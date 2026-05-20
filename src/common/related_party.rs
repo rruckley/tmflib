@@ -23,7 +23,7 @@ use crate::tmf669::party_role::PartyRole;
 use crate::{HasId, HasName, Uri};
 
 /// Reference to a Customer (TMF629) , Organisation or Individual (TMF632)
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RelatedParty {
     /// Unique Id of the referenced party
@@ -58,7 +58,7 @@ pub struct RelatedParty {
 
 impl From<&Customer> for RelatedParty {
     fn from(cust: &Customer) -> Self {
-        RelatedParty {
+        Self {
             id: cust.get_id(),
             href: cust.get_href(),
             name: cust.name.clone(),
@@ -73,7 +73,7 @@ impl From<&Customer> for RelatedParty {
 
 impl From<Organization> for RelatedParty {
     fn from(org: Organization) -> Self {
-        RelatedParty {
+        Self {
             id: org.get_id(),
             href: org.get_href(),
             name: Some(org.get_name()),
@@ -88,7 +88,7 @@ impl From<Organization> for RelatedParty {
 
 impl From<&Organization> for RelatedParty {
     fn from(org: &Organization) -> Self {
-        RelatedParty {
+        Self {
             id: org.get_id(),
             href: org.get_href(),
             name: Some(org.get_name()),
@@ -103,10 +103,10 @@ impl From<&Organization> for RelatedParty {
 
 impl From<OrganizationRef> for RelatedParty {
     fn from(value: OrganizationRef) -> Self {
-        RelatedParty {
+        Self {
             id: value.id.clone(),
             href: value.href.clone(),
-            name: Some(value.name.clone()),
+            name: Some(value.name),
             role: Some(Organization::get_class()),
             referred_type: Some(Organization::get_class()),
             base_type: Some(Organization::get_class()),
@@ -118,7 +118,7 @@ impl From<OrganizationRef> for RelatedParty {
 
 impl From<&Individual> for RelatedParty {
     fn from(value: &Individual) -> Self {
-        RelatedParty {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: Some(value.get_name()),
@@ -135,7 +135,7 @@ impl From<&Individual> for RelatedParty {
 /// Create a [`RelatedParty`] reference from a reference to [`crate::tmf669::party_role::PartyRole`]
 impl From<&PartyRole> for RelatedParty {
     fn from(value: &PartyRole) -> Self {
-        RelatedParty {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: None,

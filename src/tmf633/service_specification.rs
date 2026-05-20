@@ -57,18 +57,18 @@ pub struct ServiceSpecification {
 
 impl ServiceSpecification {
     /// Create a new specification
-    pub fn new(name: impl Into<String>) -> ServiceSpecification {
+    pub fn new(name: impl Into<String>) -> Self {
         // let mut ss = ServiceSpecification::create_with_time();
         // ss.name = Some(name.into());
         // ss.spec_characteristics = Some(vec![]);
         // ss.is_bundle = Some(false);
         // ss.lifecycle_status = Some("New".to_string());
         // ss
-        ServiceSpecification {
+        Self {
             name: Some(name.into()),
             lifecycle_status: Some(SPEC_NEW_STATUS.into()),
             version: Some(SPEC_NEW_VERSION.into()),
-            ..ServiceSpecification::create_with_time()
+            ..Self::create_with_time()
         }
     }
 
@@ -99,11 +99,11 @@ pub struct ServiceSpecificationRef {
 
 impl From<ServiceSpecification> for ServiceSpecificationRef {
     fn from(value: ServiceSpecification) -> Self {
-        ServiceSpecificationRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            version: value.version.clone(),
+            version: value.version,
         }
     }
 }

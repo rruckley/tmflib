@@ -79,7 +79,7 @@ pub type Uri = String;
 pub type Priority = u16;
 
 /// Standard TMF `TimePeriod` structure
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimePeriod {
     /// Start of time period
@@ -92,8 +92,8 @@ pub struct TimePeriod {
 impl TimePeriod {
     /// Create a time period of 30 days
     #[must_use] 
-    pub fn period_30days() -> TimePeriod {
-        TimePeriod::period_days(30)
+    pub fn period_30days() -> Self {
+        Self::period_days(30)
     }
 
     /// Calculate period `days` into the future
@@ -106,11 +106,11 @@ impl TimePeriod {
     /// # Panics
     /// Will panic if the current time cannot be parsed, but this is unlikely.
     #[must_use] 
-    pub fn period_days(days: u64) -> TimePeriod {
+    pub fn period_days(days: u64) -> Self {
         let now = Utc::now() + Days::new(days);
         let time =
             chrono::DateTime::from_timestamp(now.timestamp(), 0).expect("Invalid now() output");
-        TimePeriod {
+        Self {
             end_date_time: Some(time.to_rfc3339()),
             ..Default::default()
         }
@@ -155,7 +155,7 @@ impl Default for TimePeriod {
         let now = Utc::now();
         let time =
             chrono::DateTime::from_timestamp(now.timestamp(), 0).expect("Invalid input timestamp");
-        TimePeriod {
+        Self {
             start_date_time: time.to_rfc3339(),
             end_date_time: None,
         }
@@ -164,8 +164,8 @@ impl Default for TimePeriod {
 
 impl From<DateTime> for TimePeriod {
     fn from(value: TimeStamp) -> Self {
-        TimePeriod {
-            start_date_time: value.clone(),
+        Self {
+            start_date_time: value,
             end_date_time: None,
         }
     }
@@ -189,16 +189,16 @@ impl Quantity {
     /// assert_eq!(weight.amount,10.5);
     /// ```
     #[must_use] 
-    pub fn kg(amount: f64) -> Quantity {
-        Quantity {
+    pub fn kg(amount: f64) -> Self {
+        Self {
             amount,
             units: "kg".to_string(),
         }
     }
     /// Shortcut functions to set carton quantity and associated units.
     #[must_use] 
-    pub fn cartons(amount: f64) -> Quantity {
-        Quantity {
+    pub fn cartons(amount: f64) -> Self {
+        Self {
             amount,
             units: "cartons".to_string(),
         }
@@ -253,7 +253,7 @@ pub fn gen_code(
 
 /// Return type for a `serde_json` Value
 #[must_use] 
-pub fn serde_value_to_type(value: &serde_json::Value) -> &str {
+pub const fn serde_value_to_type(value: &serde_json::Value) -> &str {
     match value {
         serde_json::Value::Null => "Null",
         serde_json::Value::Bool(_) => "Bool",
@@ -360,6 +360,7 @@ pub trait HasId: Default {
 }
 
 /// `IsAddressable` Trait, aligned to TMF definitions of addressable entities, i.e. those with id and href fields.
+///
 /// This is a supertrait of `HasId` and `HasEntity`, but can be used to indicate that an object is addressable without necessarily having the full requirements of those traits.
 /// Trait indicating a TMF sturct has a `last_update` or similar timestamp field.
 pub trait HasLastUpdate: HasId {

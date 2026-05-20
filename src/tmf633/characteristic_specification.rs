@@ -45,8 +45,8 @@ pub struct CharacteristicValueSpecification {
 impl CharacteristicValueSpecification {
     /// Constructor
     #[must_use] 
-    pub fn new() -> CharacteristicValueSpecification {
-        CharacteristicValueSpecification {
+    pub fn new() -> Self {
+        Self {
             is_default: Some(false),
             ..Default::default()
         }
@@ -61,7 +61,7 @@ impl CharacteristicValueSpecification {
     /// ```
     /// # Errors
     /// Returns an error if the regex pattern provided is not a valid regex
-    pub fn regex(mut self, regex: String) -> Result<CharacteristicValueSpecification, TMFError> {
+    pub fn regex(mut self, regex: String) -> Result<Self, TMFError> {
         let _re = Regex::new(&regex)?;
         self.regex = Some(regex);
         Ok(self)
@@ -81,7 +81,7 @@ impl CharacteristicValueSpecification {
     pub fn value(
         mut self,
         value: serde_json::Value,
-    ) -> Result<CharacteristicValueSpecification, TMFError> {
+    ) -> Result<Self, TMFError> {
         self.value_type = Some(serde_value_to_type(&value).to_string());
         match self.regex {
             Some(ref re_str) => {
@@ -141,8 +141,8 @@ pub struct CharacteristicSpecification {
 
 impl CharacteristicSpecification {
     /// Constructor
-    pub fn new(name: impl Into<String>) -> CharacteristicSpecification {
-        CharacteristicSpecification {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
             max_cardinality: Some(1),
             value_type: Some("String".into()),
@@ -152,11 +152,11 @@ impl CharacteristicSpecification {
     }
     /// Set maximum cardinality
     #[must_use] 
-    pub fn cardinality(
+    pub const fn cardinality(
         mut self,
         min_card: Cardinality,
         max_card: Cardinality,
-    ) -> CharacteristicSpecification {
+    ) -> Self {
         self.min_cardinality = Some(min_card);
         self.max_cardinality = Some(max_card);
         self
@@ -164,7 +164,7 @@ impl CharacteristicSpecification {
 
     /// Set characteristic as optional cardinality => (0..1)
     #[must_use] 
-    pub fn optional(mut self) -> CharacteristicSpecification {
+    pub const fn optional(mut self) -> Self {
         self.min_cardinality = Some(0);
         self.max_cardinality = Some(1);
         self
@@ -172,7 +172,7 @@ impl CharacteristicSpecification {
 
     /// Make this characteristic mandatory
     #[must_use] 
-    pub fn mandatory(mut self) -> CharacteristicSpecification {
+    pub const fn mandatory(mut self) -> Self {
         self.min_cardinality = Some(1);
         self.max_cardinality = Some(1);
         self
@@ -180,7 +180,7 @@ impl CharacteristicSpecification {
 
     /// Set the description of this characteristic
     #[must_use]
-    pub fn description(mut self, description: impl Into<String>) -> CharacteristicSpecification {
+    pub fn description(mut self, description: impl Into<String>) -> Self {
         self.description = Some(description.into());
         self
     }

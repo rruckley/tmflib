@@ -32,7 +32,7 @@ pub struct ProductStockRef {
 
 impl From<ProductStock> for ProductStockRef {
     fn from(value: ProductStock) -> Self {
-        ProductStockRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
@@ -65,10 +65,10 @@ pub struct ProductStock {
 
 impl ProductStock {
     /// Create a new `ProductStock` instance
-    pub fn new(name: impl Into<String>) -> ProductStock {
-        ProductStock {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
-            ..ProductStock::create()
+            ..Self::create()
         }
     }
 }
@@ -139,7 +139,7 @@ impl TMFEvent<ProductStockEvent> for ProductStock {
 }
 
 impl EventPayload<ProductStockEvent> for ProductStock {
-    type Subject = ProductStock;
+    type Subject = Self;
     type EventType = ProductStockEvent;
     fn to_event(&self, event_type: Self::EventType) -> Event<ProductStockEvent, Self::EventType> {
         let now = Utc::now();
@@ -147,7 +147,7 @@ impl EventPayload<ProductStockEvent> for ProductStock {
         let desc = format!("{:?} for {}", event_type, self.get_name());
         Event {
             description: Some(desc),
-            domain: Some(ProductStock::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             href: self.href.clone(),
             id: self.id.clone(),

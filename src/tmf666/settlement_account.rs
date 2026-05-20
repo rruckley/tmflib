@@ -61,21 +61,21 @@ pub struct SettlementAccount {
 
 impl SettlementAccount {
     /// Create new Billing Account
-    pub fn new(name: impl Into<String>) -> SettlementAccount {
-        SettlementAccount {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
-            ..SettlementAccount::create()
+            ..Self::create()
         }
     }
 }
 
 impl From<SettlementAccount> for AccountRef {
     fn from(value: SettlementAccount) -> Self {
-        AccountRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            description: value.description.clone(),
+            description: value.description,
         }
     }
 }

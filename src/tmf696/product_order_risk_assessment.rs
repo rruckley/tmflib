@@ -38,10 +38,10 @@ pub struct ProductOrderRiskAssessment {
 impl ProductOrderRiskAssessment {
     /// Create a new instance of Product Order Risk Assessment
     #[must_use] 
-    pub fn new(order: &ProductOrderRef) -> ProductOrderRiskAssessment {
-        ProductOrderRiskAssessment {
+    pub fn new(order: &ProductOrderRef) -> Self {
+        Self {
             product_order: order.clone(),
-            ..ProductOrderRiskAssessment::create()
+            ..Self::create()
         }
     }
 

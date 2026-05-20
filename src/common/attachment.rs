@@ -13,7 +13,7 @@ use super::MOD_PATH;
 const CLASS_PATH: &str = "attachment";
 
 /// Attachment Type
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum AttachmentType {
     /// Inline Attachment, i.e. inside the payload
@@ -74,10 +74,10 @@ pub struct AttachmentRefOrValue {
 impl AttachmentRefOrValue {
     /// Create a new attachment object
     #[must_use] 
-    pub fn new() -> AttachmentRefOrValue {
-        AttachmentRefOrValue {
+    pub fn new() -> Self {
+        Self {
             valid_for: Some(TimePeriod::default()),
-            ..AttachmentRefOrValue::create()
+            ..Self::create()
         }
     }
 }
@@ -88,7 +88,7 @@ impl From<&Document> for AttachmentRefOrValue {
             .last_update
             .as_ref()
             .map(|t| TimePeriod::from(t.clone() as DateTime));
-        AttachmentRefOrValue {
+        Self {
             name: Some(value.get_name()),
             id: Some(value.get_id()),
             href: Some(value.get_href()),

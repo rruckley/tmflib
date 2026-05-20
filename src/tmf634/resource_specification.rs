@@ -58,11 +58,11 @@ pub struct ResourceSpecification {
 
 impl ResourceSpecification {
     /// Create a new specification with the given name
-    pub fn new(name: impl Into<String>) -> ResourceSpecification {
-        ResourceSpecification {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
             lifecycle_status: Some(String::from("New")),
-            ..ResourceSpecification::create_with_time()
+            ..Self::create_with_time()
         }
     }
 }

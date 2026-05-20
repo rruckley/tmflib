@@ -163,6 +163,6 @@ fn get_objects() -> Vec<&'static str> {
     vec!["individual", "organization"]
 }
 
-fn get_version() -> &'static str {
+const fn get_version() -> &'static str {
     "v5"
 }

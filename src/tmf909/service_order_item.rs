@@ -38,7 +38,7 @@ pub struct ServiceOrderItem {
     ///A list of order items embedded to this order item
     #[serde(rename = "serviceOrderItem")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub service_order_item: Option<Vec<ServiceOrderItem>>,
+    pub service_order_item: Option<Vec<Self>>,
     ///A list of order items related to this order item
     #[serde(rename = "serviceOrderItemRelationship")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

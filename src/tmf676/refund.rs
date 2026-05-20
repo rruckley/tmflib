@@ -58,31 +58,31 @@ pub struct Refund {
 impl Refund {
     /// Create a new Refund object
     #[must_use] 
-    pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Refund {
-        Refund {
+    pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Self {
+        Self {
             account,
             payment_method: method,
-            ..Refund::create()
+            ..Self::create()
         }
     }
 
     /// Set the requestor   
     #[must_use]
-    pub fn requestor(mut self, party: impl Into<RelatedParty>) -> Refund {
+    pub fn requestor(mut self, party: impl Into<RelatedParty>) -> Self {
         self.requestor = Some(party.into());
         self
     }
 
     /// Set the amount for this refund
     #[must_use] 
-    pub fn amount(mut self, amount: f32) -> Refund {
+    pub fn amount(mut self, amount: f32) -> Self {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount of this refund
     #[must_use] 
-    pub fn tax(mut self, tax: f32) -> Refund {
+    pub fn tax(mut self, tax: f32) -> Self {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
         if let Some(amount) = self.amount.clone() {

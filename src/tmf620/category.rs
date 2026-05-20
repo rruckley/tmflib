@@ -94,8 +94,8 @@ impl Category {
     /// # use tmflib::tmf620::category::Category;
     /// let cat = Category::new(String::from("MyCategory"));
     /// ```
-    pub fn new(name: impl Into<String>) -> Category {
-        let mut cat = Category::create_with_time();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut cat = Self::create_with_time();
         cat.version = Some(CAT_VERS.to_string());
         cat.name = Some(name.into());
         cat.is_root = Some(false);
@@ -117,7 +117,7 @@ impl Category {
     ///     .description(String::from("Library of product components"));
     /// ```
     #[must_use] 
-    pub fn description(mut self, description: String) -> Category {
+    pub fn description(mut self, description: String) -> Self {
         self.description = Some(description);
         self
     }
@@ -130,7 +130,7 @@ impl Category {
     ///     .parent(String::from("23948-234908"));
     /// ```
     #[must_use] 
-    pub fn parent(mut self, parent_id: String) -> Category {
+    pub fn parent(mut self, parent_id: String) -> Self {
         // Since we are setting a parent, we cannot be root anymore
         self.is_root = Some(false);
         self.parent_id = Some(parent_id);
@@ -146,7 +146,7 @@ impl Category {
     ///     .is_root(true);
     /// ```
     #[must_use] 
-    pub fn is_root(mut self, root: bool) -> Category {
+    pub fn is_root(mut self, root: bool) -> Self {
         // Two steps 1) delete parent if root= true
         // update is_root
         if root {
@@ -179,14 +179,14 @@ impl TMFEvent<CategoryEvent> for Category {
 }
 
 impl EventPayload<CategoryEvent> for Category {
-    type Subject = Category;
+    type Subject = Self;
     type EventType = CategoryEventType;
 
     fn to_event(&self, event_type: Self::EventType) -> Event<CategoryEvent, Self::EventType> {
         let now = Utc::now();
         let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
         Event {
-            domain: Some(Category::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             href: self.href.clone(),
             id: self.id.clone(),
@@ -298,8 +298,8 @@ pub struct CategoryRef {
 }
 
 impl From<&Category> for CategoryRef {
-    fn from(cat: &Category) -> CategoryRef {
-        CategoryRef {
+    fn from(cat: &Category) -> Self {
+        Self {
             id: cat.id.clone(),
             href: cat.href.clone(),
             name: cat.name.clone(),

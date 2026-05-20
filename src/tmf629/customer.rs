@@ -58,8 +58,8 @@ impl Customer {
     /// let cust = Customer::new(org);
     /// ```
     #[must_use] 
-    pub fn new(org: Organization) -> Customer {
-        let mut cust = Customer::create();
+    pub fn new(org: Organization) -> Self {
+        let mut cust = Self::create();
         cust.name = Some(org.get_name());
         // Not sure on including the name here but the id is only generated on create(), so a name change would
         // not impact the generated code. Ideally as we're throwing away a lot of the resulting hash to get the
@@ -220,7 +220,7 @@ impl Customer {
 
 impl From<&Organization> for Customer {
     fn from(value: &Organization) -> Self {
-        let mut customer = Customer::new(value.to_owned());
+        let mut customer = Self::new(value.to_owned());
         customer.generate_code(None);
         customer
     }
@@ -268,7 +268,7 @@ impl TMFEvent<CustomerEvent> for Customer {
 }
 
 impl EventPayload<CustomerEvent> for Customer {
-    type Subject = Customer;
+    type Subject = Self;
     type EventType = CustomerEventType;
 
     fn to_event(
@@ -288,7 +288,7 @@ impl EventPayload<CustomerEvent> for Customer {
         Event {
             correlation_id: Some(code.unwrap_or_default().to_string()),
             description: Some(desc),
-            domain: Some(Customer::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
             href: Some(self.get_href()),

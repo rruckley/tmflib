@@ -49,10 +49,10 @@ pub struct Catalog {
 
 impl Catalog {
     /// Create a new catalog
-    pub fn new(name: impl Into<String>) -> Catalog {
-        Catalog {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
-            ..Catalog::create()
+            ..Self::create()
         }
     }
 }

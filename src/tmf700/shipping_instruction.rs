@@ -54,23 +54,23 @@ pub struct ShippingInstruction {
 
 impl ShippingInstruction {
     /// Create a new shipping instruction
-    pub fn new(instruction: impl Into<String>) -> ShippingInstruction {
-        ShippingInstruction::create().message(instruction)
+    pub fn new(instruction: impl Into<String>) -> Self {
+        Self::create().message(instruction)
     }
 
     /// Set the label message for this instructions
     #[must_use]
-    pub fn message(mut self, message: impl Into<String>) -> ShippingInstruction {
+    pub fn message(mut self, message: impl Into<String>) -> Self {
         self.label_message = Some(message.into());
         self
     }
 
     /// Set the signature requirements
     #[must_use] 
-    pub fn signature_required_by(
+    pub const fn signature_required_by(
         mut self,
         signature: Option<SignatureRequiredByType>,
-    ) -> ShippingInstruction {
+    ) -> Self {
         if let Some(s) = signature {
             self.signature_required_by = Some(s);
             self.signature_required = true;
@@ -84,7 +84,7 @@ impl ShippingInstruction {
 
 impl From<String> for ShippingInstruction {
     fn from(value: String) -> Self {
-        ShippingInstruction::new(value)
+        Self::new(value)
     }
 }
 

@@ -15,7 +15,7 @@ use tmflib_derive::{HasId, HasLastUpdate};
 const CLASS_PATH: &str = "customer_bill";
 
 /// Customer Bill Run Type
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum CustomerBillRunType {
     /// Inside regular bill cycle
     #[default]
@@ -25,7 +25,7 @@ pub enum CustomerBillRunType {
 }
 
 /// Customer Bill Status
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum CustomerBillStateType {
     /// New Bill
     #[default]
@@ -90,8 +90,8 @@ pub struct CustomerBill {
 impl CustomerBill {
     /// Create a new customer bill
     #[must_use] 
-    pub fn new() -> CustomerBill {
-        let mut bill = CustomerBill::create();
+    pub fn new() -> Self {
+        let mut bill = Self::create();
         bill.state = Some(CustomerBillStateType::default());
         bill
     }

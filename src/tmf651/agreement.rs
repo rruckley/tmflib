@@ -59,8 +59,8 @@ pub struct Agreement {
 
 impl Agreement {
     /// Create a new Agreement
-    pub fn new(name: impl Into<String>) -> Agreement {
-        let mut agreement = Agreement::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut agreement = Self::create();
         agreement.name = Some(name.into());
         agreement
     }
@@ -96,7 +96,7 @@ pub struct AgreementRef {
 
 impl From<Agreement> for AgreementRef {
     fn from(value: Agreement) -> Self {
-        AgreementRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
@@ -106,7 +106,7 @@ impl From<Agreement> for AgreementRef {
 
 impl From<&Quote> for Agreement {
     fn from(value: &Quote) -> Self {
-        let mut agreement = Agreement::new(format!("Agreement from: {}", value.get_name()));
+        let mut agreement = Self::new(format!("Agreement from: {}", value.get_name()));
         agreement.version.clone_from(&value.version);
         agreement.agreement_period = Some(TimePeriod::period_days(365));
         agreement.description.clone_from(&value.description);

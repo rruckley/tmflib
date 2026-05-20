@@ -35,7 +35,7 @@ pub struct ShoppingCartRef {
 
 impl From<ShoppingCart> for ShoppingCartRef {
     fn from(value: ShoppingCart) -> Self {
-        ShoppingCartRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
         }
@@ -72,14 +72,14 @@ pub struct ShoppingCart {
 impl ShoppingCart {
     /// Create a new shopping cart
     #[must_use] 
-    pub fn new() -> ShoppingCart {
+    pub fn new() -> Self {
         // let mut cart = ShoppingCart::create();
         // cart.cart_item = Some(vec![]);
         // cart.related_party = Some(vec![]);
         // cart.valid_for = Some(TimePeriod::period_days(CART_DEFAULT_VALID.into()));
         // cart.cart_total_price = None;
         // cart
-        ShoppingCart {
+        Self {
             valid_for: Some(TimePeriod::period_days(CART_DEFAULT_VALID.into())),
             ..Default::default()
         }

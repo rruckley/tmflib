@@ -105,8 +105,8 @@ pub struct SalesLead {
 
 impl SalesLead {
     /// Create a new sales lead under a given names
-    pub fn new(name: impl Into<String>) -> SalesLead {
-        let mut sl = SalesLead::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut sl = Self::create();
         sl.name = name.into();
         sl.status = Some(SalesLeadStateType::default());
         sl.priority = Some(SalesLeadPriorityType::default());

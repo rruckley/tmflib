@@ -56,10 +56,8 @@ pub struct Migrate {
 
 impl Migrate {
     /// Create a new migrate task
-    pub fn new(name: impl Into<String>) -> Migrate {
-        Migrate {
-            ..Migrate::create()
-        }
+    pub fn new(name: impl Into<String>) -> Self {
+        Self::create()
         .name(name)
     }
 

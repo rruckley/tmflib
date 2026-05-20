@@ -10,7 +10,7 @@ use tmflib_derive::{HasId, HasNote, HasRelatedParty};
 const CLASS_PATH: &str = "workorder";
 
 /// Work Order States
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum WorkOrderStateType {
     #[default]
     /// Acknowledged
@@ -76,13 +76,13 @@ pub struct WorkOrder {
 impl WorkOrder {
     /// Create a new Work Order instance
     #[must_use] 
-    pub fn new() -> WorkOrder {
+    pub fn new() -> Self {
         // Use create() to define remainint fields
-        WorkOrder {
+        Self {
             state: Some(WorkOrderStateType::default()),
-            r#type: Some(WorkOrder::get_class()),
-            base_type: Some(WorkOrder::get_class()),
-            ..WorkOrder::create()
+            r#type: Some(Self::get_class()),
+            base_type: Some(Self::get_class()),
+            ..Self::create()
         }
     }
 

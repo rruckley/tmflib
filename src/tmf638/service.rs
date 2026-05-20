@@ -38,7 +38,7 @@ pub struct Feature {
 }
 
 /// Feature Relationships
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FeatureRelationship {
     id: String,
@@ -49,7 +49,7 @@ pub struct FeatureRelationship {
 
 /// Service Characteristics
 /// Characteristics are used to describe the service in more detail.
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct Characteristic {
     /// Characteristic ID
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -66,9 +66,9 @@ pub struct Characteristic {
 impl Characteristic {
     /// Create a new characteristic with a given name and value, `value_type` is determined automatically based on value enum.
     #[must_use] 
-    pub fn new(name: String, value: &serde_json::Value) -> Characteristic {
+    pub fn new(name: String, value: &serde_json::Value) -> Self {
         let val_type = serde_value_to_type(value);
-        Characteristic {
+        Self {
             id: None,
             name,
             value: Some(value.clone()),
@@ -79,7 +79,7 @@ impl Characteristic {
 
 impl From<(&str, &str)> for Characteristic {
     fn from(tuple: (&str, &str)) -> Self {
-        Characteristic {
+        Self {
             id: None,
             name: tuple.0.to_string(),
             value: Some(serde_json::Value::String(tuple.1.to_string())),
@@ -92,7 +92,7 @@ impl From<(&str, &str)> for Characteristic {
 /// Relationships are used to describe how services relate to each other.
 /// For example, a service may depend on another service or be a part of a bundle.
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ServiceRelationship {
     /// Service Relationship Type
@@ -151,8 +151,8 @@ pub struct Service {
 
 impl Service {
     /// Create a new service object for the inventory
-    pub fn new(name: impl Into<String>) -> Service {
-        let mut service = Service::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut service = Self::create();
         service.name = Some(name.into());
         service.is_bundle = Some(false);
         service
@@ -160,14 +160,14 @@ impl Service {
 
     /// Add a characterisitic during create
     #[must_use] 
-    pub fn with_characteristic(mut self, characteristic: Characteristic) -> Service {
+    pub fn with_characteristic(mut self, characteristic: Characteristic) -> Self {
         vec_insert(&mut self.service_characteristic, characteristic);
         self
     }
 
     /// Add relationships during create
     #[must_use] 
-    pub fn with_relationship(mut self, relationship: ServiceRelationship) -> Service {
+    pub fn with_relationship(mut self, relationship: ServiceRelationship) -> Self {
         vec_insert(&mut self.service_relationship, relationship);
         self
     }

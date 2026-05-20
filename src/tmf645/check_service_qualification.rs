@@ -40,7 +40,7 @@ pub struct AlternateServiceProposal {
 
 impl From<ServiceRefOrValue> for AlternateServiceProposal {
     fn from(value: ServiceRefOrValue) -> Self {
-        AlternateServiceProposal {
+        Self {
             alternate_service_availability_date: value.has_started.clone(),
             id: CheckServiceQualification::get_uuid(),
             alternate_service: Some(value),
@@ -157,24 +157,22 @@ pub struct CheckServiceQualification {
 
 impl CheckServiceQualification {
     /// Create a new SQ Check
-    pub fn new(desc: impl Into<String>) -> CheckServiceQualification {
-        CheckServiceQualification {
-            ..CheckServiceQualification::create()
-        }
+    pub fn new(desc: impl Into<String>) -> Self {
+        Self::create()
         .description(desc)
         .state(TaskStateType::default())
     }
 
     /// Set the status
     #[must_use] 
-    pub fn state(mut self, state: TaskStateType) -> CheckServiceQualification {
+    pub const fn state(mut self, state: TaskStateType) -> Self {
         self.state = Some(state);
         self
     }
 
     /// Add item to SQ Check
     #[must_use] 
-    pub fn item(mut self, item: CheckServiceQualificationItem) -> CheckServiceQualification {
+    pub fn item(mut self, item: CheckServiceQualificationItem) -> Self {
         vec_insert(&mut self.service_qualification_item, item);
         self
     }

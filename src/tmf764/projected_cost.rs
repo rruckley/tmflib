@@ -102,10 +102,10 @@ impl ProjectedCost {
 
 impl From<ProjectedCost> for super::CostRef {
     fn from(cost: ProjectedCost) -> Self {
-        crate::tmf764::CostRef {
+        Self {
             id: cost.get_id(),
             href: cost.get_href(),
-            name: cost.name.clone(),
+            name: cost.name,
             base_type: None,
             referred_type: None,
             schema_location: None,

@@ -12,7 +12,7 @@ use tmflib_derive::{HasId, HasName, HasRelatedParty, HasValidity};
 pub const CLASS_PATH: &str = "serviceTest";
 
 /// Test execution status
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ExecutionStateType {
     /// Acknowledged
     #[default]
@@ -60,8 +60,8 @@ pub struct ServiceTest {
 
 impl ServiceTest {
     /// Create new `ServiceTest`
-    pub fn new(name: impl Into<String>) -> ServiceTest {
-        let mut st = ServiceTest::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut st = Self::create();
         st.name = Some(name.into());
         st
     }

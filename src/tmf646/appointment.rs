@@ -13,7 +13,7 @@ use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasValidity};
 const CLASS_PATH: &str = "appointment";
 
 /// Appointment booking status
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum AppointmentStateType {
     /// Appointment has been initialized
     #[default]
@@ -57,7 +57,7 @@ impl TMFEvent<AppointmentEvent> for Appointment {
 }
 
 impl EventPayload<AppointmentEvent> for Appointment {
-    type Subject = Appointment;
+    type Subject = Self;
     type EventType = AppointmentEvent;
 
     fn to_event(&self, event_type: Self::EventType) -> Event<AppointmentEvent, Self::EventType> {
@@ -71,7 +71,7 @@ impl EventPayload<AppointmentEvent> for Appointment {
         let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
         Event {
             description: Some(desc),
-            domain: Some(Appointment::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             href: Some(self.get_href()),
             id: Some(self.get_id()),
@@ -125,7 +125,7 @@ impl IsAddressable for Appointment {
 
 impl From<Appointment> for AppointmentRef {
     fn from(value: Appointment) -> Self {
-        AppointmentRef {
+        Self {
             description: value.get_href(),
             href: value.get_href(),
             id: value.get_id(),
@@ -136,9 +136,9 @@ impl From<Appointment> for AppointmentRef {
 impl Appointment {
     /// Create new appointment record
     #[must_use] 
-    pub fn new() -> Appointment {
+    pub fn new() -> Self {
         //let appointment =
-        Appointment::create_with_time()
+        Self::create_with_time()
         //appointment
     }
 }

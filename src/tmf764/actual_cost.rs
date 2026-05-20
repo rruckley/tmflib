@@ -152,10 +152,10 @@ impl ActualCost {
 
 impl From<ActualCost> for super::CostRef {
     fn from(cost: ActualCost) -> Self {
-        crate::tmf764::CostRef {
+        Self {
             id: cost.get_id(),
             href: cost.get_href(),
-            name: cost.name.clone(),
+            name: cost.name,
             base_type: None,
             referred_type: None,
             schema_location: None,

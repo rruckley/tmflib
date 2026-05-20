@@ -20,7 +20,7 @@ use tmflib_derive::{HasAttachment, HasDescription};
 const QUOTEITEM_DEF_QTY: u16 = 1;
 
 /// Status of product for Quote Item
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ProductStatusType {
     /// Created
     #[default]
@@ -81,7 +81,7 @@ pub struct ProductRefOrValue {
 
 impl From<ProductOffering> for ProductRefOrValue {
     fn from(value: ProductOffering) -> Self {
-        ProductRefOrValue {
+        Self {
             id: value.id.clone(),
             href: value.href.clone(),
             name: Some(value.get_name()),
@@ -106,7 +106,7 @@ pub struct QuoteItem {
     pub quantity: u16,
     /// Child Quote Items
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub quote_item: Option<Vec<QuoteItem>>,
+    pub quote_item: Option<Vec<Self>>,
     /// Attachments
     #[serde(skip_serializing_if = "Option::is_none")]
     pub attachment: Option<Vec<AttachmentRefOrValue>>,
@@ -127,9 +127,9 @@ pub struct QuoteItem {
 impl QuoteItem {
     /// Create a new quote item
     #[must_use] 
-    pub fn new() -> QuoteItem {
+    pub fn new() -> Self {
         let id = Uuid::new_v4().to_string();
-        QuoteItem {
+        Self {
             id: Some(id),
             quantity: QUOTEITEM_DEF_QTY,
             ..Default::default()
@@ -138,7 +138,7 @@ impl QuoteItem {
 
     /// Set the product for this quoteItem
     #[must_use] 
-    pub fn product(mut self, product: ProductOffering) -> QuoteItem {
+    pub fn product(mut self, product: ProductOffering) -> Self {
         self.product = Some(ProductRefOrValue::from(product));
         self
     }

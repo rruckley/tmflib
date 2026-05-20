@@ -21,7 +21,7 @@ pub struct FinancialAccountRef {
 
 impl From<FinancialAccount> for FinancialAccountRef {
     fn from(value: FinancialAccount) -> Self {
-        FinancialAccountRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),

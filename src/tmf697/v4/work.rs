@@ -23,7 +23,7 @@ pub struct WorkRef {
 
 impl From<Work> for WorkRef {
     fn from(value: Work) -> Self {
-        WorkRef {
+        Self {
             href: value.get_href(),
             id: value.get_id(),
             name: value.get_name(),
@@ -46,29 +46,29 @@ impl WorkRefOrValue {
     #[must_use] 
     pub fn get_id(&self) -> String {
         match self {
-            WorkRefOrValue::Ref(r) => r.id.clone(),
-            WorkRefOrValue::Val(v) => v.get_id(),
+            Self::Ref(r) => r.id.clone(),
+            Self::Val(v) => v.get_id(),
         }
     }
     /// Get the name, independant on varient
     #[must_use] 
     pub fn get_name(&self) -> String {
         match self {
-            WorkRefOrValue::Ref(r) => r.name.clone(),
-            WorkRefOrValue::Val(v) => v.get_name(),
+            Self::Ref(r) => r.name.clone(),
+            Self::Val(v) => v.get_name(),
         }
     }
 }
 
 impl From<WorkRef> for WorkRefOrValue {
     fn from(value: WorkRef) -> Self {
-        WorkRefOrValue::Ref(value)
+        Self::Ref(value)
     }
 }
 
 impl From<Work> for WorkRefOrValue {
     fn from(value: Work) -> Self {
-        WorkRefOrValue::Val(Box::new(value))
+        Self::Val(Box::new(value))
     }
 }
 
@@ -119,8 +119,8 @@ pub struct Work {
 
 impl Work {
     /// Create a new work object
-    pub fn new(name: impl Into<String>) -> Work {
-        let mut out = Work::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut out = Self::create();
         out.set_name(name);
         out
     }

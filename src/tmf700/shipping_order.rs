@@ -29,7 +29,7 @@ pub struct RelatedShippingOrder {
 impl RelatedShippingOrder {
     /// Set the role for this `RelatedShippingOrder`
     #[must_use]
-    pub fn role(mut self, role: impl Into<String>) -> RelatedShippingOrder {
+    pub fn role(mut self, role: impl Into<String>) -> Self {
         self.role = Some(role.into());
         self
     }
@@ -38,7 +38,7 @@ impl RelatedShippingOrder {
 impl From<&ShippingOrder> for RelatedShippingOrder {
     fn from(value: &ShippingOrder) -> Self {
         // Generate Ref from SO
-        RelatedShippingOrder {
+        Self {
             href: value.get_href(),
             id: value.get_id(),
             name: String::default(),
@@ -88,13 +88,13 @@ pub struct ShippingOrder {
 impl ShippingOrder {
     /// Create new `ShippingOrder`
     #[must_use] 
-    pub fn new() -> ShippingOrder {
-        ShippingOrder::create()
+    pub fn new() -> Self {
+        Self::create()
     }
 
     /// Set shipping instructions for this shipping order
     #[must_use] 
-    pub fn instruction(mut self, instruction: ShippingInstruction) -> ShippingOrder {
+    pub fn instruction(mut self, instruction: ShippingInstruction) -> Self {
         self.shipping_instruction = Some(instruction);
         self
     }
@@ -108,7 +108,7 @@ impl ShippingOrder {
     }
 
     /// Add a `RelatedShippingOrder` to this order
-    pub fn link_order(&mut self, shipping_order: &ShippingOrder, role: impl Into<String>) {
+    pub fn link_order(&mut self, shipping_order: &Self, role: impl Into<String>) {
         self.related_shipping_order = Some(RelatedShippingOrder::from(shipping_order).role(role));
     }
 }

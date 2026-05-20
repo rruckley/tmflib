@@ -18,7 +18,7 @@ use crate::tmf620::product_offering_v5::ProductOfferingRef;
 const CLASS_PATH: &str = "productOfferingQualification";
 
 /// Qualification Item Status
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum TaskStateType {
     /// Qualification is acknowledged but not processed
     Acknowledged,
@@ -46,8 +46,8 @@ pub struct ProductOfferingQualification {
 impl ProductOfferingQualification {
     /// Create a new Product Offering Qualification from a Product Offering Reference
     #[must_use] 
-    pub fn new(offering_ref: Option<ProductOfferingRef>) -> ProductOfferingQualification {
-        let mut poq = ProductOfferingQualification::create();
+    pub fn new(offering_ref: Option<ProductOfferingRef>) -> Self {
+        let mut poq = Self::create();
         let mut poqi = ProductOfferingQualificationItem::new();
         poqi.product_offering = offering_ref;
         poq.product_offering_qualification_item.push(poqi);

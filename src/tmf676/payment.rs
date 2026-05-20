@@ -28,8 +28,8 @@ pub struct PaymentItem {
 
 impl PaymentItem {
     /// Create new Payment Item
-    pub fn new(entity: &impl HasName) -> PaymentItem {
-        PaymentItem {
+    pub fn new(entity: &impl HasName) -> Self {
+        Self {
             item: entity.as_entity(),
             ..Default::default()
         }
@@ -37,14 +37,14 @@ impl PaymentItem {
 
     /// Set the amount for this transaction
     #[must_use] 
-    pub fn amount(mut self, amount: f32) -> PaymentItem {
+    pub fn amount(mut self, amount: f32) -> Self {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount for this payment
     #[must_use] 
-    pub fn tax(mut self, tax: f32) -> PaymentItem {
+    pub fn tax(mut self, tax: f32) -> Self {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
         if let Some(amount) = self.amount.clone() {
@@ -97,38 +97,38 @@ pub struct Payment {
 impl Payment {
     /// Create a new Payment from a payment method and account
     #[must_use] 
-    pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Payment {
-        Payment {
+    pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Self {
+        Self {
             account,
             payment_method: method,
-            ..Payment::create()
+            ..Self::create()
         }
     }
 
     /// Set the payer
     #[must_use]
-    pub fn payer(mut self, party: impl Into<RelatedParty>) -> Payment {
+    pub fn payer(mut self, party: impl Into<RelatedParty>) -> Self {
         self.payer = Some(party.into());
         self
     }
 
     /// Add paymet item to the payment
     #[must_use] 
-    pub fn item(mut self, item: PaymentItem) -> Payment {
+    pub fn item(mut self, item: PaymentItem) -> Self {
         vec_insert(&mut self.payment_item, item);
         self
     }
 
     /// Set the amount for this transaction
     #[must_use] 
-    pub fn amount(mut self, amount: f32) -> Payment {
+    pub fn amount(mut self, amount: f32) -> Self {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount for this payment
     #[must_use] 
-    pub fn tax(mut self, tax: f32) -> Payment {
+    pub fn tax(mut self, tax: f32) -> Self {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
         if let Some(amount) = self.amount.clone() {

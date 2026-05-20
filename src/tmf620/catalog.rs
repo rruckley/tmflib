@@ -80,8 +80,8 @@ pub struct Catalog {
 
 impl Catalog {
     /// Create a new instance of catalog struct
-    pub fn new(name: impl Into<String>) -> Catalog {
-        let mut cat = Catalog::create_with_time();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut cat = Self::create_with_time();
         cat.name = Some(name.into());
         cat.version = Some(CAT_VERS.to_string());
         cat.category = Some(vec![]);
@@ -92,7 +92,7 @@ impl Catalog {
 
     /// Set the name for this Catalog
     #[must_use] 
-    pub fn name(mut self, name: impl Into<String>) -> Catalog {
+    pub fn name(mut self, name: impl Into<String>) -> Self {
         self.name = Some(name.into());
         self
     }
@@ -119,7 +119,7 @@ pub struct CatalogEvent {
 }
 
 impl HasReference for Catalog {
-    type RefType = Catalog;
+    type RefType = Self;
 }
 
 impl TMFEvent<CatalogEvent> for Catalog {
@@ -131,7 +131,7 @@ impl TMFEvent<CatalogEvent> for Catalog {
 }
 
 impl EventPayload<CatalogEvent> for Catalog {
-    type Subject = Catalog;
+    type Subject = Self;
     type EventType = CatalogEventType;
     fn to_event(&self, event_type: CatalogEventType) -> Event<CatalogEvent, CatalogEventType> {
         let now = Utc::now();
@@ -140,7 +140,7 @@ impl EventPayload<CatalogEvent> for Catalog {
         Event {
             correlation_id: None,
             description: Some(desc),
-            domain: Some(Catalog::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
             href: self.href.clone(),
@@ -156,7 +156,7 @@ impl EventPayload<CatalogEvent> for Catalog {
 }
 
 /// Type of event fot he catalog events
-#[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub enum CatalogEventType {
     /// Catalog has been created
     CatalogCreateEvent,

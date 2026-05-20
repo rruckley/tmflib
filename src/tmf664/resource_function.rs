@@ -30,7 +30,7 @@ pub struct ResourceFunctionRef {
 
 impl From<ResourceFunction> for ResourceFunctionRef {
     fn from(value: ResourceFunction) -> Self {
-        ResourceFunctionRef {
+        Self {
             href: value.get_href(),
             id: value.get_id(),
             name: value.get_name(),

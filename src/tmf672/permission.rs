@@ -24,27 +24,27 @@ pub struct Permission {
 impl Permission {
     /// Create a new Permission
     #[must_use] 
-    pub fn new(party: RelatedParty) -> Permission {
-        Permission::create().user(party)
+    pub fn new(party: RelatedParty) -> Self {
+        Self::create().user(party)
     }
 
     /// Set the description of this permission
     #[must_use]
-    pub fn desc(mut self, description: impl Into<String>) -> Permission {
+    pub fn desc(mut self, description: impl Into<String>) -> Self {
         self.description = Some(description.into());
         self
     }
 
     /// Set the user for this permission
     #[must_use] 
-    pub fn user(mut self, party: RelatedParty) -> Permission {
+    pub fn user(mut self, party: RelatedParty) -> Self {
         self.user = party;
         self
     }
 
     /// Set the graner for this permission
     #[must_use] 
-    pub fn granter(mut self, party: RelatedParty) -> Permission {
+    pub fn granter(mut self, party: RelatedParty) -> Self {
         self.granter = Some(party);
         self
     }

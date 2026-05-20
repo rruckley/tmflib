@@ -40,8 +40,8 @@ impl WorkOrderItem {
     /// let woi = WorkOrderItem::with(WorkRefOrValue::from(work));
     /// ```
     #[must_use] 
-    pub fn with(work: WorkRefOrValue) -> WorkOrderItem {
-        WorkOrderItem {
+    pub fn with(work: WorkRefOrValue) -> Self {
+        Self {
             id: Some(
                 gen_code(
                     work.get_name(),

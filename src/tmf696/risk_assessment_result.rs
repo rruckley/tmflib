@@ -27,7 +27,7 @@ pub struct RiskScore {
 }
 
 /// Risk Categorisation
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum RiskType {
     /// Fraud

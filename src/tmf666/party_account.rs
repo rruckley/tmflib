@@ -64,11 +64,11 @@ pub struct PartyAccount {
 
 impl From<PartyAccount> for AccountRef {
     fn from(value: PartyAccount) -> Self {
-        AccountRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            description: value.description.clone(),
+            description: value.description,
         }
     }
 }

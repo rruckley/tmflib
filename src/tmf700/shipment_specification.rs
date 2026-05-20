@@ -146,10 +146,8 @@ pub struct CharacteristicValueSpecification {
 impl CharacteristicValueSpecification {
     /// Constructor
     #[must_use] 
-    pub fn new() -> CharacteristicValueSpecification {
-        CharacteristicValueSpecification {
-            ..Default::default()
-        }
+    pub fn new() -> Self {
+        Default::default()
     }
 
     /// Set regex for this characteristic value specification
@@ -161,7 +159,7 @@ impl CharacteristicValueSpecification {
     /// ```
     /// # Errors
     /// Will return an error if the regex pattern provided is invalid
-    pub fn regex(mut self, regex: String) -> Result<CharacteristicValueSpecification, TMFError> {
+    pub fn regex(mut self, regex: String) -> Result<Self, TMFError> {
         let _re = Regex::new(&regex)?;
         self.regex = Some(regex);
         Ok(self)
@@ -182,7 +180,7 @@ impl CharacteristicValueSpecification {
     pub fn value(
         mut self,
         value: serde_json::Value,
-    ) -> Result<CharacteristicValueSpecification, TMFError> {
+    ) -> Result<Self, TMFError> {
         self.value_type = Some(serde_value_to_type(&value).to_string());
         match self.regex {
             Some(ref re_str) => {

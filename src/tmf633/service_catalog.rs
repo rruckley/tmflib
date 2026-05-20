@@ -49,7 +49,7 @@ impl TMFEvent<ServiceCatalogEvent> for ServiceCatalog {
 }
 
 impl EventPayload<ServiceCatalogEvent> for ServiceCatalog {
-    type Subject = ServiceCatalog;
+    type Subject = Self;
     type EventType = ServiceCatalogEvent;
 
     fn to_event(&self, event_type: Self::EventType) -> Event<ServiceCatalogEvent, Self::EventType> {
@@ -63,7 +63,7 @@ impl EventPayload<ServiceCatalogEvent> for ServiceCatalog {
         let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
 
         Event {
-            domain: Some(ServiceCatalog::get_class()),
+            domain: Some(Self::get_class()),
             description: Some(desc),
             event_type,
             event_time: event_time.to_string(),
@@ -126,18 +126,18 @@ impl IsAddressable for ServiceCatalog {
 
 impl ServiceCatalog {
     /// Create a new Service Catalog instance
-    pub fn new(name: impl Into<String>) -> ServiceCatalog {
-        ServiceCatalog {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
             lifecycle_status: Some(CAT_STATUS_NEW.into()),
             version: Some(CAT_VERS_NEW.into()),
-            ..ServiceCatalog::create_with_time()
+            ..Self::create_with_time()
         }
     }
 
     /// Add a category to this Service Candidate by passing in a Category reference
     #[must_use] 
-    pub fn category(mut self, category: ServiceCategoryRef) -> ServiceCatalog {
+    pub fn category(mut self, category: ServiceCategoryRef) -> Self {
         vec_insert(&mut self.category, category);
         self
     }

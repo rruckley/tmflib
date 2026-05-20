@@ -51,7 +51,7 @@ pub struct Characteristic {
     r#type: Option<String>,
 }
 
-fn get_version() -> &'static str {
+const fn get_version() -> &'static str {
     MOD_VERSION
 }
 

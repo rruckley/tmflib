@@ -13,7 +13,7 @@ use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty};
 const CLASS_PATH: &str = "serviceOrder";
 
 /// Service Order Status
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ServiceOrderStateType {
     /// Acknowledged
     #[default]
@@ -106,8 +106,8 @@ pub struct ServiceOrder {
 impl ServiceOrder {
     /// Create a new service order object
     #[must_use] 
-    pub fn new() -> ServiceOrder {
-        let mut so = ServiceOrder::create();
+    pub fn new() -> Self {
+        let mut so = Self::create();
         so.note = Some(vec![]);
         so.related_party = Some(vec![]);
         so

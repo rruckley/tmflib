@@ -9,7 +9,7 @@ use tmflib_derive::HasId;
 const CLASS_PATH: &str = "CheckProductConfiguration";
 
 /// Configuration Check Status
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum TaskStateType {
     /// Config request has been recieved and acknowledged
     #[default]
@@ -40,8 +40,8 @@ pub struct CheckProductConfiguration {
 impl CheckProductConfiguration {
     /// Create a product configuration check request
     #[must_use] 
-    pub fn new() -> CheckProductConfiguration {
-        CheckProductConfiguration::create()
+    pub fn new() -> Self {
+        Self::create()
     }
 }
 

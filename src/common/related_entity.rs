@@ -34,7 +34,7 @@ pub struct RelatedEntity {
 /// Generate a related entity from any TMF object that has implemented `HasName` trait
 impl<T: HasName> From<T> for RelatedEntity {
     fn from(value: T) -> Self {
-        RelatedEntity {
+        Self {
             name: value.get_name(),
             id: value.get_id(),
             href: value.get_href(),

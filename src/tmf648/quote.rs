@@ -21,7 +21,7 @@ const CLASS_PATH: &str = "quote";
 const QUOTE_VERS: &str = "1.0";
 
 /// Status of the quote object
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum QuoteStateType {
     /// Quote has been rejected
@@ -123,8 +123,8 @@ pub struct Quote {
 impl Quote {
     /// Create a new Product Quote
     #[must_use] 
-    pub fn new() -> Quote {
-        let mut quote = Quote::create();
+    pub fn new() -> Self {
+        let mut quote = Self::create();
         quote.version = Some(QUOTE_VERS.to_string());
         quote.state = Some(QuoteStateType::Accepted);
         quote
@@ -233,7 +233,7 @@ impl TMFEvent<QuoteEvent> for Quote {
 }
 
 impl EventPayload<QuoteEvent> for Quote {
-    type Subject = Quote;
+    type Subject = Self;
     type EventType = QuoteEventType;
     fn to_event(
         &self,
@@ -251,7 +251,7 @@ impl EventPayload<QuoteEvent> for Quote {
         Event {
             correlation_id: None,
             description: Some(desc),
-            domain: Some(Quote::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
             href: Some(self.get_href()),
