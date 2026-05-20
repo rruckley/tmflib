@@ -1,7 +1,7 @@
 //! Resource Specification Module
 
 use crate::{
-    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod, Uri,
+    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod, Uri,IsAddressable
 };
 use serde::{Deserialize, Serialize};
 
@@ -12,7 +12,8 @@ use crate::common::external_identifier::ExternalIdentifier;
 
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "resourceSpecification";
+/// Path component for Resource Specification
+pub const CLASS_PATH: &str = "resourceSpecification";
 
 /// Resource Specification
 #[derive(
@@ -63,6 +64,12 @@ impl ResourceSpecification {
             lifecycle_status: Some(String::from("New")),
             ..ResourceSpecification::create_with_time()
         }
+    }
+}
+
+impl IsAddressable for ResourceSpecification {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

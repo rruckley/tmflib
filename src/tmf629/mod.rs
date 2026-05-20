@@ -21,3 +21,4 @@ const MOD_PATH: &str = "customerManagement/v4";
 
 pub mod characteristic;
 pub mod customer;
+

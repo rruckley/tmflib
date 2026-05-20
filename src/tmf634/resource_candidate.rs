@@ -2,10 +2,11 @@
 
 use serde::{Deserialize, Serialize};
 
-const CLASS_PATH: &str = "resourceCandidate";
+/// Path component for Resource Candidate
+pub const CLASS_PATH: &str = "resourceCandidate";
 
 use super::MOD_PATH;
-use crate::{HasId, HasLastUpdate, HasName};
+use crate::{HasId, HasLastUpdate, HasName,IsAddressable};
 use tmflib_derive::{HasId, HasName};
 
 /// Resource Candidate (Catalog Entry)
@@ -54,6 +55,12 @@ impl HasLastUpdate for ResourceCandidate {
             None => self.set_last_update(ResourceCandidate::get_timestamp()),
         }
         self
+    }
+}
+
+impl IsAddressable for ResourceCandidate {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

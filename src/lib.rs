@@ -48,6 +48,7 @@
 #![warn(missing_docs)]
 // #![warn(rustdoc::missing_doc_code_examples)]
 #![warn(rustdoc::private_doc_tests)]
+#![warn(clippy::nursery)]
 #![allow(clippy::struct_field_names)]
 
 use crate::common::{note::Note, related_entity::EntityRef};

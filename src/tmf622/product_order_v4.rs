@@ -11,6 +11,7 @@ use crate::tmf663::shopping_cart::ShoppingCart;
 use crate::{
     vec_insert, DateTime, HasDescription, HasId, HasLastUpdate, HasNote, HasRelatedParty, TMFEvent,
     Uri,
+    IsAddressable
 };
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
@@ -19,7 +20,8 @@ use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty};
 // URL Path components
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "productOrder";
+/// TMF622 Product Order Management - V4
+pub const CLASS_PATH: &str = "productOrder";
 
 /// Reference to a Product Order
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -205,6 +207,12 @@ impl ProductOrder {
     pub fn add_order_item(&mut self, order_item: ProductOrderItem) {
         vec_insert(&mut self.product_order_item, order_item);
         // self.product_order_item.as_mut().unwrap().push(order_item);
+    }
+}
+
+impl IsAddressable for ProductOrder {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

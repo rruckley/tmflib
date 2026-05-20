@@ -2,12 +2,13 @@
 
 use serde::{Deserialize, Serialize};
 
-const CLASS_PATH: &str = "catalog";
+/// Path component for Catalog
+pub const CLASS_PATH: &str = "catalog";
 
 use super::MOD_PATH;
 
 use crate::{
-    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod, Uri,
+    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod, Uri,IsAddressable
 };
 
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
@@ -53,6 +54,12 @@ impl Catalog {
             name: Some(name.into()),
             ..Catalog::create()
         }
+    }
+}
+
+impl IsAddressable for Catalog {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

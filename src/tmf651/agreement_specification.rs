@@ -1,11 +1,12 @@
 //! Agreement Specification Module
 
-use crate::{DateTime, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod};
+use crate::{DateTime, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod,IsAddressable};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
 
 use super::MOD_PATH;
-const CLASS_PATH: &str = "specification";
+/// Path for Agreement Specification class
+pub const CLASS_PATH: &str = "specification";
 
 /// Agreement Specification
 #[derive(
@@ -30,6 +31,12 @@ pub struct AgreementSpecification {
     valid_for: Option<TimePeriod>,
     #[serde(skip_serializing_if = "Option::is_none")]
     version: Option<String>,
+}
+
+impl IsAddressable for AgreementSpecification {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 
 /// Reference to external specification

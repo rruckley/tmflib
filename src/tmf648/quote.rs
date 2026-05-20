@@ -13,7 +13,7 @@ use crate::common::tmf_error::TMFError;
 use crate::tmf651::agreement::AgreementRef;
 use crate::{
     DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, TMFEvent,
-    TimePeriod,
+    TimePeriod,IsAddressable
 };
 use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty, HasValidity};
 
@@ -173,6 +173,12 @@ impl Quote {
                 format!("Quote-{}", self.get_id())
             }
         }
+    }
+}
+
+impl IsAddressable for Quote {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

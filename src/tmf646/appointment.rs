@@ -7,7 +7,7 @@ use uuid::Uuid;
 use super::MOD_PATH;
 
 use crate::common::event::{Event, EventPayload};
-use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasValidity, TMFEvent, TimePeriod};
+use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasValidity, TMFEvent, TimePeriod,IsAddressable};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasValidity};
 
 const CLASS_PATH: &str = "appointment";
@@ -115,6 +115,12 @@ pub struct AppointmentRef {
     description: String,
     href: String,
     id: String,
+}
+
+impl IsAddressable for Appointment {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
+    }
 }
 
 impl From<Appointment> for AppointmentRef {

@@ -17,4 +17,16 @@
 pub mod service_test;
 pub mod service_test_specification;
 
+#[cfg(feature = "build-V4")]
 const MOD_PATH: &str = "serviceTestManagement/v4";
+#[cfg(feature = "build-V5")]
+const MOD_PATH: &str = "serviceTestManagement/v5";
+
+fn get_objects() -> Vec<&'static str> {
+    vec![
+        service_test::CLASS_PATH,
+        service_test_specification::CLASS_PATH,
+    ]
+}
+
+

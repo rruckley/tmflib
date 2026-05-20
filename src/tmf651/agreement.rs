@@ -3,12 +3,13 @@
 use super::{agreement_item::AgreementItem, agreement_specification::AgreementSpecificationRef};
 use crate::common::related_party::RelatedParty;
 use crate::tmf648::quote::Quote;
-use crate::{DateTime, HasDescription, HasId, HasName, HasRelatedParty, TimePeriod};
+use crate::{DateTime, HasDescription, HasId, HasName, HasRelatedParty, TimePeriod,IsAddressable};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasName};
 
 use super::MOD_PATH;
-const CLASS_PATH: &str = "agreement";
+/// Path for Agreement class
+pub const CLASS_PATH: &str = "agreement";
 
 /// Agreeement / Contract
 #[derive(Clone, Default, Debug, Deserialize, HasId, HasName, HasDescription, Serialize)]
@@ -73,6 +74,12 @@ impl Agreement {
                 self.agreement_item = Some(vec![item]);
             }
         }
+    }
+}
+
+impl IsAddressable for Agreement {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

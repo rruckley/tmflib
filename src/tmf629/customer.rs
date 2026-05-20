@@ -12,7 +12,7 @@ use super::characteristic::Characteristic;
 use crate::common::contact::ContactMedium;
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
-use crate::{gen_code, HasId, HasName, HasReference, HasValidity, TMFEvent, TimePeriod};
+use crate::{gen_code, HasId, HasName, HasReference, HasValidity, TMFEvent, TimePeriod,IsAddressable};
 use tmflib_derive::{HasId, HasName, HasValidity};
 use uuid::Uuid;
 
@@ -223,6 +223,12 @@ impl From<&Organization> for Customer {
         let mut customer = Customer::new(value.to_owned());
         customer.generate_code(None);
         customer
+    }
+}
+
+impl IsAddressable for Customer {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

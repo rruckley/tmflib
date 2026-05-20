@@ -19,3 +19,11 @@ pub mod agreement_item;
 pub mod agreement_specification;
 
 const MOD_PATH: &str = "agreementManagement/v4";
+
+fn get_objects() -> Vec<&'static str> {
+    vec![
+        agreement::CLASS_PATH,
+        // agreement_item::CLASS_PATH,
+        agreement_specification::CLASS_PATH,
+    ]
+}

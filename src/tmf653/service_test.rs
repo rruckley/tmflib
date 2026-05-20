@@ -5,10 +5,11 @@ use serde::{Deserialize, Serialize};
 use super::MOD_PATH;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
-use crate::{DateTime, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod};
+use crate::{DateTime, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod,IsAddressable};
 use tmflib_derive::{HasId, HasName, HasRelatedParty, HasValidity};
 
-const CLASS_PATH: &str = "serviceTest";
+/// Path to `ServiceTest` class
+pub const CLASS_PATH: &str = "serviceTest";
 
 /// Test execution status
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -63,6 +64,12 @@ impl ServiceTest {
         let mut st = ServiceTest::create();
         st.name = Some(name.into());
         st
+    }
+}
+
+impl IsAddressable for ServiceTest {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 
