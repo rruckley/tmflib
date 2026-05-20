@@ -78,7 +78,7 @@ pub use service_usage_ref_mvo::*;
 pub use service_usage_spec_relationship::*;
 pub use service_usage_spec_relationship_fvo::*;
 pub use service_usage_spec_relationship_mvo::*;
-pub use service_usage_specification::*;
+pub use service_usage_specification::ServiceUsageSpecification;
 pub use service_usage_specification_ref::*;
 pub use service_usage_specification_ref_fvo::*;
 pub use service_usage_specification_ref_mvo::*;
@@ -160,9 +160,8 @@ mod target_entity_schema_mvo;
 const MOD_PATH: &str = "serviceUsageManagement";
 
 fn get_objects() -> Vec<&'static str> {
-    vec!["individual", "organization"]
-}
-
-const fn get_version() -> &'static str {
-    "v5"
+    vec![
+        service_usage::CLASS_PATH,
+        service_usage_specification::CLASS_PATH,
+    ]
 }

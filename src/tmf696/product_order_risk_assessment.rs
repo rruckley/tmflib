@@ -8,7 +8,7 @@ use crate::common::related_place::RelatedPlaceRefOrValue;
 use crate::tmf622::product_order_v4::ProductOrderRef;
 #[cfg(all(feature = "tmf622", feature = "build-V5"))]
 use crate::tmf622::product_order_v5::ProductOrderRef;
-use crate::{HasId, Uri};
+use crate::{HasId, Uri,IsAddressable};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
@@ -65,6 +65,12 @@ impl ProductOrderRiskAssessment {
             self.characteristic = Some(vec![characteristic]);
             None
         }
+    }
+}
+
+impl IsAddressable for ProductOrderRiskAssessment {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

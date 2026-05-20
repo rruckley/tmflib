@@ -26,7 +26,8 @@ use serde::{Deserialize, Serialize};
 use super::MOD_PATH;
 use tmflib_derive::HasId;
 
-const CLASS_PATH: &str = "serviceUsage";
+/// Path to module
+pub const CLASS_PATH: &str = "serviceUsage";
 
 ///Service Usage represents the actual usage of a service by a customer or other party. It is used to track the usage of a service in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default, HasId)]
@@ -85,9 +86,6 @@ pub struct ServiceUsage {
 impl IsAddressable for ServiceUsage {
     fn get_objects() -> Vec<&'static str> {
         super::get_objects()
-    }
-    fn get_version() -> &'static str {
-        super::get_version()
     }
 }
 
