@@ -12,7 +12,7 @@ use super::{
 use crate::common::tmf_error::TMFError;
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
 
-const CLASS_PATH: &str = "account";
+const CLASS_PATH: &str = "partyAccount";
 
 /// Party Account
 #[derive(

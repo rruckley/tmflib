@@ -11,7 +11,7 @@ use super::{
     PaymentMethodRef, PaymentPlan, MOD_PATH,
 };
 
-const CLASS_PATH: &str = "account";
+const CLASS_PATH: &str = "settlementAccount";
 
 /// Billing Account
 #[derive(

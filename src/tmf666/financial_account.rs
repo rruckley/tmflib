@@ -8,7 +8,7 @@ use tmflib_derive::{HasId, HasLastUpdate, HasName};
 use super::{AccountBalance, AccountRelationship, AccountTaxExemption, MOD_PATH};
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
 
-const CLASS_PATH: &str = "account";
+const CLASS_PATH: &str = "financialAccount";
 
 /// Financial Account Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

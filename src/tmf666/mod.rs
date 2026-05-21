@@ -116,6 +116,15 @@ pub struct PaymentMethodRef {
     name: String,
 }
 
+fn get_objects() -> Vec<&'static str> {
+    vec![
+        billing_account::CLASS_PATH,
+        financial_account::CLASS_PATH,
+        party_account::CLASS_PATH,
+        settlement_account::CLASS_PATH,
+    ]
+}
+
 #[cfg(test)]
 mod test {
     use super::{AccountBalance, AccountRef, PaymentMethodRef, PaymentPlan};
