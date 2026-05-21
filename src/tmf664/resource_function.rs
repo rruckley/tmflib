@@ -8,12 +8,14 @@ use crate::common::tmf_error::TMFError;
 use crate::{
     DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, Priority,
     TimePeriod, Uri,
+    IsAddressable,
 };
 use tmflib_derive::{HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity};
 
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "resourceFunction";
+/// Path to Resource Function class
+pub const CLASS_PATH: &str = "resourceFunction";
 
 /// Reference to Resource Function
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -144,4 +146,10 @@ pub struct ResourceFunction {
     pub activation_feature: Option<Vec<Feature>>,
     /// Notes
     pub note: Option<Vec<Note>>,
+}
+
+impl IsAddressable for ResourceFunction {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }

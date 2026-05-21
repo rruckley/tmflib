@@ -4,13 +4,14 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasName, Uri};
+use crate::{HasId, HasName, Uri, IsAddressable};
 use tmflib_derive::{HasId, HasName};
 
 use super::resource_function::ResourceFunctionRef;
 use super::{TaskStateType, MOD_PATH};
 
-const CLASS_PATH: &str = "scale";
+/// Path to Scale class
+pub const CLASS_PATH: &str = "scale";
 
 /// Schedule Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -54,4 +55,10 @@ impl Scale {
     }
 
     // pub fn schedule(mut self, )
+}
+
+impl IsAddressable for Scale {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }

@@ -2,12 +2,13 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, Uri};
+use crate::{HasId, Uri, IsAddressable};
 use tmflib_derive::HasId;
 
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "monitor";
+/// Path to Monitor class
+pub const CLASS_PATH: &str = "monitor";
 
 /// Request
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -43,4 +44,10 @@ pub struct Monitor {
     pub request: Option<Request>,
     /// Response
     pub response: Option<Response>,
+}
+
+impl IsAddressable for Monitor {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }

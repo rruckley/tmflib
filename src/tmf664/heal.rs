@@ -4,12 +4,13 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{DateTime, HasId, HasName, Uri};
+use crate::{DateTime, HasId, HasName, Uri, IsAddressable};
 use tmflib_derive::{HasId, HasName};
 
 use super::{TaskStateType, MOD_PATH};
 
-const CLASS_PATH: &str = "heal";
+/// Path to Heal class
+pub const CLASS_PATH: &str = "heal";
 
 /// Heal Resource Function
 #[derive(Clone, Debug, Default, HasId, HasName, Deserialize, Serialize)]
@@ -31,4 +32,10 @@ pub struct Heal {
     pub heal_action: Option<String>,
     /// The time when the heal action needs to commence. This allows a delay to be added.
     pub start_time: Option<DateTime>,
+}
+
+impl IsAddressable for Heal {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }

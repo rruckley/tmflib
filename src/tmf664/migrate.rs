@@ -3,12 +3,13 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::related_place::PlaceRef;
-use crate::{HasId, HasName, Uri};
+use crate::{HasId, HasName, Uri,IsAddressable};
 use tmflib_derive::{HasId, HasName};
 
 use super::{TaskStateType, MOD_PATH};
 
-const CLASS_PATH: &str = "migrate";
+/// Path to Migrate class
+pub const CLASS_PATH: &str = "migrate";
 use super::resource_function::ResourceFunctionRef;
 
 /// External connection points of the resource function. These are the service access points
@@ -66,5 +67,11 @@ impl Migrate {
     pub fn place(mut self, place: PlaceRef) -> Self {
         self.place = Some(place);
         self
+    }
+}
+
+impl IsAddressable for Migrate {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
