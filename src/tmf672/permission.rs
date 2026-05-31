@@ -2,11 +2,12 @@
 
 use super::MOD_PATH;
 use crate::common::related_party::RelatedParty;
-use crate::{DateTime, HasId, TimePeriod, Uri};
+use crate::{DateTime, HasId, TimePeriod, Uri,IsAddressable};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
-const CLASS_PATH: &str = "permission";
+/// Path to Permission module in TMF API
+pub const CLASS_PATH: &str = "permission";
 
 /// User Permissions Struct
 #[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]
@@ -47,6 +48,12 @@ impl Permission {
     pub fn granter(mut self, party: RelatedParty) -> Self {
         self.granter = Some(party);
         self
+    }
+}
+
+impl IsAddressable for Permission {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

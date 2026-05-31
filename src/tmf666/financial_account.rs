@@ -2,13 +2,14 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{DateTime, HasId, HasLastUpdate, HasName};
+use crate::{DateTime, HasId, HasLastUpdate, HasName,IsAddressable};
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
 use super::{AccountBalance, AccountRelationship, AccountTaxExemption, MOD_PATH};
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
 
-const CLASS_PATH: &str = "financialAccount";
+/// Path to Financial Account class
+pub const CLASS_PATH: &str = "financialAccount";
 
 /// Financial Account Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -76,6 +77,12 @@ impl FinancialAccount {
             balance_type: String::from("total"),
             valid_for: None,
         }
+    }
+}
+
+impl IsAddressable for FinancialAccount {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

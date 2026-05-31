@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
-use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName};
+use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName,IsAddressable};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::{
@@ -66,6 +66,12 @@ impl BillingAccount {
         let mut account = Self::create();
         account.name = Some(name.into());
         account
+    }
+}
+
+impl IsAddressable for BillingAccount {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

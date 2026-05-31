@@ -18,3 +18,10 @@ const MOD_PATH: &str = "tmf672";
 
 pub mod permission;
 pub mod user_role;
+
+pub fn get_objects() -> Vec<&'static str> {
+    vec![
+        permission::CLASS_PATH,
+        user_role::CLASS_PATH,
+    ]
+}

@@ -9,6 +9,7 @@ use crate::{
     tmf651::agreement::AgreementRef,
     tmf666::{AccountRef, PaymentMethodRef},
     DateTime, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod, Uri,
+    IsAddressable,
 };
 use tmflib_derive::{HasId, HasName, HasRelatedParty, HasValidity};
 
@@ -115,6 +116,12 @@ impl PartyRole {
             Some(pm) => pm.push(payment),
             None => self.payment_method = Some(vec![payment]),
         }
+    }
+}
+
+impl IsAddressable for PartyRole {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

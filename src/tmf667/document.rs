@@ -7,6 +7,7 @@ use crate::vec_insert;
 use crate::{
     common::attachment::AttachmentRefOrValue, DateTime, HasDescription, HasId, HasLastUpdate,
     HasName, HasRelatedParty, Uri,
+    IsAddressable,
 };
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty};
@@ -119,6 +120,12 @@ impl Document {
     /// Link another TMF entity into this document
     pub fn link_entity<T: HasName>(&mut self, entity: T) {
         vec_insert(&mut self.related_entity, RelatedEntity::from(entity));
+    }
+}
+
+impl IsAddressable for Document {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

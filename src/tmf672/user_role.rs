@@ -1,12 +1,13 @@
 //! User Role Module
 
-use crate::{HasId, Uri};
+use crate::{HasId, Uri,IsAddressable};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "role";
+/// Path to User Role module in TMF API
+pub const CLASS_PATH: &str = "role";
 
 /// Entitlement for this role
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -29,6 +30,12 @@ pub struct UserRole {
     // Referenced structures
     entitlement: Vec<Entitlement>,
 }
+
+impl IsAddressable for UserRole {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}   
 
 #[cfg(test)]
 mod test {
