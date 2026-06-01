@@ -8,8 +8,8 @@ use super::MOD_PATH;
 use crate::common::event::{Event, EventPayload};
 use crate::common::money::Money;
 use crate::common::tax_item::TaxItem;
-use crate::{HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent, TimePeriod};
-use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
+use crate::{HasId, HasLastUpdate, HasName,HasDescription, HasReference, HasValidity, TMFEvent, TimePeriod};
+use tmflib_derive::{HasId,HasDescription, HasLastUpdate, HasName, HasValidity};
 
 /// Path to this class
 pub const CLASS_PATH: &str = "productOfferingPrice";
@@ -63,7 +63,7 @@ impl HasReference for ProductOfferingPrice {
 
 /// Pricing linked to a Product Offering
 #[derive(
-    Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName, HasValidity, Serialize,
+    Clone, Default, Debug, Deserialize, HasId, HasLastUpdate, HasName,HasDescription, HasValidity, Serialize,
 )]
 #[serde(rename_all = "camelCase")]
 pub struct ProductOfferingPrice {
