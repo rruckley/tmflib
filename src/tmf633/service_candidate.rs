@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 
-use crate::{vec_insert, HasId, HasLastUpdate, HasName, TimePeriod, TimeStamp, Uri,IsAddressable};
+use crate::{vec_insert, HasId, HasLastUpdate, HasName, IsAddressable, TimePeriod, TimeStamp, Uri};
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
 use super::{
@@ -38,10 +38,7 @@ impl IsAddressable for ServiceCandidate {
 
 impl ServiceCandidate {
     /// Create new instance of Service Candidate
-    pub fn new(
-        name: impl Into<String>,
-        specification_ref: ServiceSpecificationRef,
-    ) -> Self {
+    pub fn new(name: impl Into<String>, specification_ref: ServiceSpecificationRef) -> Self {
         Self {
             name: Some(name.into()),
             lifecycle_status: Some(CANDIDATE_NEW_STATUS.into()),
@@ -52,7 +49,7 @@ impl ServiceCandidate {
     }
 
     /// Add a category to this Service Candidate by passing in a Category reference
-    #[must_use] 
+    #[must_use]
     pub fn category(mut self, category: ServiceCategoryRef) -> Self {
         vec_insert(&mut self.category, category);
         self

@@ -6,7 +6,9 @@ use crate::common::product::ProductRefOrValue;
 use crate::common::related_party::RelatedParty;
 use crate::common::related_place::RelatedPlaceRefOrValue;
 use crate::common::tmf_error::TMFError;
-use crate::{DateTime, HasId, HasLastUpdate, HasName, HasRelatedParty, TMFEvent, Uri};
+use crate::{
+    DateTime, HasId, HasLastUpdate, HasName, HasRelatedParty, IsAddressable, TMFEvent, Uri,
+};
 use tmflib_derive::{HasId, HasLastUpdate, HasName, HasRelatedParty};
 
 // External
@@ -70,6 +72,12 @@ impl ProductStock {
             name: Some(name.into()),
             ..Self::create()
         }
+    }
+}
+
+impl IsAddressable for ProductStock {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

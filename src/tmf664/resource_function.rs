@@ -6,9 +6,8 @@ use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
 use crate::{
-    DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, Priority,
-    TimePeriod, Uri,
-    IsAddressable,
+    DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, IsAddressable,
+    Priority, TimePeriod, Uri,
 };
 use tmflib_derive::{HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity};
 

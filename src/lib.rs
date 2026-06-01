@@ -91,7 +91,7 @@ pub struct TimePeriod {
 
 impl TimePeriod {
     /// Create a time period of 30 days
-    #[must_use] 
+    #[must_use]
     pub fn period_30days() -> Self {
         Self::period_days(30)
     }
@@ -105,7 +105,7 @@ impl TimePeriod {
     /// ```
     /// # Panics
     /// Will panic if the current time cannot be parsed, but this is unlikely.
-    #[must_use] 
+    #[must_use]
     pub fn period_days(days: u64) -> Self {
         let now = Utc::now() + Days::new(days);
         let time =
@@ -118,7 +118,7 @@ impl TimePeriod {
     /// Return true if start time of `TimePeriod` is in the past.
     /// # Panics
     /// Will panic if the start time cannot be parsed, but this is unlikely.
-    #[must_use] 
+    #[must_use]
     pub fn started(&self) -> bool {
         let now = Utc::now();
 
@@ -133,7 +133,7 @@ impl TimePeriod {
     /// Return true if the finish time is set and is in the past
     /// # Panics
     /// Will panic if the finish time is set but cannot be parsed, but this is unlikely.
-    #[must_use] 
+    #[must_use]
     pub fn finished(&self) -> bool {
         match &self.end_date_time {
             Some(f) => {
@@ -188,7 +188,7 @@ impl Quantity {
     /// let weight = Quantity::kg(10.5);
     /// assert_eq!(weight.amount,10.5);
     /// ```
-    #[must_use] 
+    #[must_use]
     pub fn kg(amount: f64) -> Self {
         Self {
             amount,
@@ -196,7 +196,7 @@ impl Quantity {
         }
     }
     /// Shortcut functions to set carton quantity and associated units.
-    #[must_use] 
+    #[must_use]
     pub fn cartons(amount: f64) -> Self {
         Self {
             amount,
@@ -226,7 +226,7 @@ impl Quantity {
 /// ```
 /// # Panics
 /// Will panic if the generated hash cannot be parsed as a HEX string, but this is unlikely.
-#[must_use] 
+#[must_use]
 pub fn gen_code(
     name: impl Into<String>,
     id: String,
@@ -252,7 +252,7 @@ pub fn gen_code(
 }
 
 /// Return type for a `serde_json` Value
-#[must_use] 
+#[must_use]
 pub const fn serde_value_to_type(value: &serde_json::Value) -> &str {
     match value {
         serde_json::Value::Null => "Null",
@@ -281,7 +281,7 @@ pub fn vec_insert<T>(ov: &mut Option<Vec<T>>, item: T) {
 
 /// Get the path for the library which is used to form HREFs
 /// If `TMF_PATH` is set at build time, this is used, otherwise `LIB_PATH` is used.
-#[must_use] 
+#[must_use]
 pub fn get_lib_path() -> String {
     match TMF_PATH {
         Some(p) => p.to_string(),
@@ -297,8 +297,6 @@ const MOD_VERSION: &str = "v4";
 #[cfg(feature = "build-V5")]
 const MOD_VERSION: &str = "v5";
 
-
-
 /// `IsAddressable` Trait, aligned to TMF definitions of addressable entities, i.e. those with id and href fields.
 pub trait IsAddressable: HasId {
     /// Return the list of objects managed by this API
@@ -312,7 +310,7 @@ pub trait IsAddressable: HasId {
 /// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId: Default {
     /// Get a new UUID in simple format (no seperators)
-    #[must_use] 
+    #[must_use]
     fn get_uuid() -> String {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
         Uuid::new_v4().simple().to_string()
@@ -346,7 +344,7 @@ pub trait HasId: Default {
     /// # use crate::tmflib::HasId;
     /// let offering = Customer::create();
     /// ````
-    #[must_use] 
+    #[must_use]
     fn create() -> Self {
         // Create default instance
         let mut item = Self::default();
@@ -365,7 +363,7 @@ pub trait HasId: Default {
 /// Trait indicating a TMF sturct has a `last_update` or similar timestamp field.
 pub trait HasLastUpdate: HasId {
     /// Geneate a timestamp for `now()`, useful for updating `last_updated` fields
-    #[must_use] 
+    #[must_use]
     fn get_timestamp() -> String {
         let now = Utc::now();
         let time = chrono::DateTime::from_timestamp(now.timestamp(), 0)
@@ -380,7 +378,7 @@ pub trait HasLastUpdate: HasId {
     fn set_last_update(&mut self, time: impl Into<String>);
 
     /// Create a new TMF object, also set `last_update` field to `now()`
-    #[must_use] 
+    #[must_use]
     fn create_with_time() -> Self {
         // Create default instance
         let mut item = Self::create();

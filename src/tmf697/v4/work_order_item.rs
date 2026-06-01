@@ -39,7 +39,7 @@ impl WorkOrderItem {
     /// let work = Work::new("Some Work");
     /// let woi = WorkOrderItem::with(WorkRefOrValue::from(work));
     /// ```
-    #[must_use] 
+    #[must_use]
     pub fn with(work: WorkRefOrValue) -> Self {
         Self {
             id: Some(

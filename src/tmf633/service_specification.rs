@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::related_party::RelatedParty;
-use crate::{vec_insert, HasDescription, HasId, HasLastUpdate, HasName, TimePeriod,IsAddressable};
+use crate::{vec_insert, HasDescription, HasId, HasLastUpdate, HasName, IsAddressable, TimePeriod};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::MOD_PATH;

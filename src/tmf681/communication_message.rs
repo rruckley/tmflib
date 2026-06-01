@@ -6,7 +6,7 @@ use crate::common::related_party::RelatedParty;
 use crate::tmf632::individual_v4::Individual;
 #[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use crate::tmf632::individual_v5::Individual;
-use crate::{DateTime, HasAttachment, HasId, HasName, Uri};
+use crate::{DateTime, HasAttachment, HasId, HasName, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasAttachment, HasId};
 
@@ -100,9 +100,7 @@ impl CommunicationMessage {
 
     /// Create an email style message
     pub fn email(subject: impl Into<String>, content: impl Into<String>) -> Self {
-        Self::new(content)
-            .subject(subject)
-            .message_type("email")
+        Self::new(content).subject(subject).message_type("email")
     }
 
     /// Set content of message
@@ -134,22 +132,28 @@ impl CommunicationMessage {
     }
 
     /// Set the Sender for this message
-    #[must_use] 
+    #[must_use]
     pub fn from(mut self, sender: &Individual) -> Self {
         self.sender = Some(Sender::from(sender));
         self
     }
 
     /// Set the receivers for this message
-    #[must_use] 
+    #[must_use]
     pub fn to(mut self, recievers: Vec<&Individual>) -> Self {
         // recievers.into_iter().for_each(|i| {
         //     self.receiver.push(Receiver::from(i));
         // });
         for i in recievers {
-             self.receiver.push(Receiver::from(i));
+            self.receiver.push(Receiver::from(i));
         }
         self
+    }
+}
+
+impl IsAddressable for CommunicationMessage {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

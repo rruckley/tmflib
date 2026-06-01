@@ -47,16 +47,16 @@ impl Note {
     /// Create a new note, without author
     /// # Examples
     /// ```
-     /// use tmflib::common::note::Note;
-     /// let note = Note::new("This is a note");
-     /// ```
-     /// ```
-     /// use tmflib::common::note::Note;
-     /// let note = Note::new("This is a note").author("John Doe");
-     /// ```
-     /// # Panics
-     /// Will panic if the note text is empty.
-     /// May panic if `now.timestamp()` is unparsable, but this is unlikely.
+    /// use tmflib::common::note::Note;
+    /// let note = Note::new("This is a note");
+    /// ```
+    /// ```
+    /// use tmflib::common::note::Note;
+    /// let note = Note::new("This is a note").author("John Doe");
+    /// ```
+    /// # Panics
+    /// Will panic if the note text is empty.
+    /// May panic if `now.timestamp()` is unparsable, but this is unlikely.
     pub fn new(text: impl Into<String>) -> Self {
         let id = Uuid::new_v4().simple().to_string();
         let now = Utc::now();
@@ -70,7 +70,7 @@ impl Note {
         }
     }
     /// Set author for note with builder pattern
-    #[must_use] 
+    #[must_use]
     pub fn author(mut self, author: &str) -> Self {
         self.author = Some(author.to_string());
         self

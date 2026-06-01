@@ -8,7 +8,7 @@ use crate::common::tmf_error::TMFError;
 use crate::tmf641::service_order::ServiceOrder;
 use crate::tmf651::agreement::AgreementRef;
 use crate::tmf663::shopping_cart::ShoppingCart;
-use crate::{DateTime, HasId, HasLastUpdate, HasNote, HasRelatedParty, Uri,IsAddressable};
+use crate::{DateTime, HasId, HasLastUpdate, HasNote, HasRelatedParty, IsAddressable, Uri};
 use tmflib_derive::{HasId, HasNote, HasRelatedParty};
 
 // URL Path components

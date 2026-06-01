@@ -8,8 +8,7 @@ use crate::{
     tmf632::Characteristic,
     tmf651::agreement::AgreementRef,
     tmf666::{AccountRef, PaymentMethodRef},
-    DateTime, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod, Uri,
-    IsAddressable,
+    DateTime, HasId, HasName, HasRelatedParty, HasValidity, IsAddressable, TimePeriod, Uri,
 };
 use tmflib_derive::{HasId, HasName, HasRelatedParty, HasValidity};
 
@@ -87,7 +86,7 @@ impl PartyRole {
     }
 
     /// Set engaged party (Using [`RelatedParty`] reference)
-    #[must_use] 
+    #[must_use]
     pub fn engaged_party(mut self, related_party: RelatedParty) -> Self {
         self.engaged_party = Some(related_party);
         self
@@ -102,7 +101,7 @@ impl PartyRole {
     }
 
     /// Get Profile by index
-    #[must_use] 
+    #[must_use]
     pub fn get_profile(&self, idx: usize) -> Option<&CreditProfile> {
         match self.credit_profile.as_ref() {
             Some(cp) => cp.get(idx),

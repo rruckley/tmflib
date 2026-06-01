@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{DateTime, HasId, HasLastUpdate, HasName,IsAddressable};
+use crate::{DateTime, HasId, HasLastUpdate, HasName, IsAddressable};
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
 use super::{AccountBalance, AccountRelationship, AccountTaxExemption, MOD_PATH};
@@ -57,7 +57,7 @@ pub struct FinancialAccount {
 
 impl FinancialAccount {
     /// Get summed balance accross all `AccountBalance` records
-    #[must_use] 
+    #[must_use]
     pub fn get_balance(&self) -> AccountBalance {
         let total = match self.account_balance.as_ref() {
             Some(v) => {

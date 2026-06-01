@@ -4,11 +4,12 @@
 use super::MOD_PATH;
 use crate::tmf646::appointment::AppointmentRef;
 use crate::tmf651::agreement::AgreementRef;
-use crate::{HasDescription, HasId, HasName, TimePeriod, Uri};
+use crate::{HasDescription, HasId, HasName, IsAddressable, TimePeriod, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasName};
 
-const CLASS_PATH: &str = "work";
+/// Path to module
+pub const CLASS_PATH: &str = "work";
 
 /// Reference to a work object
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -43,7 +44,7 @@ pub enum WorkRefOrValue {
 
 impl WorkRefOrValue {
     /// Get the id, independant on varient
-    #[must_use] 
+    #[must_use]
     pub fn get_id(&self) -> String {
         match self {
             Self::Ref(r) => r.id.clone(),
@@ -51,7 +52,7 @@ impl WorkRefOrValue {
         }
     }
     /// Get the name, independant on varient
-    #[must_use] 
+    #[must_use]
     pub fn get_name(&self) -> String {
         match self {
             Self::Ref(r) => r.name.clone(),
@@ -123,6 +124,12 @@ impl Work {
         let mut out = Self::create();
         out.set_name(name);
         out
+    }
+}
+
+impl IsAddressable for Work {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

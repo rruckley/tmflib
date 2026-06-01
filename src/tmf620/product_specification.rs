@@ -76,28 +76,28 @@ impl ProductSpecificationCharacteristic {
     }
 
     /// Set configuraable flag
-    #[must_use] 
+    #[must_use]
     pub const fn configurable(mut self, configurable: bool) -> Self {
         self.configurable = configurable;
         self
     }
 
     /// Set description of characteristic
-    #[must_use] 
+    #[must_use]
     pub fn description<T: Into<String>>(mut self, description: T) -> Self {
         self.description = Some(description.into());
         self
     }
 
     /// Set extensible flag
-    #[must_use] 
+    #[must_use]
     pub const fn extensible(mut self, extensible: bool) -> Self {
         self.extensible = Some(extensible);
         self
     }
 
     /// Set validity period
-    #[must_use] 
+    #[must_use]
     pub fn validity(mut self, validity: Option<TimePeriod>) -> Self {
         self.valid_for = validity;
         self
@@ -111,12 +111,8 @@ impl ProductSpecificationCharacteristic {
     /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"))
     ///     .cardinality(0,1);
     /// ```
-    #[must_use] 
-    pub const fn cardinality(
-        mut self,
-        min: Cardinality,
-        max: Cardinality,
-    ) -> Self {
+    #[must_use]
+    pub const fn cardinality(mut self, min: Cardinality, max: Cardinality) -> Self {
         // Quick check to make sure min < max
         if min > max {
             // Not sure if we should just ignore this ?
@@ -214,7 +210,7 @@ impl ProductSpecification {
     }
 
     /// Add a new Characteristic into the specification
-    #[must_use] 
+    #[must_use]
     pub fn with_charateristic(
         mut self,
         characteristic: ProductSpecificationCharacteristic,
@@ -224,7 +220,7 @@ impl ProductSpecification {
     }
 
     /// Get the class of this object
-    #[must_use] 
+    #[must_use]
     pub fn characteristic_by_name(
         &self,
         name: &str,
@@ -425,7 +421,7 @@ impl ProductSpecificationCharacteristicValue {
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
     /// let pscv = ProductSpecificationCharacteristicValue::new();
     /// ```
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         Self {
             is_default: false,
@@ -443,10 +439,7 @@ impl ProductSpecificationCharacteristicValue {
     /// ```
     /// # Errors
     /// Will return an error if the regex pattern is invalid.
-    pub fn regex(
-        mut self,
-        regex: String,
-    ) -> Result<Self, TMFError> {
+    pub fn regex(mut self, regex: String) -> Result<Self, TMFError> {
         // For now we only wish to test if we can parse the regex string
         let _re = Regex::new(&regex)?;
         self.regex = Some(regex);
@@ -465,10 +458,7 @@ impl ProductSpecificationCharacteristicValue {
     /// # Errors
     /// Will return an error if the value does not match the regex pattern.
     /// Will also return an error if the regex pattern is invalid.
-    pub fn value(
-        mut self,
-        value: serde_json::Value,
-    ) -> Result<Self, TMFError> {
+    pub fn value(mut self, value: serde_json::Value) -> Result<Self, TMFError> {
         self.value_type = Some(serde_value_to_type(&value).to_string());
         match self.regex {
             Some(ref re_str) => {
@@ -500,10 +490,7 @@ impl ProductSpecificationCharacteristicValue {
     /// # Errors
     /// Will return an error if the value does not match the regex pattern.
     /// Will also return an error if the regex pattern is invalid.
-    pub fn validate(
-        mut self,
-        value: serde_json::Value,
-    ) -> Result<Self, TMFError> {
+    pub fn validate(mut self, value: serde_json::Value) -> Result<Self, TMFError> {
         // If we have a regex, then validate the value against it.
         if let Some(re_str) = &self.regex {
             let re = Regex::new(re_str)?;
@@ -633,8 +620,7 @@ mod test {
 
     #[test]
     fn test_spec_char_description() {
-        let spec_char =
-            ProductSpecificationCharacteristic::new(SPEC_NAME).description(DESC);
+        let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME).description(DESC);
 
         assert_eq!(spec_char.description.unwrap(), DESC.to_string());
     }

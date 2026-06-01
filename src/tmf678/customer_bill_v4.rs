@@ -9,7 +9,7 @@ use crate::common::money::Money;
 use crate::common::related_party::RelatedParty;
 use crate::common::tax_item::TaxItem;
 use crate::tmf666::billing_account::BillingAccountRef;
-use crate::{DateTime, HasAttachment, HasId, HasLastUpdate, TimePeriod, Uri};
+use crate::{DateTime, HasAttachment, HasId, HasLastUpdate, IsAddressable, TimePeriod, Uri};
 use tmflib_derive::{HasId, HasLastUpdate};
 
 const CLASS_PATH: &str = "customer_bill";
@@ -89,11 +89,17 @@ pub struct CustomerBill {
 
 impl CustomerBill {
     /// Create a new customer bill
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         let mut bill = Self::create();
         bill.state = Some(CustomerBillStateType::default());
         bill
+    }
+}
+
+impl IsAddressable for CustomerBill {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 
@@ -127,7 +133,9 @@ impl HasAttachment for CustomerBill {
         }
     }
     fn get(&self, position: usize) -> Option<AttachmentRefOrValue> {
-        self.bill_document.as_ref().map_or(None, |v| v.get(position).cloned())
+        self.bill_document
+            .as_ref()
+            .map_or(None, |v| v.get(position).cloned())
     }
     fn remove(&mut self, position: usize) -> Option<AttachmentRefOrValue> {
         self.bill_document.as_mut().map(|v| v.remove(position))

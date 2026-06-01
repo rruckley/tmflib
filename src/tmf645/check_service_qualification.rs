@@ -4,8 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     common::related_party::RelatedParty, vec_insert, DateTime, HasDescription, HasId,
-    HasRelatedParty, Uri,
-    IsAddressable,
+    HasRelatedParty, IsAddressable, Uri,
 };
 
 use crate::common::tmf_error::TMFError;
@@ -101,9 +100,9 @@ impl CheckServiceQualificationItem {
 }
 
 impl IsAddressable for CheckServiceQualification {
-   fn get_objects() -> Vec<&'static str> {
-       super::get_objects()
-   }
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 
 /// Check Service Qualification
@@ -159,19 +158,19 @@ impl CheckServiceQualification {
     /// Create a new SQ Check
     pub fn new(desc: impl Into<String>) -> Self {
         Self::create()
-        .description(desc)
-        .state(TaskStateType::default())
+            .description(desc)
+            .state(TaskStateType::default())
     }
 
     /// Set the status
-    #[must_use] 
+    #[must_use]
     pub const fn state(mut self, state: TaskStateType) -> Self {
         self.state = Some(state);
         self
     }
 
     /// Add item to SQ Check
-    #[must_use] 
+    #[must_use]
     pub fn item(mut self, item: CheckServiceQualificationItem) -> Self {
         vec_insert(&mut self.service_qualification_item, item);
         self

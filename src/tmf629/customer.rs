@@ -12,7 +12,9 @@ use super::characteristic::Characteristic;
 use crate::common::contact::ContactMedium;
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
-use crate::{gen_code, HasId, HasName, HasReference, HasValidity, TMFEvent, TimePeriod,IsAddressable};
+use crate::{
+    gen_code, HasId, HasName, HasReference, HasValidity, IsAddressable, TMFEvent, TimePeriod,
+};
 use tmflib_derive::{HasId, HasName, HasValidity};
 use uuid::Uuid;
 
@@ -57,7 +59,7 @@ impl Customer {
     /// let org = Organization::new("Legal Entity");
     /// let cust = Customer::new(org);
     /// ```
-    #[must_use] 
+    #[must_use]
     pub fn new(org: Organization) -> Self {
         let mut cust = Self::create();
         cust.name = Some(org.get_name());
@@ -112,7 +114,7 @@ impl Customer {
     }
 
     /// Try to find characteristic with given name
-    #[must_use] 
+    #[must_use]
     pub fn get_characteristic(&self, characteristic: &str) -> Option<Characteristic> {
         match &self.characteristic {
             Some(c) => c.iter().find(|x| x.name == characteristic).cloned(),
@@ -176,7 +178,7 @@ impl Customer {
     }
 
     /// Get the market segment
-    #[must_use] 
+    #[must_use]
     pub fn get_market_segment(&self) -> Option<Characteristic> {
         self.get_characteristic(CUST_SEGMENT_CHAR)
     }

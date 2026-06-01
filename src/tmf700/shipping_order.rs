@@ -10,12 +10,13 @@ use crate::{common::note::Note, DateTime};
 
 use super::MOD_PATH;
 use crate::common::tmf_error::TMFError;
-use crate::{HasId, HasNote};
+use crate::{HasId, HasNote, IsAddressable};
 use tmflib_derive::{HasId, HasNote};
 
 use serde::{Deserialize, Serialize};
 
-const CLASS_PATH: &str = "shippingOrder";
+/// Path to module
+pub const CLASS_PATH: &str = "shippingOrder";
 
 /// Related Shipping Order
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -87,13 +88,13 @@ pub struct ShippingOrder {
 
 impl ShippingOrder {
     /// Create new `ShippingOrder`
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         Self::create()
     }
 
     /// Set shipping instructions for this shipping order
-    #[must_use] 
+    #[must_use]
     pub fn instruction(mut self, instruction: ShippingInstruction) -> Self {
         self.shipping_instruction = Some(instruction);
         self
@@ -112,6 +113,13 @@ impl ShippingOrder {
         self.related_shipping_order = Some(RelatedShippingOrder::from(shipping_order).role(role));
     }
 }
+
+impl IsAddressable for ShippingOrder {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 #[cfg(test)]
 mod test {
     use crate::tmf700::shipping_instruction::ShippingInstruction;

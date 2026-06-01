@@ -28,5 +28,3 @@ fn get_objects() -> Vec<&'static str> {
         service_test_specification::CLASS_PATH,
     ]
 }
-
-

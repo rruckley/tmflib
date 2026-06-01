@@ -6,7 +6,7 @@ use crate::common::contact::ContactMedium;
 use crate::common::price::Price;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
-use crate::{HasId, HasRelatedParty, HasValidity, TimePeriod,IsAddressable};
+use crate::{HasId, HasRelatedParty, HasValidity, IsAddressable, TimePeriod};
 use tmflib_derive::{HasId, HasRelatedParty, HasValidity};
 
 use super::cart_item::CartItem;
@@ -71,7 +71,7 @@ pub struct ShoppingCart {
 
 impl ShoppingCart {
     /// Create a new shopping cart
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         // let mut cart = ShoppingCart::create();
         // cart.cart_item = Some(vec![]);

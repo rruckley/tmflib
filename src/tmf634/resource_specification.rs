@@ -1,7 +1,8 @@
 //! Resource Specification Module
 
 use crate::{
-    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod, Uri,IsAddressable
+    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, IsAddressable,
+    TimePeriod, Uri,
 };
 use serde::{Deserialize, Serialize};
 

@@ -4,7 +4,7 @@ use crate::common::money::Money;
 use crate::common::related_party::RelatedParty;
 use crate::tmf666::AccountRef;
 use crate::tmf676::PaymentMethodRefOrValue;
-use crate::{DateTime, HasDescription, HasId, HasName, Uri,IsAddressable};
+use crate::{DateTime, HasDescription, HasId, HasName, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 
 use tmflib_derive::{HasDescription, HasId, HasName};
@@ -57,7 +57,7 @@ pub struct Refund {
 
 impl Refund {
     /// Create a new Refund object
-    #[must_use] 
+    #[must_use]
     pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Self {
         Self {
             account,
@@ -74,14 +74,14 @@ impl Refund {
     }
 
     /// Set the amount for this refund
-    #[must_use] 
+    #[must_use]
     pub fn amount(mut self, amount: f32) -> Self {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount of this refund
-    #[must_use] 
+    #[must_use]
     pub fn tax(mut self, tax: f32) -> Self {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());

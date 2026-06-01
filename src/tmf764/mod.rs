@@ -50,3 +50,8 @@ pub struct CostRef {
     #[serde(rename = "@referredType")]
     pub referred_type: Option<String>,
 }
+
+/// Modules available in API `MOD_PATH`
+pub fn get_objects() -> Vec<&'static str> {
+    vec![actual_cost::CLASS_PATH, projected_cost::CLASS_PATH]
+}

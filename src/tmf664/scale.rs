@@ -4,7 +4,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasName, Uri, IsAddressable};
+use crate::{HasId, HasName, IsAddressable, Uri};
 use tmflib_derive::{HasId, HasName};
 
 use super::resource_function::ResourceFunctionRef;

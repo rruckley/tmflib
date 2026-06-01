@@ -1,11 +1,12 @@
 //!s Sales Opportunity Module V5
 
 use crate::common::money::Money;
-use crate::{HasId, HasName, HasValidity, TimePeriod};
+use crate::{HasId, HasName, HasValidity, IsAddressable, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasName, HasValidity};
 
-const CLASS_PATH: &str = "opportunity";
+/// Path to module
+pub const CLASS_PATH: &str = "opportunity";
 use super::sales_opportunity_item_v5::SalesOpportunityItem;
 use super::MOD_PATH;
 
@@ -92,5 +93,11 @@ impl SalesOpportunity {
     /// Add a new item
     pub fn add_item(&mut self, item: SalesOpportunityItem) {
         self.sales_opportunity_item.push(item);
+    }
+}
+
+impl IsAddressable for SalesOpportunity {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }

@@ -105,7 +105,7 @@ pub struct ServiceOrder {
 
 impl ServiceOrder {
     /// Create a new service order object
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         let mut so = Self::create();
         so.note = Some(vec![]);

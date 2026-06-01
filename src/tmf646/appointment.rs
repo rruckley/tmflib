@@ -7,7 +7,10 @@ use uuid::Uuid;
 use super::MOD_PATH;
 
 use crate::common::event::{Event, EventPayload};
-use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasValidity, TMFEvent, TimePeriod,IsAddressable};
+use crate::{
+    DateTime, HasDescription, HasId, HasLastUpdate, HasValidity, IsAddressable, TMFEvent,
+    TimePeriod,
+};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasValidity};
 
 const CLASS_PATH: &str = "appointment";
@@ -135,7 +138,7 @@ impl From<Appointment> for AppointmentRef {
 
 impl Appointment {
     /// Create new appointment record
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         //let appointment =
         Self::create_with_time()

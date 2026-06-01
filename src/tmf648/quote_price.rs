@@ -39,7 +39,7 @@ impl QuotePrice {
         }
     }
     /// Return the price inclusive of Tax
-    #[must_use] 
+    #[must_use]
     pub const fn inc_tax(&self) -> Decimal {
         match self.price.as_ref() {
             Some(p) => p.tax_included_amount.value,
@@ -47,7 +47,7 @@ impl QuotePrice {
         }
     }
     /// Return the price exclusive of Tax
-    #[must_use] 
+    #[must_use]
     pub const fn ex_tax(&self) -> Decimal {
         match self.price.as_ref() {
             Some(p) => p.duty_free_amount.value,
@@ -56,14 +56,14 @@ impl QuotePrice {
     }
 
     /// Add pricing to this `QuotePrice`
-    #[must_use] 
+    #[must_use]
     pub fn price(mut self, price: Price) -> Self {
         self.price = Some(price);
         self
     }
 
     /// Set the period
-    #[must_use] 
+    #[must_use]
     pub fn period(mut self, period: &str) -> Self {
         self.recurring_charge_period = Some(period.to_owned());
         self

@@ -9,9 +9,8 @@ use crate::tmf641::service_order::ServiceOrder;
 use crate::tmf651::agreement::AgreementRef;
 use crate::tmf663::shopping_cart::ShoppingCart;
 use crate::{
-    vec_insert, DateTime, HasDescription, HasId, HasLastUpdate, HasNote, HasRelatedParty, TMFEvent,
-    Uri,
-    IsAddressable
+    vec_insert, DateTime, HasDescription, HasId, HasLastUpdate, HasNote, HasRelatedParty,
+    IsAddressable, TMFEvent, Uri,
 };
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
@@ -196,7 +195,7 @@ impl HasLastUpdate for ProductOrder {
 
 impl ProductOrder {
     /// Create a new product order via trait
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         Self::create_with_time()
     }

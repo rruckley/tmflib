@@ -73,7 +73,7 @@ pub struct AttachmentRefOrValue {
 
 impl AttachmentRefOrValue {
     /// Create a new attachment object
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         Self {
             valid_for: Some(TimePeriod::default()),

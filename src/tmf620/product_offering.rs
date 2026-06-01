@@ -238,7 +238,7 @@ impl ProductOffering {
     /// let cat= Category::new(String::from("MyCategory"));
     /// let result = po.with_category(CategoryRef::from(&cat));
     /// ```
-    #[must_use] 
+    #[must_use]
     pub fn with_category(mut self, category: CategoryRef) -> Self {
         vec_insert(&mut self.category, category);
         // self.category.as_mut().unwrap().push(category);
@@ -246,14 +246,14 @@ impl ProductOffering {
     }
 
     /// Add specification into this Product Offering
-    #[must_use] 
+    #[must_use]
     pub fn with_specification(mut self, specification: ProductSpecification) -> Self {
         self.product_specification = Some(ProductSpecificationRef::from(specification));
         self
     }
 
     /// Add characteristic value uses into this Product Offering
-    #[must_use] 
+    #[must_use]
     pub fn with_char_value_use(
         mut self,
         char_value_use: ProductSpecificationCharacteristicValueUse,

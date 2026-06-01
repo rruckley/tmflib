@@ -43,7 +43,7 @@ impl BundledProductOffering {
     }
 
     /// Add option into bundled product offering
-    #[must_use] 
+    #[must_use]
     pub const fn with_option(mut self, option: BundledProductOfferingOption) -> Self {
         self.bundled_product_offering_option = Some(option);
         self
@@ -65,7 +65,7 @@ impl BundledProductOfferingOption {
     /// Create a new Bundled Product Offering Option
     /// # Detalis
     /// This covers the cardinality of included bundeld offerings
-    #[must_use] 
+    #[must_use]
     pub const fn new(default: u8, min: u8, max: u8) -> Self {
         Self {
             number_rel_offer_default: default,

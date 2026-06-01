@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::tmf_error::TMFError;
-use crate::{HasId, HasRelatedParty};
+use crate::{HasId, HasRelatedParty, IsAddressable};
 use tmflib_derive::{HasId, HasRelatedParty};
 
 use super::product_offering_qualification_item::ProductOfferingQualificationItem;
@@ -45,13 +45,19 @@ pub struct ProductOfferingQualification {
 
 impl ProductOfferingQualification {
     /// Create a new Product Offering Qualification from a Product Offering Reference
-    #[must_use] 
+    #[must_use]
     pub fn new(offering_ref: Option<ProductOfferingRef>) -> Self {
         let mut poq = Self::create();
         let mut poqi = ProductOfferingQualificationItem::new();
         poqi.product_offering = offering_ref;
         poq.product_offering_qualification_item.push(poqi);
         poq
+    }
+}
+
+impl IsAddressable for ProductOfferingQualification {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

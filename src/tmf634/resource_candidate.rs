@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 pub const CLASS_PATH: &str = "resourceCandidate";
 
 use super::MOD_PATH;
-use crate::{HasId, HasLastUpdate, HasName,IsAddressable};
+use crate::{HasId, HasLastUpdate, HasName, IsAddressable};
 use tmflib_derive::{HasId, HasName};
 
 /// Resource Candidate (Catalog Entry)
@@ -33,7 +33,7 @@ impl ResourceCandidate {
     }
 
     /// Set the description on this resource candidate
-    #[must_use] 
+    #[must_use]
     pub fn description(mut self, description: &str) -> Self {
         self.description = Some(description.to_owned());
         self

@@ -3,12 +3,13 @@
 use crate::common::money::Money;
 use crate::common::note::Note;
 use crate::common::tmf_error::TMFError;
-use crate::{HasId, HasNote, TimePeriod, Uri};
+use crate::{HasId, HasNote, IsAddressable, TimePeriod, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasNote};
 
 use super::MOD_PATH;
-const CLASS_PATH: &str = "instruction";
+/// Path to module
+pub const CLASS_PATH: &str = "instruction";
 
 /// Signarure Required Type
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -66,7 +67,7 @@ impl ShippingInstruction {
     }
 
     /// Set the signature requirements
-    #[must_use] 
+    #[must_use]
     pub const fn signature_required_by(
         mut self,
         signature: Option<SignatureRequiredByType>,
@@ -79,6 +80,12 @@ impl ShippingInstruction {
             self.signature_required = false;
         }
         self
+    }
+}
+
+impl IsAddressable for ShippingInstruction {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

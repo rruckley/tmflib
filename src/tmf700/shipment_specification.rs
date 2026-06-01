@@ -8,11 +8,12 @@ use tmflib_derive::{HasAttachment, HasDescription, HasId, HasLastUpdate, HasName
 
 use crate::{
     serde_value_to_type, DateTime, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName,
-    HasValidity, TimePeriod, Uri,
+    HasValidity, IsAddressable, TimePeriod, Uri,
 };
 
 use super::MOD_PATH;
-const CLASS_PATH: &str = "shippingSpecification";
+/// Path to module
+pub const CLASS_PATH: &str = "shippingSpecification";
 
 /// Shipment Specification
 #[derive(
@@ -60,6 +61,12 @@ pub struct ShipmentSpecificationRefOrValue {
     /// Attachments
     #[serde(skip_serializing_if = "Option::is_none")]
     pub attachment: Option<Vec<AttachmentRefOrValue>>,
+}
+
+impl IsAddressable for ShipmentSpecificationRefOrValue {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 
 /// Shipment Specification Relationship
@@ -145,7 +152,7 @@ pub struct CharacteristicValueSpecification {
 
 impl CharacteristicValueSpecification {
     /// Constructor
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         Default::default()
     }
@@ -177,10 +184,7 @@ impl CharacteristicValueSpecification {
     /// # Errors
     /// Will return an error if the value does not match the regex pattern set for this characteristic value specification
     /// Can also return an error if the regex pattern is invalid
-    pub fn value(
-        mut self,
-        value: serde_json::Value,
-    ) -> Result<Self, TMFError> {
+    pub fn value(mut self, value: serde_json::Value) -> Result<Self, TMFError> {
         self.value_type = Some(serde_value_to_type(&value).to_string());
         match self.regex {
             Some(ref re_str) => {

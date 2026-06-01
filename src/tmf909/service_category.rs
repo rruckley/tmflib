@@ -1,9 +1,10 @@
 use super::{ServiceCandidateRef, ServiceCategoryRef, MOD_PATH};
-use crate::{HasDescription, HasId, TimePeriod};
+use crate::{HasDescription, HasId, IsAddressable, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId};
 
-const CLASS_PATH: &str = "serviceCategory";
+/// Path to module
+pub const CLASS_PATH: &str = "serviceCategory";
 
 ///The (service) category resource is used to group service candidates in logical containers. Categories can contain other categories.
 #[derive(Debug, Clone, Serialize, HasId, HasDescription, Deserialize, Default)]
@@ -62,6 +63,12 @@ pub struct ServiceCategory {
     ///`ServiceCategory` version
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
+}
+
+impl IsAddressable for ServiceCategory {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 impl std::fmt::Display for ServiceCategory {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {

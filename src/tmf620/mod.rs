@@ -35,15 +35,15 @@ pub mod product_offering_price;
 pub mod product_offering_v5;
 pub mod product_specification;
 
-  fn get_objects() -> Vec<&'static str> {
-        vec![
-            catalog::CLASS_PATH,
-            category::CLASS_PATH,
-            product_offering::CLASS_PATH,
-            product_offering_price::CLASS_PATH,
-            product_specification::CLASS_PATH,
-        ]
-    }
+fn get_objects() -> Vec<&'static str> {
+    vec![
+        catalog::CLASS_PATH,
+        category::CLASS_PATH,
+        product_offering::CLASS_PATH,
+        product_offering_price::CLASS_PATH,
+        product_specification::CLASS_PATH,
+    ]
+}
 
 /// Channel Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

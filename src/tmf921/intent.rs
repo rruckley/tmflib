@@ -6,7 +6,10 @@ use super::MOD_PATH;
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
-use crate::{DateTime, HasAttachment, HasDescription, HasId, HasName, HasRelatedParty, TimePeriod};
+use crate::{
+    DateTime, HasAttachment, HasDescription, HasId, HasName, HasRelatedParty, IsAddressable,
+    TimePeriod,
+};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasAttachment, HasDescription, HasId, HasName, HasRelatedParty};
 
@@ -73,4 +76,10 @@ pub struct Intent {
     /// An optional list of related parties associated with the intent.
     #[serde(skip_serializing_if = "Option::is_none")]
     related_party: Option<Vec<RelatedParty>>,
+}
+
+impl IsAddressable for Intent {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
+    }
 }

@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasName, Uri,IsAddressable};
+use crate::{HasId, HasName, IsAddressable, Uri};
 use tmflib_derive::{HasId, HasName};
 
 /// Path to this class
@@ -124,7 +124,7 @@ impl GeographicAddress {
     }
 
     /// Set the street for this Address
-    #[must_use] 
+    #[must_use]
     pub fn street(mut self, street: &str) -> Self {
         if street.split(' ').count() > 1 {
             // Attempt to split string like "Lumeah Ave" into two parts
@@ -133,25 +133,25 @@ impl GeographicAddress {
         self
     }
     /// Set the street type for this address
-    #[must_use] 
+    #[must_use]
     pub fn street_type(mut self, street_type: &str) -> Self {
         self.street_type = Some(street_type.to_string());
         self
     }
     /// Set the street number of this address
-    #[must_use] 
+    #[must_use]
     pub fn number(mut self, number: &str) -> Self {
         self.street_nr = Some(number.to_string());
         self
     }
     /// Set the suburb (locality) for this address
-    #[must_use] 
+    #[must_use]
     pub fn suburb(mut self, suburb: &str) -> Self {
         self.locality = Some(suburb.to_string());
         self
     }
     /// Set the state (or province) for this address
-    #[must_use] 
+    #[must_use]
     pub fn state(mut self, state: &str) -> Self {
         self.state_or_province = Some(state.to_string());
         self

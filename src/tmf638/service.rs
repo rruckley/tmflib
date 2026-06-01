@@ -65,7 +65,7 @@ pub struct Characteristic {
 
 impl Characteristic {
     /// Create a new characteristic with a given name and value, `value_type` is determined automatically based on value enum.
-    #[must_use] 
+    #[must_use]
     pub fn new(name: String, value: &serde_json::Value) -> Self {
         let val_type = serde_value_to_type(value);
         Self {
@@ -159,14 +159,14 @@ impl Service {
     }
 
     /// Add a characterisitic during create
-    #[must_use] 
+    #[must_use]
     pub fn with_characteristic(mut self, characteristic: Characteristic) -> Self {
         vec_insert(&mut self.service_characteristic, characteristic);
         self
     }
 
     /// Add relationships during create
-    #[must_use] 
+    #[must_use]
     pub fn with_relationship(mut self, relationship: ServiceRelationship) -> Self {
         vec_insert(&mut self.service_relationship, relationship);
         self

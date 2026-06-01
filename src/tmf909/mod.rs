@@ -106,7 +106,7 @@ pub use response::*;
 pub use service::*;
 pub use service_attribute_value_change_event::*;
 pub use service_attribute_value_change_event_payload::*;
-pub use service_candidate::*;
+pub use service_candidate::ServiceCandidate;
 pub use service_candidate_change_event::*;
 pub use service_candidate_change_event_payload::*;
 pub use service_candidate_create::*;
@@ -127,7 +127,7 @@ pub use service_catalog_create_event_payload::*;
 pub use service_catalog_delete_event::*;
 pub use service_catalog_delete_event_payload::*;
 pub use service_catalog_update::*;
-pub use service_category::*;
+pub use service_category::ServiceCategory;
 pub use service_category_change_event::*;
 pub use service_category_change_event_payload::*;
 pub use service_category_create::*;
@@ -485,3 +485,13 @@ mod usage_volume_product;
 mod usage_volume_product_ref;
 
 const MOD_PATH: &str = "tmf909/v5";
+
+/// Modules available in this API `MOD_PATH`
+pub fn get_objects() -> Vec<&'static str> {
+    vec![
+        service_candidate::CLASS_PATH,
+        service_catalog::CLASS_PATH,
+        service_category::CLASS_PATH,
+        // service_specification::CLASS_PATH,
+    ]
+}

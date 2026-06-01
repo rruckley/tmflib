@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::related_place::PlaceRef;
-use crate::{HasId, HasName, Uri,IsAddressable};
+use crate::{HasId, HasName, IsAddressable, Uri};
 use tmflib_derive::{HasId, HasName};
 
 use super::{TaskStateType, MOD_PATH};
@@ -58,12 +58,11 @@ pub struct Migrate {
 impl Migrate {
     /// Create a new migrate task
     pub fn new(name: impl Into<String>) -> Self {
-        Self::create()
-        .name(name)
+        Self::create().name(name)
     }
 
     /// Builder function to set place on create
-    #[must_use] 
+    #[must_use]
     pub fn place(mut self, place: PlaceRef) -> Self {
         self.place = Some(place);
         self

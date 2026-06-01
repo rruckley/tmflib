@@ -2,12 +2,13 @@
 
 use super::shipping_instruction::ShippingInstruction;
 use crate::common::related_place::RelatedPlaceRefOrValue;
-use crate::{HasId, Uri};
+use crate::{HasId, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
 use super::MOD_PATH;
-const CLASS_PATH: &str = "shippingOrderItem";
+/// Path to module
+pub const CLASS_PATH: &str = "shippingOrderItem";
 const NEW_STATUS: &str = "New";
 
 /// Shipping Item Action Type
@@ -47,7 +48,7 @@ pub struct ShippingOrderItem {
 
 impl ShippingOrderItem {
     /// Create a new shipping order item
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         Self::create().status(NEW_STATUS)
     }
@@ -58,10 +59,16 @@ impl ShippingOrderItem {
     }
 
     /// Set shipping instructions for this order item
-    #[must_use] 
+    #[must_use]
     pub fn instruction(mut self, instruction: ShippingInstruction) -> Self {
         self.shipping_instruction = Some(instruction);
         self
+    }
+}
+
+impl IsAddressable for ShippingOrderItem {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

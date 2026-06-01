@@ -126,7 +126,7 @@ pub struct QuoteItem {
 
 impl QuoteItem {
     /// Create a new quote item
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         let id = Uuid::new_v4().to_string();
         Self {
@@ -137,7 +137,7 @@ impl QuoteItem {
     }
 
     /// Set the product for this quoteItem
-    #[must_use] 
+    #[must_use]
     pub fn product(mut self, product: ProductOffering) -> Self {
         self.product = Some(ProductRefOrValue::from(product));
         self
@@ -152,7 +152,7 @@ impl QuoteItem {
     }
 
     /// Get the `ProductOffering` for this `QuoteItem`
-    #[must_use] 
+    #[must_use]
     pub fn get_offer(&self) -> Option<ProductRefOrValue> {
         self.product.clone()
     }

@@ -15,7 +15,7 @@
 
 use super::MOD_PATH;
 use super::{MeasurementCollectionJobRef, PerformanceMeasurementRelationship};
-use crate::{common::entity::Entity, HasDescription, HasId, TimePeriod,IsAddressable};
+use crate::{common::entity::Entity, HasDescription, HasId, IsAddressable, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId};
 
@@ -29,9 +29,9 @@ pub struct PerformanceMeasurement {
     #[serde(flatten)]
     pub entity: Entity,
     /// Unique identifier of the performance measurement
-    pub id : Option<String>,
+    pub id: Option<String>,
     ///A URI to the performance measurement resource
-    pub href : Option<String>,
+    pub href: Option<String>,
     ///A free-text description of the performance measurement
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,

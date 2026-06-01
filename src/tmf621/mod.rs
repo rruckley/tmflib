@@ -20,9 +20,7 @@ const MOD_PATH: &str = "troubleTicket/v4";
 const MOD_PATH: &str = "troubleTicket/v5";
 
 fn get_objects() -> Vec<&'static str> {
-    vec![
-        trouble_ticket::CLASS_PATH,
-    ]
+    vec![trouble_ticket::CLASS_PATH]
 }
 
 pub mod trouble_ticket;

@@ -13,8 +13,7 @@ use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
 use crate::{
     DateTime, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasNote,
-    HasRelatedParty, TMFEvent, Uri,
-    IsAddressable,
+    HasRelatedParty, IsAddressable, TMFEvent, Uri,
 };
 
 // URL Path components

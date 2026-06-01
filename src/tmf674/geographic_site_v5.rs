@@ -6,7 +6,7 @@ use super::MOD_PATH;
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
 use crate::tmf673::geographic_address::GeographicAddress;
-use crate::{gen_code, HasId, HasName, TMFEvent};
+use crate::{gen_code, HasId, HasName, IsAddressable, TMFEventm};
 use chrono::Utc;
 use tmflib_derive::{HasId, HasName};
 use uuid::Uuid;
@@ -126,6 +126,12 @@ impl GeographicSite {
             None,
         );
         self.code = Some(code);
+    }
+}
+
+impl IsAddressable for GeographicSite {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

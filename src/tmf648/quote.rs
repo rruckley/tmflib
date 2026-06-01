@@ -12,8 +12,8 @@ use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
 use crate::tmf651::agreement::AgreementRef;
 use crate::{
-    DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, TMFEvent,
-    TimePeriod,IsAddressable
+    DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, IsAddressable,
+    TMFEvent, TimePeriod,
 };
 use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty, HasValidity};
 
@@ -122,7 +122,7 @@ pub struct Quote {
 
 impl Quote {
     /// Create a new Product Quote
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         let mut quote = Self::create();
         quote.version = Some(QUOTE_VERS.to_string());
@@ -138,14 +138,14 @@ impl Quote {
     /// Add a quote item into a product quote
     /// # Errors
     /// Will return an error if the quote item provided is invalid and cannot be added to the quote
-     /// ```
-     /// use tmflib::tmf648::quote::{Quote, QuoteStateType};
-     /// use tmflib::tmf648::quote_item::QuoteItem;
-     /// let mut quote = Quote::new();
-     /// let item = QuoteItem::new();
-     /// let res = quote.add_quote_item(item);
-     /// assert_eq!(res.is_ok(), true);
-     /// ```
+    /// ```
+    /// use tmflib::tmf648::quote::{Quote, QuoteStateType};
+    /// use tmflib::tmf648::quote_item::QuoteItem;
+    /// let mut quote = Quote::new();
+    /// let item = QuoteItem::new();
+    /// let res = quote.add_quote_item(item);
+    /// assert_eq!(res.is_ok(), true);
+    /// ```
     pub fn add_quote_item(&mut self, item: QuoteItem) -> Result<String, TMFError> {
         if let Some(v) = self.quote_item.as_mut() {
             v.push(item);
@@ -165,7 +165,7 @@ impl Quote {
     }
 
     /// Get a description for this quote
-    #[must_use] 
+    #[must_use]
     pub fn description(&self) -> String {
         match &self.description {
             Some(d) => d.clone(),

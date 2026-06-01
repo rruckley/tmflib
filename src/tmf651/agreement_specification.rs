@@ -1,6 +1,6 @@
 //! Agreement Specification Module
 
-use crate::{DateTime, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod,IsAddressable};
+use crate::{DateTime, HasId, HasLastUpdate, HasName, HasValidity, IsAddressable, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
 

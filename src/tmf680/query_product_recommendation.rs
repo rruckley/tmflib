@@ -17,7 +17,9 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::tmf_error::TMFError;
-use crate::{HasDescription, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod, Uri};
+use crate::{
+    HasDescription, HasId, HasName, HasRelatedParty, HasValidity, IsAddressable, TimePeriod, Uri,
+};
 
 use crate::tmf663::{cart_item::ItemRef, shopping_cart::ShoppingCartRef};
 
@@ -100,6 +102,12 @@ impl QueryProductRecommendation {
             name: Some(name.into()),
             ..Self::create()
         }
+    }
+}
+
+impl IsAddressable for QueryProductRecommendation {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

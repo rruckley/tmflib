@@ -44,7 +44,7 @@ pub struct CharacteristicValueSpecification {
 
 impl CharacteristicValueSpecification {
     /// Constructor
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         Self {
             is_default: Some(false),
@@ -78,10 +78,7 @@ impl CharacteristicValueSpecification {
     /// ```
     /// # Errors
     /// Returns an error if the value does not match the regex pattern set for this characteristic value specification
-    pub fn value(
-        mut self,
-        value: serde_json::Value,
-    ) -> Result<Self, TMFError> {
+    pub fn value(mut self, value: serde_json::Value) -> Result<Self, TMFError> {
         self.value_type = Some(serde_value_to_type(&value).to_string());
         match self.regex {
             Some(ref re_str) => {
@@ -151,19 +148,15 @@ impl CharacteristicSpecification {
         }
     }
     /// Set maximum cardinality
-    #[must_use] 
-    pub const fn cardinality(
-        mut self,
-        min_card: Cardinality,
-        max_card: Cardinality,
-    ) -> Self {
+    #[must_use]
+    pub const fn cardinality(mut self, min_card: Cardinality, max_card: Cardinality) -> Self {
         self.min_cardinality = Some(min_card);
         self.max_cardinality = Some(max_card);
         self
     }
 
     /// Set characteristic as optional cardinality => (0..1)
-    #[must_use] 
+    #[must_use]
     pub const fn optional(mut self) -> Self {
         self.min_cardinality = Some(0);
         self.max_cardinality = Some(1);
@@ -171,7 +164,7 @@ impl CharacteristicSpecification {
     }
 
     /// Make this characteristic mandatory
-    #[must_use] 
+    #[must_use]
     pub const fn mandatory(mut self) -> Self {
         self.min_cardinality = Some(1);
         self.max_cardinality = Some(1);

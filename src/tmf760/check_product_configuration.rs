@@ -4,7 +4,7 @@
 use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
-use crate::HasId;
+use crate::{HasId, IsAddressable};
 use tmflib_derive::HasId;
 const CLASS_PATH: &str = "CheckProductConfiguration";
 
@@ -39,9 +39,15 @@ pub struct CheckProductConfiguration {
 
 impl CheckProductConfiguration {
     /// Create a product configuration check request
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         Self::create()
+    }
+}
+
+impl IsAddressable for CheckProductConfiguration {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

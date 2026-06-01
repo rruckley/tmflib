@@ -7,7 +7,8 @@ use crate::{HasId, HasName, TimePeriod, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasName};
 
-const CLASS_PATH: &str = "work";
+/// Path to module
+pub const CLASS_PATH: &str = "work";
 
 /// Reference to a work object
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -110,5 +111,11 @@ impl Work {
         let mut out = Work::create();
         out.set_name(name);
         out
+    }
+}
+
+impl IsAddressable for Work {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }

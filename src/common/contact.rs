@@ -39,7 +39,7 @@ pub struct ContactMedium {
 
 impl ContactMedium {
     /// Create a new contact medium
-    #[must_use] 
+    #[must_use]
     pub fn new() -> Self {
         Self::default()
     }
@@ -50,7 +50,7 @@ impl ContactMedium {
     /// use tmflib::common::contact::ContactMedium;
     /// let medium = ContactMedium::email("john.smith@example.com");
     /// ````
-    #[must_use] 
+    #[must_use]
     pub fn email(email: &str) -> Self {
         let char = MediumCharacteristic {
             email_address: Some(email.to_string()),
@@ -70,7 +70,7 @@ impl ContactMedium {
     /// use tmflib::common::contact::ContactMedium;
     /// let medium = ContactMedium::mobile("0411 111 111");
     /// ```
-    #[must_use] 
+    #[must_use]
     pub fn mobile(mobile: &str) -> Self {
         let char = MediumCharacteristic {
             email_address: None,

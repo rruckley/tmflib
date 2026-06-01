@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::money::Money;
 use crate::common::related_party::RelatedParty;
-use crate::{DateTime, HasAttachment, HasId, HasLastUpdate, TimePeriod, Uri};
+use crate::{DateTime, HasAttachment, HasId, HasLastUpdate, IsAddressable, TimePeriod, Uri};
 use tmflib_derive::{HasId, HasLastUpdate};
 
 const CLASS_PATH: &str = "customer_bill";
@@ -75,6 +75,12 @@ impl CustomerBill {
         let mut bill = CustomerBill::create();
         bill.state = Some(CustomerBillStateType::default());
         bill
+    }
+}
+
+impl IsAddressable for CustomerBill {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

@@ -7,8 +7,7 @@ use crate::common::tmf_error::TMFError;
 use crate::tmf620::category::CategoryRef;
 use crate::{
     DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasReference, HasRelatedParty,
-    HasValidity, TMFEvent, TimePeriod, Uri,
-    IsAddressable,
+    HasValidity, IsAddressable, TMFEvent, TimePeriod, Uri,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty, HasValidity};
 
@@ -91,7 +90,7 @@ impl Catalog {
     }
 
     /// Set the name for this Catalog
-    #[must_use] 
+    #[must_use]
     pub fn name(mut self, name: impl Into<String>) -> Self {
         self.name = Some(name.into());
         self

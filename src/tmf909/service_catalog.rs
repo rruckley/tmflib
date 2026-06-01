@@ -1,9 +1,10 @@
 use super::{RelatedParty, ServiceCategoryRef, MOD_PATH};
-use crate::{HasDescription, HasId, TimePeriod};
+use crate::{HasDescription, HasId, IsAddressable, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId};
 
-const CLASS_PATH: &str = "serviceCatalog";
+/// Path to module
+pub const CLASS_PATH: &str = "serviceCatalog";
 
 /// The root entity for service catalog management.
 ///
@@ -59,6 +60,13 @@ pub struct ServiceCatalog {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
 }
+
+impl IsAddressable for ServiceCatalog {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 impl std::fmt::Display for ServiceCatalog {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())

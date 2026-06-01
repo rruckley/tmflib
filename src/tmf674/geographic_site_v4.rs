@@ -9,7 +9,9 @@ use super::MOD_PATH;
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
 use crate::tmf673::geographic_address::GeographicAddress;
-use crate::{gen_code, HasDescription, HasId, HasName, HasValidity, TMFEvent, TimePeriod};
+use crate::{
+    gen_code, HasDescription, HasId, HasName, HasValidity, IsAddressable, TMFEvent, TimePeriod,
+};
 use tmflib_derive::{HasDescription, HasId, HasName, HasValidity};
 const CLASS_PATH: &str = "geographicSite";
 const DEFAULT_TZ: &str = "AEST";
@@ -69,7 +71,7 @@ pub struct CalendarPeriod {
 
 impl CalendarPeriod {
     /// Generate standard business hours calendar
-    #[must_use] 
+    #[must_use]
     pub fn business_hours() -> Self {
         Self {
             day: Some(CALENDAR_WEEKDAYS.to_string()),
@@ -125,7 +127,7 @@ impl GeographicSite {
         site
     }
     /// Set the place on this Site
-    #[must_use] 
+    #[must_use]
     pub fn place(mut self, place: PlaceRefOrValue) -> Self {
         match self.place.as_mut() {
             Some(v) => v.push(place),
@@ -135,14 +137,14 @@ impl GeographicSite {
     }
 
     /// Set the code for this site
-    #[must_use] 
+    #[must_use]
     pub fn code(mut self, code: String) -> Self {
         self.code = Some(code);
         self
     }
 
     /// Set the calendar for this site
-    #[must_use] 
+    #[must_use]
     pub fn calendar(mut self, calendar: CalendarPeriod) -> Self {
         match self.calendar.as_mut() {
             Some(v) => v.push(calendar),
@@ -161,6 +163,12 @@ impl GeographicSite {
             None,
         );
         self.code = Some(code);
+    }
+}
+
+impl IsAddressable for GeographicSite {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

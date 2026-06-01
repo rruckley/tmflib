@@ -2,11 +2,11 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasDescription, HasId, Uri, IsAddressable};
+use crate::{HasDescription, HasId, IsAddressable, Uri};
 
 use tmflib_derive::{HasDescription, HasId};
- 
-/// TMF645 Service Qualification Module 
+
+/// TMF645 Service Qualification Module
 pub const CLASS_PATH: &str = "queryServiceQualification";
 use super::{TaskStateType, MOD_PATH};
 

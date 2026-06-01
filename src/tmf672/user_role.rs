@@ -1,6 +1,6 @@
 //! User Role Module
 
-use crate::{HasId, Uri,IsAddressable};
+use crate::{HasId, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
@@ -35,7 +35,7 @@ impl IsAddressable for UserRole {
     fn get_objects() -> Vec<&'static str> {
         super::get_objects()
     }
-}   
+}
 
 #[cfg(test)]
 mod test {

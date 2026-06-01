@@ -2,7 +2,7 @@
 
 use super::MOD_PATH;
 use crate::common::related_party::RelatedParty;
-use crate::{DateTime, HasId, TimePeriod, Uri,IsAddressable};
+use crate::{DateTime, HasId, IsAddressable, TimePeriod, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
@@ -24,7 +24,7 @@ pub struct Permission {
 
 impl Permission {
     /// Create a new Permission
-    #[must_use] 
+    #[must_use]
     pub fn new(party: RelatedParty) -> Self {
         Self::create().user(party)
     }
@@ -37,14 +37,14 @@ impl Permission {
     }
 
     /// Set the user for this permission
-    #[must_use] 
+    #[must_use]
     pub fn user(mut self, party: RelatedParty) -> Self {
         self.user = party;
         self
     }
 
     /// Set the graner for this permission
-    #[must_use] 
+    #[must_use]
     pub fn granter(mut self, party: RelatedParty) -> Self {
         self.granter = Some(party);
         self

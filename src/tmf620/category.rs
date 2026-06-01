@@ -12,9 +12,8 @@ use uuid::Uuid;
 use super::MOD_PATH;
 use crate::common::event::{Event, EventPayload};
 use crate::{
-    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent,
-    TimePeriod, Uri,
-    IsAddressable
+    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasReference, HasValidity,
+    IsAddressable, TMFEvent, TimePeriod, Uri,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
@@ -103,7 +102,7 @@ impl Category {
     }
 
     /// Is this a root category
-    #[must_use] 
+    #[must_use]
     pub fn root(&self) -> bool {
         // Extract is_root in a safe manner
         self.is_root.unwrap_or(false)
@@ -116,7 +115,7 @@ impl Category {
     /// let cat = Category::new(String::from("MyCategory"))
     ///     .description(String::from("Library of product components"));
     /// ```
-    #[must_use] 
+    #[must_use]
     pub fn description(mut self, description: String) -> Self {
         self.description = Some(description);
         self
@@ -129,7 +128,7 @@ impl Category {
     /// let cat = Category::new(String::from("MyCategory"))
     ///     .parent(String::from("23948-234908"));
     /// ```
-    #[must_use] 
+    #[must_use]
     pub fn parent(mut self, parent_id: String) -> Self {
         // Since we are setting a parent, we cannot be root anymore
         self.is_root = Some(false);
@@ -145,7 +144,7 @@ impl Category {
     /// let cat = Category::new(String::from("MyCategory"))
     ///     .is_root(true);
     /// ```
-    #[must_use] 
+    #[must_use]
     pub fn is_root(mut self, root: bool) -> Self {
         // Two steps 1) delete parent if root= true
         // update is_root

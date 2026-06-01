@@ -6,8 +6,7 @@ use crate::common::tmf_error::TMFError;
 use crate::vec_insert;
 use crate::{
     common::attachment::AttachmentRefOrValue, DateTime, HasDescription, HasId, HasLastUpdate,
-    HasName, HasRelatedParty, Uri,
-    IsAddressable,
+    HasName, HasRelatedParty, IsAddressable, Uri,
 };
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty};
@@ -92,7 +91,7 @@ impl Document {
     }
 
     /// Set the attachment for this document.
-    #[must_use] 
+    #[must_use]
     pub fn attachment(mut self, attachment: AttachmentRefOrValue) -> Self {
         self.attachment = attachment;
         self

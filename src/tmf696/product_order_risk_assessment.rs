@@ -8,7 +8,7 @@ use crate::common::related_place::RelatedPlaceRefOrValue;
 use crate::tmf622::product_order_v4::ProductOrderRef;
 #[cfg(all(feature = "tmf622", feature = "build-V5"))]
 use crate::tmf622::product_order_v5::ProductOrderRef;
-use crate::{HasId, Uri,IsAddressable};
+use crate::{HasId, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
@@ -37,7 +37,7 @@ pub struct ProductOrderRiskAssessment {
 
 impl ProductOrderRiskAssessment {
     /// Create a new instance of Product Order Risk Assessment
-    #[must_use] 
+    #[must_use]
     pub fn new(order: &ProductOrderRef) -> Self {
         Self {
             product_order: order.clone(),
@@ -55,13 +55,15 @@ impl ProductOrderRiskAssessment {
         &mut self,
         characteristic: Characteristic,
     ) -> Option<Characteristic> {
-        if let Some(v) = &self.characteristic { match v.iter().find(|c| c.name == characteristic.name) {
-            Some(i) => {
-                let out = i.clone();
-                Some(out)
+        if let Some(v) = &self.characteristic {
+            match v.iter().find(|c| c.name == characteristic.name) {
+                Some(i) => {
+                    let out = i.clone();
+                    Some(out)
+                }
+                None => None,
             }
-            None => None,
-        } } else {
+        } else {
             self.characteristic = Some(vec![characteristic]);
             None
         }

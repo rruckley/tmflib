@@ -6,7 +6,7 @@ use crate::common::related_entity::EntityRef;
 use crate::common::related_party::RelatedParty;
 use crate::tmf666::AccountRef;
 use crate::tmf676::PaymentMethodRefOrValue;
-use crate::{vec_insert, DateTime, HasDescription, HasId, HasName, Uri, IsAddressable};
+use crate::{vec_insert, DateTime, HasDescription, HasId, HasName, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 
 use tmflib_derive::{HasDescription, HasId, HasName};
@@ -36,14 +36,14 @@ impl PaymentItem {
     }
 
     /// Set the amount for this transaction
-    #[must_use] 
+    #[must_use]
     pub fn amount(mut self, amount: f32) -> Self {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount for this payment
-    #[must_use] 
+    #[must_use]
     pub fn tax(mut self, tax: f32) -> Self {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
@@ -96,7 +96,7 @@ pub struct Payment {
 
 impl Payment {
     /// Create a new Payment from a payment method and account
-    #[must_use] 
+    #[must_use]
     pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Self {
         Self {
             account,
@@ -113,21 +113,21 @@ impl Payment {
     }
 
     /// Add paymet item to the payment
-    #[must_use] 
+    #[must_use]
     pub fn item(mut self, item: PaymentItem) -> Self {
         vec_insert(&mut self.payment_item, item);
         self
     }
 
     /// Set the amount for this transaction
-    #[must_use] 
+    #[must_use]
     pub fn amount(mut self, amount: f32) -> Self {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount for this payment
-    #[must_use] 
+    #[must_use]
     pub fn tax(mut self, tax: f32) -> Self {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());

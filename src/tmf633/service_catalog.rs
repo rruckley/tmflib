@@ -7,9 +7,8 @@ use super::service_category::ServiceCategoryRef;
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
 use crate::{
-    vec_insert, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TMFEvent, TimePeriod,
-    TimeStamp, Uri,
-    IsAddressable,
+    vec_insert, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, IsAddressable,
+    TMFEvent, TimePeriod, TimeStamp, Uri,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
@@ -136,7 +135,7 @@ impl ServiceCatalog {
     }
 
     /// Add a category to this Service Candidate by passing in a Category reference
-    #[must_use] 
+    #[must_use]
     pub fn category(mut self, category: ServiceCategoryRef) -> Self {
         vec_insert(&mut self.category, category);
         self

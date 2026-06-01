@@ -5,9 +5,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::common::event::{Event, EventPayload};
 use crate::{
-    vec_insert, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TMFEvent, TimePeriod,
-    TimeStamp, Uri,
-    IsAddressable,
+    vec_insert, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, IsAddressable,
+    TMFEvent, TimePeriod, TimeStamp, Uri,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
@@ -172,14 +171,14 @@ impl ServiceCategory {
     }
 
     /// Add a child category to this category
-    #[must_use] 
+    #[must_use]
     pub fn child_category(mut self, category: ServiceCategoryRef) -> Self {
         vec_insert(&mut self.category, category);
         self
     }
 
     /// Add a `ServiceCandidate` to this category
-    #[must_use] 
+    #[must_use]
     pub fn candidate(mut self, candidate: ServiceCandidateRef) -> Self {
         vec_insert(&mut self.service_candidate, candidate);
         self

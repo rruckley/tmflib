@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, Uri, IsAddressable};
+use crate::{HasId, IsAddressable, Uri};
 use tmflib_derive::HasId;
 
 use super::MOD_PATH;

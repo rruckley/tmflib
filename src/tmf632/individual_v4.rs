@@ -119,7 +119,7 @@ impl Individual {
     /// let individual = Individual::new("John Smith")
     ///     .email("john.smith@example.com");
     /// ```
-    #[must_use] 
+    #[must_use]
     pub fn email(mut self, email: &str) -> Self {
         let medium = ContactMedium::email(email);
         self.add_contact(medium);
@@ -147,7 +147,7 @@ impl Individual {
     ///
     /// let individual = Individual::new("John Smith")
     ///     .gender("Unspecified");
-    /// ``` 
+    /// ```
     #[must_use]
     pub fn gender(mut self, gender: impl Into<String>) -> Self {
         self.gender = Some(gender.into());
@@ -176,7 +176,7 @@ impl Individual {
     /// let individual = Individual::new("John Smith")
     ///     .mobile("0411 111 111");
     /// ```
-    #[must_use] 
+    #[must_use]
     pub fn mobile(mut self, mobile: &str) -> Self {
         let medium = ContactMedium::mobile(mobile);
         self.add_contact(medium);
@@ -210,7 +210,7 @@ impl Individual {
     }
 
     /// Get Mobile number from contact medium if present
-    #[must_use] 
+    #[must_use]
     pub fn get_mobile(&self) -> Option<String> {
         // Optionally get the email address
         let medium = self.find_medium("mobile")?;
@@ -220,7 +220,7 @@ impl Individual {
     }
 
     /// Get Email address from contact medium if present
-    #[must_use] 
+    #[must_use]
     pub fn get_email(&self) -> Option<String> {
         // Optionally get the email address
         let medium = self.find_medium("email")?;

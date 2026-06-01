@@ -3,10 +3,12 @@
 
 use super::MOD_PATH;
 use crate::common::external_identifier::ExternalIdentifier;
-use crate::{DateTime, HasId, HasName, Uri};
+use crate::{DateTime, HasId, HasName, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasName};
-const CLASS_PATH: &str = "incident";
+
+/// Path to module
+pub const CLASS_PATH: &str = "incident";
 
 /// Incident Priority
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
@@ -202,6 +204,12 @@ impl Incident {
             state: Some(IncidentStateType::Raised),
             ..Default::default()
         }
+    }
+}
+
+impl IsAddressable for Incident {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

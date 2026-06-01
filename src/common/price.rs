@@ -27,7 +27,7 @@ pub struct Price {
 
 impl Price {
     /// Create a new Price object using a tax inclusive price
-    #[must_use] 
+    #[must_use]
     pub fn new_inc(inc_price: f32) -> Self {
         let mut price = Self {
             tax_rate: AUS_TAX_RATE,
@@ -38,7 +38,7 @@ impl Price {
     }
 
     /// Create a new Price object using a tax exclusive price
-    #[must_use] 
+    #[must_use]
     pub fn new_ex(ex_price: f32) -> Self {
         let mut price = Self {
             tax_rate: AUS_TAX_RATE,

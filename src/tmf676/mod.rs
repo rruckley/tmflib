@@ -39,8 +39,5 @@ pub struct PaymentMethodRefOrValue {
 }
 
 fn get_objects() -> Vec<&'static str> {
-    vec![
-        payment::CLASS_PATH,
-        refund::CLASS_PATH,
-    ]
+    vec![payment::CLASS_PATH, refund::CLASS_PATH]
 }
