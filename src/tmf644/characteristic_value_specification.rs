@@ -6,7 +6,7 @@ use crate::TimePeriod;
 /// A specification that defines the value type, default value, valid range, and so forth, for a characteristic.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicValueSpecification {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///If true, the Boolean Indicates if the value is the default value for a characteristic

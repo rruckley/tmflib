@@ -21,3 +21,12 @@ pub mod service_candidate;
 pub mod service_catalog;
 pub mod service_category;
 pub mod service_specification;
+
+fn get_objects() -> Vec<&'static str> {
+    vec![
+        service_candidate::CLASS_PATH,
+        service_catalog::CLASS_PATH,
+        service_category::CLASS_PATH,
+        service_specification::CLASS_PATH,
+    ]
+}

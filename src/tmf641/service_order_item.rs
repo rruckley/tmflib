@@ -8,7 +8,7 @@ use crate::HasDescription;
 use tmflib_derive::HasDescription;
 
 /// Service Order Item Status
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ServiceOrderItemStateType {
     /// Acknowledged
     #[default]
@@ -64,7 +64,7 @@ pub struct ServiceOrderItem {
     /// Appointment
     pub appointment: Option<AppointmentRef>,
     /// Service Order Line Items
-    pub service_order_item: Option<Vec<ServiceOrderItem>>,
+    pub service_order_item: Option<Vec<Self>>,
     /// Service Order Line Item Relationships
     pub service_order_item_relationship: Option<Vec<ServiceOrderItemRelationship>>,
     /// Service

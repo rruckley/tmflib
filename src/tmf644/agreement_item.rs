@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 /// An item of an agreement
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AgreementItem {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Identifier of the Agreement item (generally it is a sequence number 01, 02, 03, ...)

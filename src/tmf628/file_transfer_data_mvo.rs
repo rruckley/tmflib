@@ -2,13 +2,13 @@ use super::{CompressionType, Duration, PackingType, ProtocolTransferData};
 use crate::common::extensible::Extensible;
 use serde::{Deserialize, Serialize};
 
-/// File Transfer Data MVO schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+/// File Transfer Data MVO schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FileTransferDataMvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
-    ///Protocol Transfer Data schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Protocol Transfer Data schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub protocol_transfer_data: ProtocolTransferData,
     ///File compression type.

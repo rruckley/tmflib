@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// Category Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CategoryRef {
-    /// Base entity reference schema for use in TMForum Open-APIs. Property.
+    /// Base entity reference schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Version of the category

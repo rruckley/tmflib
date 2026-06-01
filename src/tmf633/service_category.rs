@@ -5,13 +5,14 @@ use serde::{Deserialize, Serialize};
 
 use crate::common::event::{Event, EventPayload};
 use crate::{
-    vec_insert, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, TMFEvent, TimePeriod,
-    TimeStamp, Uri,
+    vec_insert, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, IsAddressable,
+    TMFEvent, TimePeriod, TimeStamp, Uri,
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
 use super::{service_candidate::ServiceCandidateRef, MOD_PATH};
-const CLASS_PATH: &str = "serviceCategory";
+/// Path to this class
+pub const CLASS_PATH: &str = "serviceCategory";
 const CAT_STATUS_NEW: &str = "new";
 const CAT_VERS_NEW: &str = "1.0";
 
@@ -28,11 +29,11 @@ pub struct ServiceCategoryRef {
 
 impl From<ServiceCategory> for ServiceCategoryRef {
     fn from(value: ServiceCategory) -> Self {
-        ServiceCategoryRef {
+        Self {
             href: value.get_href(),
             id: value.get_id(),
             name: value.get_name(),
-            version: value.version.clone(),
+            version: value.version,
         }
     }
 }
@@ -65,7 +66,7 @@ impl TMFEvent<ServiceCategoryEvent> for ServiceCategory {
 }
 
 impl EventPayload<ServiceCategoryEvent> for ServiceCategory {
-    type Subject = ServiceCategory;
+    type Subject = Self;
     type EventType = ServiceCategoryEventType;
 
     fn to_event(
@@ -86,7 +87,7 @@ impl EventPayload<ServiceCategoryEvent> for ServiceCategory {
             href: self.href.clone(),
             description: Some(desc),
             title: self.name.clone(),
-            domain: Some(ServiceCategory::get_class()),
+            domain: Some(Self::get_class()),
             event_type,
             event_time: event_time.to_string(),
             event: self.event(),
@@ -152,25 +153,33 @@ pub struct ServiceCategory {
     service_candidate: Option<Vec<ServiceCandidateRef>>,
 }
 
+impl IsAddressable for ServiceCategory {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 impl ServiceCategory {
     /// Create a new category instance
-    pub fn new(name: impl Into<String>) -> ServiceCategory {
-        ServiceCategory {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
             lifecycle_status: Some(CAT_STATUS_NEW.into()),
             version: Some(CAT_VERS_NEW.into()),
-            ..ServiceCategory::create_with_time()
+            ..Self::create_with_time()
         }
     }
 
     /// Add a child category to this category
-    pub fn child_category(mut self, category: ServiceCategoryRef) -> ServiceCategory {
+    #[must_use]
+    pub fn child_category(mut self, category: ServiceCategoryRef) -> Self {
         vec_insert(&mut self.category, category);
         self
     }
 
-    /// Add a ServiceCandidate to this category
-    pub fn candidate(mut self, candidate: ServiceCandidateRef) -> ServiceCategory {
+    /// Add a `ServiceCandidate` to this category
+    #[must_use]
+    pub fn candidate(mut self, candidate: ServiceCandidateRef) -> Self {
         vec_insert(&mut self.service_candidate, candidate);
         self
     }

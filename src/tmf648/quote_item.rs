@@ -20,7 +20,7 @@ use tmflib_derive::{HasAttachment, HasDescription};
 const QUOTEITEM_DEF_QTY: u16 = 1;
 
 /// Status of product for Quote Item
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ProductStatusType {
     /// Created
     #[default]
@@ -81,7 +81,7 @@ pub struct ProductRefOrValue {
 
 impl From<ProductOffering> for ProductRefOrValue {
     fn from(value: ProductOffering) -> Self {
-        ProductRefOrValue {
+        Self {
             id: value.id.clone(),
             href: value.href.clone(),
             name: Some(value.get_name()),
@@ -106,7 +106,7 @@ pub struct QuoteItem {
     pub quantity: u16,
     /// Child Quote Items
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub quote_item: Option<Vec<QuoteItem>>,
+    pub quote_item: Option<Vec<Self>>,
     /// Attachments
     #[serde(skip_serializing_if = "Option::is_none")]
     pub attachment: Option<Vec<AttachmentRefOrValue>>,
@@ -126,9 +126,10 @@ pub struct QuoteItem {
 
 impl QuoteItem {
     /// Create a new quote item
-    pub fn new() -> QuoteItem {
+    #[must_use]
+    pub fn new() -> Self {
         let id = Uuid::new_v4().to_string();
-        QuoteItem {
+        Self {
             id: Some(id),
             quantity: QUOTEITEM_DEF_QTY,
             ..Default::default()
@@ -136,12 +137,13 @@ impl QuoteItem {
     }
 
     /// Set the product for this quoteItem
-    pub fn product(mut self, product: ProductOffering) -> QuoteItem {
+    #[must_use]
+    pub fn product(mut self, product: ProductOffering) -> Self {
         self.product = Some(ProductRefOrValue::from(product));
         self
     }
 
-    /// Add QuotePrice to this QuoteItem
+    /// Add `QuotePrice` to this `QuoteItem`
     pub fn price(&mut self, price: QuotePrice) {
         match self.quote_item_price.as_mut() {
             Some(v) => v.push(price),
@@ -149,7 +151,8 @@ impl QuoteItem {
         }
     }
 
-    /// Get the ProductOffering for this QuoteItem
+    /// Get the `ProductOffering` for this `QuoteItem`
+    #[must_use]
     pub fn get_offer(&self) -> Option<ProductRefOrValue> {
         self.product.clone()
     }

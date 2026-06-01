@@ -1,6 +1,6 @@
 use super::{RelatedParty, ServiceQualificationItem, TaskStateType};
 use serde::{Deserialize, Serialize};
-///QueryServiceQualification is used to retrieve a list of services that are technically available in the context of the interaction (place, party, service characteristics, ...).
+///`QueryServiceQualification` is used to retrieve a list of services that are technically available in the context of the interaction (place, party, service characteristics, ...).
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct QueryServiceQualification {
     ///When sub-classing, this defines the super-class
@@ -26,7 +26,7 @@ pub struct QueryServiceQualification {
     #[serde(rename = "estimatedResponseDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub estimated_response_date: Option<crate::DateTime>,
-    ///A date (DateTime). Deadline date when the requester expected a qualification answer.
+    ///A date (`DateTime`). Deadline date when the requester expected a qualification answer.
     #[serde(rename = "expectedQualificationDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub expected_qualification_date: Option<crate::DateTime>,
@@ -56,7 +56,7 @@ pub struct QueryServiceQualification {
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
-    ///A ServiceQualificationItem relates to a specific service being checked in a qualification operation.
+    ///A `ServiceQualificationItem` relates to a specific service being checked in a qualification operation.
     #[serde(rename = "searchCriteria")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub search_criteria: Option<ServiceQualificationItem>,

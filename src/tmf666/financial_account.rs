@@ -2,13 +2,14 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{DateTime, HasId, HasLastUpdate, HasName};
+use crate::{DateTime, HasId, HasLastUpdate, HasName, IsAddressable};
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
 use super::{AccountBalance, AccountRelationship, AccountTaxExemption, MOD_PATH};
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
 
-const CLASS_PATH: &str = "account";
+/// Path to Financial Account class
+pub const CLASS_PATH: &str = "financialAccount";
 
 /// Financial Account Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -21,7 +22,7 @@ pub struct FinancialAccountRef {
 
 impl From<FinancialAccount> for FinancialAccountRef {
     fn from(value: FinancialAccount) -> Self {
-        FinancialAccountRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
@@ -55,17 +56,18 @@ pub struct FinancialAccount {
 }
 
 impl FinancialAccount {
-    /// Get summed balance accross all AccountBalance records
+    /// Get summed balance accross all `AccountBalance` records
+    #[must_use]
     pub fn get_balance(&self) -> AccountBalance {
         let total = match self.account_balance.as_ref() {
             Some(v) => {
                 let mut out = Money::from(0.0);
-                v.iter().for_each(|ab| {
+                for ab in v {
                     out += match ab.amount.as_ref() {
                         Some(m) => m.clone(),
                         None => Money::default(),
                     }
-                });
+                }
                 out
             }
             None => Money::from(0.0),
@@ -75,6 +77,12 @@ impl FinancialAccount {
             balance_type: String::from("total"),
             valid_for: None,
         }
+    }
+}
+
+impl IsAddressable for FinancialAccount {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

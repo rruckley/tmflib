@@ -11,7 +11,7 @@ use crate::tmf641::service_order_item::ServiceOrderItem;
 use crate::tmf663::cart_item::CartItem;
 
 /// Action Type for Order Items
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum OrderItemActionType {
     /// Add Order Item [Default]
@@ -38,7 +38,7 @@ impl From<ProductOffering> for ProductOrderItem {
     fn from(po: ProductOffering) -> Self {
         // first convert to ProductOfferRef
         let offer_ref = ProductOfferingRef::from(po);
-        ProductOrderItem {
+        Self {
             quantity: 1,
             product_offering: Some(offer_ref),
             ..Default::default()
@@ -48,7 +48,7 @@ impl From<ProductOffering> for ProductOrderItem {
 
 impl From<ServiceOrderItem> for ProductOrderItem {
     fn from(value: ServiceOrderItem) -> Self {
-        let mut poi = ProductOrderItem::default();
+        let mut poi = Self::default();
         let po = ProductOffering::new("Generated Offer");
 
         // Setting the specification here gets lost in the conversion into a Offer reference.
@@ -62,7 +62,7 @@ impl From<ServiceOrderItem> for ProductOrderItem {
 impl From<CartItem> for ProductOrderItem {
     fn from(value: CartItem) -> Self {
         // Convert a Cart item into a product order item
-        ProductOrderItem {
+        Self {
             product_offering: value.product_offering,
             quantity: value.quantity,
             ..Default::default()

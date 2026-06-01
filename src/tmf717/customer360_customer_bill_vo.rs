@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 /// Customer360 Customer Bill VO
 pub struct Customer360CustomerBillVo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Bill reference known by the customer or the party and displayed on the bill. Could be different from the id

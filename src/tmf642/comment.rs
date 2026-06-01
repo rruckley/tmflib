@@ -2,10 +2,10 @@ use crate::common::extensible::Extensible;
 use crate::DateTime;
 use serde::{Deserialize, Serialize};
 
-/// Comment defines a comment for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+/// Comment defines a comment for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Comment {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Indicates the text of the comment.

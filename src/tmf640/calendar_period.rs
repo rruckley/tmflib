@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///A period of time, either as a deadline (endDateTime only) a startDateTime only, or both
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CalendarPeriod {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Day where the calendar status applies (e.g.: monday, mon-to-fri, weekdays, weekend, all week, ...)

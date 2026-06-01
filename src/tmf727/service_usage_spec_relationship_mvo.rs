@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// A migration, substitution, dependency or exclusivity relationship between/among service usage specifications.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceUsageSpecRelationshipMvo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref_mvo: EntityRefMvo,
     ///Type of relationship such as dependency, substitution or exclusivity

@@ -5,7 +5,7 @@ use crate::common::entity::EntityRef;
 /// Product Offering Reference MVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ProductOfferingRefMvo {
-    ///Base Entity Reference schema for use in TMForum Open-APIs
+    ///Base Entity Reference schema for use in `TMForum` Open-APIs
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Version of the product offering

@@ -2,6 +2,8 @@ use super::{Characteristic, RelatedParty, ServiceRef, ServiceTestSpecificationRe
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
+/// ServiceTestUpdate - ServiceTestUpdate defines the attributes of a service test that is used to update an existing service test. The service test is used to validate the performance of a service, and to ensure that it meets the specified requirements. The service test is executed according to a schedule, and contains service test configuration parameters that are to be applied at execution time, and service test measures that result.
+///
 /// A service test is an entity that exists for a controlled test invocation on a service. The service
 /// test is executed according to a schedule and contains service test configuration parameters that are to be
 /// applied at execution time, and service test measures that result.
@@ -37,7 +39,7 @@ pub struct ServiceTestUpdate {
     #[serde(rename = "startDateTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub start_date_time: Option<crate::DateTime>,
-    ///The actual state the service test is in. Recommended states are found in ExecutionStateType schema possible values include acknowledged, rejected, pending, inProgress, cancelled, completed and failed
+    ///The actual state the service test is in. Recommended states are found in `ExecutionStateType` schema possible values include acknowledged, rejected, pending, inProgress, cancelled, completed and failed
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state: Option<String>,
     ///The results of the test in terms of the measured metrics

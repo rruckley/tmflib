@@ -6,7 +6,7 @@ use crate::common::tmf_error::TMFError;
 use crate::vec_insert;
 use crate::{
     common::attachment::AttachmentRefOrValue, DateTime, HasDescription, HasId, HasLastUpdate,
-    HasName, HasRelatedParty, Uri,
+    HasName, HasRelatedParty, IsAddressable, Uri,
 };
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty};
@@ -16,7 +16,7 @@ use super::MOD_PATH;
 const DOC_VERSION: &str = "1.0";
 
 /// Document State
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub enum DocumentStatusType {
     /// Document has been created but is not yet review or approved.
     #[default]
@@ -56,7 +56,7 @@ pub struct Document {
     // HasName
     #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
-    /// For trait HasLastUpdate
+    /// For trait `HasLastUpdate`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_update: Option<DateTime>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -81,17 +81,18 @@ pub struct Document {
 
 impl Document {
     /// Create a new document
-    pub fn new(name: impl Into<String>) -> Document {
-        let mut doc = Document::create_with_time();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut doc = Self::create_with_time();
         doc.name = Some(name.into());
-        doc.creation_date = Some(Document::get_timestamp());
+        doc.creation_date = Some(Self::get_timestamp());
         doc.status = Some(DocumentStatusType::Created);
         doc.version = Some(DOC_VERSION.into());
         doc
     }
 
     /// Set the attachment for this document.
-    pub fn attachment(mut self, attachment: AttachmentRefOrValue) -> Document {
+    #[must_use]
+    pub fn attachment(mut self, attachment: AttachmentRefOrValue) -> Self {
         self.attachment = attachment;
         self
     }
@@ -102,13 +103,15 @@ impl Document {
     /// let doc = Document::new("My Document")
     ///     .doc_type("PDF");
     /// ```
-    pub fn doc_type(mut self, r#type: impl Into<String>) -> Document {
+    #[must_use]
+    pub fn doc_type(mut self, r#type: impl Into<String>) -> Self {
         self.document_type = Some(r#type.into());
         self
     }
 
     /// Link another TMF entity during creation
-    pub fn link<T: HasName>(mut self, entity: T) -> Document {
+    #[must_use]
+    pub fn link<T: HasName>(mut self, entity: T) -> Self {
         self.link_entity(entity);
         self
     }
@@ -119,9 +122,15 @@ impl Document {
     }
 }
 
+impl IsAddressable for Document {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
+    }
+}
+
 impl From<AttachmentRefOrValue> for Document {
     fn from(value: AttachmentRefOrValue) -> Self {
-        let mut document = Document::create_with_time();
+        let mut document = Self::create_with_time();
         document.set_name(value.get_name());
         document.description.clone_from(&value.description);
         document.status = Some(DocumentStatusType::Created);

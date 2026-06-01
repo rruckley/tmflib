@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 /// Customer360 Promotion VO
 pub struct Customer360PromotionVo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Description of Promotion

@@ -4,14 +4,15 @@ use crate::common::money::Money;
 use crate::common::related_party::RelatedParty;
 use crate::tmf666::AccountRef;
 use crate::tmf676::PaymentMethodRefOrValue;
-use crate::{DateTime, HasDescription, HasId, HasName, Uri};
+use crate::{DateTime, HasDescription, HasId, HasName, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 
 use tmflib_derive::{HasDescription, HasId, HasName};
 
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "refund";
+/// Path to this module
+pub const CLASS_PATH: &str = "refund";
 
 /// A Refund
 #[derive(Clone, Debug, Default, HasId, HasName, HasDescription, Serialize, Deserialize)]
@@ -56,34 +57,44 @@ pub struct Refund {
 
 impl Refund {
     /// Create a new Refund object
-    pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Refund {
-        Refund {
+    #[must_use]
+    pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Self {
+        Self {
             account,
             payment_method: method,
-            ..Refund::create()
+            ..Self::create()
         }
     }
 
-    /// Set the requestor
-    pub fn requestor(mut self, party: impl Into<RelatedParty>) -> Refund {
+    /// Set the requestor   
+    #[must_use]
+    pub fn requestor(mut self, party: impl Into<RelatedParty>) -> Self {
         self.requestor = Some(party.into());
         self
     }
 
     /// Set the amount for this refund
-    pub fn amount(mut self, amount: f32) -> Refund {
+    #[must_use]
+    pub fn amount(mut self, amount: f32) -> Self {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount of this refund
-    pub fn tax(mut self, tax: f32) -> Refund {
+    #[must_use]
+    pub fn tax(mut self, tax: f32) -> Self {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
         if let Some(amount) = self.amount.clone() {
             self.total_amount = Some(amount + tax);
-        };
+        }
         self
+    }
+}
+
+impl IsAddressable for Refund {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///A place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the RelatedPlaceRefOrValue class itself
+///A place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the `RelatedPlaceRefOrValue` class itself
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PlaceRefOrValue {
     ///When sub-classing, this defines the super-class

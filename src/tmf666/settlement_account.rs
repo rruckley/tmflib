@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
-use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName};
+use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName, IsAddressable};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::{
@@ -11,9 +11,10 @@ use super::{
     PaymentMethodRef, PaymentPlan, MOD_PATH,
 };
 
-const CLASS_PATH: &str = "account";
+/// Path to Settlement Account class
+pub const CLASS_PATH: &str = "settlementAccount";
 
-/// Billing Account
+/// Settlement Account
 #[derive(
     Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasDescription, Serialize,
 )]
@@ -60,29 +61,35 @@ pub struct SettlementAccount {
 }
 
 impl SettlementAccount {
-    /// Create new Billing Account
-    pub fn new(name: impl Into<String>) -> SettlementAccount {
-        SettlementAccount {
+    /// Create new Settlement Account
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
-            ..SettlementAccount::create()
+            ..Self::create()
         }
+    }
+}
+
+impl IsAddressable for SettlementAccount {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 
 impl From<SettlementAccount> for AccountRef {
     fn from(value: SettlementAccount) -> Self {
-        AccountRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            description: value.description.clone(),
+            description: value.description,
         }
     }
 }
 
-/// Billing Account Reference
+/// Settlement Account Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub struct BillingAccountRef {
+pub struct SettlementAccountRef {
     /// Referenced Id
     id: String,
     /// Referenced HREF

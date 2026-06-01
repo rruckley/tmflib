@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 /// Product Offering Reference FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ProductOfferingRefFvo {
-    ///Base Entity Reference FVO schema for use in TMForum Open-APIs
+    ///Base Entity Reference FVO schema for use in `TMForum` Open-APIs
     #[serde(flatten)]
     pub entity_ref_fvo: EntityRefFvo,
     ///Version of the product offering

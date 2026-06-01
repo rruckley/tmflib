@@ -3,12 +3,13 @@
 use super::{agreement_item::AgreementItem, agreement_specification::AgreementSpecificationRef};
 use crate::common::related_party::RelatedParty;
 use crate::tmf648::quote::Quote;
-use crate::{DateTime, HasDescription, HasId, HasName, HasRelatedParty, TimePeriod};
+use crate::{DateTime, HasDescription, HasId, HasName, HasRelatedParty, IsAddressable, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasName};
 
 use super::MOD_PATH;
-const CLASS_PATH: &str = "agreement";
+/// Path for Agreement class
+pub const CLASS_PATH: &str = "agreement";
 
 /// Agreeement / Contract
 #[derive(Clone, Default, Debug, Deserialize, HasId, HasName, HasDescription, Serialize)]
@@ -58,8 +59,8 @@ pub struct Agreement {
 
 impl Agreement {
     /// Create a new Agreement
-    pub fn new(name: impl Into<String>) -> Agreement {
-        let mut agreement = Agreement::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut agreement = Self::create();
         agreement.name = Some(name.into());
         agreement
     }
@@ -76,6 +77,12 @@ impl Agreement {
     }
 }
 
+impl IsAddressable for Agreement {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 /// Agreement Reference
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct AgreementRef {
@@ -89,7 +96,7 @@ pub struct AgreementRef {
 
 impl From<Agreement> for AgreementRef {
     fn from(value: Agreement) -> Self {
-        AgreementRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
@@ -99,7 +106,7 @@ impl From<Agreement> for AgreementRef {
 
 impl From<&Quote> for Agreement {
     fn from(value: &Quote) -> Self {
-        let mut agreement = Agreement::new(format!("Agreement from: {}", value.get_name()));
+        let mut agreement = Self::new(format!("Agreement from: {}", value.get_name()));
         agreement.version.clone_from(&value.version);
         agreement.agreement_period = Some(TimePeriod::period_days(365));
         agreement.description.clone_from(&value.description);
@@ -108,13 +115,12 @@ impl From<&Quote> for Agreement {
             agreement.engaged_party = vec![party.cloned().unwrap()];
         }
         // Iterate through
-        if value.quote_item.is_some() {
-            let items = value.quote_item.as_ref().unwrap();
-            items.iter().for_each(|i| {
-                // Take each QuoteItem and convert to AgreementItem
+        if let Some(items) = value.quote_item.as_ref() {
+            // let items = value.quote_item.as_ref().unwrap();
+            for i in items {
                 let agreement_item = AgreementItem::from(i);
                 agreement.add_item(agreement_item);
-            })
+            }
         }
         agreement
     }

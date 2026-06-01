@@ -11,14 +11,14 @@ use serde::{Deserialize, Serialize};
 ///Resource MVO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResourceMvo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Configuration features
     #[serde(rename = "activationFeature")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub activation_feature: Vec<FeatureMvo>,
-    ///ResourceAdministrativeStateType enumerations; values defined by ITU X.731: 'locked': The resource is administratively prohibited from performing services for its users; 'shutdown': Use of the resource is administratively permitted to existing instances of use only. While the system remains in the shutting down state the manager may at any time cause the managed object to revert to the unlocked state; 'unlocked': The resource is administratively permitted to perform services for its users. This is independent of its inherent operability.
+    ///`ResourceAdministrativeStateType` enumerations; values defined by ITU X.731: 'locked': The resource is administratively prohibited from performing services for its users; 'shutdown': Use of the resource is administratively permitted to existing instances of use only. While the system remains in the shutting down state the manager may at any time cause the managed object to revert to the unlocked state; 'unlocked': The resource is administratively permitted to perform services for its users. This is independent of its inherent operability.
     #[serde(rename = "administrativeState")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub administrative_state: Option<ResourceAdministrativeStateType>,
@@ -31,7 +31,7 @@ pub struct ResourceMvo {
     ///free-text description of the resource
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    ///A date time( DateTime). The date till the resource is operating
+    ///A date time( `DateTime`). The date till the resource is operating
     #[serde(rename = "endOperatingDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub end_operating_date: Option<crate::DateTime>,
@@ -48,7 +48,7 @@ pub struct ResourceMvo {
     ///A list of notes associated with the resource
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub note: Vec<NoteMvo>,
-    ///ResourceOperationalStateType enumerations; values defined by ITU X.731: 'disable': The resource is totally inoperable and unable to provide service to the user(s); 'enable': The resource is partially or fully operable and available for use.
+    ///`ResourceOperationalStateType` enumerations; values defined by ITU X.731: 'disable': The resource is totally inoperable and unable to provide service to the user(s); 'enable': The resource is partially or fully operable and available for use.
     #[serde(rename = "operationalState")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub operational_state: Option<ResourceOperationalStateType>,
@@ -75,7 +75,7 @@ pub struct ResourceMvo {
     #[serde(rename = "resourceSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resource_specification: Option<ResourceSpecificationRefMvo>,
-    ///ResourceStatusType enumerations
+    ///`ResourceStatusType` enumerations
     #[serde(rename = "resourceStatus")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resource_status: Option<ResourceStatusType>,
@@ -83,15 +83,15 @@ pub struct ResourceMvo {
     #[serde(rename = "resourceVersion")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resource_version: Option<String>,
-    ///A date time( DateTime). The date from which the resource is operating
+    ///A date time( `DateTime`). The date from which the resource is operating
     #[serde(rename = "startOperatingDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub start_operating_date: Option<crate::DateTime>,
-    ///A list of supporting resources (SupportingResource [*]). A collection of resources that support this resource (bundling, link ResourceSpecification)
+    ///A list of supporting resources (`SupportingResource` [*]). A collection of resources that support this resource (bundling, link `ResourceSpecification`)
     #[serde(rename = "supportingResource")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub supporting_resource: Vec<ResourceRefOrValueMvo>,
-    ///ResourceUsageStateType enumerations; values defined by ITU X.731: 'idle': The resource is not currently in use; 'active': The resource is in use, and has sufficient spare operating capacity to provide for additional users simultaneously; 'busy': The resource is in use, but it has no spare operating capacity to provide for additional users at this instant.
+    ///`ResourceUsageStateType` enumerations; values defined by ITU X.731: 'idle': The resource is not currently in use; 'active': The resource is in use, and has sufficient spare operating capacity to provide for additional users simultaneously; 'busy': The resource is in use, but it has no spare operating capacity to provide for additional users at this instant.
     #[serde(rename = "usageState")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub usage_state: Option<ResourceUsageStateType>,

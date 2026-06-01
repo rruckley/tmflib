@@ -4,7 +4,7 @@ use super::{
 };
 use serde::{Deserialize, Serialize};
 
-///ResourceReservationItem struct
+///`ResourceReservationItem` struct
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResourceReservationItem {
     ///When sub-classing, this defines the super-class
@@ -47,15 +47,15 @@ pub struct ResourceReservationItem {
     ///A string used to give a name to the reservation item
     #[serde(rename = "reservationItem")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub reservation_item: Option<Vec<ResourceReservationItem>>,
+    pub reservation_item: Option<Vec<Self>>,
     ///A period of time, either as a deadline (endDateTime only) a startDateTime only, or both
     #[serde(rename = "reservationPeriod")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub reservation_period: Option<TimePeriod>,
-    ///Resource is an abstract entity that describes the common set of attributes shared by all concrete resources. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Resource entity and not the related ResourceRefOrValue class itself
+    ///Resource is an abstract entity that describes the common set of attributes shared by all concrete resources. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Resource entity and not the related `ResourceRefOrValue` class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resource: Option<ResourceRefOrValue>,
-    ///
+    /// The state of the reservation item, such as 'reserved', 'completed', 'cancelled'
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state: Option<ReservationItemStateType>,
     ///The date and time the state changed.

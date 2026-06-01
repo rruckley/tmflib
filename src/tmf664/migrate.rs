@@ -3,12 +3,13 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::related_place::PlaceRef;
-use crate::{HasId, HasName, Uri};
+use crate::{HasId, HasName, IsAddressable, Uri};
 use tmflib_derive::{HasId, HasName};
 
 use super::{TaskStateType, MOD_PATH};
 
-const CLASS_PATH: &str = "migrate";
+/// Path to Migrate class
+pub const CLASS_PATH: &str = "migrate";
 use super::resource_function::ResourceFunctionRef;
 
 /// External connection points of the resource function. These are the service access points
@@ -34,7 +35,7 @@ pub struct Migrate {
     pub href: Option<Uri>,
     /// Migration Task Name
     pub name: Option<String>,
-    /// SubState required before migration is carried out.
+    /// `SubState` required before migration is carried out.
     pub admin_state_modification: Option<String>,
     /// Reason why migration is being requested.
     pub cause: Option<String>,
@@ -56,16 +57,20 @@ pub struct Migrate {
 
 impl Migrate {
     /// Create a new migrate task
-    pub fn new(name: impl Into<String>) -> Migrate {
-        Migrate {
-            ..Migrate::create()
-        }
-        .name(name)
+    pub fn new(name: impl Into<String>) -> Self {
+        Self::create().name(name)
     }
 
     /// Builder function to set place on create
+    #[must_use]
     pub fn place(mut self, place: PlaceRef) -> Self {
         self.place = Some(place);
         self
+    }
+}
+
+impl IsAddressable for Migrate {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }

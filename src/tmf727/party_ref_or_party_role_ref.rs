@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
-///
+
+/// Reference to a party or party role, which may be the related party or party role itself, or a reference to it. The referenced entity may be of any type, but is typically a Party or `PartyRole`.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyRefOrPartyRoleRef {}
 impl std::fmt::Display for PartyRefOrPartyRoleRef {

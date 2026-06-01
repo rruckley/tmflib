@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///A Schedule Definition is used to define a schedule for running a job, for example a threshold job. The schedule definition can be based on specific dates, days of the week or days of the month. In addition, the schedule definition can include time ranges within a day and a recurring frequency to run the job within the active time ranges.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ScheduleDefinitionMvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///The monthly schedule is used to define a schedule that is based on the weeks of the month, e.g. a schedule that will be active only on the first Monday and second Tuesday of each month.

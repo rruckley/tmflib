@@ -11,7 +11,8 @@ use crate::common::tax_item::TaxItem;
 use crate::{HasId, HasLastUpdate, HasName, HasReference, HasValidity, TMFEvent, TimePeriod};
 use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
 
-const CLASS_PATH: &str = "productOfferingPrice";
+/// Path to this class
+pub const CLASS_PATH: &str = "productOfferingPrice";
 const PRICE_VERS: &str = "1.0";
 
 /// Constraints
@@ -44,8 +45,8 @@ pub struct ProductOfferingPriceRef {
 }
 
 impl From<ProductOfferingPrice> for ProductOfferingPriceRef {
-    fn from(pop: ProductOfferingPrice) -> ProductOfferingPriceRef {
-        ProductOfferingPriceRef {
+    fn from(pop: ProductOfferingPrice) -> Self {
+        Self {
             id: pop.id.clone(),
             href: pop.href.clone(),
             name: pop.get_name(),
@@ -108,8 +109,8 @@ pub struct ProductOfferingPrice {
 
 impl ProductOfferingPrice {
     /// Create a new Price Offering Price object
-    pub fn new(name: impl Into<String>) -> ProductOfferingPrice {
-        let mut pop = ProductOfferingPrice::create_with_time();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut pop = Self::create_with_time();
         pop.version = Some(PRICE_VERS.to_string());
         pop.name = Some(name.into());
         pop
@@ -130,7 +131,7 @@ impl TMFEvent<ProductOfferingPriceEvent> for ProductOfferingPrice {
 }
 
 impl EventPayload<ProductOfferingPriceEvent> for ProductOfferingPrice {
-    type Subject = ProductOfferingPrice;
+    type Subject = Self;
     type EventType = ProductOfferingPriceEventType;
     fn to_event(
         &self,
@@ -142,7 +143,7 @@ impl EventPayload<ProductOfferingPriceEvent> for ProductOfferingPrice {
         Event {
             correlation_id: None,
             description: Some(desc),
-            domain: Some(ProductOfferingPrice::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
             href: self.href.clone(),
@@ -158,7 +159,7 @@ impl EventPayload<ProductOfferingPriceEvent> for ProductOfferingPrice {
 }
 
 /// Product Offering Price Event Type
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ProductOfferingPriceEventType {
     /// POP Created
     #[default]

@@ -11,7 +11,7 @@ use super::work::WorkRefOrValue;
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct WorkOrderItem {
-    /// Metadata: Type of schema, same as [WorkOrderItem::base_type] if aligned to TMF specification.
+    /// Metadata: Type of schema, same as [`WorkOrderItem::base_type`] if aligned to TMF specification.
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@type")]
     pub r#type: Option<String>,
@@ -19,7 +19,7 @@ pub struct WorkOrderItem {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@baseType")]
     pub base_type: Option<String>,
-    /// Metadata: Location of schema if derived schema used, i.e. @type differs from @base_type
+    /// Metadata: Location of schema if derived schema used, i.e. @type differs from @`base_type`
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@schemaLocation")]
     pub schema_location: Option<String>,
@@ -32,15 +32,16 @@ pub struct WorkOrderItem {
 }
 
 impl WorkOrderItem {
-    /// Create new WorkOrderItem based on some Work
+    /// Create new `WorkOrderItem` based on some Work
     /// ```
     /// use tmflib::tmf697::v4::work::{WorkRefOrValue,Work};
     /// use tmflib::tmf697::v4::work_order_item::WorkOrderItem;
     /// let work = Work::new("Some Work");
     /// let woi = WorkOrderItem::with(WorkRefOrValue::from(work));
     /// ```
-    pub fn with(work: WorkRefOrValue) -> WorkOrderItem {
-        WorkOrderItem {
+    #[must_use]
+    pub fn with(work: WorkRefOrValue) -> Self {
+        Self {
             id: Some(
                 gen_code(
                     work.get_name(),

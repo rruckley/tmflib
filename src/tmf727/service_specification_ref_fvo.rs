@@ -9,7 +9,7 @@ pub struct ServiceSpecificationRefFvo {
     ///Base schema for addressable entities
     #[serde(flatten)]
     pub entity_ref: EntityRef,
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Service specification version

@@ -3,14 +3,15 @@
 use super::{work_order_item::WorkOrderItem, MOD_PATH};
 use crate::common::{note::Note, related_party::RelatedParty, tmf_error::TMFError};
 use crate::tmf646::appointment::AppointmentRef;
-use crate::{vec_insert, HasId, HasNote, HasRelatedParty, Uri};
+use crate::{vec_insert, HasId, HasNote, HasRelatedParty, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasNote, HasRelatedParty};
 
-const CLASS_PATH: &str = "workorder";
+/// Path to module
+pub const CLASS_PATH: &str = "workorder";
 
 /// Work Order States
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum WorkOrderStateType {
     #[default]
     /// Acknowledged
@@ -75,17 +76,18 @@ pub struct WorkOrder {
 
 impl WorkOrder {
     /// Create a new Work Order instance
-    pub fn new() -> WorkOrder {
+    #[must_use]
+    pub fn new() -> Self {
         // Use create() to define remainint fields
-        WorkOrder {
+        Self {
             state: Some(WorkOrderStateType::default()),
-            r#type: Some(WorkOrder::get_class()),
-            base_type: Some(WorkOrder::get_class()),
-            ..WorkOrder::create()
+            r#type: Some(Self::get_class()),
+            base_type: Some(Self::get_class()),
+            ..Self::create()
         }
     }
 
-    /// Add a work order item to this WorkOrder
+    /// Add a work order item to this `WorkOrder`
     /// ```
     /// use tmflib::tmf697::v4::work_order::WorkOrder;
     /// use tmflib::tmf697::v4::work_order_item::WorkOrderItem;
@@ -99,6 +101,12 @@ impl WorkOrder {
     pub fn add_item(&mut self, item: WorkOrderItem) {
         // Safely add item
         vec_insert(&mut self.work_order_item, item);
+    }
+}
+
+impl IsAddressable for WorkOrder {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

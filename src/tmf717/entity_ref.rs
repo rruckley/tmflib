@@ -12,7 +12,7 @@ pub struct EntityRefXXX {
     ///Base schema for addressable entities
     #[serde(flatten)]
     pub addressable: Addressable,
-    ///Base Extensible schema for use in TMForumX,
+    ///Base Extensible schema for use in `TMForumX`,
     ///The URI of the referred entity.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,

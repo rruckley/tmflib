@@ -1,6 +1,6 @@
 use super::{PolicyConstraintMvo, PolicyManagedEntityMvo};
 use serde::{Deserialize, Serialize};
-///Managed PolicyConstraint
+///Managed `PolicyConstraint`
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyConstraintMvo {
     ///Any kind of condition that needs to be confirmed in order to proceed with next step

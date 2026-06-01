@@ -15,7 +15,7 @@ pub struct AlternateServiceProposal {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    ///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the RelatedServiceRefOrValue class itself
+    ///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the `RelatedServiceRefOrValue` class itself
     #[serde(rename = "alternateService")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub alternate_service: Option<ServiceRefOrValue>,

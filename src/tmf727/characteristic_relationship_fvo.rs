@@ -2,10 +2,10 @@ use serde::{Deserialize, Serialize};
 // use super::Extensible;
 use crate::common::extensible::Extensible;
 
-///CharacteristicRelationshipFvo represents the relationship between characteristics, which may include the type of relationship. It is used to define the relationship between characteristics in a specific context, e.g. for a specific product or in a specific environment.
+///`CharacteristicRelationshipFvo` represents the relationship between characteristics, which may include the type of relationship. It is used to define the relationship between characteristics in a specific context, e.g. for a specific product or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicRelationshipFvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Unique identifier of the characteristic

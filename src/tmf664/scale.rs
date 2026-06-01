@@ -4,13 +4,14 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasId, HasName, Uri};
+use crate::{HasId, HasName, IsAddressable, Uri};
 use tmflib_derive::{HasId, HasName};
 
 use super::resource_function::ResourceFunctionRef;
 use super::{TaskStateType, MOD_PATH};
 
-const CLASS_PATH: &str = "scale";
+/// Path to Scale class
+pub const CLASS_PATH: &str = "scale";
 
 /// Schedule Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -49,9 +50,15 @@ pub struct Scale {
 
 impl Scale {
     /// Create a new instance of Scale object
-    pub fn new(name: impl Into<String>) -> Scale {
-        Scale { ..Scale::create() }.name(name)
+    pub fn new(name: impl Into<String>) -> Self {
+        Self::create().name(name)
     }
 
     // pub fn schedule(mut self, )
+}
+
+impl IsAddressable for Scale {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }

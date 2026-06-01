@@ -22,3 +22,14 @@ pub mod shipment_specification;
 pub mod shipping_instruction;
 pub mod shipping_order;
 pub mod shipping_order_item;
+
+/// Get the modules available in this API `MOD_PATH`
+pub fn get_objects() -> Vec<&'static str> {
+    vec![
+        shipment_specification::CLASS_PATH,
+        shipment::CLASS_PATH,
+        shipping_instruction::CLASS_PATH,
+        shipping_order_item::CLASS_PATH,
+        shipping_order::CLASS_PATH,
+    ]
+}

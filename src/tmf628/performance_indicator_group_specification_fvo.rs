@@ -8,13 +8,13 @@ pub struct PerformanceIndicatorGroupSpecificationFvo {
     ///Base schema for addressable entities
     #[serde(flatten)]
     pub addressable_fvo: AddressableFvo,
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible_fvo: ExtensibleFvo,
-    ///A grouping or set of PerformanceIndicatorGroupSpecifications that are classified together because of common characteristics, such as technology specific, service specific, or technology/service independent.
+    ///A grouping or set of `PerformanceIndicatorGroupSpecifications` that are classified together because of common characteristics, such as technology specific, service specific, or technology/service independent.
     #[serde(rename = "groupCategory")]
     pub group_category: String,
-    ///A word, term, or phrase by which a PerformanceIndicatorGroupSpecification is tagged.
+    ///A word, term, or phrase by which a `PerformanceIndicatorGroupSpecification` is tagged.
     pub name: String,
     ///Reference to Performance Indicator Specifications included in this Performance Indicator Group Specification
     #[serde(rename = "performanceIndicatorSpecification")]

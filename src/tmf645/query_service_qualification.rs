@@ -2,11 +2,12 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasDescription, HasId, Uri};
+use crate::{HasDescription, HasId, IsAddressable, Uri};
 
 use tmflib_derive::{HasDescription, HasId};
 
-const CLASS_PATH: &str = "queryServiceQualification";
+/// TMF645 Service Qualification Module
+pub const CLASS_PATH: &str = "queryServiceQualification";
 use super::{TaskStateType, MOD_PATH};
 
 /// Query Service Qualification
@@ -20,4 +21,10 @@ pub struct QueryServiceQualification {
     pub description: Option<String>,
     /// Status
     pub state: Option<TaskStateType>,
+}
+
+impl IsAddressable for QueryServiceQualification {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }

@@ -30,3 +30,17 @@ pub mod sales_lead_v5;
 pub mod sales_opportunity_item_v5;
 #[cfg(all(feature = "tmf699", feature = "build-V5"))]
 pub mod sales_opportunity_v5;
+
+/// Modules in this API `MOD_PATH`
+pub fn get_objects() -> Vec<&'static str> {
+    vec![
+        #[cfg(feature = "build-V4")]
+        sales_lead_v4::CLASS_PATH,
+        #[cfg(feature = "build-V5")]
+        sales_lead_v5::CLASS_PATH,
+        #[cfg(feature = "build-V5")]
+        sales_opportunity_v5::CLASS_PATH,
+        #[cfg(feature = "build-V5")]
+        sales_opportunity_item_v5::CLASS_PATH,
+    ]
+}

@@ -44,8 +44,9 @@ pub struct CharacteristicValueSpecification {
 
 impl CharacteristicValueSpecification {
     /// Constructor
-    pub fn new() -> CharacteristicValueSpecification {
-        CharacteristicValueSpecification {
+    #[must_use]
+    pub fn new() -> Self {
+        Self {
             is_default: Some(false),
             ..Default::default()
         }
@@ -58,7 +59,9 @@ impl CharacteristicValueSpecification {
     /// let cvs = CharacteristicValueSpecification::new()
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap();
     /// ```
-    pub fn regex(mut self, regex: String) -> Result<CharacteristicValueSpecification, TMFError> {
+    /// # Errors
+    /// Returns an error if the regex pattern provided is not a valid regex
+    pub fn regex(mut self, regex: String) -> Result<Self, TMFError> {
         let _re = Regex::new(&regex)?;
         self.regex = Some(regex);
         Ok(self)
@@ -73,10 +76,9 @@ impl CharacteristicValueSpecification {
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
     ///     .value("100Mb".into()).unwrap();
     /// ```
-    pub fn value(
-        mut self,
-        value: serde_json::Value,
-    ) -> Result<CharacteristicValueSpecification, TMFError> {
+    /// # Errors
+    /// Returns an error if the value does not match the regex pattern set for this characteristic value specification
+    pub fn value(mut self, value: serde_json::Value) -> Result<Self, TMFError> {
         self.value_type = Some(serde_value_to_type(&value).to_string());
         match self.regex {
             Some(ref re_str) => {
@@ -84,8 +86,7 @@ impl CharacteristicValueSpecification {
                 let val_str = value.to_string();
                 if !re.is_match(&val_str) {
                     return Err(TMFError::GenericError(format!(
-                        "Value {} does not match regex {}",
-                        val_str, re_str
+                        "Value {val_str} does not match regex {re_str}"
                     )));
                 }
                 self.value = Some(value);
@@ -137,8 +138,8 @@ pub struct CharacteristicSpecification {
 
 impl CharacteristicSpecification {
     /// Constructor
-    pub fn new(name: impl Into<String>) -> CharacteristicSpecification {
-        CharacteristicSpecification {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
             max_cardinality: Some(1),
             value_type: Some("String".into()),
@@ -147,32 +148,32 @@ impl CharacteristicSpecification {
         }
     }
     /// Set maximum cardinality
-    pub fn cardinality(
-        mut self,
-        min_card: Cardinality,
-        max_card: Cardinality,
-    ) -> CharacteristicSpecification {
+    #[must_use]
+    pub const fn cardinality(mut self, min_card: Cardinality, max_card: Cardinality) -> Self {
         self.min_cardinality = Some(min_card);
         self.max_cardinality = Some(max_card);
         self
     }
 
     /// Set characteristic as optional cardinality => (0..1)
-    pub fn optional(mut self) -> CharacteristicSpecification {
+    #[must_use]
+    pub const fn optional(mut self) -> Self {
         self.min_cardinality = Some(0);
         self.max_cardinality = Some(1);
         self
     }
 
     /// Make this characteristic mandatory
-    pub fn mandatory(mut self) -> CharacteristicSpecification {
+    #[must_use]
+    pub const fn mandatory(mut self) -> Self {
         self.min_cardinality = Some(1);
         self.max_cardinality = Some(1);
         self
     }
 
     /// Set the description of this characteristic
-    pub fn description(mut self, description: impl Into<String>) -> CharacteristicSpecification {
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
         self.description = Some(description.into());
         self
     }

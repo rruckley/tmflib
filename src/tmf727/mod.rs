@@ -14,7 +14,6 @@
 
 //! TMF727 Service Usage Management Module
 
-// pub use addressable::*;
 pub use association_specification_ref::*;
 pub use association_specification_ref_fvo::*;
 pub use association_specification_ref_mvo::*;
@@ -78,14 +77,14 @@ pub use service_usage_ref_mvo::*;
 pub use service_usage_spec_relationship::*;
 pub use service_usage_spec_relationship_fvo::*;
 pub use service_usage_spec_relationship_mvo::*;
-pub use service_usage_specification::*;
+pub use service_usage_specification::ServiceUsageSpecification;
 pub use service_usage_specification_ref::*;
 pub use service_usage_specification_ref_fvo::*;
 pub use service_usage_specification_ref_mvo::*;
 pub use target_entity_schema::*;
 pub use target_entity_schema_mvo::*;
 // pub use time_period::*;
-// mod addressable;
+
 mod association_specification_ref;
 mod association_specification_ref_fvo;
 mod association_specification_ref_mvo;
@@ -160,5 +159,8 @@ mod target_entity_schema_mvo;
 const MOD_PATH: &str = "serviceUsageManagement";
 
 fn get_objects() -> Vec<&'static str> {
-    vec!["individual", "organization"]
+    vec![
+        service_usage::CLASS_PATH,
+        service_usage_specification::CLASS_PATH,
+    ]
 }

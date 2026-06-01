@@ -6,14 +6,15 @@ use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
 use crate::{
-    DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, Priority,
-    TimePeriod, Uri,
+    DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, IsAddressable,
+    Priority, TimePeriod, Uri,
 };
 use tmflib_derive::{HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity};
 
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "resourceFunction";
+/// Path to Resource Function class
+pub const CLASS_PATH: &str = "resourceFunction";
 
 /// Reference to Resource Function
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -30,7 +31,7 @@ pub struct ResourceFunctionRef {
 
 impl From<ResourceFunction> for ResourceFunctionRef {
     fn from(value: ResourceFunction) -> Self {
-        ResourceFunctionRef {
+        Self {
             href: value.get_href(),
             id: value.get_id(),
             name: value.get_name(),
@@ -92,7 +93,7 @@ pub struct FeatureRelationship {
 }
 
 /// # Resource Function
-/// A ResourceFunction is a behaviour to transform inputs of any nature into outputs of any
+/// A `ResourceFunction` is a behaviour to transform inputs of any nature into outputs of any
 /// nature independently from the way it is provided.
 #[derive(
     Clone,
@@ -144,4 +145,10 @@ pub struct ResourceFunction {
     pub activation_feature: Option<Vec<Feature>>,
     /// Notes
     pub note: Option<Vec<Note>>,
+}
+
+impl IsAddressable for ResourceFunction {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }

@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// Party Privacy Profile Specification Characteristic
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyPrivacyProfileSpecificationCharacteristic {
-    ///Base Characteristic Specification schema for use in TMForum Open-APIs
+    ///Base Characteristic Specification schema for use in `TMForum` Open-APIs
     #[serde(flatten)]
     pub characteristic_specification: CharacteristicSpecification,
     ///A list of roles in the organization who are allowed access to this characteristic

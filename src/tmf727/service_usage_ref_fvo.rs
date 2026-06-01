@@ -8,7 +8,7 @@ pub struct ServiceUsageRefFvo {
     #[serde(rename = "@referredType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub referred_type: Option<String>,
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_fvo: EntityFvo,
     ///The name of the usage

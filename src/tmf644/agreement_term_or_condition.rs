@@ -3,10 +3,10 @@ use serde::{Deserialize, Serialize};
 use crate::common::extensible::Extensible;
 use crate::TimePeriod;
 
-/// AgreementTermOrCondition struct
+/// `AgreementTermOrCondition` struct
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AgreementTermOrCondition {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Text that explains the term or condition of the agreement.

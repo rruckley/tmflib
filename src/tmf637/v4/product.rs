@@ -102,8 +102,8 @@ pub struct Product {
 
 impl Product {
     /// Create a new product object
-    pub fn new(name: impl Into<String>) -> Product {
-        let mut product = Product::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut product = Self::create();
         product.name = Some(name.into());
         product
     }

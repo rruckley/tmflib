@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///Reference to a MeasurementCollectionJob
+///Reference to a `MeasurementCollectionJob`
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct MeasurementCollectionJobRef {}
 impl std::fmt::Display for MeasurementCollectionJobRef {

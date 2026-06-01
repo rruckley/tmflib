@@ -24,7 +24,7 @@ pub mod projected_cost;
 use crate::Uri;
 
 /// Cost Reference
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct CostRef {
     /// Unique identifier
     pub id: String,
@@ -49,4 +49,9 @@ pub struct CostRef {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "@referredType")]
     pub referred_type: Option<String>,
+}
+
+/// Modules available in API `MOD_PATH`
+pub fn get_objects() -> Vec<&'static str> {
+    vec![actual_cost::CLASS_PATH, projected_cost::CLASS_PATH]
 }

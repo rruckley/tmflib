@@ -25,7 +25,7 @@ pub struct ServiceRelationship {
     ///Name of the related entity.
     #[serde(rename = "relationshipType")]
     pub relationship_type: String,
-    ///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the RelatedServiceRefOrValue class itself
+    ///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the `RelatedServiceRefOrValue` class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service: Option<ServiceRefOrValue>,
     ///This is a list of characteristics associated with the Service Relationship

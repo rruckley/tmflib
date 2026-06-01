@@ -6,14 +6,15 @@ use crate::common::related_entity::EntityRef;
 use crate::common::related_party::RelatedParty;
 use crate::tmf666::AccountRef;
 use crate::tmf676::PaymentMethodRefOrValue;
-use crate::{vec_insert, DateTime, HasDescription, HasId, HasName, Uri};
+use crate::{vec_insert, DateTime, HasDescription, HasId, HasName, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 
 use tmflib_derive::{HasDescription, HasId, HasName};
 
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "payment";
+/// Path to this module
+pub const CLASS_PATH: &str = "payment";
 
 /// Reference to another TMF schema
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -27,26 +28,28 @@ pub struct PaymentItem {
 
 impl PaymentItem {
     /// Create new Payment Item
-    pub fn new(entity: impl HasName) -> PaymentItem {
-        PaymentItem {
+    pub fn new(entity: &impl HasName) -> Self {
+        Self {
             item: entity.as_entity(),
             ..Default::default()
         }
     }
 
     /// Set the amount for this transaction
-    pub fn amount(mut self, amount: f32) -> PaymentItem {
+    #[must_use]
+    pub fn amount(mut self, amount: f32) -> Self {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount for this payment
-    pub fn tax(mut self, tax: f32) -> PaymentItem {
+    #[must_use]
+    pub fn tax(mut self, tax: f32) -> Self {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
         if let Some(amount) = self.amount.clone() {
             self.total_amount = Some(amount + tax);
-        };
+        }
         self
     }
 }
@@ -93,40 +96,51 @@ pub struct Payment {
 
 impl Payment {
     /// Create a new Payment from a payment method and account
-    pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Payment {
-        Payment {
+    #[must_use]
+    pub fn new(method: PaymentMethodRefOrValue, account: AccountRef) -> Self {
+        Self {
             account,
             payment_method: method,
-            ..Payment::create()
+            ..Self::create()
         }
     }
 
     /// Set the payer
-    pub fn payer(mut self, party: impl Into<RelatedParty>) -> Payment {
+    #[must_use]
+    pub fn payer(mut self, party: impl Into<RelatedParty>) -> Self {
         self.payer = Some(party.into());
         self
     }
 
     /// Add paymet item to the payment
-    pub fn item(mut self, item: PaymentItem) -> Payment {
+    #[must_use]
+    pub fn item(mut self, item: PaymentItem) -> Self {
         vec_insert(&mut self.payment_item, item);
         self
     }
 
     /// Set the amount for this transaction
-    pub fn amount(mut self, amount: f32) -> Payment {
+    #[must_use]
+    pub fn amount(mut self, amount: f32) -> Self {
         self.amount = Some(Money::from(amount));
         self
     }
 
     /// Set the tax amount for this payment
-    pub fn tax(mut self, tax: f32) -> Payment {
+    #[must_use]
+    pub fn tax(mut self, tax: f32) -> Self {
         let tax = Money::from(tax);
         self.tax_amount = Some(tax.clone());
         if let Some(amount) = self.amount.clone() {
             self.total_amount = Some(amount + tax);
-        };
+        }
         self
+    }
+}
+
+impl IsAddressable for Payment {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 
@@ -163,7 +177,7 @@ mod test {
         let account = AccountRef::default();
         let payer = Individual::new("John Quinton Smith");
         let product1 = Product::new("Mobile Phone");
-        let item1 = PaymentItem::new(product1).amount(100.0).tax(10.0);
+        let item1 = PaymentItem::new(&product1).amount(100.0).tax(10.0);
         let payment = Payment::new(method, account).payer(&payer).item(item1);
 
         assert!(payment.payment_item.is_some());

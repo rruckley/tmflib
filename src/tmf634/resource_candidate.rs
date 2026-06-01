@@ -2,10 +2,11 @@
 
 use serde::{Deserialize, Serialize};
 
-const CLASS_PATH: &str = "resourceCandidate";
+/// Path component for Resource Candidate
+pub const CLASS_PATH: &str = "resourceCandidate";
 
 use super::MOD_PATH;
-use crate::{HasId, HasLastUpdate, HasName};
+use crate::{HasId, HasLastUpdate, HasName, IsAddressable};
 use tmflib_derive::{HasId, HasName};
 
 /// Resource Candidate (Catalog Entry)
@@ -24,15 +25,16 @@ pub struct ResourceCandidate {
 }
 
 impl ResourceCandidate {
-    /// Create a new ResourceCandidate instance
-    pub fn new(name: impl Into<String>) -> ResourceCandidate {
-        let mut rc = ResourceCandidate::create_with_time();
+    /// Create a new `ResourceCandidate` instance
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut rc = Self::create_with_time();
         rc.name = Some(name.into());
         rc
     }
 
     /// Set the description on this resource candidate
-    pub fn description(mut self, description: &str) -> ResourceCandidate {
+    #[must_use]
+    pub fn description(mut self, description: &str) -> Self {
         self.description = Some(description.to_owned());
         self
     }
@@ -50,9 +52,15 @@ impl HasLastUpdate for ResourceCandidate {
     fn last_update(mut self, time: Option<String>) -> Self {
         match time {
             Some(t) => self.set_last_update(t),
-            None => self.set_last_update(ResourceCandidate::get_timestamp()),
-        };
+            None => self.set_last_update(Self::get_timestamp()),
+        }
         self
+    }
+}
+
+impl IsAddressable for ResourceCandidate {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 
@@ -66,7 +74,7 @@ pub struct ResourceCandidateRef {
 
 impl From<ResourceCandidate> for ResourceCandidateRef {
     fn from(value: ResourceCandidate) -> Self {
-        ResourceCandidateRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),

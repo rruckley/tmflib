@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     common::related_party::RelatedParty, vec_insert, DateTime, HasDescription, HasId,
-    HasRelatedParty, Uri,
+    HasRelatedParty, IsAddressable, Uri,
 };
 
 use crate::common::tmf_error::TMFError;
@@ -13,7 +13,8 @@ use crate::tmf641::service_order_item::ServiceRefOrValue;
 
 use tmflib_derive::{HasDescription, HasId, HasRelatedParty};
 
-const CLASS_PATH: &str = "checkServiceQualification";
+/// TMF645 Service Qualification Module
+pub const CLASS_PATH: &str = "checkServiceQualification";
 use super::{TaskStateType, MOD_PATH};
 
 ///  Reason for service unavailability
@@ -38,7 +39,7 @@ pub struct AlternateServiceProposal {
 
 impl From<ServiceRefOrValue> for AlternateServiceProposal {
     fn from(value: ServiceRefOrValue) -> Self {
-        AlternateServiceProposal {
+        Self {
             alternate_service_availability_date: value.has_started.clone(),
             id: CheckServiceQualification::get_uuid(),
             alternate_service: Some(value),
@@ -98,6 +99,12 @@ impl CheckServiceQualificationItem {
     }
 }
 
+impl IsAddressable for CheckServiceQualification {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 /// Check Service Qualification
 #[derive(Clone, Debug, Default, HasId, HasDescription, HasRelatedParty, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -149,22 +156,22 @@ pub struct CheckServiceQualification {
 
 impl CheckServiceQualification {
     /// Create a new SQ Check
-    pub fn new(desc: impl Into<String>) -> CheckServiceQualification {
-        CheckServiceQualification {
-            ..CheckServiceQualification::create()
-        }
-        .description(desc)
-        .state(TaskStateType::default())
+    pub fn new(desc: impl Into<String>) -> Self {
+        Self::create()
+            .description(desc)
+            .state(TaskStateType::default())
     }
 
     /// Set the status
-    pub fn state(mut self, state: TaskStateType) -> CheckServiceQualification {
+    #[must_use]
+    pub const fn state(mut self, state: TaskStateType) -> Self {
         self.state = Some(state);
         self
     }
 
     /// Add item to SQ Check
-    pub fn item(mut self, item: CheckServiceQualificationItem) -> CheckServiceQualification {
+    #[must_use]
+    pub fn item(mut self, item: CheckServiceQualificationItem) -> Self {
         vec_insert(&mut self.service_qualification_item, item);
         self
     }

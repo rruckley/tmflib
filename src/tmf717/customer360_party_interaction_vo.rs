@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 /// Customer360 Party Interaction VO
 pub struct Customer360PartyInteractionVo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Description of the interaction

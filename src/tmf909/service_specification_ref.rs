@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///Service specification reference: ServiceSpecification(s) required to realize a ProductSpecification.
+///Service specification reference: ServiceSpecification(s) required to realize a `ProductSpecification`.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceSpecificationRef {
     ///When sub-classing, this defines the super-class

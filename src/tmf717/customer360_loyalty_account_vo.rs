@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 /// Customer360 Loyalty Account VO
 pub struct Customer360LoyaltyAccountVo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Balances linked to the account

@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///Monitored Class Criteria FVO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct MonitoredClassCriteriaFvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible_fvo: ExtensibleFvo,
     ///A monitored object class for specifying the set of instances that are referenced by a PM query.

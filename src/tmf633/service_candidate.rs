@@ -3,13 +3,15 @@
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 
-use crate::{vec_insert, HasId, HasLastUpdate, HasName, TimePeriod, TimeStamp, Uri};
+use crate::{vec_insert, HasId, HasLastUpdate, HasName, IsAddressable, TimePeriod, TimeStamp, Uri};
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
 use super::{
     service_category::ServiceCategoryRef, service_specification::ServiceSpecificationRef, MOD_PATH,
 };
-const CLASS_PATH: &str = "serviceCandidate";
+
+/// Path to this class
+pub const CLASS_PATH: &str = "serviceCandidate";
 const CANDIDATE_NEW_VERS: &str = "1.0";
 const CANDIDATE_NEW_STATUS: &str = "new";
 
@@ -28,23 +30,27 @@ pub struct ServiceCandidate {
     category: Option<Vec<ServiceCategoryRef>>,
 }
 
+impl IsAddressable for ServiceCandidate {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 impl ServiceCandidate {
     /// Create new instance of Service Candidate
-    pub fn new(
-        name: impl Into<String>,
-        specification_ref: ServiceSpecificationRef,
-    ) -> ServiceCandidate {
-        ServiceCandidate {
+    pub fn new(name: impl Into<String>, specification_ref: ServiceSpecificationRef) -> Self {
+        Self {
             name: Some(name.into()),
             lifecycle_status: Some(CANDIDATE_NEW_STATUS.into()),
             version: Some(CANDIDATE_NEW_VERS.into()),
             service_specification: specification_ref,
-            ..ServiceCandidate::create_with_time()
+            ..Self::create_with_time()
         }
     }
 
     /// Add a category to this Service Candidate by passing in a Category reference
-    pub fn category(mut self, category: ServiceCategoryRef) -> ServiceCandidate {
+    #[must_use]
+    pub fn category(mut self, category: ServiceCategoryRef) -> Self {
         vec_insert(&mut self.category, category);
         self
     }
@@ -60,7 +66,7 @@ pub struct ServiceCandidateRef {
 
 impl From<ServiceCandidate> for ServiceCandidateRef {
     fn from(value: ServiceCandidate) -> Self {
-        ServiceCandidateRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),

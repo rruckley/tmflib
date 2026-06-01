@@ -14,7 +14,7 @@ const CLASS_PATH: &str = "resource";
 const RESOURCE_VERS: &str = "1.0";
 
 /// Resource Usage Status
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ResourceUsageStateType {
     /// Idle
     #[default]
@@ -26,7 +26,7 @@ pub enum ResourceUsageStateType {
 }
 
 /// Adminsitrative configuration of resource
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ResourceAdministrativeStateType {
     /// Resource has been locked
     Locked,
@@ -38,7 +38,7 @@ pub enum ResourceAdministrativeStateType {
 }
 
 /// Operational Status of resource
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ResourceOperationalStateType {
     /// Resource is enabled
     #[default]
@@ -48,7 +48,7 @@ pub enum ResourceOperationalStateType {
 }
 
 /// Resource Status
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ResourceStatusType {
     /// Standby
     Standby,
@@ -106,8 +106,8 @@ pub struct Resource {
 
 impl Resource {
     /// Create a new Resource Inventory record
-    pub fn new(name: impl Into<String>) -> Resource {
-        let mut resource = Resource::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut resource = Self::create();
         resource.name = Some(name.into());
         resource.resource_version = Some(RESOURCE_VERS.to_owned());
         resource

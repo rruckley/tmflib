@@ -5,10 +5,10 @@ use serde::{Deserialize, Serialize};
 ///Role played by the related party or party role in the context of the specific entity it is linked to. Such as 'initiator', 'customer',  'salesAgent', 'user'
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPartyRefOrPartyRoleRef {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
-    ///
+    /// Reference to a party or party role, which may be the related party or party role itself, or a reference to it. The referenced entity may be of any type, but is typically a Party or `PartyRole`.
     #[serde(rename = "partyOrPartyRole")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub party_or_party_role: Option<PartyRefOrPartyRoleRef>,

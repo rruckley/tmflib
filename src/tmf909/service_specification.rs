@@ -7,7 +7,8 @@ use super::{
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
-/// ServiceSpecification is a class that offers characteristics to describe a type of service.
+/// `ServiceSpecification` is a class that offers characteristics to describe a type of service.
+///
 /// Functionally, it acts as a template by which Services may be instantiated. By sharing the same specification, these services would therefore share the same set of characteristics.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceSpecification {
@@ -65,7 +66,7 @@ pub struct ServiceSpecification {
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub related_party: Option<Vec<RelatedParty>>,
-    ///A list of resource specification references (ResourceSpecificationRef [*]). The ResourceSpecification is required for a service specification with type ResourceFacingServiceSpecification (RFSS).
+    ///A list of resource specification references (`ResourceSpecificationRef` [*]). The `ResourceSpecification` is required for a service specification with type `ResourceFacingServiceSpecification` (RFSS).
     #[serde(rename = "resourceSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub resource_specification: Option<Vec<ResourceSpecificationRef>>,

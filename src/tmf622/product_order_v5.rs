@@ -8,7 +8,7 @@ use crate::common::tmf_error::TMFError;
 use crate::tmf641::service_order::ServiceOrder;
 use crate::tmf651::agreement::AgreementRef;
 use crate::tmf663::shopping_cart::ShoppingCart;
-use crate::{DateTime, HasId, HasLastUpdate, HasNote, HasRelatedParty, Uri};
+use crate::{DateTime, HasId, HasLastUpdate, HasNote, HasRelatedParty, IsAddressable, Uri};
 use tmflib_derive::{HasId, HasNote, HasRelatedParty};
 
 // URL Path components
@@ -17,7 +17,8 @@ use super::MOD_PATH;
 use super::milestone::Milestone;
 use super::product_order_item::ProductOrderItem;
 
-const CLASS_PATH: &str = "order";
+/// TMF622 Product Order Management - V5
+pub const CLASS_PATH: &str = "order";
 
 /// Reference to a Product Order
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -134,6 +135,12 @@ impl ProductOrder {
     /// Add an ProductOrderItem into the ProductOrder
     pub fn add_order_item(&mut self, order_item: ProductOrderItem) {
         self.product_order_item.as_mut().unwrap().push(order_item);
+    }
+}
+
+impl IsAddressable for ProductOrder {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

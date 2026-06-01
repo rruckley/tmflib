@@ -9,7 +9,9 @@ use super::MOD_PATH;
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
 use crate::tmf673::geographic_address::GeographicAddress;
-use crate::{gen_code, HasDescription, HasId, HasName, HasValidity, TMFEvent, TimePeriod};
+use crate::{
+    gen_code, HasDescription, HasId, HasName, HasValidity, IsAddressable, TMFEvent, TimePeriod,
+};
 use tmflib_derive::{HasDescription, HasId, HasName, HasValidity};
 const CLASS_PATH: &str = "geographicSite";
 const DEFAULT_TZ: &str = "AEST";
@@ -20,7 +22,7 @@ const CALENDAR_WEEKDAYS: &str = "weekdays";
 /// # Uses
 /// Link to a place
 /// Provide a place locally within the payload
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PlaceRefOrValue {
     id: String,
@@ -30,7 +32,7 @@ pub struct PlaceRefOrValue {
 
 impl From<GeographicAddress> for PlaceRefOrValue {
     fn from(value: GeographicAddress) -> Self {
-        PlaceRefOrValue {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
@@ -69,8 +71,9 @@ pub struct CalendarPeriod {
 
 impl CalendarPeriod {
     /// Generate standard business hours calendar
-    pub fn business_hours() -> CalendarPeriod {
-        CalendarPeriod {
+    #[must_use]
+    pub fn business_hours() -> Self {
+        Self {
             day: Some(CALENDAR_WEEKDAYS.to_string()),
             status: Some("open".to_string()),
             time_zone: Some(DEFAULT_TZ.to_string()),
@@ -117,14 +120,15 @@ pub struct GeographicSite {
 
 impl GeographicSite {
     /// Create a new Geographic Site with a name
-    pub fn new(name: impl Into<String>) -> GeographicSite {
-        let mut site = GeographicSite::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut site = Self::create();
         site.name = Some(name.into());
         site.generate_code(None);
         site
     }
     /// Set the place on this Site
-    pub fn place(mut self, place: PlaceRefOrValue) -> GeographicSite {
+    #[must_use]
+    pub fn place(mut self, place: PlaceRefOrValue) -> Self {
         match self.place.as_mut() {
             Some(v) => v.push(place),
             None => self.place = Some(vec![place]),
@@ -133,13 +137,15 @@ impl GeographicSite {
     }
 
     /// Set the code for this site
-    pub fn code(mut self, code: String) -> GeographicSite {
+    #[must_use]
+    pub fn code(mut self, code: String) -> Self {
         self.code = Some(code);
         self
     }
 
     /// Set the calendar for this site
-    pub fn calendar(mut self, calendar: CalendarPeriod) -> GeographicSite {
+    #[must_use]
+    pub fn calendar(mut self, calendar: CalendarPeriod) -> Self {
         match self.calendar.as_mut() {
             Some(v) => v.push(calendar),
             None => self.calendar = Some(vec![calendar]),
@@ -157,6 +163,12 @@ impl GeographicSite {
             None,
         );
         self.code = Some(code);
+    }
+}
+
+impl IsAddressable for GeographicSite {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 
@@ -190,7 +202,7 @@ impl TMFEvent<GeographicSiteEvent> for GeographicSite {
 }
 
 impl EventPayload<GeographicSiteEvent> for GeographicSite {
-    type Subject = GeographicSite;
+    type Subject = Self;
     type EventType = GeographicSiteEventType;
 
     fn to_event(&self, event_type: Self::EventType) -> Event<GeographicSiteEvent, Self::EventType> {
@@ -206,7 +218,7 @@ impl EventPayload<GeographicSiteEvent> for GeographicSite {
         Event {
             correlation_id: self.code.clone(),
             description: Some(desc),
-            domain: Some(GeographicSite::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
             href: Some(self.get_href()),

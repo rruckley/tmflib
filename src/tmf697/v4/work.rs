@@ -4,11 +4,12 @@
 use super::MOD_PATH;
 use crate::tmf646::appointment::AppointmentRef;
 use crate::tmf651::agreement::AgreementRef;
-use crate::{HasDescription, HasId, HasName, TimePeriod, Uri};
+use crate::{HasDescription, HasId, HasName, IsAddressable, TimePeriod, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasName};
 
-const CLASS_PATH: &str = "work";
+/// Path to module
+pub const CLASS_PATH: &str = "work";
 
 /// Reference to a work object
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -23,7 +24,7 @@ pub struct WorkRef {
 
 impl From<Work> for WorkRef {
     fn from(value: Work) -> Self {
-        WorkRef {
+        Self {
             href: value.get_href(),
             id: value.get_id(),
             name: value.get_name(),
@@ -43,30 +44,32 @@ pub enum WorkRefOrValue {
 
 impl WorkRefOrValue {
     /// Get the id, independant on varient
+    #[must_use]
     pub fn get_id(&self) -> String {
         match self {
-            WorkRefOrValue::Ref(r) => r.id.clone(),
-            WorkRefOrValue::Val(v) => v.get_id(),
+            Self::Ref(r) => r.id.clone(),
+            Self::Val(v) => v.get_id(),
         }
     }
     /// Get the name, independant on varient
+    #[must_use]
     pub fn get_name(&self) -> String {
         match self {
-            WorkRefOrValue::Ref(r) => r.name.clone(),
-            WorkRefOrValue::Val(v) => v.get_name(),
+            Self::Ref(r) => r.name.clone(),
+            Self::Val(v) => v.get_name(),
         }
     }
 }
 
 impl From<WorkRef> for WorkRefOrValue {
     fn from(value: WorkRef) -> Self {
-        WorkRefOrValue::Ref(value)
+        Self::Ref(value)
     }
 }
 
 impl From<Work> for WorkRefOrValue {
     fn from(value: Work) -> Self {
-        WorkRefOrValue::Val(Box::new(value))
+        Self::Val(Box::new(value))
     }
 }
 
@@ -117,10 +120,16 @@ pub struct Work {
 
 impl Work {
     /// Create a new work object
-    pub fn new(name: impl Into<String>) -> Work {
-        let mut out = Work::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut out = Self::create();
         out.set_name(name);
         out
+    }
+}
+
+impl IsAddressable for Work {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

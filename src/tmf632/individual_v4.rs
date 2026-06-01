@@ -17,7 +17,8 @@ use crate::{
 };
 use tmflib_derive::{HasId, HasRelatedParty};
 
-const CLASS_PATH: &str = "individual";
+/// Path to this class
+pub const CLASS_PATH: &str = "individual";
 const CODE_PREFIX: &str = "I-";
 const NAMENOTSET: &str = "NAMENOTSET";
 
@@ -99,8 +100,8 @@ pub struct Individual {
 
 impl Individual {
     /// Create a new instance of indiviudal object
-    pub fn new(name: impl Into<String>) -> Individual {
-        let mut ind = Individual::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut ind = Self::create();
         // Try to split name into two parts
         // If it splits, take 1st as given name, second as family name
         ind.set_name(name);
@@ -118,7 +119,8 @@ impl Individual {
     /// let individual = Individual::new("John Smith")
     ///     .email("john.smith@example.com");
     /// ```
-    pub fn email(mut self, email: &str) -> Individual {
+    #[must_use]
+    pub fn email(mut self, email: &str) -> Self {
         let medium = ContactMedium::email(email);
         self.add_contact(medium);
         self
@@ -132,7 +134,8 @@ impl Individual {
     /// let individual = Individual::new("John Smith")
     ///     .title("Mr");
     /// ```
-    pub fn title(mut self, title: impl Into<String>) -> Individual {
+    #[must_use]
+    pub fn title(mut self, title: impl Into<String>) -> Self {
         self.title = Some(title.into());
         self
     }
@@ -145,7 +148,8 @@ impl Individual {
     /// let individual = Individual::new("John Smith")
     ///     .gender("Unspecified");
     /// ```
-    pub fn gender(mut self, gender: impl Into<String>) -> Individual {
+    #[must_use]
+    pub fn gender(mut self, gender: impl Into<String>) -> Self {
         self.gender = Some(gender.into());
         self
     }
@@ -158,7 +162,8 @@ impl Individual {
     /// let individual = Individual::new("John Smith")
     ///     .gender("Unspecified");
     /// ```
-    pub fn preferred(mut self, preferred: impl Into<String>) -> Individual {
+    #[must_use]
+    pub fn preferred(mut self, preferred: impl Into<String>) -> Self {
         self.preferred_given_name = Some(preferred.into());
         self
     }
@@ -171,7 +176,8 @@ impl Individual {
     /// let individual = Individual::new("John Smith")
     ///     .mobile("0411 111 111");
     /// ```
-    pub fn mobile(mut self, mobile: &str) -> Individual {
+    #[must_use]
+    pub fn mobile(mut self, mobile: &str) -> Self {
         let medium = ContactMedium::mobile(mobile);
         self.add_contact(medium);
         self
@@ -204,6 +210,7 @@ impl Individual {
     }
 
     /// Get Mobile number from contact medium if present
+    #[must_use]
     pub fn get_mobile(&self) -> Option<String> {
         // Optionally get the email address
         let medium = self.find_medium("mobile")?;
@@ -213,6 +220,7 @@ impl Individual {
     }
 
     /// Get Email address from contact medium if present
+    #[must_use]
     pub fn get_email(&self) -> Option<String> {
         // Optionally get the email address
         let medium = self.find_medium("email")?;
@@ -226,32 +234,26 @@ impl Individual {
         &mut self,
         characteristic: Characteristic,
     ) -> Option<Characteristic> {
-        match self.party_characteristic.as_mut() {
-            Some(c) => {
-                // Characteristic array exist
-                let pos = c.iter().position(|c| c.name == characteristic.name);
-                match pos {
-                    Some(u) => {
-                        // Clone old value for return
-                        let old = c[u].clone();
-                        // Replace
-                        c[u] = characteristic;
-                        Some(old)
-                    }
-                    None => {
-                        // This means the characteristic could not be found, instead we insert it
-                        // Additional we return None to indicate that no old value was found
-                        c.push(characteristic);
-                        None
-                    }
-                }
-            }
-            None => {
-                // Characteristic Vec was not created yet, create it now.
-                self.party_characteristic = Some(vec![characteristic]);
-                // Return None to show no previous value existed.
+        if let Some(c) = self.party_characteristic.as_mut() {
+            // Characteristic array exist
+            let pos = c.iter().position(|c| c.name == characteristic.name);
+            if let Some(u) = pos {
+                // Clone old value for return
+                let old = c[u].clone();
+                // Replace
+                c[u] = characteristic;
+                Some(old)
+            } else {
+                // This means the characteristic could not be found, instead we insert it
+                // Additional we return None to indicate that no old value was found
+                c.push(characteristic);
                 None
             }
+        } else {
+            // Characteristic Vec was not created yet, create it now.
+            self.party_characteristic = Some(vec![characteristic]);
+            // Return None to show no previous value existed.
+            None
         }
     }
 
@@ -285,6 +287,9 @@ impl IsAddressable for Individual {
     fn get_objects() -> Vec<&'static str> {
         super::get_objects()
     }
+    fn get_version() -> &'static str {
+        super::get_version()
+    }
 }
 
 impl HasName for Individual {
@@ -300,9 +305,6 @@ impl HasName for Individual {
         let name_parts = name_str.split(' ');
         // Determine the number of parts the name is given in
         match name_parts.clone().count() {
-            1 => {
-                // Only a single name, nothing to do here.
-            }
             2 => {
                 // two parts
                 let parts_vec: Vec<&str> = name_parts.collect();
@@ -371,7 +373,7 @@ impl TMFEvent<IndividualEvent> for Individual {
 }
 
 impl EventPayload<IndividualEvent> for Individual {
-    type Subject = Individual;
+    type Subject = Self;
     type EventType = IndividualEventType;
 
     fn to_event(&self, event_type: Self::EventType) -> Event<IndividualEvent, Self::EventType> {
@@ -387,7 +389,7 @@ impl EventPayload<IndividualEvent> for Individual {
         Event {
             correlation_id: None,
             description: Some(desc),
-            domain: Some(Individual::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
             href: Some(self.get_href()),

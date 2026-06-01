@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///A PolicyVariable is an entity for modeling different types of variables that can be used to form a PolicyCondition statement. It can be static or dynamic.
+///A `PolicyVariable` is an entity for modeling different types of variables that can be used to form a `PolicyCondition` statement. It can be static or dynamic.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyVariableMvo {}
 impl std::fmt::Display for PolicyVariableMvo {

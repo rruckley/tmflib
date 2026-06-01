@@ -1,13 +1,13 @@
 use super::{ExtensibleFvo, PolicyVariableRefOrValueFvo};
 use serde::{Deserialize, Serialize};
 
-///PolicyOperatorFvo represents a policy operator with an extensible schema and an optional policy variable.
+///`PolicyOperatorFvo` represents a policy operator with an extensible schema and an optional policy variable.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyOperatorFvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible_fvo: ExtensibleFvo,
-    ///Container for PolicyVariable Reference or unmanaged PolicyVariable object
+    ///Container for `PolicyVariable` Reference or unmanaged `PolicyVariable` object
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub variable: Option<PolicyVariableRefOrValueFvo>,
 }

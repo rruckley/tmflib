@@ -23,3 +23,24 @@ pub mod catalog;
 pub mod resource_candidate;
 pub mod resource_category;
 pub mod resource_specification;
+
+fn get_objects() -> Vec<&'static str> {
+    vec![
+        #[cfg(feature = "build-V4")]
+        catalog::CLASS_PATH,
+        #[cfg(feature = "build-V5")]
+        catalog::CLASS_PATH,
+        #[cfg(feature = "build-V4")]
+        resource_candidate::CLASS_PATH,
+        #[cfg(feature = "build-V5")]
+        resource_candidate::CLASS_PATH,
+        // #[cfg(feature = "build-V4")]
+        // resource_category::CLASS_PATH,
+        // #[cfg(feature = "build-V5")]
+        // resource_category::CLASS_PATH,
+        #[cfg(feature = "build-V4")]
+        resource_specification::CLASS_PATH,
+        #[cfg(feature = "build-V5")]
+        resource_specification::CLASS_PATH,
+    ]
+}

@@ -19,7 +19,7 @@ pub struct AgreementItem {
 
 impl From<&QuoteItem> for AgreementItem {
     fn from(_value: &QuoteItem) -> Self {
-        AgreementItem::default()
+        Self::default()
     }
 }
 

@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 /// Customer Characteristics
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Characteristic {
     /// Name of characteristic
@@ -16,9 +16,9 @@ pub struct Characteristic {
 
 impl Characteristic {
     /// Create a new characteristic from name / value
-    pub fn new(name: impl Into<String>, value: impl Into<String>) -> Characteristic {
+    pub fn new(name: impl Into<String>, value: impl Into<String>) -> Self {
         let val_str: String = value.into();
-        Characteristic {
+        Self {
             name: name.into(),
             value: val_str.into(),
             value_type: String::from("String"),
@@ -29,7 +29,7 @@ impl Characteristic {
 impl From<(&str, &str)> for Characteristic {
     fn from(value: (&str, &str)) -> Self {
         let (name, value) = value;
-        Characteristic::new(name, value)
+        Self::new(name, value)
     }
 }
 

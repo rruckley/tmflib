@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///Container for PolicyEvent Reference or PolicyEvent object
+///Container for `PolicyEvent` Reference or `PolicyEvent` object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyEventRefOrValue {}
 impl std::fmt::Display for PolicyEventRefOrValue {

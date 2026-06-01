@@ -2,10 +2,10 @@ use super::CharacteristicMvo;
 use crate::common::extensible::Extensible;
 use serde::{Deserialize, Serialize};
 
-///TrackingRecordMvo
+///`TrackingRecordMvo`
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TrackingRecordMvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///A generic list of any type of elements. Used for vendor Extensions or loose element encapsulation from other namespaces
@@ -14,7 +14,7 @@ pub struct TrackingRecordMvo {
     ///Describes the action being done, such as: ack, clear
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    ///Identifier of the TrackingRecord.
+    ///Identifier of the `TrackingRecord`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     ///Describes the system Id from which the action was done

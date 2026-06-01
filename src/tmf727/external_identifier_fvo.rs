@@ -2,10 +2,10 @@ use serde::{Deserialize, Serialize};
 // use super::Extensible;
 use crate::common::extensible::Extensible;
 
-///ExternalIdentifier represents an identifier of an entity that is defined in an external system. It is used to reference an entity in an external system, e.g. a product in a product catalog, a customer in a CRM system, etc.
+///`ExternalIdentifier` represents an identifier of an entity that is defined in an external system. It is used to reference an entity in an external system, e.g. a product in a product catalog, a customer in a CRM system, etc.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ExternalIdentifierFvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Type of the identification, typically would be the type of the entity within the external system

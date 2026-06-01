@@ -1,7 +1,7 @@
 use super::EntityRefMvo;
 use serde::{Deserialize, Serialize};
 
-///ConstraintRefMvo represents a reference to a constraint, which may include the version of the constraint. It is used to define the reference to a constraint in a specific context, e.g. for a specific product or in a specific environment.
+///`ConstraintRefMvo` represents a reference to a constraint, which may include the version of the constraint. It is used to define the reference to a constraint in a specific context, e.g. for a specific product or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ConstraintRefMvo {
     ///Base schema for addressable entities

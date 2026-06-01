@@ -5,14 +5,14 @@ use serde::{Deserialize, Serialize};
 ///This is a relationship between two services.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceRelationship {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Type of relationship between services
     #[serde(rename = "relationshipType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub relationship_type: Option<String>,
-    ///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the ServiceRefOrValue class itself
+    ///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the `ServiceRefOrValue` class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service: Option<ServiceRefOrValue>,
     ///A list of characteristics that apply to this service relationship.

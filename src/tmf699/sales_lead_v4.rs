@@ -15,12 +15,13 @@ use crate::tmf620::product_specification::ProductSpecificationRef;
 use crate::tmf620::{ChannelRef, MarketSegmentRef};
 
 use super::MOD_PATH;
-use crate::{DateTime, HasId, HasNote, HasValidity, TimePeriod};
+use crate::{DateTime, HasId, HasNote, HasValidity, IsAddressable, TimePeriod};
 use tmflib_derive::{HasId, HasNote, HasValidity};
 
 use serde::{Deserialize, Serialize};
 
-const CLASS_PATH: &str = "salesLead";
+/// Path to module
+pub const CLASS_PATH: &str = "salesLead";
 const LEAD_VALID: u64 = 30;
 
 /// Sales Lead Priorities
@@ -105,13 +106,19 @@ pub struct SalesLead {
 
 impl SalesLead {
     /// Create a new sales lead under a given names
-    pub fn new(name: impl Into<String>) -> SalesLead {
-        let mut sl = SalesLead::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut sl = Self::create();
         sl.name = name.into();
         sl.status = Some(SalesLeadStateType::default());
         sl.priority = Some(SalesLeadPriorityType::default());
         sl.valid_for = Some(TimePeriod::period_days(LEAD_VALID));
         sl
+    }
+}
+
+impl IsAddressable for SalesLead {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 

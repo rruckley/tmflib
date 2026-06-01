@@ -3,12 +3,13 @@
 use crate::common::money::Money;
 use crate::common::note::Note;
 use crate::common::tmf_error::TMFError;
-use crate::{HasId, HasNote, TimePeriod, Uri};
+use crate::{HasId, HasNote, IsAddressable, TimePeriod, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasNote};
 
 use super::MOD_PATH;
-const CLASS_PATH: &str = "instruction";
+/// Path to module
+pub const CLASS_PATH: &str = "instruction";
 
 /// Signarure Required Type
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -54,38 +55,43 @@ pub struct ShippingInstruction {
 
 impl ShippingInstruction {
     /// Create a new shipping instruction
-    pub fn new(instruction: impl Into<String>) -> ShippingInstruction {
-        ShippingInstruction::create().message(instruction)
+    pub fn new(instruction: impl Into<String>) -> Self {
+        Self::create().message(instruction)
     }
 
     /// Set the label message for this instructions
-    pub fn message(mut self, message: impl Into<String>) -> ShippingInstruction {
+    #[must_use]
+    pub fn message(mut self, message: impl Into<String>) -> Self {
         self.label_message = Some(message.into());
         self
     }
 
     /// Set the signature requirements
-    pub fn signature_required_by(
+    #[must_use]
+    pub const fn signature_required_by(
         mut self,
         signature: Option<SignatureRequiredByType>,
-    ) -> ShippingInstruction {
-        match signature {
-            Some(s) => {
-                self.signature_required_by = Some(s);
-                self.signature_required = true;
-            }
-            None => {
-                self.signature_required_by = None;
-                self.signature_required = false;
-            }
-        };
+    ) -> Self {
+        if let Some(s) = signature {
+            self.signature_required_by = Some(s);
+            self.signature_required = true;
+        } else {
+            self.signature_required_by = None;
+            self.signature_required = false;
+        }
         self
+    }
+}
+
+impl IsAddressable for ShippingInstruction {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 
 impl From<String> for ShippingInstruction {
     fn from(value: String) -> Self {
-        ShippingInstruction::new(value)
+        Self::new(value)
     }
 }
 

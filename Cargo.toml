@@ -13,10 +13,10 @@ tmf620 = ["tmf633","tmf634","tmf651"]
 # TMF621 Trouble Ticket Module
 tmf621 = []
 # TMF622 Product Order Module
-tmf622 = ["tmf641"]
+tmf622 = ["tmf641","tmf651","tmf663"]
 tmf628 = []
 # TMF629 Customer Module
-tmf629 = []
+tmf629 = ["tmf632"]
 tmf632 = []
 # TMF633 Service Catalogue Module
 tmf633 = []
@@ -43,7 +43,7 @@ tmf663 = []
 tmf664 = []
 tmf666 = []
 tmf667 = []
-tmf669 = []
+tmf669 = ["tmf632","tmf651"]
 tmf671 = []
 tmf672 = []
 tmf673 = []
@@ -94,6 +94,8 @@ all = [
     "tmf645",
     "tmf646",
     "tmf648",
+    "tmf651",
+    "tmf652",
     "tmf653",
     "tmf657",
     "tmf662",
@@ -106,12 +108,14 @@ all = [
     "tmf672",
     "tmf673",
     "tmf674",
+    "tmf675",
     "tmf676",
     "tmf678",
     "tmf679",
     "tmf680",
     "tmf681",
     "tmf687",
+    "tmf688",
     "tmf696",
     "tmf697",
     "tmf699",
@@ -267,12 +271,12 @@ serde = { version = "1.0.228", features = ["derive"]}
 serde_json = "1.0.143"
 sha256 = { version = "1.6.0", default-features = false }
 uuid = { version = "1.22.0", features = ["v4"]}
-# tmflib-derive = { version = "0.1.35" }
-tmflib-derive = { path = "tmflib-derive"}
+tmflib-derive = { version = "0.1.35" }
+# tmflib-derive = { path = "tmflib-derive"}
 hex = "0.4.3"
 base32 = "0.5.1"
 # openapiv3 = "2.2.0"
-rust_decimal = "1.39.0"
+rust_decimal = "1.42.0"
 rust_decimal_macros = "1.39.0"
 thiserror = "2.0.18"
 regex = "1.12.3"

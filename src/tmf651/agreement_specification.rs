@@ -1,11 +1,12 @@
 //! Agreement Specification Module
 
-use crate::{DateTime, HasId, HasLastUpdate, HasName, HasValidity, TimePeriod};
+use crate::{DateTime, HasId, HasLastUpdate, HasName, HasValidity, IsAddressable, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
 
 use super::MOD_PATH;
-const CLASS_PATH: &str = "specification";
+/// Path for Agreement Specification class
+pub const CLASS_PATH: &str = "specification";
 
 /// Agreement Specification
 #[derive(
@@ -32,6 +33,12 @@ pub struct AgreementSpecification {
     version: Option<String>,
 }
 
+impl IsAddressable for AgreementSpecification {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 /// Reference to external specification
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct AgreementSpecificationRef {
@@ -43,7 +50,7 @@ pub struct AgreementSpecificationRef {
 
 impl From<AgreementSpecification> for AgreementSpecificationRef {
     fn from(value: AgreementSpecification) -> Self {
-        AgreementSpecificationRef {
+        Self {
             description: value.description.as_ref().unwrap().clone(),
             id: value.get_id(),
             href: value.get_href(),

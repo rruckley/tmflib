@@ -1,4 +1,4 @@
-//! Defines the PerceivedSeverity enum used in Alarm definitions.
+//! Defines the `PerceivedSeverity` enum used in Alarm definitions.
 
 use serde::{Deserialize, Serialize};
 /**Lists the possible severities that can be allocated to an Alarm. The values are consistent with ITU-T Recommendation X.733.

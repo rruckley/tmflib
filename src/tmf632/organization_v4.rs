@@ -15,11 +15,12 @@ use crate::common::{
 
 use super::{Characteristic, MOD_PATH};
 
-const CLASS_PATH: &str = "organization";
+/// Path to this class
+pub const CLASS_PATH: &str = "organization";
 const CODE_PREFIX: &str = "O-";
 
 /// Organization Status
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum OrganizationStateType {
     /// Initialized
@@ -45,7 +46,7 @@ pub struct OrganizationRef {
 
 impl From<Organization> for OrganizationRef {
     fn from(value: Organization) -> Self {
-        OrganizationRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
@@ -103,8 +104,8 @@ pub struct Organization {
 
 impl Organization {
     /// Create a new organization record with a name
-    pub fn new(name: impl Into<String>) -> Organization {
-        let mut org = Organization::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut org = Self::create();
 
         // Ensure name has been trimmed before settings
         let name: String = name.into();
@@ -140,32 +141,26 @@ impl Organization {
         &mut self,
         characteristic: Characteristic,
     ) -> Option<Characteristic> {
-        match self.party_characteristic.as_mut() {
-            Some(c) => {
-                // Characteristic array exist
-                let pos = c.iter().position(|c| c.name == characteristic.name);
-                match pos {
-                    Some(u) => {
-                        // Clone old value for return
-                        let old = c[u].clone();
-                        // Replace
-                        c[u] = characteristic;
-                        Some(old)
-                    }
-                    None => {
-                        // This means the characteristic could not be found, instead we insert it
-                        // Additional we return None to indicate that no old value was found
-                        c.push(characteristic);
-                        None
-                    }
-                }
-            }
-            None => {
-                // Characteristic Vec was not created yet, create it now.
-                self.party_characteristic = Some(vec![characteristic]);
-                // Return None to show no previous value existed.
+        if let Some(c) = self.party_characteristic.as_mut() {
+            // Characteristic array exist
+            let pos = c.iter().position(|c| c.name == characteristic.name);
+            if let Some(u) = pos {
+                // Clone old value for return
+                let old = c[u].clone();
+                // Replace
+                c[u] = characteristic;
+                Some(old)
+            } else {
+                // This means the characteristic could not be found, instead we insert it
+                // Additional we return None to indicate that no old value was found
+                c.push(characteristic);
                 None
             }
+        } else {
+            // Characteristic Vec was not created yet, create it now.
+            self.party_characteristic = Some(vec![characteristic]);
+            // Return None to show no previous value existed.
+            None
         }
     }
 }
@@ -174,12 +169,15 @@ impl IsAddressable for Organization {
     fn get_objects() -> Vec<&'static str> {
         super::get_objects()
     }
+    fn get_version() -> &'static str {
+        super::get_version()
+    }
 }
 
 impl From<String> for Organization {
     fn from(value: String) -> Self {
         // Generate an Organization from a given string, treating String as name
-        Organization::new(value)
+        Self::new(value)
     }
 }
 
@@ -219,7 +217,7 @@ impl TMFEvent<OrganizationEvent> for Organization {
 }
 
 impl EventPayload<OrganizationEvent> for Organization {
-    type Subject = Organization;
+    type Subject = Self;
     type EventType = OrganizationEventType;
 
     fn to_event(&self, event_type: Self::EventType) -> Event<OrganizationEvent, Self::EventType> {
@@ -235,7 +233,7 @@ impl EventPayload<OrganizationEvent> for Organization {
         Event {
             correlation_id: None,
             description: Some(desc),
-            domain: Some(Organization::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
             href: Some(self.get_href()),

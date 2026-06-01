@@ -4,7 +4,7 @@ use super::{
 };
 use serde::{Deserialize, Serialize};
 
-///ResourceReservation represents the reservation of a resource. It includes the date and time of the reservation, the state of the reservation, and the reason for the reservation.
+///`ResourceReservation` represents the reservation of a resource. It includes the date and time of the reservation, the state of the reservation, and the reason for the reservation.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResourceReservation {
     ///When sub-classing, this defines the super-class
@@ -75,7 +75,7 @@ pub struct ResourceReservation {
     #[serde(rename = "reservationPeriod")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub reservation_period: Option<TimePeriod>,
-    ///
+    /// The state of the reservation, such as 'reserved', 'completed', 'cancelled'
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state: Option<ReservationStateType>,
     ///The date and time the state changed.

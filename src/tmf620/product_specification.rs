@@ -19,11 +19,12 @@ use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 use crate::tmf633::characteristic_specification::CharacteristicSpecification;
 use crate::tmf633::service_specification::{ServiceSpecification, ServiceSpecificationRef};
 
-const CLASS_PATH: &str = "productSpecification";
+/// Path to this class
+pub const CLASS_PATH: &str = "productSpecification";
 const SPEC_VERS: &str = "1.0";
 const CHAR_VALUE_MIN_CARD: Cardinality = 0;
 const CHAR_VALUE_MAX_CARD: Cardinality = 1;
-/// Verb to tag converted ServiceSpecifications with.
+/// Verb to tag converted `ServiceSpecifications` with.
 pub const SPEC_CONV_VERB: &str = "Imported";
 
 /// Product Specification Characteristic
@@ -63,8 +64,8 @@ impl ProductSpecificationCharacteristic {
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristic;
     /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"));
     /// ```
-    pub fn new(name: impl Into<String>) -> ProductSpecificationCharacteristic {
-        ProductSpecificationCharacteristic {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             configurable: true,
             max_cardinality: CHAR_VALUE_MAX_CARD,
             min_cardinality: CHAR_VALUE_MIN_CARD,
@@ -75,25 +76,29 @@ impl ProductSpecificationCharacteristic {
     }
 
     /// Set configuraable flag
-    pub fn configurable(mut self, configurable: bool) -> ProductSpecificationCharacteristic {
+    #[must_use]
+    pub const fn configurable(mut self, configurable: bool) -> Self {
         self.configurable = configurable;
         self
     }
 
     /// Set description of characteristic
-    pub fn description(mut self, description: String) -> ProductSpecificationCharacteristic {
-        self.description = Some(description.clone());
+    #[must_use]
+    pub fn description<T: Into<String>>(mut self, description: T) -> Self {
+        self.description = Some(description.into());
         self
     }
 
     /// Set extensible flag
-    pub fn extensible(mut self, extensible: bool) -> ProductSpecificationCharacteristic {
+    #[must_use]
+    pub const fn extensible(mut self, extensible: bool) -> Self {
         self.extensible = Some(extensible);
         self
     }
 
     /// Set validity period
-    pub fn validity(mut self, validity: Option<TimePeriod>) -> ProductSpecificationCharacteristic {
+    #[must_use]
+    pub fn validity(mut self, validity: Option<TimePeriod>) -> Self {
         self.valid_for = validity;
         self
     }
@@ -106,11 +111,8 @@ impl ProductSpecificationCharacteristic {
     /// let ps_char = ProductSpecificationCharacteristic::new(String::from("My Characteristic"))
     ///     .cardinality(0,1);
     /// ```
-    pub fn cardinality(
-        mut self,
-        min: Cardinality,
-        max: Cardinality,
-    ) -> ProductSpecificationCharacteristic {
+    #[must_use]
+    pub const fn cardinality(mut self, min: Cardinality, max: Cardinality) -> Self {
         // Quick check to make sure min < max
         if min > max {
             // Not sure if we should just ignore this ?
@@ -125,14 +127,14 @@ impl ProductSpecificationCharacteristic {
 // Conversion from Service CharacteristicSpecification into Product Spec.
 impl From<CharacteristicSpecification> for ProductSpecificationCharacteristic {
     fn from(value: CharacteristicSpecification) -> Self {
-        ProductSpecificationCharacteristic {
+        Self {
             name: value.name.unwrap_or_default(),
             min_cardinality: value.min_cardinality.unwrap_or_default(),
             max_cardinality: value.max_cardinality.unwrap_or_default(),
             configurable: value.configurable.unwrap_or_default(),
             is_unique: value.is_unique.unwrap_or_default(),
             description: value.description.clone(),
-            valid_for: value.valid_for.clone(),
+            valid_for: value.valid_for,
             ..Default::default()
         }
     }
@@ -194,8 +196,8 @@ pub struct ProductSpecification {
 
 impl ProductSpecification {
     /// Create new instance of Product Specification
-    pub fn new(name: impl Into<String>) -> ProductSpecification {
-        let mut prod_spec = ProductSpecification::create_with_time();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut prod_spec = Self::create_with_time();
         prod_spec.name = Some(name.into());
         prod_spec.version = Some(SPEC_VERS.to_string());
 
@@ -208,15 +210,17 @@ impl ProductSpecification {
     }
 
     /// Add a new Characteristic into the specification
+    #[must_use]
     pub fn with_charateristic(
         mut self,
         characteristic: ProductSpecificationCharacteristic,
-    ) -> ProductSpecification {
+    ) -> Self {
         vec_insert(&mut self.product_spec_characteristic, characteristic);
         self
     }
 
     /// Get the class of this object
+    #[must_use]
     pub fn characteristic_by_name(
         &self,
         name: &str,
@@ -228,7 +232,7 @@ impl ProductSpecification {
     }
 
     /// Link remote characteristic specification
-    pub fn link_characteristic(&mut self, remote: &ProductSpecification, name: impl Into<String>) {
+    pub fn link_characteristic(&mut self, remote: &Self, name: impl Into<String>) {
         let name: String = name.into();
         let char_opt = remote.characteristic_by_name(&name);
 
@@ -263,12 +267,12 @@ pub struct ProductSpecificationRef {
 }
 
 impl From<ProductSpecification> for ProductSpecificationRef {
-    fn from(ps: ProductSpecification) -> ProductSpecificationRef {
-        ProductSpecificationRef {
+    fn from(ps: ProductSpecification) -> Self {
+        Self {
             id: ps.get_id(),
             href: ps.get_href(),
             name: ps.name.clone(),
-            version: ps.version.clone(),
+            version: ps.version,
         }
     }
 }
@@ -290,7 +294,7 @@ impl From<&ServiceSpecificationRef> for ProductSpecificationRef {
         };
         ps.generate_href();
 
-        ProductSpecificationRef::from(ps)
+        Self::from(ps)
     }
 }
 
@@ -298,28 +302,23 @@ impl From<&ServiceSpecificationRef> for ProductSpecificationRef {
 // used as part of the import process.
 impl From<&ServiceSpecification> for ProductSpecification {
     fn from(value: &ServiceSpecification) -> Self {
-        let mut ps = ProductSpecification::new(value.get_name());
+        let mut ps = Self::new(value.get_name());
         // get_description() is a method on the ServiceSpecification that always returns a string
         ps.description = Some(format!("{} [{}]", value.get_description(), SPEC_CONV_VERB));
         if value.description.is_some() {
             ps.description = Some(format!("{} [{}]", value.get_description(), SPEC_CONV_VERB));
         }
         ps.is_bundle = value.is_bundle;
-        if value.last_update.is_some() {
-            ps.set_last_update(value.last_update.as_ref().unwrap());
+        if let Some(last_update) = value.last_update.as_ref() {
+            ps.set_last_update(last_update);
         }
-        if value.spec_characteristics.is_some() {
+        if let Some(spec_characteristics) = value.spec_characteristics.as_ref() {
             // We have characteristics that require conversion
             let mut out: Vec<ProductSpecificationCharacteristic> = Vec::new();
-            value
-                .spec_characteristics
-                .as_ref()
-                .unwrap()
-                .iter()
-                .for_each(|cs| {
-                    let psc = ProductSpecificationCharacteristic::from(cs.clone());
-                    out.push(psc);
-                });
+            for characteristic in spec_characteristics {
+                let psc = ProductSpecificationCharacteristic::from(characteristic.clone());
+                out.push(psc);
+            }
             ps.product_spec_characteristic = Some(out);
         }
         if value.version.is_some() {
@@ -347,7 +346,7 @@ impl TMFEvent<ProductSpecificationEvent> for ProductSpecification {
 }
 
 impl EventPayload<ProductSpecificationEvent> for ProductSpecification {
-    type Subject = ProductSpecification;
+    type Subject = Self;
     type EventType = ProductSpecificationEventType;
     fn to_event(
         &self,
@@ -358,7 +357,7 @@ impl EventPayload<ProductSpecificationEvent> for ProductSpecification {
         let desc = format!("{:?} for {}", event_type, self.get_name());
         Event {
             description: Some(desc),
-            domain: Some(ProductSpecification::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             href: self.href.clone(),
             id: self.id.clone(),
@@ -422,8 +421,9 @@ impl ProductSpecificationCharacteristicValue {
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
     /// let pscv = ProductSpecificationCharacteristicValue::new();
     /// ```
-    pub fn new() -> ProductSpecificationCharacteristicValue {
-        ProductSpecificationCharacteristicValue {
+    #[must_use]
+    pub fn new() -> Self {
+        Self {
             is_default: false,
             ..Default::default()
         }
@@ -437,10 +437,9 @@ impl ProductSpecificationCharacteristicValue {
     /// let pscv = ProductSpecificationCharacteristicValue::new()
     ///     .regex(String::from("[0-9]+(Mb|Gb)"));
     /// ```
-    pub fn regex(
-        mut self,
-        regex: String,
-    ) -> Result<ProductSpecificationCharacteristicValue, TMFError> {
+    /// # Errors
+    /// Will return an error if the regex pattern is invalid.
+    pub fn regex(mut self, regex: String) -> Result<Self, TMFError> {
         // For now we only wish to test if we can parse the regex string
         let _re = Regex::new(&regex)?;
         self.regex = Some(regex);
@@ -456,10 +455,10 @@ impl ProductSpecificationCharacteristicValue {
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
     ///     .value("100Mb".into()).unwrap();
     /// ```
-    pub fn value(
-        mut self,
-        value: serde_json::Value,
-    ) -> Result<ProductSpecificationCharacteristicValue, TMFError> {
+    /// # Errors
+    /// Will return an error if the value does not match the regex pattern.
+    /// Will also return an error if the regex pattern is invalid.
+    pub fn value(mut self, value: serde_json::Value) -> Result<Self, TMFError> {
         self.value_type = Some(serde_value_to_type(&value).to_string());
         match self.regex {
             Some(ref re_str) => {
@@ -467,8 +466,7 @@ impl ProductSpecificationCharacteristicValue {
                 let val_str = value.to_string();
                 if !re.is_match(&val_str) {
                     return Err(TMFError::GenericError(format!(
-                        "Value {} does not match regex {}",
-                        val_str, re_str
+                        "Value {val_str} does not match regex {re_str}"
                     )));
                 }
                 self.value = value;
@@ -480,7 +478,7 @@ impl ProductSpecificationCharacteristicValue {
     }
 
     /// Validate a value against the regex (if set) and return an updated
-    /// ProductSpecificationCharacteristicValue with the value set.
+    /// `ProductSpecificationCharacteristicValue` with the value set.
     /// # Example
     /// ```
     /// # use tmflib::tmf620::product_specification::ProductSpecificationCharacteristicValue;
@@ -489,18 +487,17 @@ impl ProductSpecificationCharacteristicValue {
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
     ///    .validate("200Mb".into()).unwrap();
     /// ```
-    pub fn validate(
-        mut self,
-        value: serde_json::Value,
-    ) -> Result<ProductSpecificationCharacteristicValue, TMFError> {
+    /// # Errors
+    /// Will return an error if the value does not match the regex pattern.
+    /// Will also return an error if the regex pattern is invalid.
+    pub fn validate(mut self, value: serde_json::Value) -> Result<Self, TMFError> {
         // If we have a regex, then validate the value against it.
         if let Some(re_str) = &self.regex {
             let re = Regex::new(re_str)?;
             let val_str = value.to_string();
             if !re.is_match(&val_str) {
                 return Err(TMFError::GenericError(format!(
-                    "Value {} does not match regex {}",
-                    val_str, re_str
+                    "Value {val_str} does not match regex {re_str}"
                 )));
             }
         }
@@ -529,9 +526,9 @@ pub struct ProductSpecificationCharacteristicValueUse {
 }
 
 impl ProductSpecificationCharacteristicValueUse {
-    /// Create a new instance of ProductSpecificationCharacteristicValueUse
-    pub fn new(name: impl Into<String>) -> ProductSpecificationCharacteristicValueUse {
-        ProductSpecificationCharacteristicValueUse {
+    /// Create a new instance of `ProductSpecificationCharacteristicValueUse`
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             description: None,
             max_cardinality: CHAR_VALUE_MAX_CARD,
             min_cardinality: CHAR_VALUE_MIN_CARD,
@@ -543,7 +540,7 @@ impl ProductSpecificationCharacteristicValueUse {
         }
     }
 
-    /// Add a specificatoin into the ProductSpecificationCharacteristicValueUse
+    /// Add a specificatoin into the `ProductSpecificationCharacteristicValueUse`
     pub fn with_spec(&mut self, specification: ProductSpecification) {
         self.product_specification = Some(ProductSpecificationRef::from(specification));
     }
@@ -623,8 +620,7 @@ mod test {
 
     #[test]
     fn test_spec_char_description() {
-        let spec_char =
-            ProductSpecificationCharacteristic::new(SPEC_NAME).description(DESC.to_string());
+        let spec_char = ProductSpecificationCharacteristic::new(SPEC_NAME).description(DESC);
 
         assert_eq!(spec_char.description.unwrap(), DESC.to_string());
     }

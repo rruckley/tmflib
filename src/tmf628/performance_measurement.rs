@@ -15,22 +15,27 @@
 
 use super::MOD_PATH;
 use super::{MeasurementCollectionJobRef, PerformanceMeasurementRelationship};
-use crate::{common::entity::Entity, HasDescription, HasId, TimePeriod};
+use crate::{common::entity::Entity, HasDescription, HasId, IsAddressable, TimePeriod};
 use serde::{Deserialize, Serialize};
-use tmflib_derive::{HasDescription, HasEntity};
+use tmflib_derive::{HasDescription, HasId};
 
-const CLASS_PATH: &str = "measurement";
+/// Path to this class
+pub const CLASS_PATH: &str = "measurement";
 
 /// Performance Measurement
-#[derive(Debug, Clone, Serialize, HasEntity, HasDescription, Deserialize, Default)]
+#[derive(Debug, Clone, Serialize, HasDescription, Deserialize, Default, HasId)]
 pub struct PerformanceMeasurement {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
+    /// Unique identifier of the performance measurement
+    pub id: Option<String>,
+    ///A URI to the performance measurement resource
+    pub href: Option<String>,
     ///A free-text description of the performance measurement
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    ///Reference to a MeasurementCollectionJob
+    ///Reference to a `MeasurementCollectionJob`
     #[serde(rename = "measurementCollectionJob")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub measurement_collection_job: Option<MeasurementCollectionJobRef>,
@@ -45,6 +50,12 @@ pub struct PerformanceMeasurement {
     #[serde(rename = "validFor")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub valid_for: Option<TimePeriod>,
+}
+
+impl IsAddressable for PerformanceMeasurement {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 
 impl std::fmt::Display for PerformanceMeasurement {

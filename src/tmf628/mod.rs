@@ -301,3 +301,12 @@ mod tracking_record_fvo;
 mod tracking_record_mvo;
 
 const MOD_PATH: &str = "performanceManagement";
+
+fn get_objects() -> Vec<&'static str> {
+    vec![
+        performance_measurement::CLASS_PATH,
+        // measurement_collection_job::CLASS_PATH,
+        // performance_indicator_specification::CLASS_PATH,
+        // performance_indicator_group_specification::CLASS_PATH,
+    ]
+}

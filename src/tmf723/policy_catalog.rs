@@ -5,10 +5,10 @@ use super::{
 };
 use serde::{Deserialize, Serialize};
 
-/// PolicyCatalog represents a collection of managed policies and related entities.
+/// `PolicyCatalog` represents a collection of managed policies and related entities.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PolicyCatalog {
-    /// Inlined fields from PolicyManagedEntity
+    /// Inlined fields from `PolicyManagedEntity`
     #[serde(flatten)]
     pub policy_managed_entity: PolicyManagedEntity,
     /// Collections of various managed policy components

@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 /// Customer360 Customer VO
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Customer360CustomerVo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///A list of contact details (phone, email, etc.) for the Customer

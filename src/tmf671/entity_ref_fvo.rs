@@ -1,7 +1,7 @@
 use super::{Addressable, Extensible};
 use serde::{Deserialize, Serialize};
 
-///EntityRefFvo is a generic reference to an entity that is identified by at least an id. The referred entity may be extended to capture additional attributes.
+///`EntityRefFvo` is a generic reference to an entity that is identified by at least an id. The referred entity may be extended to capture additional attributes.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityRefFvo {
     ///The actual type of the target instance when needed for disambiguation.
@@ -11,7 +11,7 @@ pub struct EntityRefFvo {
     ///Base schema for addressable entities
     #[serde(flatten)]
     pub addressable: Addressable,
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///The identifier of the referred entity.

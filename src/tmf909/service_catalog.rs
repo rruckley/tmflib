@@ -1,14 +1,16 @@
 use super::{RelatedParty, ServiceCategoryRef, MOD_PATH};
-use crate::{HasDescription, HasId, TimePeriod};
+use crate::{HasDescription, HasId, IsAddressable, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId};
 
-const CLASS_PATH: &str = "serviceCatalog";
+/// Path to module
+pub const CLASS_PATH: &str = "serviceCatalog";
 
 /// The root entity for service catalog management.
+///
 /// A service catalog is a group of service specifications made available through service candidates that an organization provides to the consumers (internal consumers like its employees or B2B customers or B2C customers).
-/// A service catalog typically includes name, description and time period that is valid for. It will have a list of ServiceCandidate catalog items. A ServiceCandidate is an entity that makes a ServiceSpecification available to a catalog.
-/// A ServiceCandidate and its associated ServiceSpecification may be "published" - made visible -in any number of ServiceCatalogs, or in none.*/
+/// A service catalog typically includes name, description and time period that is valid for. It will have a list of `ServiceCandidate` catalog items. A `ServiceCandidate` is an entity that makes a `ServiceSpecification` available to a catalog.
+/// A `ServiceCandidate` and its associated `ServiceSpecification` may be "published" - made visible -in any number of `ServiceCatalogs`, or in none.*/
 #[derive(Debug, Clone, Serialize, HasId, HasDescription, Deserialize, Default)]
 pub struct ServiceCatalog {
     ///When sub-classing, this defines the super-class
@@ -54,10 +56,17 @@ pub struct ServiceCatalog {
     #[serde(rename = "validFor")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub valid_for: Option<TimePeriod>,
-    ///ServiceCatalog version
+    ///`ServiceCatalog` version
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
 }
+
+impl IsAddressable for ServiceCatalog {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 impl std::fmt::Display for ServiceCatalog {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())

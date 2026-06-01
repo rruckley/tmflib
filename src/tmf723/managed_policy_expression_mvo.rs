@@ -1,9 +1,9 @@
 use super::{PolicyExpressionMvo, PolicyManagedEntityMvo};
 use serde::{Deserialize, Serialize};
-///Managed PolicyExpression
+///Managed `PolicyExpression`
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyExpressionMvo {
-    ///PolicyExpression is a constraint based on text expression and parsed by an Expression Language (SpEL, JS, Groovy, FEEL, ...)
+    ///`PolicyExpression` is a constraint based on text expression and parsed by an Expression Language (`SpEL`, JS, Groovy, FEEL, ...)
     #[serde(flatten)]
     pub policy_expression_mvo: PolicyExpressionMvo,
     ///Managed Entity MVO attributes

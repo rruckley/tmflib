@@ -12,7 +12,7 @@ use crate::common::note::Note;
 ///Service
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Service {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Is it a customer facing or resource facing service
@@ -39,7 +39,7 @@ pub struct Service {
     ///Intent Ref (if Intent already exists) or Value (if Intent be created or its details be presented)
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub intent: Option<IntentRefOrValue>,
-    ///If true, the service is a ServiceBundle which regroup a service hierachy. If false, the service is a 'atomic' service (hierachy leaf).
+    ///If true, the service is a `ServiceBundle` which regroup a service hierachy. If false, the service is a 'atomic' service (hierachy leaf).
     #[serde(rename = "isBundle")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub is_bundle: Option<bool>,
@@ -72,11 +72,11 @@ pub struct Service {
     #[serde(rename = "relatedEntity")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub related_entity: Vec<RelatedEntityRefOrValue>,
-    ///A list of related party references (RelatedParty [*]). A related party defines party or party role linked to a specific entity
+    ///A list of related party references (`RelatedParty` [*]). A related party defines party or party role linked to a specific entity
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub related_party: Vec<RelatedPartyRefOrPartyRoleRef>,
-    ///A list of characteristics that characterize this service (ServiceCharacteristic [*])
+    ///A list of characteristics that characterize this service (`ServiceCharacteristic` [*])
     #[serde(rename = "serviceCharacteristic")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub service_characteristic: Vec<Characteristic>,
@@ -88,7 +88,7 @@ pub struct Service {
     #[serde(rename = "serviceOrderItem")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub service_order_item: Vec<RelatedServiceOrderItem>,
-    ///A list of service relationships (ServiceRelationship [*]). Describes links with other service(s) in the inventory.
+    ///A list of service relationships (`ServiceRelationship` [*]). Describes links with other service(s) in the inventory.
     #[serde(rename = "serviceRelationship")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub service_relationship: Vec<ServiceRelationship>,
@@ -111,11 +111,11 @@ pub struct Service {
     ///Valid values for the lifecycle state of the service
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state: Option<ServiceStateType>,
-    ///A list of supporting resources (SupportingResource [*]).Note: only Service of type RFS can be associated with Resources
+    ///A list of supporting resources (`SupportingResource` [*]).Note: only Service of type RFS can be associated with Resources
     #[serde(rename = "supportingResource")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub supporting_resource: Vec<ResourceRef>,
-    ///A list of supporting services (SupportingService [*]). A collection of services that support this service (bundling, link CFS to RFS)
+    ///A list of supporting services (`SupportingService` [*]). A collection of services that support this service (bundling, link CFS to RFS)
     #[serde(rename = "supportingService")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub supporting_service: Vec<ServiceRefOrValue>,

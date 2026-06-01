@@ -14,7 +14,7 @@ pub struct CapacityAmount {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    ///A value and units that define the CapacityAmount, such as 10000 ea, 10B Mb. Instance values are mutually exclusive with From and To capacityAmounts and range interval.
+    ///A value and units that define the `CapacityAmount`, such as 10000 ea, 10B Mb. Instance values are mutually exclusive with From and To capacityAmounts and range interval.
     #[serde(rename = "capacityAmount")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub capacity_amount: Option<String>,
@@ -22,7 +22,7 @@ pub struct CapacityAmount {
     #[serde(rename = "capacityAmountFrom")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub capacity_amount_from: Option<String>,
-    ///The upper range value that CapacityAmount can take on.
+    ///The upper range value that `CapacityAmount` can take on.
     #[serde(rename = "capacityAmountTo")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub capacity_amount_to: Option<String>,

@@ -26,9 +26,9 @@ pub struct Characteristic {
 
 impl Characteristic {
     /// Create a new characteristic
-    pub fn new(name: impl Into<String>, value: impl Into<String>) -> Characteristic {
+    pub fn new(name: impl Into<String>, value: impl Into<String>) -> Self {
         let val_str: String = value.into();
-        Characteristic {
+        Self {
             name: name.into(),
             value: val_str.into(),
             value_type: "String".to_string(),

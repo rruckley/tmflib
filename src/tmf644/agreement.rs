@@ -7,10 +7,10 @@ use crate::common::entity::Entity;
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
-///Base entity schema for use in TMForum Open-APIs. Property.
+///Base entity schema for use in `TMForum` Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Agreement {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///List of authorizations associated with the agreement

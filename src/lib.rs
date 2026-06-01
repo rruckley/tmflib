@@ -14,7 +14,7 @@
 
 //! TMF Library
 //! # Description
-//! This library covers data structures required to interact with various TMForum APIs.
+//! This library covers data structures required to interact with various `TMForum` APIs.
 //! It does not define any persistence nor provide a REST interface (at this stage)
 //! but simply provides definitions of all the schema and helpful functions and traits to create and maniuplate compliant objects
 //! that can then be seriliased into or from JSON as required.
@@ -48,6 +48,8 @@
 #![warn(missing_docs)]
 // #![warn(rustdoc::missing_doc_code_examples)]
 #![warn(rustdoc::private_doc_tests)]
+#![warn(clippy::nursery)]
+#![allow(clippy::struct_field_names)]
 
 use crate::common::{note::Note, related_entity::EntityRef};
 use base32::encode;
@@ -62,22 +64,22 @@ use uuid::Uuid;
 pub const LIB_PATH: &str = "tmf-api";
 /// Path passed in from the environment at build time, used to form HREFs
 pub const TMF_PATH: Option<&str> = option_env!("TMF_PATH");
-/// Default code length used by [gen_code] if no length is supplied.
+/// Default code length used by [`gen_code`] if no length is supplied.
 pub const CODE_DEFAULT_LENGTH: usize = 6;
 
 /// Standard cardinality type for library
 pub type Cardinality = u16;
-/// Type alias for TimeStamps
+/// Type alias for `TimeStamps`
 pub type TimeStamp = String;
-/// Type alias for DateTime
+/// Type alias for `DateTime`
 pub type DateTime = String;
 /// Type alias for Uri
 pub type Uri = String;
 /// Priority Type
 pub type Priority = u16;
 
-/// Standard TMF TimePeriod structure
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+/// Standard TMF `TimePeriod` structure
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TimePeriod {
     /// Start of time period
@@ -89,8 +91,9 @@ pub struct TimePeriod {
 
 impl TimePeriod {
     /// Create a time period of 30 days
-    pub fn period_30days() -> TimePeriod {
-        TimePeriod::period_days(30)
+    #[must_use]
+    pub fn period_30days() -> Self {
+        Self::period_days(30)
     }
 
     /// Calculate period `days` into the future
@@ -100,16 +103,22 @@ impl TimePeriod {
     /// let period = TimePeriod::period_days(10);
     /// assert!(period.end_date_time.is_some());
     /// ```
-    pub fn period_days(days: u64) -> TimePeriod {
+    /// # Panics
+    /// Will panic if the current time cannot be parsed, but this is unlikely.
+    #[must_use]
+    pub fn period_days(days: u64) -> Self {
         let now = Utc::now() + Days::new(days);
         let time =
             chrono::DateTime::from_timestamp(now.timestamp(), 0).expect("Invalid now() output");
-        TimePeriod {
+        Self {
             end_date_time: Some(time.to_rfc3339()),
             ..Default::default()
         }
     }
-    /// Return true if start time of TimePeriod is in the past.
+    /// Return true if start time of `TimePeriod` is in the past.
+    /// # Panics
+    /// Will panic if the start time cannot be parsed, but this is unlikely.
+    #[must_use]
     pub fn started(&self) -> bool {
         let now = Utc::now();
 
@@ -122,6 +131,9 @@ impl TimePeriod {
         false
     }
     /// Return true if the finish time is set and is in the past
+    /// # Panics
+    /// Will panic if the finish time is set but cannot be parsed, but this is unlikely.
+    #[must_use]
     pub fn finished(&self) -> bool {
         match &self.end_date_time {
             Some(f) => {
@@ -143,7 +155,7 @@ impl Default for TimePeriod {
         let now = Utc::now();
         let time =
             chrono::DateTime::from_timestamp(now.timestamp(), 0).expect("Invalid input timestamp");
-        TimePeriod {
+        Self {
             start_date_time: time.to_rfc3339(),
             end_date_time: None,
         }
@@ -152,8 +164,8 @@ impl Default for TimePeriod {
 
 impl From<DateTime> for TimePeriod {
     fn from(value: TimeStamp) -> Self {
-        TimePeriod {
-            start_date_time: value.clone(),
+        Self {
+            start_date_time: value,
             end_date_time: None,
         }
     }
@@ -176,15 +188,17 @@ impl Quantity {
     /// let weight = Quantity::kg(10.5);
     /// assert_eq!(weight.amount,10.5);
     /// ```
-    pub fn kg(amount: f64) -> Quantity {
-        Quantity {
+    #[must_use]
+    pub fn kg(amount: f64) -> Self {
+        Self {
             amount,
             units: "kg".to_string(),
         }
     }
     /// Shortcut functions to set carton quantity and associated units.
-    pub fn cartons(amount: f64) -> Quantity {
-        Quantity {
+    #[must_use]
+    pub fn cartons(amount: f64) -> Self {
+        Self {
             amount,
             units: "cartons".to_string(),
         }
@@ -210,14 +224,17 @@ impl Quantity {
 /// let (code,hash) = gen_code("John Q. Smith".to_string(),"USER123".to_string(),None,Some("U-".to_string()),None);
 /// assert_eq!(code,"U-SP7E6E".to_string());
 /// ```
+/// # Panics
+/// Will panic if the generated hash cannot be parsed as a HEX string, but this is unlikely.
+#[must_use]
 pub fn gen_code(
-    name: String,
+    name: impl Into<String>,
     id: String,
     offset: Option<u32>,
     prefix: Option<String>,
     length: Option<usize>,
 ) -> (String, String) {
-    let hash_input = format!("{}:{}:{}", name, id, offset.unwrap_or_default());
+    let hash_input = format!("{}:{}:{}", name.into(), id, offset.unwrap_or_default());
     let sha = digest(hash_input);
     let hex = decode(sha);
     let base32 = encode(
@@ -234,8 +251,9 @@ pub fn gen_code(
     )
 }
 
-/// Return type for a serde_json Value
-pub fn serde_value_to_type(value: &serde_json::Value) -> &str {
+/// Return type for a `serde_json` Value
+#[must_use]
+pub const fn serde_value_to_type(value: &serde_json::Value) -> &str {
     match value {
         serde_json::Value::Null => "Null",
         serde_json::Value::Bool(_) => "Bool",
@@ -262,7 +280,8 @@ pub fn vec_insert<T>(ov: &mut Option<Vec<T>>, item: T) {
 }
 
 /// Get the path for the library which is used to form HREFs
-/// If TMF_PATH is set at build time, this is used, otherwise LIB_PATH is used.
+/// If `TMF_PATH` is set at build time, this is used, otherwise `LIB_PATH` is used.
+#[must_use]
 pub fn get_lib_path() -> String {
     match TMF_PATH {
         Some(p) => p.to_string(),
@@ -273,24 +292,34 @@ pub fn get_lib_path() -> String {
 /// Trait indicating a TMF struct has and id, href fields defined in an Entity struct
 pub trait HasEntity: Default {}
 
-/// IsAddressable Trait, aligned to TMF definitions of addressable entities, i.e. those with id and href fields.
+#[cfg(feature = "build-V4")]
+const MOD_VERSION: &str = "v4";
+#[cfg(feature = "build-V5")]
+const MOD_VERSION: &str = "v5";
+
+/// `IsAddressable` Trait, aligned to TMF definitions of addressable entities, i.e. those with id and href fields.
 pub trait IsAddressable: HasId {
     /// Return the list of objects managed by this API
     fn get_objects() -> Vec<&'static str>;
+    /// Return the version of the API supported by this library
+    fn get_version() -> &'static str {
+        MOD_VERSION
+    }
 }
 
 /// Trait indicating a TMF struct has and id and corresponding href field
 pub trait HasId: Default {
     /// Get a new UUID in simple format (no seperators)
+    #[must_use]
     fn get_uuid() -> String {
         // Using simple format as SurrealDB doesn't like dashes in standard format.
         Uuid::new_v4().simple().to_string()
     }
-    /// Generate and store a new ID. This will also regenerated the HREF field via generate_href()
+    /// Generate and store a new ID. This will also regenerated the HREF field via `generate_href()`
     fn generate_id(&mut self);
     /// Generate a new HTML reference.
     /// # Details
-    /// This is usually triggered directly from generate_id() but can be manually triggered.
+    /// This is usually triggered directly from `generate_id()` but can be manually triggered.
     fn generate_href(&mut self);
     /// Extract the id of this object into a new String
     fn get_id(&self) -> String;
@@ -300,13 +329,13 @@ pub trait HasId: Default {
     fn get_full_href(&self, hostname: impl Into<String>) -> String {
         format!("{}{}", hostname.into(), self.get_href())
     }
-    /// Get the class of this object. This is also used to form part of the URL via generate_href()
+    /// Get the class of this object. This is also used to form part of the URL via `generate_href()`
     fn get_class() -> String;
     /// Get Class HREF, this represents the generate path to the class.
     fn get_class_href() -> String;
     /// Get the module path
     fn get_mod_path() -> String;
-    /// Set the id on the object, also triggers generate_href().
+    /// Set the id on the object, also triggers `generate_href()`.
     fn set_id(&mut self, id: impl Into<String>);
     /// Create a new instance of a TMF object that has id and href fields.
     /// # Example
@@ -315,6 +344,7 @@ pub trait HasId: Default {
     /// # use crate::tmflib::HasId;
     /// let offering = Customer::create();
     /// ````
+    #[must_use]
     fn create() -> Self {
         // Create default instance
         let mut item = Self::default();
@@ -322,17 +352,18 @@ pub trait HasId: Default {
         item.generate_id();
         item
     }
-    /// Builder pattern to set id on create()
+    /// Builder pattern to set id on `create()`
     /// NB: This can be used to set an explicit id on create instead of auto-generate via `[create`]
     fn id(self, id: impl Into<String>) -> Self;
 }
 
-/// IsAddressable Trait, aligned to TMF definitions of addressable entities, i.e. those with id and href fields.
-/// This is a supertrait of HasId and HasEntity, but can be used to indicate that an object is addressable without necessarily having the full requirements of those traits.
-
-/// Trait indicating a TMF sturct has a last_update or similar timestamp field.
+/// `IsAddressable` Trait, aligned to TMF definitions of addressable entities, i.e. those with id and href fields.
+///
+/// This is a supertrait of `HasId` and `HasEntity`, but can be used to indicate that an object is addressable without necessarily having the full requirements of those traits.
+/// Trait indicating a TMF sturct has a `last_update` or similar timestamp field.
 pub trait HasLastUpdate: HasId {
-    /// Geneate a timestamp for now(), useful for updating last_updated fields
+    /// Geneate a timestamp for `now()`, useful for updating `last_updated` fields
+    #[must_use]
     fn get_timestamp() -> String {
         let now = Utc::now();
         let time = chrono::DateTime::from_timestamp(now.timestamp(), 0)
@@ -340,13 +371,14 @@ pub trait HasLastUpdate: HasId {
         time.to_string()
     }
 
-    /// Get the last_update field if available
+    /// Get the `last_update` field if available
     fn get_last_update(&self) -> Option<String>;
 
-    /// Store a timestamp into last_update field (if available)
+    /// Store a timestamp into `last_update` field (if available)
     fn set_last_update(&mut self, time: impl Into<String>);
 
-    /// Create a new TMF object, also set last_update field to now()
+    /// Create a new TMF object, also set `last_update` field to `now()`
+    #[must_use]
     fn create_with_time() -> Self {
         // Create default instance
         let mut item = Self::create();
@@ -356,11 +388,12 @@ pub trait HasLastUpdate: HasId {
     }
 
     /// Builder pattern for setting lastUpdate on create
-    /// If time is None, current time is used via ['get_timestamp()']
+    /// If time is None, current time is used via [`get_timestamp()`]
+    #[must_use]
     fn last_update(self, time: Option<String>) -> Self;
 }
 
-/// Trait for classes with a valid_for object covering validity periods.
+/// Trait for classes with a `valid_for` object covering validity periods.
 pub trait HasValidity {
     /// Set the validity by passing in a [`TimePeriod`]
     fn set_validity(&mut self, validity: TimePeriod);
@@ -380,6 +413,7 @@ pub trait HasValidity {
     /// - Otherwise return false.
     fn is_valid(&self) -> bool;
     /// Builder pattern function to add validity on create
+    #[must_use]
     fn validity(self, validity: TimePeriod) -> Self;
 }
 
@@ -393,10 +427,11 @@ pub trait HasName: HasId {
     }
     /// Set the name, trimming any whitespace
     fn set_name(&mut self, name: impl Into<String>);
-    /// Builder pattern to set name on create, usually coverered by new()
+    /// Builder pattern to set name on create, usually coverered by `new()`
+    #[must_use]
     fn name(self, name: impl Into<String>) -> Self;
 
-    /// Return a EntityRef for this object
+    /// Return a `EntityRef` for this object
     fn as_entity(&self) -> EntityRef {
         EntityRef {
             id: self.get_id(),
@@ -413,8 +448,11 @@ pub trait HasNote: HasId {
     /// Add a new note
     fn add_note(&mut self, note: Note);
     /// Remove a note by index
+    /// # Errors
+    /// Will return an error if the index is out of bounds or if the note cannot be removed for any reason.
     fn remove_note(&mut self, idx: usize) -> Result<Note, TMFError>;
     /// Builder pattern to add note on create
+    #[must_use]
     fn note(self, note: Note) -> Self;
 }
 
@@ -425,10 +463,13 @@ pub trait HasRelatedParty: HasId {
     /// Add a new party
     fn add_party(&mut self, party: RelatedParty);
     /// Remote a party
+    /// # Errors
+    /// Will return an error if the index is out of bounds or if the party cannot be removed for any reason.
     fn remove_party(&mut self, idx: usize) -> Result<RelatedParty, TMFError>;
-    /// Get a list of RelatedParty entries by role
+    /// Get a list of `RelatedParty` entries by role
     fn get_by_role(&self, role: String) -> Option<Vec<&RelatedParty>>;
     /// Builder pattern to add a party on create
+    #[must_use]
     fn party(self, party: RelatedParty) -> Self;
 }
 
@@ -452,12 +493,14 @@ pub trait HasAttachment {
     /// Remove an attachment at a particular position
     fn remove(&mut self, position: usize) -> Option<AttachmentRefOrValue>;
     /// builder pattern function to add attachment on create
+    #[must_use]
     fn attachment(self, attachment: AttachmentRefOrValue) -> Self;
 }
 
 /// Trait for managing a description field. Description field must be defined as `Option<String>`
 pub trait HasDescription {
     /// Builder pattern function to set the description on object creation
+    #[must_use]
     fn description(self, description: impl Into<String>) -> Self;
     /// Get the description by cloning it if set, returns empty string otherwise.
     fn get_description(&self) -> String;
@@ -466,11 +509,11 @@ pub trait HasDescription {
     fn set_description(&mut self, description: impl Into<String>) -> Option<String>;
 }
 
-/// Trait for objects that have a reference version object or can be converted into an EneityRef
+/// Trait for objects that have a reference version object or can be converted into an `EneityRef`
 pub trait HasReference: HasId + HasName {
     /// Reference type assocaited with Self.
     type RefType: Serialize;
-    /// Get object as an EntityRef
+    /// Get object as an `EntityRef`
     fn as_entity_ref(&self) -> crate::common::related_entity::RelatedEntity {
         crate::common::related_entity::RelatedEntity {
             id: self.get_id(),
@@ -613,7 +656,7 @@ mod test {
     #[test]
     fn test_gen_code() {
         // Generate a code with a known hash
-        let (code, hash) = gen_code("NAME".into(), "CODE".into(), None, Some("T-".into()), None);
+        let (code, hash) = gen_code("NAME", "CODE".into(), None, Some("T-".into()), None);
 
         assert_eq!(code, CODE.to_string());
         assert_eq!(hash, HASH.to_string());

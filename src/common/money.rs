@@ -27,7 +27,7 @@ use std::ops::{Add, AddAssign, Div, Mul, Sub};
 const MONEY_DEFAULT_UNIT: &str = "AUD";
 
 /// Money sub-resource
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct Money {
     /// ISO4217 currency code
     pub unit: String,
@@ -38,7 +38,7 @@ pub struct Money {
 }
 
 impl Money {
-    /// Set currency for this Money with an optional currency_code.
+    /// Set currency for this Money with an optional `currency_code`.
     /// This code must confirm to ISO4217. If an invalid code is passed in, an
     /// Err is returned instead.
     /// ```
@@ -48,6 +48,8 @@ impl Money {
     /// let mut money = Money::from(100);
     /// money.currency("AUD");
     /// ```
+    /// # Errors
+    /// Will return an error if the currency code is not found in the ISO4217 list.
     #[cfg(not(target_arch = "wasm32"))]
     pub fn currency(&mut self, currency_code: &str) -> Result<String, TMFError> {
         let c = rust_iso4217::from_code(currency_code);
@@ -80,7 +82,7 @@ impl Money {
 
 impl From<i32> for Money {
     fn from(value: i32) -> Self {
-        Money {
+        Self {
             value: Decimal::from(value),
             unit: MONEY_DEFAULT_UNIT.to_string(),
         }
@@ -89,7 +91,7 @@ impl From<i32> for Money {
 
 impl From<f32> for Money {
     fn from(value: f32) -> Self {
-        Money {
+        Self {
             value: Decimal::from_f32(value).unwrap_or_default(),
             unit: MONEY_DEFAULT_UNIT.to_string(),
         }
@@ -97,7 +99,7 @@ impl From<f32> for Money {
 }
 
 impl Add for Money {
-    type Output = Money;
+    type Output = Self;
     fn add(self, rhs: Self) -> Self::Output {
         if self.unit == rhs.unit {
             Self {
@@ -117,7 +119,7 @@ impl AddAssign for Money {
 }
 
 impl Sub for Money {
-    type Output = Money;
+    type Output = Self;
     fn sub(self, rhs: Self) -> Self::Output {
         if self.unit == rhs.unit {
             Self {
@@ -131,7 +133,7 @@ impl Sub for Money {
 }
 
 impl Mul for Money {
-    type Output = Money;
+    type Output = Self;
     fn mul(self, rhs: Self) -> Self::Output {
         if self.unit == rhs.unit {
             Self {
@@ -145,7 +147,7 @@ impl Mul for Money {
 }
 
 impl Mul<f32> for Money {
-    type Output = Money;
+    type Output = Self;
     fn mul(self, rhs: f32) -> Self::Output {
         Self {
             unit: self.unit.clone(),
@@ -155,7 +157,7 @@ impl Mul<f32> for Money {
 }
 
 impl Mul<u32> for Money {
-    type Output = Money;
+    type Output = Self;
     fn mul(self, rhs: u32) -> Self::Output {
         Self {
             unit: self.unit.clone(),
@@ -165,7 +167,7 @@ impl Mul<u32> for Money {
 }
 
 impl Div for Money {
-    type Output = Money;
+    type Output = Self;
 
     fn div(self, rhs: Self) -> Self::Output {
         if self.unit == rhs.unit && rhs.value != Decimal::ZERO {
@@ -180,33 +182,33 @@ impl Div for Money {
 }
 
 impl Div<f32> for Money {
-    type Output = Money;
+    type Output = Self;
 
     fn div(self, rhs: f32) -> Self::Output {
         let dec_val = Decimal::from_f32(rhs).unwrap_or_default();
-        if dec_val != Decimal::ZERO {
+        if dec_val == Decimal::ZERO {
+            self
+        } else {
             Self {
                 unit: self.unit.clone(),
                 value: self.value / dec_val,
             }
-        } else {
-            self
         }
     }
 }
 
 impl Div<i32> for Money {
-    type Output = Money;
+    type Output = Self;
 
     fn div(self, rhs: i32) -> Self::Output {
         let dec_val = Decimal::from(rhs);
-        if dec_val != Decimal::ZERO {
+        if dec_val == Decimal::ZERO {
+            self
+        } else {
             Self {
                 unit: self.unit.clone(),
                 value: self.value / dec_val,
             }
-        } else {
-            self
         }
     }
 }

@@ -8,7 +8,7 @@ use crate::{
     tmf632::Characteristic,
     tmf651::agreement::AgreementRef,
     tmf666::{AccountRef, PaymentMethodRef},
-    DateTime, HasId, HasName, HasRelatedParty, HasValidity, TimePeriod, Uri,
+    DateTime, HasId, HasName, HasRelatedParty, HasValidity, IsAddressable, TimePeriod, Uri,
 };
 use tmflib_derive::{HasId, HasName, HasRelatedParty, HasValidity};
 
@@ -66,7 +66,7 @@ pub struct PartyRole {
 }
 
 impl PartyRole {
-    /// Create new PartyRole based on a given [crate::tmf632::individual_v4::Individual].
+    /// Create new `PartyRole` based on a given [`crate::tmf632::individual_v4::Individual`].
     /// ```
     /// # use tmflib::tmf669::party_role::PartyRole;
     /// use tmflib::common::related_party::RelatedParty;
@@ -77,16 +77,17 @@ impl PartyRole {
     /// let individual = Individual::new("John Smith");
     /// let role = PartyRole::new("Account Manager",RelatedParty::from(&individual));
     /// ```
-    pub fn new(name: impl Into<String>, party: RelatedParty) -> PartyRole {
-        PartyRole {
+    pub fn new(name: impl Into<String>, party: RelatedParty) -> Self {
+        Self {
             name: Some(name.into()),
             engaged_party: Some(party),
-            ..PartyRole::create()
+            ..Self::create()
         }
     }
 
-    /// Set engaged party (Using [RelatedParty] reference)
-    pub fn engaged_party(mut self, related_party: RelatedParty) -> PartyRole {
+    /// Set engaged party (Using [`RelatedParty`] reference)
+    #[must_use]
+    pub fn engaged_party(mut self, related_party: RelatedParty) -> Self {
         self.engaged_party = Some(related_party);
         self
     }
@@ -100,6 +101,7 @@ impl PartyRole {
     }
 
     /// Get Profile by index
+    #[must_use]
     pub fn get_profile(&self, idx: usize) -> Option<&CreditProfile> {
         match self.credit_profile.as_ref() {
             Some(cp) => cp.get(idx),
@@ -113,6 +115,12 @@ impl PartyRole {
             Some(pm) => pm.push(payment),
             None => self.payment_method = Some(vec![payment]),
         }
+    }
+}
+
+impl IsAddressable for PartyRole {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

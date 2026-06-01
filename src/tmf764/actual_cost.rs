@@ -5,14 +5,15 @@ use serde::{Deserialize, Serialize};
 use crate::{
     common::{attachment::AttachmentRefOrValue, note::Note, related_party::RelatedParty},
     vec_insert, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasNote,
-    HasRelatedParty, TMFError, Uri,
+    HasRelatedParty, IsAddressable, TMFError, Uri,
 };
 
 use tmflib_derive::{
     HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasNote, HasRelatedParty,
 };
 
-const CLASS_PATH: &str = "ActualCost";
+/// Path to moodule
+pub const CLASS_PATH: &str = "ActualCost";
 use super::MOD_PATH;
 
 /// Actual Cost Item State Type
@@ -143,18 +144,25 @@ impl ActualCost {
     /// let cost = ActualCost::new("Example Cost")
     ///     .item(ActualCostItem::new("Item 1"));
     /// ```
+    #[must_use]
     pub fn item(mut self, item: ActualCostItem) -> Self {
         vec_insert(&mut self.cost_item, item);
         self
     }
 }
 
+impl IsAddressable for ActualCost {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 impl From<ActualCost> for super::CostRef {
     fn from(cost: ActualCost) -> Self {
-        crate::tmf764::CostRef {
+        Self {
             id: cost.get_id(),
             href: cost.get_href(),
-            name: cost.name.clone(),
+            name: cost.name,
             base_type: None,
             referred_type: None,
             schema_location: None,

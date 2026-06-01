@@ -4,7 +4,7 @@ use super::{
     TerminationError,
 };
 use serde::{Deserialize, Serialize};
-///A ServiceQualificationItem relates to a specific service being checked in a qualification operation.
+///A `ServiceQualificationItem` relates to a specific service being checked in a qualification operation.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CheckServiceQualificationItem {
     ///When sub-classing, this defines the super-class
@@ -26,7 +26,7 @@ pub struct CheckServiceQualificationItem {
     ///The (service) category resource is used to group service candidates in logical containers. Categories can contain other categories.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub category: Option<ServiceCategoryRef>,
-    ///A list of eligibility unavailability reasons (EligibilityUnavailabilityReason [*]). Reason for eligibility result if the serviceQualification result is no (meaning the service is not available).
+    ///A list of eligibility unavailability reasons (`EligibilityUnavailabilityReason` [*]). Reason for eligibility result if the serviceQualification result is no (meaning the service is not available).
     #[serde(rename = "eligibilityUnavailabilityReason")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub eligibility_unavailability_reason: Option<Vec<ServiceEligibilityUnavailabilityReason>>,
@@ -60,7 +60,7 @@ pub struct CheckServiceQualificationItem {
     #[serde(rename = "qualificationResult")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub qualification_result: Option<String>,
-    ///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the RelatedServiceRefOrValue class itself
+    ///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the `RelatedServiceRefOrValue` class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service: Option<ServiceRefOrValue>,
     ///State of the serviceQualification item (acknowledged, inProgress, terminatedWithError, done)

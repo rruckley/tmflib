@@ -6,13 +6,14 @@ use crate::common::tmf_error::TMFError;
 use crate::tmf629::customer::Customer;
 use crate::{
     common::{money::Money, note::Note, related_party::RelatedParty},
-    HasId, HasRelatedParty, TimePeriod, Uri, LIB_PATH,
+    HasId, HasRelatedParty, IsAddressable, TimePeriod, Uri, LIB_PATH,
 };
 use tmflib_derive::{HasId, HasRelatedParty};
 
 use super::{sales_lead_v5::SalesLeadRef, sales_opportunity_v5::SalesOpportunityPriorityType};
 
-const CLASS_PATH: &str = "salesOpportunityItem";
+/// Path to module
+pub const CLASS_PATH: &str = "salesOpportunityItem";
 use super::MOD_PATH;
 /// Sales Opportunity Item
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasRelatedParty, Serialize)]
@@ -53,5 +54,11 @@ impl SalesOpportunityItem {
     pub fn for_customer(mut self, cust: Customer) -> SalesOpportunityItem {
         self.add_party(RelatedParty::from(&cust));
         self
+    }
+}
+
+impl IsAddressable for SalesOpportunityItem {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }

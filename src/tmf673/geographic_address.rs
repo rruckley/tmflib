@@ -4,10 +4,11 @@ use serde::{Deserialize, Serialize};
 
 use super::MOD_PATH;
 
-use crate::{HasId, HasName, Uri};
+use crate::{HasId, HasName, IsAddressable, Uri};
 use tmflib_derive::{HasId, HasName};
 
-const CLASS_PATH: &str = "geographicAddress";
+/// Path to this class
+pub const CLASS_PATH: &str = "geographicAddress";
 
 /// Geographic Sub Address
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasName, Serialize)]
@@ -16,7 +17,7 @@ pub struct GeographicSubAddress {
     /// Building Name
     #[serde(skip_serializing_if = "Option::is_none")]
     pub building_name: Option<String>,
-    /// URI for SubAddress
+    /// URI for `SubAddress`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<Uri>,
     /// ID for Sub Address
@@ -48,6 +49,12 @@ pub struct GeographicSubAddress {
     pub sub_unit: Option<String>,
 }
 
+impl IsAddressable for GeographicSubAddress {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 /// Geographic Location Ref or Value
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct GeographicLocationRefOrValue {
@@ -62,7 +69,7 @@ pub struct GeographicLocationRefOrValue {
 
 impl From<(f64, f64)> for GeographicLocationRefOrValue {
     fn from(value: (f64, f64)) -> Self {
-        GeographicLocationRefOrValue {
+        Self {
             bbox: vec![value.0, value.1],
             ..Default::default()
         }
@@ -110,14 +117,15 @@ impl GeographicAddress {
     /// .suburb("Northshore")
     /// .state("NSW");
     ///```
-    pub fn new(name: impl Into<String>) -> GeographicAddress {
-        let mut address = GeographicAddress::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut address = Self::create();
         address.name = Some(name.into());
         address
     }
 
     /// Set the street for this Address
-    pub fn street(mut self, street: &str) -> GeographicAddress {
+    #[must_use]
+    pub fn street(mut self, street: &str) -> Self {
         if street.split(' ').count() > 1 {
             // Attempt to split string like "Lumeah Ave" into two parts
         }
@@ -125,22 +133,26 @@ impl GeographicAddress {
         self
     }
     /// Set the street type for this address
-    pub fn street_type(mut self, street_type: &str) -> GeographicAddress {
+    #[must_use]
+    pub fn street_type(mut self, street_type: &str) -> Self {
         self.street_type = Some(street_type.to_string());
         self
     }
     /// Set the street number of this address
-    pub fn number(mut self, number: &str) -> GeographicAddress {
+    #[must_use]
+    pub fn number(mut self, number: &str) -> Self {
         self.street_nr = Some(number.to_string());
         self
     }
     /// Set the suburb (locality) for this address
-    pub fn suburb(mut self, suburb: &str) -> GeographicAddress {
+    #[must_use]
+    pub fn suburb(mut self, suburb: &str) -> Self {
         self.locality = Some(suburb.to_string());
         self
     }
     /// Set the state (or province) for this address
-    pub fn state(mut self, state: &str) -> GeographicAddress {
+    #[must_use]
+    pub fn state(mut self, state: &str) -> Self {
         self.state_or_province = Some(state.to_string());
         self
     }

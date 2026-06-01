@@ -8,7 +8,7 @@ use crate::common::related_place::RelatedPlaceRefOrValue;
 use crate::tmf622::product_order_v4::ProductOrderRef;
 #[cfg(all(feature = "tmf622", feature = "build-V5"))]
 use crate::tmf622::product_order_v5::ProductOrderRef;
-use crate::{HasId, Uri};
+use crate::{HasId, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
@@ -37,10 +37,11 @@ pub struct ProductOrderRiskAssessment {
 
 impl ProductOrderRiskAssessment {
     /// Create a new instance of Product Order Risk Assessment
-    pub fn new(order: ProductOrderRef) -> ProductOrderRiskAssessment {
-        ProductOrderRiskAssessment {
+    #[must_use]
+    pub fn new(order: &ProductOrderRef) -> Self {
+        Self {
             product_order: order.clone(),
-            ..ProductOrderRiskAssessment::create()
+            ..Self::create()
         }
     }
 
@@ -54,19 +55,24 @@ impl ProductOrderRiskAssessment {
         &mut self,
         characteristic: Characteristic,
     ) -> Option<Characteristic> {
-        match &self.characteristic {
-            Some(v) => match v.iter().find(|c| c.name == characteristic.name) {
+        if let Some(v) = &self.characteristic {
+            match v.iter().find(|c| c.name == characteristic.name) {
                 Some(i) => {
                     let out = i.clone();
                     Some(out)
                 }
                 None => None,
-            },
-            None => {
-                self.characteristic = Some(vec![characteristic]);
-                None
             }
+        } else {
+            self.characteristic = Some(vec![characteristic]);
+            None
         }
+    }
+}
+
+impl IsAddressable for ProductOrderRiskAssessment {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 
@@ -102,7 +108,7 @@ mod test {
     #[test]
     fn test_pora_new() {
         let order = ProductOrderRef::from(&ProductOrder::new());
-        let pora = ProductOrderRiskAssessment::new(order.clone());
+        let pora = ProductOrderRiskAssessment::new(&order);
 
         assert_eq!(pora.product_order.id, order.id);
     }
@@ -113,7 +119,7 @@ mod test {
         let char2 = Characteristic::new("Char", "Value2");
 
         let order = ProductOrderRef::from(&ProductOrder::new());
-        let mut pora = ProductOrderRiskAssessment::new(order.clone());
+        let mut pora = ProductOrderRiskAssessment::new(&order);
 
         // Add char in new
         pora.replace_characteristic(char1);

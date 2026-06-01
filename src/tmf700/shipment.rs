@@ -2,14 +2,15 @@
 
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::external_identifier::ExternalIdentifier;
-use crate::{DateTime, HasAttachment, HasId, HasName, Quantity, Uri};
+use crate::{DateTime, HasAttachment, HasId, HasName, IsAddressable, Quantity, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasAttachment, HasId, HasName};
 
 use super::shipment_specification::ShipmentSpecificationRefOrValue;
 
 use super::MOD_PATH;
-const CLASS_PATH: &str = "shipment";
+/// Path to module
+pub const CLASS_PATH: &str = "shipment";
 
 /// Shipment Tracking
 #[derive(Clone, Default, Debug, Deserialize, HasId, HasName, Serialize)]
@@ -23,7 +24,7 @@ pub struct ShipmentTrackingRef {
 }
 
 /// Shipment Item Action Type
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ShipmentItemActionType {
     /// Add new item
     Add,
@@ -118,6 +119,12 @@ pub struct ShipmentRefOrValue {
     #[serde(skip_serializing_if = "Option::is_none")]
     /// Shipment Item - Individual equipment items
     pub shipment_item: Option<Vec<ShipmentItem>>,
+}
+
+impl IsAddressable for ShipmentRefOrValue {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 
 #[cfg(test)]

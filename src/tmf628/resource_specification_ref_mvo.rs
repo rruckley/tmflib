@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 ///Resource Specification Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ResourceSpecificationRefMvo {
-    ///Entity reference MVO schema for use in TMForum Open-APIs. Property used to extend other entities.
+    ///Entity reference MVO schema for use in `TMForum` Open-APIs. Property used to extend other entities.
     #[serde(flatten)]
     pub entity_ref_mvo: EntityRefMvo,
     ///Resource Specification version

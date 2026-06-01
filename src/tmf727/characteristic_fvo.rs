@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///A characteristic is a specification that describes a property that can be used to describe an entity. It is used to specify the properties of an entity, such as a product or service, and can be used to define the characteristics of a product or service specification.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CharacteristicFvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Collection of characteristic relationships

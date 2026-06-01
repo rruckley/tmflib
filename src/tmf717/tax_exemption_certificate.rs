@@ -6,10 +6,10 @@ use serde::{Deserialize, Serialize};
 /// Tax Exemption Certificate
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TaxExemptionCertificate {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
-    ///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Attachment entity and not the AttachmentRefOrValue class itself
+    ///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Attachment entity and not the `AttachmentRefOrValue` class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub attachment: Option<AttachmentRefOrValue>,
     ///Identifier of a document that shows proof of exemption from taxes for the taxing jurisdiction

@@ -2,10 +2,10 @@ use super::DataFilterMapItemFvo;
 use crate::common::extensible::ExtensibleFvo;
 use serde::{Deserialize, Serialize};
 
-///Data Filter Map Full Value Object``
+///Data Filter Map Full Value Object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct DataFilterMapFvo {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible_fvo: ExtensibleFvo,
     ///Mappings between filter names and values

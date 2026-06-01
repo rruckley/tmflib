@@ -2,7 +2,7 @@ use super::{NetworkProductRef, Quantity, RelatedParty};
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
-///The consumption counters (called ConsumptionSummary in the SID model) detail for example the different kind of consumption done on the bucket.
+///The consumption counters (called `ConsumptionSummary` in the SID model) detail for example the different kind of consumption done on the bucket.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ConsumptionSummary {
     ///When sub-classing, this defines the super-class

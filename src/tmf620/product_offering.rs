@@ -28,10 +28,11 @@ use tmflib_derive::{HasAttachment, HasDescription, HasId, HasLastUpdate, HasName
 use super::MOD_PATH;
 
 const PO_VERS_INIT: &str = "1.0";
-const CLASS_PATH: &str = "productOffering";
+/// Path to this class
+pub const CLASS_PATH: &str = "productOffering";
 
 /// Product Offering Reference
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Serialize)]
 pub struct ProductOfferingRef {
     /// Unique Id
     pub id: String,
@@ -42,12 +43,12 @@ pub struct ProductOfferingRef {
 }
 
 impl From<ProductOffering> for ProductOfferingRef {
-    /// Convert from ProductOffering into ProductOfferingRef
-    fn from(po: ProductOffering) -> ProductOfferingRef {
-        ProductOfferingRef {
-            id: po.id.unwrap_or("MISSING".to_string()).clone(),
-            href: po.href.unwrap_or("MISSING".to_string()).clone(),
-            name: po.name.unwrap_or("MISSING".to_string()).clone(),
+    /// Convert from `ProductOffering` into `ProductOfferingRef`
+    fn from(po: ProductOffering) -> Self {
+        Self {
+            id: po.id.unwrap_or("MISSING".to_string()),
+            href: po.href.unwrap_or("MISSING".to_string()),
+            name: po.name.unwrap_or("MISSING".to_string()),
         }
     }
 }
@@ -86,11 +87,11 @@ pub struct ProductOfferingRelationship {
 }
 
 impl From<ProductOffering> for ProductOfferingRelationship {
-    fn from(po: ProductOffering) -> ProductOfferingRelationship {
-        ProductOfferingRelationship {
+    fn from(po: ProductOffering) -> Self {
+        Self {
             id: po.id.clone(),
             href: po.href.clone(),
-            name: po.name.clone(),
+            name: po.name,
             relationship_type: None,
             role: None,
             valid_for: None,
@@ -208,27 +209,27 @@ pub struct ProductOffering {
 }
 
 impl ProductOffering {
-    /// Create a new instance of ProductOffering object
+    /// Create a new instance of `ProductOffering` object
     /// # Examples
     /// ```
     /// # use tmflib::tmf620::product_offering::ProductOffering;
     /// let po = ProductOffering::new(String::from("MyOffer"));
     /// ```
-    pub fn new(name: impl Into<String>) -> ProductOffering {
-        let mut offer = ProductOffering::create_with_time();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut offer = Self::create_with_time();
         offer.name = Some(name.into());
         offer.version = Some(PO_VERS_INIT.to_string());
-        offer.base_type = Some(ProductOffering::get_class());
-        offer.r#type = Some(ProductOffering::get_class());
+        offer.base_type = Some(Self::get_class());
+        offer.r#type = Some(Self::get_class());
         offer
     }
 
-    /// Set status of this ProductOffering
+    /// Set status of this `ProductOffering`
     pub fn status(&mut self, status: &str) {
         self.lifecycle_status = Some(status.to_owned());
     }
 
-    /// Added category refernce to ProductOffering
+    /// Added category refernce to `ProductOffering`
     /// # Examples
     /// ```
     /// # use tmflib::tmf620::product_offering::ProductOffering;
@@ -237,23 +238,26 @@ impl ProductOffering {
     /// let cat= Category::new(String::from("MyCategory"));
     /// let result = po.with_category(CategoryRef::from(&cat));
     /// ```
-    pub fn with_category(mut self, category: CategoryRef) -> ProductOffering {
+    #[must_use]
+    pub fn with_category(mut self, category: CategoryRef) -> Self {
         vec_insert(&mut self.category, category);
         // self.category.as_mut().unwrap().push(category);
         self
     }
 
     /// Add specification into this Product Offering
-    pub fn with_specification(mut self, specification: ProductSpecification) -> ProductOffering {
+    #[must_use]
+    pub fn with_specification(mut self, specification: ProductSpecification) -> Self {
         self.product_specification = Some(ProductSpecificationRef::from(specification));
         self
     }
 
     /// Add characteristic value uses into this Product Offering
+    #[must_use]
     pub fn with_char_value_use(
         mut self,
         char_value_use: ProductSpecificationCharacteristicValueUse,
-    ) -> ProductOffering {
+    ) -> Self {
         match self.prod_spec_char_value_use.as_mut() {
             Some(v) => v.push(char_value_use),
             None => self.prod_spec_char_value_use = Some(vec![char_value_use]),
@@ -261,8 +265,8 @@ impl ProductOffering {
         self
     }
 
-    /// Create a link between two ProductOfferings
-    pub fn link_po(&mut self, remote_po: ProductOffering, relationship_type: &str, role: &str) {
+    /// Create a link between two `ProductOfferings`
+    pub fn link_po(&mut self, remote_po: Self, relationship_type: &str, role: &str) {
         // Create a link from ourselves into remote_po using type and role prodived.
         let mut offer_rel = ProductOfferingRelationship::from(remote_po);
         offer_rel.relationship_type = Some(relationship_type.to_string());
@@ -272,7 +276,7 @@ impl ProductOffering {
                 v.push(offer_rel);
             }
             None => self.product_offering_relationship = Some(vec![offer_rel]),
-        };
+        }
     }
 }
 
@@ -292,7 +296,7 @@ impl TMFEvent<ProductOfferingEvent> for ProductOffering {
 }
 
 impl EventPayload<ProductOfferingEvent> for ProductOffering {
-    type Subject = ProductOffering;
+    type Subject = Self;
     type EventType = ProductOfferingEvent;
     fn to_event(
         &self,
@@ -303,7 +307,7 @@ impl EventPayload<ProductOfferingEvent> for ProductOffering {
         let desc = format!("{:?} for {}", event_type, self.get_name());
         Event {
             description: Some(desc),
-            domain: Some(ProductOffering::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             href: self.href.clone(),
             id: self.id.clone(),

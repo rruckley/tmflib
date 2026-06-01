@@ -1,12 +1,12 @@
 use super::{PolicyActionMvo, PolicyManagedEntityMvo};
 use serde::{Deserialize, Serialize};
-///Managed PolicyAction
+///Managed `PolicyAction`
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ManagedPolicyActionMvo {
-    /// Inlined fields from PolicyActionMvo
+    /// Inlined fields from `PolicyActionMvo`
     #[serde(flatten)]
     pub policy_action_mvo: PolicyActionMvo,
-    ///Inlined fields from PolicyManagedEntityMvo
+    ///Inlined fields from `PolicyManagedEntityMvo`
     #[serde(flatten)]
     pub policy_managed_entity_mvo: PolicyManagedEntityMvo,
 }

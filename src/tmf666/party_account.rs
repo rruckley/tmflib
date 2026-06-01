@@ -2,7 +2,9 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty};
+use crate::{
+    DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty, IsAddressable,
+};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty};
 
 use super::{
@@ -12,7 +14,8 @@ use super::{
 use crate::common::tmf_error::TMFError;
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
 
-const CLASS_PATH: &str = "account";
+/// Path to Party Account class
+pub const CLASS_PATH: &str = "partyAccount";
 
 /// Party Account
 #[derive(
@@ -62,13 +65,19 @@ pub struct PartyAccount {
     default_payment_method: Option<PaymentMethodRef>,
 }
 
+impl IsAddressable for PartyAccount {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 impl From<PartyAccount> for AccountRef {
     fn from(value: PartyAccount) -> Self {
-        AccountRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            description: value.description.clone(),
+            description: value.description,
         }
     }
 }

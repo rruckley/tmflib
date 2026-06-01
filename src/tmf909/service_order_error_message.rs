@@ -1,6 +1,6 @@
 use super::ServiceOrderItemRef;
 use serde::{Deserialize, Serialize};
-///A ServiceOrderErrorMessage represents an error that causes a status change in a service order.
+///A `ServiceOrderErrorMessage` represents an error that causes a status change in a service order.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceOrderErrorMessage {
     ///When sub-classing, this defines the super-class

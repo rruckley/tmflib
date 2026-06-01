@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 ///Management Job FVO
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ManagementJobFvo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///This is enumeration for Administrative state
@@ -34,7 +34,7 @@ pub struct ManagementJobFvo {
     #[serde(rename = "jobId")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub job_id: Option<String>,
-    ///The priority of the management job. The way the management application will use the JobPriority to schedule job execution is application specific and outside the scope. Integer, limited to a range of 1 to 10.
+    ///The priority of the management job. The way the management application will use the `JobPriority` to schedule job execution is application specific and outside the scope. Integer, limited to a range of 1 to 10.
     #[serde(rename = "jobPriority")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub job_priority: Option<i64>,

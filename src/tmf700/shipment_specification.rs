@@ -8,11 +8,12 @@ use tmflib_derive::{HasAttachment, HasDescription, HasId, HasLastUpdate, HasName
 
 use crate::{
     serde_value_to_type, DateTime, HasAttachment, HasDescription, HasId, HasLastUpdate, HasName,
-    HasValidity, TimePeriod, Uri,
+    HasValidity, IsAddressable, TimePeriod, Uri,
 };
 
 use super::MOD_PATH;
-const CLASS_PATH: &str = "shippingSpecification";
+/// Path to module
+pub const CLASS_PATH: &str = "shippingSpecification";
 
 /// Shipment Specification
 #[derive(
@@ -60,6 +61,12 @@ pub struct ShipmentSpecificationRefOrValue {
     /// Attachments
     #[serde(skip_serializing_if = "Option::is_none")]
     pub attachment: Option<Vec<AttachmentRefOrValue>>,
+}
+
+impl IsAddressable for ShipmentSpecificationRefOrValue {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 
 /// Shipment Specification Relationship
@@ -145,10 +152,9 @@ pub struct CharacteristicValueSpecification {
 
 impl CharacteristicValueSpecification {
     /// Constructor
-    pub fn new() -> CharacteristicValueSpecification {
-        CharacteristicValueSpecification {
-            ..Default::default()
-        }
+    #[must_use]
+    pub fn new() -> Self {
+        Default::default()
     }
 
     /// Set regex for this characteristic value specification
@@ -158,7 +164,9 @@ impl CharacteristicValueSpecification {
     /// let cvs = CharacteristicValueSpecification::new()
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap();
     /// ```
-    pub fn regex(mut self, regex: String) -> Result<CharacteristicValueSpecification, TMFError> {
+    /// # Errors
+    /// Will return an error if the regex pattern provided is invalid
+    pub fn regex(mut self, regex: String) -> Result<Self, TMFError> {
         let _re = Regex::new(&regex)?;
         self.regex = Some(regex);
         Ok(self)
@@ -173,10 +181,10 @@ impl CharacteristicValueSpecification {
     ///     .regex(String::from("[0-9]+(Mb|Gb)")).unwrap()
     ///     .value("100Mb".into()).unwrap();
     /// ```
-    pub fn value(
-        mut self,
-        value: serde_json::Value,
-    ) -> Result<CharacteristicValueSpecification, TMFError> {
+    /// # Errors
+    /// Will return an error if the value does not match the regex pattern set for this characteristic value specification
+    /// Can also return an error if the regex pattern is invalid
+    pub fn value(mut self, value: serde_json::Value) -> Result<Self, TMFError> {
         self.value_type = Some(serde_value_to_type(&value).to_string());
         match self.regex {
             Some(ref re_str) => {
@@ -184,8 +192,7 @@ impl CharacteristicValueSpecification {
                 let val_str = value.to_string().replace('\"', "");
                 if !re.is_match(&val_str) {
                     return Err(TMFError::GenericError(format!(
-                        "Value {} does not match regex {}",
-                        val_str, re_str
+                        "Value {val_str} does not match regex {re_str}"
                     )));
                 }
                 self.value = Some(value);

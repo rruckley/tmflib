@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the ServiceRefOrValue class itself
+///The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the `ServiceRefOrValue` class itself
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceRefOrValueFvo {}
 impl std::fmt::Display for ServiceRefOrValueFvo {

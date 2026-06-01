@@ -9,8 +9,8 @@ use crate::tmf641::service_order::ServiceOrder;
 use crate::tmf651::agreement::AgreementRef;
 use crate::tmf663::shopping_cart::ShoppingCart;
 use crate::{
-    vec_insert, DateTime, HasDescription, HasId, HasLastUpdate, HasNote, HasRelatedParty, TMFEvent,
-    Uri,
+    vec_insert, DateTime, HasDescription, HasId, HasLastUpdate, HasNote, HasRelatedParty,
+    IsAddressable, TMFEvent, Uri,
 };
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
@@ -19,7 +19,8 @@ use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty};
 // URL Path components
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "productOrder";
+/// TMF622 Product Order Management - V4
+pub const CLASS_PATH: &str = "productOrder";
 
 /// Reference to a Product Order
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -50,7 +51,7 @@ impl From<ProductOrder> for ProductOrderRef {
             .description
             .as_deref()
             .unwrap_or("No Order Description");
-        ProductOrderRef {
+        Self {
             href: value.get_href(),
             id: value.get_id(),
             // Should ideally generate a useful name if description is missing
@@ -67,7 +68,7 @@ impl From<&ProductOrder> for ProductOrderRef {
             .description
             .as_deref()
             .unwrap_or("No Order Description");
-        ProductOrderRef {
+        Self {
             href: value.get_href(),
             id: value.get_id(),
             name: name.to_string(),
@@ -109,7 +110,7 @@ impl TMFEvent<ProductOrderEvent> for ProductOrder {
 }
 
 impl EventPayload<ProductOrderEvent> for ProductOrder {
-    type Subject = ProductOrder;
+    type Subject = Self;
     type EventType = ProductOrderEventType;
 
     fn to_event(&self, event_type: Self::EventType) -> Event<ProductOrderEvent, Self::EventType> {
@@ -127,7 +128,7 @@ impl EventPayload<ProductOrderEvent> for ProductOrder {
     }
 }
 
-/// ProductOrder
+/// `ProductOrder`
 #[derive(
     Clone, Debug, Default, Deserialize, HasId, HasDescription, HasNote, HasRelatedParty, Serialize,
 )]
@@ -186,30 +187,35 @@ impl HasLastUpdate for ProductOrder {
     fn last_update(mut self, time: Option<String>) -> Self {
         match time {
             Some(t) => self.set_last_update(t),
-            None => self.set_last_update(ProductOrder::get_timestamp()),
-        };
+            None => self.set_last_update(Self::get_timestamp()),
+        }
         self
     }
 }
 
 impl ProductOrder {
     /// Create a new product order via trait
-    pub fn new() -> ProductOrder {
-        ProductOrder {
-            ..ProductOrder::create_with_time()
-        }
+    #[must_use]
+    pub fn new() -> Self {
+        Self::create_with_time()
     }
 
-    /// Add an ProductOrderItem into the ProductOrder
+    /// Add an `ProductOrderItem` into the `ProductOrder`
     pub fn add_order_item(&mut self, order_item: ProductOrderItem) {
         vec_insert(&mut self.product_order_item, order_item);
         // self.product_order_item.as_mut().unwrap().push(order_item);
     }
 }
 
+impl IsAddressable for ProductOrder {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 impl From<ServiceOrder> for ProductOrder {
     fn from(value: ServiceOrder) -> Self {
-        let mut po = ProductOrder::new();
+        let mut po = Self::new();
 
         po.cancellation_reason
             .clone_from(&value.cancellation_reason);
@@ -228,13 +234,13 @@ impl From<ServiceOrder> for ProductOrder {
 
         // Iterate through service order items
         let items = match value.service_order_item {
-            Some(i) => {
+            Some(soi) => {
                 let mut out = vec![];
-                i.into_iter().for_each(|i| {
-                    // Conert i into ProductOrderItem
+                for i in soi {
+                    // Convert i into ProductOrderItem
                     let poi = ProductOrderItem::from(i);
                     out.push(poi);
-                });
+                }
                 Some(out)
             }
             None => None,
@@ -249,23 +255,23 @@ impl From<ShoppingCart> for ProductOrder {
     fn from(value: ShoppingCart) -> Self {
         // Convert a Shopping cart into a product order.
         // Each CartItem converts into an order item using a conversion function.
-        let mut order = ProductOrder::new();
+        let mut order = Self::new();
         order.description = Some("Order from Cart".into());
         // Bring across the cart items
-        if value.cart_item.is_some() {
-            value.cart_item.unwrap().into_iter().for_each(|i| {
+        if let Some(cart_items) = value.cart_item {
+            for item in cart_items {
                 order
                     .product_order_item
                     .as_mut()
                     .unwrap()
-                    .push(ProductOrderItem::from(i));
-            });
+                    .push(ProductOrderItem::from(item));
+            }
         }
         // Bring across the related parties
-        if value.related_party.is_some() {
-            value.related_party.unwrap().into_iter().for_each(|rp| {
+        if let Some(party) = value.related_party {
+            for rp in party {
                 order.add_party(rp);
-            });
+            }
         }
         order
     }

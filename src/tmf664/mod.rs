@@ -23,3 +23,13 @@ pub enum TaskStateType {
     /// Task has completed
     Done,
 }
+
+fn get_objects() -> Vec<&'static str> {
+    vec![
+        heal::CLASS_PATH,
+        migrate::CLASS_PATH,
+        monitor::CLASS_PATH,
+        resource_function::CLASS_PATH,
+        scale::CLASS_PATH,
+    ]
+}

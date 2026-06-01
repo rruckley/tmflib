@@ -3,10 +3,10 @@ use serde::{Deserialize, Serialize};
 use crate::common::entity::EntityRef;
 use crate::TimePeriod;
 
-///Base entity reference schema for use in TMForum Open-APIs. Property.
+///Base entity reference schema for use in `TMForum` Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AgreementRelationship {
-    ///Base entity reference schema for use in TMForum Open-APIs. Property.
+    ///Base entity reference schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Unique identifier of the related agreement

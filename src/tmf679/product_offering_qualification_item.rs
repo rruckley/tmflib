@@ -13,7 +13,7 @@ use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use super::product_qualification::TaskStateType;
 
 /// Action for this product offering
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ProductActionType {
     /// Add a new offering
     Add,
@@ -44,9 +44,10 @@ pub struct ProductOfferingQualificationItem {
 
 impl ProductOfferingQualificationItem {
     /// Create a new Product Offering Qualification Item
-    pub fn new() -> ProductOfferingQualificationItem {
+    #[must_use]
+    pub fn new() -> Self {
         let id = Uuid::new_v4().simple().to_string();
-        ProductOfferingQualificationItem {
+        Self {
             id: Some(id),
             ..Default::default()
         }

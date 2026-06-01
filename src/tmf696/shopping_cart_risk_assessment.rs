@@ -2,18 +2,19 @@
 
 use super::characteristic::Characteristic;
 use super::risk_assessment_result::RiskAssessmentResult;
-use crate::{HasId, Uri};
+use crate::{HasId, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "shoppingCartRiskAssessment";
+/// Path: `/{mod_path}/shoppingCartRiskAssessment`
+pub const CLASS_PATH: &str = "shoppingCartRiskAssessment";
 
 /// Shopping Cart Risk Assessment
 #[derive(Clone, Default, Debug, HasId, Deserialize, Serialize)]
 pub struct ShoppingCartRiskAssessment {
-    /// HRef
+    /// `HRef`
     pub href: Option<Uri>,
     /// Id
     pub id: Option<String>,
@@ -21,6 +22,12 @@ pub struct ShoppingCartRiskAssessment {
     pub risk_assessment_result: Option<RiskAssessmentResult>,
     /// Characteristics
     pub characteristic: Option<Vec<Characteristic>>,
+}
+
+impl IsAddressable for ShoppingCartRiskAssessment {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 
 #[cfg(test)]

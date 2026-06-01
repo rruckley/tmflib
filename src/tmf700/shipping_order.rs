@@ -10,12 +10,13 @@ use crate::{common::note::Note, DateTime};
 
 use super::MOD_PATH;
 use crate::common::tmf_error::TMFError;
-use crate::{HasId, HasNote};
+use crate::{HasId, HasNote, IsAddressable};
 use tmflib_derive::{HasId, HasNote};
 
 use serde::{Deserialize, Serialize};
 
-const CLASS_PATH: &str = "shippingOrder";
+/// Path to module
+pub const CLASS_PATH: &str = "shippingOrder";
 
 /// Related Shipping Order
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
@@ -27,8 +28,9 @@ pub struct RelatedShippingOrder {
 }
 
 impl RelatedShippingOrder {
-    /// Set the role for this RelatedShippingOrder
-    pub fn role(mut self, role: impl Into<String>) -> RelatedShippingOrder {
+    /// Set the role for this `RelatedShippingOrder`
+    #[must_use]
+    pub fn role(mut self, role: impl Into<String>) -> Self {
         self.role = Some(role.into());
         self
     }
@@ -37,7 +39,7 @@ impl RelatedShippingOrder {
 impl From<&ShippingOrder> for RelatedShippingOrder {
     fn from(value: &ShippingOrder) -> Self {
         // Generate Ref from SO
-        RelatedShippingOrder {
+        Self {
             href: value.get_href(),
             id: value.get_id(),
             name: String::default(),
@@ -85,13 +87,15 @@ pub struct ShippingOrder {
 }
 
 impl ShippingOrder {
-    /// Create new ShippingOrder
-    pub fn new() -> ShippingOrder {
-        ShippingOrder::create()
+    /// Create new `ShippingOrder`
+    #[must_use]
+    pub fn new() -> Self {
+        Self::create()
     }
 
     /// Set shipping instructions for this shipping order
-    pub fn instruction(mut self, instruction: ShippingInstruction) -> ShippingOrder {
+    #[must_use]
+    pub fn instruction(mut self, instruction: ShippingInstruction) -> Self {
         self.shipping_instruction = Some(instruction);
         self
     }
@@ -104,11 +108,18 @@ impl ShippingOrder {
         }
     }
 
-    /// Add a RelatedShippingOrder to this order
-    pub fn link_order(&mut self, shipping_order: &ShippingOrder, role: impl Into<String>) {
+    /// Add a `RelatedShippingOrder` to this order
+    pub fn link_order(&mut self, shipping_order: &Self, role: impl Into<String>) {
         self.related_shipping_order = Some(RelatedShippingOrder::from(shipping_order).role(role));
     }
 }
+
+impl IsAddressable for ShippingOrder {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 #[cfg(test)]
 mod test {
     use crate::tmf700::shipping_instruction::ShippingInstruction;

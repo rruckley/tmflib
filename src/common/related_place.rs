@@ -25,7 +25,7 @@ pub struct PlaceRef {
 
 impl From<GeographicSite> for PlaceRef {
     fn from(value: GeographicSite) -> Self {
-        PlaceRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
@@ -35,7 +35,7 @@ impl From<GeographicSite> for PlaceRef {
 
 impl From<GeographicAddress> for PlaceRef {
     fn from(value: GeographicAddress) -> Self {
-        PlaceRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
@@ -44,7 +44,7 @@ impl From<GeographicAddress> for PlaceRef {
 }
 
 /// Reference to a place (TMF673, TMF674, TMF674)
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RelatedPlaceRefOrValue {
     referred_type: String,
@@ -58,7 +58,7 @@ pub struct RelatedPlaceRefOrValue {
 
 impl From<GeographicSite> for RelatedPlaceRefOrValue {
     fn from(value: GeographicSite) -> Self {
-        RelatedPlaceRefOrValue {
+        Self {
             referred_type: GeographicSite::get_class(),
             name: value.get_name(),
             href: value.get_href(),
@@ -72,7 +72,7 @@ impl From<GeographicSite> for RelatedPlaceRefOrValue {
 
 impl From<&GeographicAddress> for RelatedPlaceRefOrValue {
     fn from(value: &GeographicAddress) -> Self {
-        RelatedPlaceRefOrValue {
+        Self {
             referred_type: GeographicAddress::get_class(),
             name: value.get_name(),
             href: value.get_href(),

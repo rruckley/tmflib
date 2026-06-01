@@ -3,7 +3,7 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
-use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName};
+use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName, IsAddressable};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::{
@@ -11,7 +11,8 @@ use super::{
     PaymentMethodRef, PaymentPlan, MOD_PATH,
 };
 
-const CLASS_PATH: &str = "account";
+/// Path to Billing Account class
+pub const CLASS_PATH: &str = "billingAccount";
 
 /// Billing Account
 #[derive(
@@ -61,20 +62,26 @@ pub struct BillingAccount {
 
 impl BillingAccount {
     /// Create new Billing Account
-    pub fn new(name: impl Into<String>) -> BillingAccount {
-        let mut account = BillingAccount::create();
+    pub fn new(name: impl Into<String>) -> Self {
+        let mut account = Self::create();
         account.name = Some(name.into());
         account
     }
 }
 
+impl IsAddressable for BillingAccount {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
+}
+
 impl From<BillingAccount> for AccountRef {
     fn from(value: BillingAccount) -> Self {
-        AccountRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            description: value.description.clone(),
+            description: value.description,
         }
     }
 }
@@ -92,7 +99,7 @@ pub struct BillingAccountRef {
 
 impl From<BillingAccount> for BillingAccountRef {
     fn from(value: BillingAccount) -> Self {
-        BillingAccountRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),

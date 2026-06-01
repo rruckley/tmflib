@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///reference to an AssociationSpecification object
+///reference to an `AssociationSpecification` object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AssociationSpecificationRef {
     ///When sub-classing, this defines the super-class

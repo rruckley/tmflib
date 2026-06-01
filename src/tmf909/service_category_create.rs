@@ -50,7 +50,7 @@ pub struct ServiceCategoryCreate {
     #[serde(rename = "validFor")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub valid_for: Option<TimePeriod>,
-    ///ServiceCategory version
+    ///`ServiceCategory` version
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub version: Option<String>,
 }

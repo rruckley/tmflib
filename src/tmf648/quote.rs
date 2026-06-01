@@ -12,8 +12,8 @@ use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
 use crate::tmf651::agreement::AgreementRef;
 use crate::{
-    DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, TMFEvent,
-    TimePeriod,
+    DateTime, HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity, IsAddressable,
+    TMFEvent, TimePeriod,
 };
 use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty, HasValidity};
 
@@ -21,7 +21,7 @@ const CLASS_PATH: &str = "quote";
 const QUOTE_VERS: &str = "1.0";
 
 /// Status of the quote object
-#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum QuoteStateType {
     /// Quote has been rejected
@@ -122,8 +122,9 @@ pub struct Quote {
 
 impl Quote {
     /// Create a new Product Quote
-    pub fn new() -> Quote {
-        let mut quote = Quote::create();
+    #[must_use]
+    pub fn new() -> Self {
+        let mut quote = Self::create();
         quote.version = Some(QUOTE_VERS.to_string());
         quote.state = Some(QuoteStateType::Accepted);
         quote
@@ -135,16 +136,23 @@ impl Quote {
     }
 
     /// Add a quote item into a product quote
+    /// # Errors
+    /// Will return an error if the quote item provided is invalid and cannot be added to the quote
+    /// ```
+    /// use tmflib::tmf648::quote::{Quote, QuoteStateType};
+    /// use tmflib::tmf648::quote_item::QuoteItem;
+    /// let mut quote = Quote::new();
+    /// let item = QuoteItem::new();
+    /// let res = quote.add_quote_item(item);
+    /// assert_eq!(res.is_ok(), true);
+    /// ```
     pub fn add_quote_item(&mut self, item: QuoteItem) -> Result<String, TMFError> {
-        match self.quote_item.as_mut() {
-            Some(v) => {
-                v.push(item);
-                Ok(String::from("Quote Item Added"))
-            }
-            None => {
-                self.quote_item = Some(vec![item]);
-                Ok(String::from("Vector created and quote Item Added"))
-            }
+        if let Some(v) = self.quote_item.as_mut() {
+            v.push(item);
+            Ok(String::from("Quote Item Added"))
+        } else {
+            self.quote_item = Some(vec![item]);
+            Ok(String::from("Vector created and quote Item Added"))
         }
     }
 
@@ -157,6 +165,7 @@ impl Quote {
     }
 
     /// Get a description for this quote
+    #[must_use]
     pub fn description(&self) -> String {
         match &self.description {
             Some(d) => d.clone(),
@@ -164,6 +173,12 @@ impl Quote {
                 format!("Quote-{}", self.get_id())
             }
         }
+    }
+}
+
+impl IsAddressable for Quote {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 
@@ -178,7 +193,7 @@ impl HasName for Quote {
             .clone()
     }
     fn set_name(&mut self, name: impl Into<String>) {
-        self.description = Some(name.into())
+        self.description = Some(name.into());
     }
 
     fn name(mut self, name: impl Into<String>) -> Self {
@@ -218,7 +233,7 @@ impl TMFEvent<QuoteEvent> for Quote {
 }
 
 impl EventPayload<QuoteEvent> for Quote {
-    type Subject = Quote;
+    type Subject = Self;
     type EventType = QuoteEventType;
     fn to_event(
         &self,
@@ -236,7 +251,7 @@ impl EventPayload<QuoteEvent> for Quote {
         Event {
             correlation_id: None,
             description: Some(desc),
-            domain: Some(Quote::get_class()),
+            domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
             field_path: None,
             href: Some(self.get_href()),

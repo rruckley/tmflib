@@ -7,10 +7,10 @@ use std::convert::From;
 use uuid::Uuid;
 
 /// A note is a comment, observation, or remark made by a user or system about a particular entity. It typically contains textual information that provides additional context, insights, or feedback related to the entity it is associated with. Notes can be used for various purposes, such as documenting important details, sharing observations, or recording feedback.
-#[derive(Clone, Debug, Deserialize, PartialEq, Default, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, Default, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Note {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///When sub-classing, this defines the super-class
@@ -45,11 +45,23 @@ impl std::fmt::Display for Note {
 
 impl Note {
     /// Create a new note, without author
-    pub fn new(text: impl Into<String>) -> Note {
+    /// # Examples
+    /// ```
+    /// use tmflib::common::note::Note;
+    /// let note = Note::new("This is a note");
+    /// ```
+    /// ```
+    /// use tmflib::common::note::Note;
+    /// let note = Note::new("This is a note").author("John Doe");
+    /// ```
+    /// # Panics
+    /// Will panic if the note text is empty.
+    /// May panic if `now.timestamp()` is unparsable, but this is unlikely.
+    pub fn new(text: impl Into<String>) -> Self {
         let id = Uuid::new_v4().simple().to_string();
         let now = Utc::now();
         let time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
-        Note {
+        Self {
             id: Some(id),
             author: None,
             date: Some(time.to_string()),
@@ -58,7 +70,8 @@ impl Note {
         }
     }
     /// Set author for note with builder pattern
-    pub fn author(mut self, author: &str) -> Note {
+    #[must_use]
+    pub fn author(mut self, author: &str) -> Self {
         self.author = Some(author.to_string());
         self
     }
@@ -66,7 +79,7 @@ impl Note {
 
 impl From<&str> for Note {
     fn from(value: &str) -> Self {
-        Note::new(value)
+        Self::new(value)
     }
 }
 

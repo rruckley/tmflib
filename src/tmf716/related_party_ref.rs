@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///RelatedParty reference. A related party defines party or party role linked to a specific entity.
+///`RelatedParty` reference. A related party defines party or party role linked to a specific entity.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPartyRef {
     ///When sub-classing, this defines the super-class

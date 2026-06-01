@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 /// Party Privacy Profile
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PartyPrivacyProfile {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Reference to the party (or party role) that agreed to the privacy profile
@@ -23,14 +23,14 @@ pub struct PartyPrivacyProfile {
     #[serde(rename = "applicableForParty")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub applicable_for_party: Option<RelatedPartyRefOrPartyRoleRef>,
-    ///The date on which the PartyPrivacyProfile was created
+    ///The date on which the `PartyPrivacyProfile` was created
     #[serde(rename = "creationDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub creation_date: Option<crate::DateTime>,
     ///Description of the privacy profile
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    ///Date and time when the PartyPrivacyProfile was last updated
+    ///Date and time when the `PartyPrivacyProfile` was last updated
     #[serde(rename = "lastUpdate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub last_update: Option<crate::DateTime>,

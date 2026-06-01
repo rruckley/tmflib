@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///UsageSpecification reference. UsageSpecification is a detailed description of a usage event that are of interest to the business and can have charges applied to it. It is comprised of characteristics, which define all attributes known for a particular type of usage.
+///`UsageSpecification` reference. `UsageSpecification` is a detailed description of a usage event that are of interest to the business and can have charges applied to it. It is comprised of characteristics, which define all attributes known for a particular type of usage.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct UsageSpecificationRef {
     ///When sub-classing, this defines the super-class

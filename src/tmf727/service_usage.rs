@@ -26,7 +26,8 @@ use serde::{Deserialize, Serialize};
 use super::MOD_PATH;
 use tmflib_derive::HasId;
 
-const CLASS_PATH: &str = "serviceUsage";
+/// Path to module
+pub const CLASS_PATH: &str = "serviceUsage";
 
 ///Service Usage represents the actual usage of a service by a customer or other party. It is used to track the usage of a service in a specific context, e.g. for a specific customer or in a specific environment.
 #[derive(Debug, Clone, Serialize, Deserialize, Default, HasId)]
@@ -35,7 +36,7 @@ pub struct ServiceUsage {
     pub id: Option<String>,
     ///Unique identifier for this service usage
     pub href: Option<String>,
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Relationship to Service Usage in bundle
@@ -53,7 +54,7 @@ pub struct ServiceUsage {
     #[serde(rename = "isBundle")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub is_bundle: Option<bool>,
-    ///A list of related party references (RelatedParty [*]). A related party defines party or party role linked to a specific entity
+    ///A list of related party references (`RelatedParty` [*]). A related party defines party or party role linked to a specific entity
     #[serde(rename = "relatedParty")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub related_party: Vec<RelatedPartyRefOrPartyRoleRef>,
@@ -72,7 +73,7 @@ pub struct ServiceUsage {
     #[serde(rename = "usageDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub usage_date: Option<crate::DateTime>,
-    ///UsageSpecification reference. UsageSpecification is a detailed description of a service usage event that are of interest to the business. It is comprised of characteristics, which define all attributes known for a particular type of usage.
+    ///`UsageSpecification` reference. `UsageSpecification` is a detailed description of a service usage event that are of interest to the business. It is comprised of characteristics, which define all attributes known for a particular type of usage.
     #[serde(rename = "usageSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub usage_specification: Option<ServiceUsageSpecificationRef>,

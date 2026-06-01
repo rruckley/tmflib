@@ -16,7 +16,7 @@ pub struct PolicyRef {
     #[serde(rename = "@type")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
-    ///Base entity reference schema for use in TMForum Open-APIs. Property.
+    ///Base entity reference schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///Hyperlink reference

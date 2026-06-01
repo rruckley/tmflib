@@ -6,7 +6,7 @@ use crate::common::contact::ContactMedium;
 use crate::common::price::Price;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
-use crate::{HasId, HasRelatedParty, HasValidity, TimePeriod};
+use crate::{HasId, HasRelatedParty, HasValidity, IsAddressable, TimePeriod};
 use tmflib_derive::{HasId, HasRelatedParty, HasValidity};
 
 use super::cart_item::CartItem;
@@ -35,7 +35,7 @@ pub struct ShoppingCartRef {
 
 impl From<ShoppingCart> for ShoppingCartRef {
     fn from(value: ShoppingCart) -> Self {
-        ShoppingCartRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
         }
@@ -71,14 +71,15 @@ pub struct ShoppingCart {
 
 impl ShoppingCart {
     /// Create a new shopping cart
-    pub fn new() -> ShoppingCart {
+    #[must_use]
+    pub fn new() -> Self {
         // let mut cart = ShoppingCart::create();
         // cart.cart_item = Some(vec![]);
         // cart.related_party = Some(vec![]);
         // cart.valid_for = Some(TimePeriod::period_days(CART_DEFAULT_VALID.into()));
         // cart.cart_total_price = None;
         // cart
-        ShoppingCart {
+        Self {
             valid_for: Some(TimePeriod::period_days(CART_DEFAULT_VALID.into())),
             ..Default::default()
         }
@@ -90,6 +91,12 @@ impl ShoppingCart {
             Some(v) => v.push(item),
             None => self.cart_item = Some(vec![item]),
         }
+    }
+}
+
+impl IsAddressable for ShoppingCart {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

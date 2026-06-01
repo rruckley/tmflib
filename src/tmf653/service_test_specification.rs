@@ -2,11 +2,12 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::{HasDescription, HasId, HasLastUpdate, HasName, TimePeriod, Uri};
+use crate::{HasDescription, HasId, HasLastUpdate, HasName, IsAddressable, TimePeriod, Uri};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::MOD_PATH;
-const CLASS_PATH: &str = "specification";
+/// Path to `ServiceTestSpecification` class
+pub const CLASS_PATH: &str = "specification";
 
 /// Threshold Consequence
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -96,6 +97,12 @@ pub struct ServiceTestSpecification {
     pub version: Option<String>,
     /// Test Measures
     pub test_measure_definition: Option<Vec<TestMeasureDefinition>>,
+}
+
+impl IsAddressable for ServiceTestSpecification {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
+    }
 }
 
 #[cfg(test)]

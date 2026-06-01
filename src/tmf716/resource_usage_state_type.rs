@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///ResourceUsageStateType enumerations
+///`ResourceUsageStateType` enumerations
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum ResourceUsageStateType {
     ///The resource is in an idle state and can be used.

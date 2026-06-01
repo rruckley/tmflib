@@ -23,6 +23,11 @@ const MOD_PATH: &str = "partyManagement/v4";
 #[cfg(all(feature = "tmf632", feature = "build-V5"))]
 const MOD_PATH: &str = "partyManagement/v5";
 
+#[cfg(feature = "build-V4")]
+const MOD_VERSION: &str = "v4";
+#[cfg(feature = "build-V5")]
+const MOD_VERSION: &str = "v5";
+
 #[cfg(all(feature = "tmf632", feature = "build-V4"))]
 pub mod individual_v4;
 #[cfg(all(feature = "tmf632", feature = "build-V4"))]
@@ -46,8 +51,21 @@ pub struct Characteristic {
     r#type: Option<String>,
 }
 
+const fn get_version() -> &'static str {
+    MOD_VERSION
+}
+
 fn get_objects() -> Vec<&'static str> {
-    vec!["serviceUsage", "serviceUsageSpecification"]
+    vec![
+        #[cfg(feature = "build-V4")]
+        individual_v4::CLASS_PATH,
+        #[cfg(feature = "build-V4")]
+        organization_v4::CLASS_PATH,
+        #[cfg(feature = "build-V5")]
+        individual_v5::CLASS_PATH,
+        #[cfg(feature = "build-V5")]
+        organization_v5::CLASS_PATH,
+    ]
 }
 
 #[cfg(test)]

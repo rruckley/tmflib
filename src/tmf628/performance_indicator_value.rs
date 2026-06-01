@@ -7,7 +7,7 @@ pub struct PerformanceIndicatorValue {
     #[serde(rename = "observedValue")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub observed_value: Option<String>,
-    ///A product to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the product entity and not the RelatedProductRefOrValue class itself
+    ///A product to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the product entity and not the `RelatedProductRefOrValue` class itself
     #[serde(rename = "performanceIndicatorSpecification")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub performance_indicator_specification: Option<PerformanceIndicatorSpecificationRefOrValue>,

@@ -14,8 +14,8 @@ pub struct Characteristic {
 
 impl Characteristic {
     /// Create a new resource characteristic
-    pub fn new(name: impl Into<String>) -> Characteristic {
-        Characteristic {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: name.into(),
             ..Default::default()
         }

@@ -1,8 +1,8 @@
 //! Extensible objects
 
 use serde::{Deserialize, Serialize};
-///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
-#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq)]
+///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+#[derive(Debug, Clone, Serialize, Deserialize, Default, PartialEq, Eq)]
 pub struct Extensible {
     ///When sub-classing, this defines the super-class
     #[serde(rename = "@baseType")]
@@ -22,7 +22,7 @@ impl std::fmt::Display for Extensible {
     }
 }
 
-///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ExtensibleFvo {
     ///When sub-classing, this defines the super-class

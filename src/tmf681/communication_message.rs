@@ -6,7 +6,7 @@ use crate::common::related_party::RelatedParty;
 use crate::tmf632::individual_v4::Individual;
 #[cfg(all(feature = "tmf632", feature = "build-V5"))]
 use crate::tmf632::individual_v5::Individual;
-use crate::{DateTime, HasAttachment, HasId, HasName, Uri};
+use crate::{DateTime, HasAttachment, HasId, HasName, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasAttachment, HasId};
 
@@ -25,7 +25,7 @@ pub struct Receiver {
 
 impl From<&Individual> for Receiver {
     fn from(value: &Individual) -> Self {
-        Receiver {
+        Self {
             id: value.get_id(),
             name: value.get_name(),
             email: value.get_email(),
@@ -45,7 +45,7 @@ pub struct Sender {
 
 impl From<&Individual> for Sender {
     fn from(value: &Individual) -> Self {
-        Sender {
+        Self {
             id: value.get_id(),
             name: value.get_name(),
             party: Some(RelatedParty::from(value)),
@@ -94,53 +94,66 @@ pub struct CommunicationMessage {
 
 impl CommunicationMessage {
     /// Create a new basic message
-    pub fn new(content: impl Into<String>) -> CommunicationMessage {
-        CommunicationMessage::create().content(content)
+    pub fn new(content: impl Into<String>) -> Self {
+        Self::create().content(content)
     }
 
     /// Create an email style message
-    pub fn email(subject: impl Into<String>, content: impl Into<String>) -> CommunicationMessage {
-        CommunicationMessage::new(content)
-            .subject(subject)
-            .message_type("email")
+    pub fn email(subject: impl Into<String>, content: impl Into<String>) -> Self {
+        Self::new(content).subject(subject).message_type("email")
     }
 
     /// Set content of message
-    pub fn content(mut self, content: impl Into<String>) -> CommunicationMessage {
+    #[must_use]
+    pub fn content(mut self, content: impl Into<String>) -> Self {
         self.content = content.into();
         self
     }
 
     /// Add subject to message
-    pub fn subject(mut self, subject: impl Into<String>) -> CommunicationMessage {
+    #[must_use]
+    pub fn subject(mut self, subject: impl Into<String>) -> Self {
         self.subject = Some(subject.into());
         self
     }
 
     /// Set message description
-    pub fn description(mut self, description: impl Into<String>) -> CommunicationMessage {
+    #[must_use]
+    pub fn description(mut self, description: impl Into<String>) -> Self {
         self.description = Some(description.into());
         self
     }
 
     /// Set type of message
-    pub fn message_type(mut self, msg_type: impl Into<String>) -> CommunicationMessage {
+    #[must_use]
+    pub fn message_type(mut self, msg_type: impl Into<String>) -> Self {
         self.message_type = msg_type.into();
         self
     }
 
     /// Set the Sender for this message
-    pub fn from(mut self, sender: &Individual) -> CommunicationMessage {
+    #[must_use]
+    pub fn from(mut self, sender: &Individual) -> Self {
         self.sender = Some(Sender::from(sender));
         self
     }
 
     /// Set the receivers for this message
-    pub fn to(mut self, recievers: Vec<&Individual>) -> CommunicationMessage {
-        recievers.into_iter().for_each(|i| {
+    #[must_use]
+    pub fn to(mut self, recievers: Vec<&Individual>) -> Self {
+        // recievers.into_iter().for_each(|i| {
+        //     self.receiver.push(Receiver::from(i));
+        // });
+        for i in recievers {
             self.receiver.push(Receiver::from(i));
-        });
+        }
         self
+    }
+}
+
+impl IsAddressable for CommunicationMessage {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

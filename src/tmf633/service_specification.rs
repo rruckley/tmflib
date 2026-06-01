@@ -3,12 +3,13 @@
 use serde::{Deserialize, Serialize};
 
 use crate::common::related_party::RelatedParty;
-use crate::{vec_insert, HasDescription, HasId, HasLastUpdate, HasName, TimePeriod};
+use crate::{vec_insert, HasDescription, HasId, HasLastUpdate, HasName, IsAddressable, TimePeriod};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::MOD_PATH;
 
-const CLASS_PATH: &str = "serviceSpecification";
+/// Path to this class
+pub const CLASS_PATH: &str = "serviceSpecification";
 const SPEC_NEW_VERSION: &str = "1.0";
 const SPEC_NEW_STATUS: &str = "new";
 
@@ -56,24 +57,30 @@ pub struct ServiceSpecification {
 
 impl ServiceSpecification {
     /// Create a new specification
-    pub fn new(name: impl Into<String>) -> ServiceSpecification {
+    pub fn new(name: impl Into<String>) -> Self {
         // let mut ss = ServiceSpecification::create_with_time();
         // ss.name = Some(name.into());
         // ss.spec_characteristics = Some(vec![]);
         // ss.is_bundle = Some(false);
         // ss.lifecycle_status = Some("New".to_string());
         // ss
-        ServiceSpecification {
+        Self {
             name: Some(name.into()),
             lifecycle_status: Some(SPEC_NEW_STATUS.into()),
             version: Some(SPEC_NEW_VERSION.into()),
-            ..ServiceSpecification::create_with_time()
+            ..Self::create_with_time()
         }
     }
 
     /// Add a characteristic to this service specification
     pub fn add_char(&mut self, characteristic: CharacteristicSpecification) {
         vec_insert(&mut self.spec_characteristics, characteristic);
+    }
+}
+
+impl IsAddressable for ServiceSpecification {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }
 
@@ -92,11 +99,11 @@ pub struct ServiceSpecificationRef {
 
 impl From<ServiceSpecification> for ServiceSpecificationRef {
     fn from(value: ServiceSpecification) -> Self {
-        ServiceSpecificationRef {
+        Self {
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),
-            version: value.version.clone(),
+            version: value.version,
         }
     }
 }

@@ -31,36 +31,40 @@ pub struct QuotePrice {
 }
 
 impl QuotePrice {
-    /// Create a new QuotePrice object with a given name
-    pub fn new(name: impl Into<String>) -> QuotePrice {
-        QuotePrice {
+    /// Create a new `QuotePrice` object with a given name
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
             ..Default::default()
         }
     }
     /// Return the price inclusive of Tax
-    pub fn inc_tax(&self) -> Decimal {
+    #[must_use]
+    pub const fn inc_tax(&self) -> Decimal {
         match self.price.as_ref() {
             Some(p) => p.tax_included_amount.value,
             None => Decimal::ZERO,
         }
     }
     /// Return the price exclusive of Tax
-    pub fn ex_tax(&self) -> Decimal {
+    #[must_use]
+    pub const fn ex_tax(&self) -> Decimal {
         match self.price.as_ref() {
             Some(p) => p.duty_free_amount.value,
             None => Decimal::ZERO,
         }
     }
 
-    /// Add pricing to this QuotePrice
-    pub fn price(mut self, price: Price) -> QuotePrice {
+    /// Add pricing to this `QuotePrice`
+    #[must_use]
+    pub fn price(mut self, price: Price) -> Self {
         self.price = Some(price);
         self
     }
 
     /// Set the period
-    pub fn period(mut self, period: &str) -> QuotePrice {
+    #[must_use]
+    pub fn period(mut self, period: &str) -> Self {
         self.recurring_charge_period = Some(period.to_owned());
         self
     }

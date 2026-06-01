@@ -68,7 +68,7 @@ pub struct ResourceReservationCreate {
     #[serde(rename = "reservationPeriod")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub reservation_period: Option<TimePeriod>,
-    ///
+    /// The state of the reservation, such as 'reserved', 'completed', 'cancelled'
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state: Option<ReservationStateType>,
     ///The date and time the state changed.

@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// Contact Medium
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ContactMedium {
-    ///Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    ///Base Extensible schema for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
     #[serde(flatten)]
     pub extensible: Extensible,
     ///Type of the contact medium to qualify it like pro email / personal email. This is not used to define the contact medium used.

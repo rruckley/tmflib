@@ -4,11 +4,12 @@ use super::work_order_item::WorkOrderItem;
 use super::MOD_PATH;
 use crate::common::{note::Note, related_party::RelatedParty};
 use crate::tmf646::appointment::AppointmentRef;
-use crate::{HasId, Uri};
+use crate::{HasId, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
-const CLASS_PATH: &str = "workorder";
+/// Path to module
+pub const CLASS_PATH: &str = "workorder";
 
 /// Work Order States
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
@@ -107,5 +108,11 @@ impl WorkOrder {
                 self.work_order_item = Some(vec![item]);
             }
         }
+    }
+}
+
+impl IsAddressable for WorkOrder {
+    fn get_objects() -> Vec<&'static str> {
+        super::get_objects()
     }
 }

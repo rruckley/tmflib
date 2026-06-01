@@ -8,7 +8,7 @@ fn test_service_bandwidth_upgrade() {
 
     // Create a new service
     let service = Service::new("TestService")
-        .with_characteristic(Characteristic::new("bandwidth".to_string(), 100.into()));
+        .with_characteristic(Characteristic::new("bandwidth".to_string(), &100.into()));
 
     // // Step 1 get current bandwidth
     let current_bandwidth = service.get_characteristics("bandwidth");

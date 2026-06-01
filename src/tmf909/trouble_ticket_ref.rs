@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///TroubleTicket reference, for when a Trouble Ticket is used by other entities
+///`TroubleTicket` reference, for when a Trouble Ticket is used by other entities
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TroubleTicketRef {
     ///When sub-classing, this defines the super-class

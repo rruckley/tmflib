@@ -1,6 +1,6 @@
 use super::{Duration, MetricDefMeasureConsequence};
 use serde::{Deserialize, Serialize};
-/**A MetricDefMeasureThresholdRule is a rule that defines the condition (raise or clear) to achieve to apply
+/**A `MetricDefMeasureThresholdRule` is a rule that defines the condition (raise or clear) to achieve to apply
 consequences when a threshold is crossed or ceased to be crossed. It also defines the severity of the
 raise or clear of the threshold.*/
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -49,10 +49,10 @@ pub struct MetricDefMeasureThresholdRule {
     ///A list of consequences (actions, notifications) that will arise if the threshold is crossed
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub consequence: Option<Vec<MetricDefMeasureConsequence>>,
-    ///Description for the MetricDefMeasureThresholdRule .
+    ///Description for the `MetricDefMeasureThresholdRule` .
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    ///Name for the MetricDefMeasureThresholdRule .
+    ///Name for the `MetricDefMeasureThresholdRule` .
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /**The number of allowed crossing occurrences in reference to the

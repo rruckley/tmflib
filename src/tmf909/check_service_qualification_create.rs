@@ -1,6 +1,6 @@
 use super::{CheckServiceQualificationItem, RelatedParty};
 use serde::{Deserialize, Serialize};
-/**CheckServiceQualification is used to perform a technical eligibility on service configuration(s). It allows to retrieve services that are technically available in the context of the interaction (place, party, service characteristics, ...).
+/**`CheckServiceQualification` is used to perform a technical eligibility on service configuration(s). It allows to retrieve services that are technically available in the context of the interaction (place, party, service characteristics, ...).
 Skipped properties: id,href,state,effectiveQualificationDate,qualificationResult,expirationDate,checkServiceQualificationDate,estimatedResponseDate,serviceQualificationItem.alternateServiceProposal,serviceQualificationItem.state,serviceQualificationItem.qualificationResult*/
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct CheckServiceQualificationCreate {
@@ -19,7 +19,7 @@ pub struct CheckServiceQualificationCreate {
     ///Description of the serviceQualification
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    ///A date (DateTime). Deadline date when the requester expected a qualification answer.
+    ///A date (`DateTime`). Deadline date when the requester expected a qualification answer.
     #[serde(rename = "expectedQualificationDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub expected_qualification_date: Option<crate::DateTime>,

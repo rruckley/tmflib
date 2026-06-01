@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///Related Entity reference. A related place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the RelatedPlaceRefOrValue class itself
+///Related Entity reference. A related place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the `RelatedPlaceRefOrValue` class itself
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedPlaceRefOrValue {
     ///When sub-classing, this defines the super-class

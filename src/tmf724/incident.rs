@@ -3,13 +3,15 @@
 
 use super::MOD_PATH;
 use crate::common::external_identifier::ExternalIdentifier;
-use crate::{DateTime, HasId, HasName, Uri};
+use crate::{DateTime, HasId, HasName, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasName};
-const CLASS_PATH: &str = "incident";
+
+/// Path to module
+pub const CLASS_PATH: &str = "incident";
 
 /// Incident Priority
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum PriorityType {
     /// Critical
     Critical,
@@ -23,7 +25,7 @@ pub enum PriorityType {
 }
 
 /// Incident Urgency
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum UrgencyType {
     /// Critical
     Critical,
@@ -37,7 +39,7 @@ pub enum UrgencyType {
 }
 
 /// Incident Acknowledge State
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum IncidentAckStateType {
     /// Acknowledged
     Acknowledged,
@@ -47,7 +49,7 @@ pub enum IncidentAckStateType {
 }
 
 /// Incident Status
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum IncidentStateType {
     /// Raised
     #[default]
@@ -59,7 +61,7 @@ pub enum IncidentStateType {
 }
 
 /// Incident Impact
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum ImpactType {
     /// Extensive (Highest)
     Extensive,
@@ -192,8 +194,8 @@ pub struct Incident {
 
 impl Incident {
     /// Create a new incident
-    pub fn new(name: impl Into<String>) -> Incident {
-        Incident {
+    pub fn new(name: impl Into<String>) -> Self {
+        Self {
             name: Some(name.into()),
             impact: Some(ImpactType::Moderate),
             priority: Some(PriorityType::Medium),
@@ -202,6 +204,12 @@ impl Incident {
             state: Some(IncidentStateType::Raised),
             ..Default::default()
         }
+    }
+}
+
+impl IsAddressable for Incident {
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }
 

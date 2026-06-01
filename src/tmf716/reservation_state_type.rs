@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
-///
+
+/// The state of the reservation, such as 'reserved', 'completed', 'cancelled'
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum ReservationStateType {
     ///The reservation is in an accepted state and is waiting to be processed.

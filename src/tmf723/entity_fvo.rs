@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///Base entity schema for use in TMForum Open-APIs. Property.
+///Base entity schema for use in `TMForum` Open-APIs. Property.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntityFvo {}
 impl std::fmt::Display for EntityFvo {

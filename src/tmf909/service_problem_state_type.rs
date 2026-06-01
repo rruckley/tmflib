@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-///Possible values for the state of the ServiceProblem
+///Possible values for the state of the `ServiceProblem`
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum ServiceProblemStateType {
     ///The service problem state is acknowledged

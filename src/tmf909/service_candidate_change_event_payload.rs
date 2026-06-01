@@ -3,8 +3,8 @@ use serde::{Deserialize, Serialize};
 ///The event data structure
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceCandidateChangeEventPayload {
-    /**ServiceCandidate is an entity that makes a service specification available to a catalog. A
-    ServiceCandidate and its associated service specification may be published - made visible - in any number of service catalogs, or in none. One service specification can be composed of other service specifications.*/
+    /**`ServiceCandidate` is an entity that makes a service specification available to a catalog. A
+    `ServiceCandidate` and its associated service specification may be published - made visible - in any number of service catalogs, or in none. One service specification can be composed of other service specifications.*/
     #[serde(rename = "serviceCandidate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub service_candidate: Option<ServiceCandidate>,

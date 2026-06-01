@@ -2,10 +2,10 @@ use super::AlarmRefOrValue;
 use crate::{common::entity::Entity, DateTime};
 use serde::{Deserialize, Serialize};
 
-/// GroupAlarm defines a group alarm for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+/// `GroupAlarm` defines a group alarm for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct GroupAlarm {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity: Entity,
     ///Time of the correlation
@@ -26,7 +26,7 @@ pub struct GroupAlarm {
     ///The identifier of the task
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
-    ///An alarm defined by reference or value. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Alarm entity and not the AlarmRefOrValue class itself
+    ///An alarm defined by reference or value. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Alarm entity and not the `AlarmRefOrValue` class itself
     #[serde(rename = "parentAlarm")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub parent_alarm: Option<AlarmRefOrValue>,

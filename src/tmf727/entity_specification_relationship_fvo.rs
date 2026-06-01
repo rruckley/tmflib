@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 ///A migration, substitution, dependency or exclusivity relationship between/among entity specifications.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntitySpecificationRelationshipFvo {
-    ///Base entity schema for use in TMForum Open-APIs. Property.
+    ///Base entity schema for use in `TMForum` Open-APIs. Property.
     #[serde(rename = "@baseType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub base_type: Option<String>,
@@ -13,7 +13,7 @@ pub struct EntitySpecificationRelationshipFvo {
     #[serde(rename = "@schemaLocation")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub schema_location: Option<String>,
-    ///reference to an AssociationSpecification object
+    ///reference to an `AssociationSpecification` object
     #[serde(rename = "associationSpec")]
     pub association_spec: AssociationSpecificationRefFvo,
     ///Hyperlink reference to the entity specification that is the target of this relationship

@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 /// Agreement Specification Reference
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AgreementSpecificationRef {
-    /// Base entity reference schema for use in TMForum Open-APIs. Property.
+    /// Base entity reference schema for use in `TMForum` Open-APIs. Property.
     #[serde(flatten)]
     pub entity_ref: EntityRef,
     ///A narrative that explains in detail what the agreement specification is about.

@@ -29,21 +29,22 @@ pub struct BundledProductOffering {
 }
 
 impl BundledProductOffering {
-    /// Create new options for BundledProductOffering
-    pub fn new(name: impl Into<String>) -> BundledProductOffering {
-        let offer = ProductOffering::new(name.into().clone());
+    /// Create new options for `BundledProductOffering`
+    pub fn new(name: impl Into<String>) -> Self {
+        let offer = ProductOffering::new(name.into());
         // Update href to point to bundle instead of standard offer path
 
-        BundledProductOffering {
+        Self {
             offer: offer.clone(),
             bundled_product_offering_option: None,
             name: Some(offer.get_name()),
-            ..BundledProductOffering::default()
+            ..Self::default()
         }
     }
 
     /// Add option into bundled product offering
-    pub fn with_option(mut self, option: BundledProductOfferingOption) -> BundledProductOffering {
+    #[must_use]
+    pub const fn with_option(mut self, option: BundledProductOfferingOption) -> Self {
         self.bundled_product_offering_option = Some(option);
         self
     }
@@ -64,8 +65,9 @@ impl BundledProductOfferingOption {
     /// Create a new Bundled Product Offering Option
     /// # Detalis
     /// This covers the cardinality of included bundeld offerings
-    pub fn new(default: u8, min: u8, max: u8) -> BundledProductOfferingOption {
-        BundledProductOfferingOption {
+    #[must_use]
+    pub const fn new(default: u8, min: u8, max: u8) -> Self {
+        Self {
             number_rel_offer_default: default,
             number_rel_offer_lower_limit: min,
             number_rel_offer_upper_limit: max,
@@ -74,12 +76,12 @@ impl BundledProductOfferingOption {
 }
 
 impl From<ProductOffering> for BundledProductOffering {
-    fn from(po: ProductOffering) -> BundledProductOffering {
+    fn from(po: ProductOffering) -> Self {
         // Clone source class (po) to leave source untouched
-        BundledProductOffering {
+        Self {
             bundled_product_offering_option: None,
-            offer: po.clone(),
-            ..BundledProductOffering::create()
+            offer: po,
+            ..Self::create()
         }
     }
 }
