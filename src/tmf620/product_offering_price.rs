@@ -4,7 +4,7 @@ use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use super::MOD_PATH;
+use super::{MODULE,MOD_PATH};
 use crate::common::event::{Event, EventPayload};
 use crate::common::money::Money;
 use crate::common::tax_item::TaxItem;

@@ -6,7 +6,7 @@ use super::product_offering::ProductOffering;
 #[cfg(all(feature = "tmf674", feature = "build-V5"))]
 use super::product_offering_v5::ProductOffering;
 
-use super::MOD_PATH;
+use super::{MODULE,MOD_PATH};
 use crate::{HasId, HasName};
 use tmflib_derive::{HasId, HasName};
 

@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
 const CLASS_PATH: &str = "external";
-use super::MOD_PATH;
+use super::{MODULE,MOD_PATH};
 
 /// External Identifier Reference
 #[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]

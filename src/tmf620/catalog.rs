@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 // URL Path components
-use super::MOD_PATH;
+use super::{MODULE,MOD_PATH};
 
 /// Path to this class
 pub const CLASS_PATH: &str = "catalog";

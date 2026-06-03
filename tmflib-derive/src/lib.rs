@@ -146,6 +146,9 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
             fn get_class_href() -> String {
                 format!("/{}/{}/{}",crate::get_lib_path(),MOD_PATH,#name::get_class())
             }
+            fn get_module() -> String {
+                MODULE.to_string()
+            }
             fn get_mod_path() -> String {
                 format!("/{}/{}",crate::get_lib_path(),MOD_PATH)
             }

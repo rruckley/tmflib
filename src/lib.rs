@@ -333,6 +333,8 @@ pub trait HasId: Default {
     fn get_class() -> String;
     /// Get Class HREF, this represents the generate path to the class.
     fn get_class_href() -> String;
+    /// Get the module of this object. This is also used to form part of the URL via `generate_href()`
+    fn get_module() -> String;
     /// Get the module path
     fn get_mod_path() -> String;
     /// Set the id on the object, also triggers `generate_href()`.
