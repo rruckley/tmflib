@@ -2,6 +2,10 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use crate::{
     common::related_party::RelatedParty, vec_insert, DateTime, HasDescription, HasId,
     HasRelatedParty, IsAddressable, Uri,
@@ -15,7 +19,7 @@ use tmflib_derive::{HasDescription, HasId, HasRelatedParty};
 
 /// TMF645 Service Qualification Module
 pub const CLASS_PATH: &str = "checkServiceQualification";
-use super::{TaskStateType, MOD_PATH};
+use super::TaskStateType;
 
 ///  Reason for service unavailability
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

@@ -16,11 +16,9 @@
 //! # Versions
 //! - V4 Supported
 //! - V5 Supported
+//! 
 
-#[cfg(all(feature = "tmf699", feature = "build-V4"))]
-const MOD_PATH: &str = "tmf699/v4";
-#[cfg(all(feature = "tmf699", feature = "build-V5"))]
-const MOD_PATH: &str = "tmf699/v5";
+const TMF_MODULE: &str = "salesManagement";
 
 #[cfg(all(feature = "tmf699", feature = "build-V4"))]
 pub mod sales_lead_v4;

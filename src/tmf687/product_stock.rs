@@ -1,6 +1,10 @@
 //! Product Stock Module
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+const CLASS_PATH: &str = "productStock";
+
 use crate::common::event::{Event, EventPayload};
 use crate::common::product::ProductRefOrValue;
 use crate::common::related_party::RelatedParty;
@@ -16,7 +20,7 @@ use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-const CLASS_PATH: &str = "productStock";
+
 
 /// Product Stock Relationship
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]

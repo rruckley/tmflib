@@ -1,6 +1,6 @@
 //! Work Module
 
-use super::MOD_PATH;
+use super::TMF_MODULE;
 use crate::tmf646::appointment::AppointmentRef;
 use crate::tmf651::agreement::AgreementRef;
 use crate::{HasId, HasName, TimePeriod, Uri};

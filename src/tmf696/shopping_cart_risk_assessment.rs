@@ -6,9 +6,11 @@ use crate::{HasId, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
-/// Path: `/{mod_path}/shoppingCartRiskAssessment`
+/// Path: `/{TMF_MODULE}/{TMF_VERSION}/shoppingCartRiskAssessment`
 pub const CLASS_PATH: &str = "shoppingCartRiskAssessment";
 
 /// Shopping Cart Risk Assessment

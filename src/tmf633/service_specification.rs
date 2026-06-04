@@ -6,7 +6,9 @@ use crate::common::related_party::RelatedParty;
 use crate::{vec_insert, HasDescription, HasId, HasLastUpdate, HasName, IsAddressable, TimePeriod};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 /// Path to this class
 pub const CLASS_PATH: &str = "serviceSpecification";

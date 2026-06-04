@@ -13,11 +13,9 @@
 // limitations under the License.
 
 //! TMF676 Payment Management
-
-#[cfg(feature = "build-V4")]
-const MOD_PATH: &str = "paymentManagement/v4";
-#[cfg(feature = "build-V5")]
-const MOD_PATH: &str = "paymentManagement/v5";
+// URL Path components
+use crate::TMF_VERSION;
+const TMF_MODULE: &str = "paymentManagement";
 
 // For payment method
 const CLASS_PATH: &str = "method";

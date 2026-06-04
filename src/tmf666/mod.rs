@@ -31,7 +31,7 @@ pub mod settlement_account;
 use crate::HasValidity;
 use tmflib_derive::HasValidity;
 
-const MOD_PATH: &str = "accountManagement/v4";
+const TMF_MODULE: &str = "accountManagement";
 
 /// Account Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

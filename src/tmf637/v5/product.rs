@@ -15,7 +15,9 @@ use crate::tmf666::billing_account::BillingAccountRef;
 use crate::{DateTime, HasId, HasName, HasValidity, HasDescription, TimePeriod};
 use tmflib_derive::{HasId, HasName, HasDescription, HasValidity};
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 const CLASS_PATH: &str = "product";
 

@@ -17,7 +17,8 @@ use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty};
 
 // URL Path components
-use super::{MODULE,MOD_PATH};
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 /// TMF622 Product Order Management - V4
 pub const CLASS_PATH: &str = "productOrder";

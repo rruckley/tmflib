@@ -2,17 +2,21 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+/// Path to Settlement Account class
+pub const CLASS_PATH: &str = "settlementAccount";
+
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
 use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName, IsAddressable};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::{
     financial_account::FinancialAccountRef, AccountBalance, AccountRef, AccountTaxExemption,
-    PaymentMethodRef, PaymentPlan, MOD_PATH,
+    PaymentMethodRef, PaymentPlan,
 };
 
-/// Path to Settlement Account class
-pub const CLASS_PATH: &str = "settlementAccount";
 
 /// Settlement Account
 #[derive(

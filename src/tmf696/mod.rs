@@ -19,7 +19,7 @@ pub mod product_order_risk_assessment;
 pub mod risk_assessment_result;
 pub mod shopping_cart_risk_assessment;
 
-const MOD_PATH: &str = "riskManagement/v4";
+const TMF_MODULE: &str = "riskManagement";
 
 fn get_objects() -> Vec<&'static str> {
     vec![

@@ -8,13 +8,15 @@ use crate::tmf622::product_order_v4::ProductOrderRef;
 use crate::tmf622::product_order_v5::ProductOrderRef;
 use crate::{common::note::Note, DateTime};
 
-use super::MOD_PATH;
 use crate::common::tmf_error::TMFError;
 use crate::{HasId, HasNote, IsAddressable};
 use tmflib_derive::{HasId, HasNote};
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 /// Path to module
 pub const CLASS_PATH: &str = "shippingOrder";
 

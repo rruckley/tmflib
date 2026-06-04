@@ -16,7 +16,7 @@
 
 pub mod geographic_address;
 
-const MOD_PATH: &str = "geographicAddressManagement/v4";
+const TMF_MODULE: &str = "geographicAddressManagement";
 
 fn get_objects() -> Vec<&'static str> {
     vec![geographic_address::CLASS_PATH]

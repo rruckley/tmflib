@@ -2,7 +2,10 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
@@ -13,7 +16,7 @@ use tmflib_derive::{HasDescription, HasId, HasName, HasNote};
 
 const CLASS_PATH: &str = "service";
 
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+ #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 enum ServiceStateType {
     FeasibilityChecked,

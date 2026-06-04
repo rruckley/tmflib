@@ -2,10 +2,13 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 /// Path component for Resource Candidate
 pub const CLASS_PATH: &str = "resourceCandidate";
 
-use super::MOD_PATH;
 use crate::{HasId, HasLastUpdate, HasName, IsAddressable};
 use tmflib_derive::{HasId, HasName};
 

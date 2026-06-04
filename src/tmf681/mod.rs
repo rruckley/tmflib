@@ -14,6 +14,6 @@
 
 //! TMF681 Communication Management
 
-const MOD_PATH: &str = "tmf681";
+const TMF_MODULE: &str = "communicationManagement";
 
 pub mod communication_message;

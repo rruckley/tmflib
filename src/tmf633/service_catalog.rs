@@ -12,7 +12,10 @@ use crate::{
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 /// Path to this class
 pub const CLASS_PATH: &str = "serviceCatalog";
 const CAT_STATUS_NEW: &str = "new";

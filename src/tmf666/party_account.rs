@@ -2,6 +2,12 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+/// Path to Party Account class
+pub const CLASS_PATH: &str = "partyAccount";
+
 use crate::{
     DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty, IsAddressable,
 };
@@ -9,13 +15,10 @@ use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasRelatedPar
 
 use super::{
     financial_account::FinancialAccountRef, AccountBalance, AccountRef, AccountTaxExemption,
-    PaymentMethodRef, PaymentPlan, MOD_PATH,
+    PaymentMethodRef, PaymentPlan,
 };
 use crate::common::tmf_error::TMFError;
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
-
-/// Path to Party Account class
-pub const CLASS_PATH: &str = "partyAccount";
 
 /// Party Account
 #[derive(

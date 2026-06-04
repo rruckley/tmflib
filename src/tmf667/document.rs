@@ -11,8 +11,10 @@ use crate::{
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasRelatedParty};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 const CLASS_PATH: &str = "document";
-use super::MOD_PATH;
 const DOC_VERSION: &str = "1.0";
 
 /// Document State

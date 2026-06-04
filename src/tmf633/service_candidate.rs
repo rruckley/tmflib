@@ -7,8 +7,12 @@ use crate::{vec_insert, HasId, HasLastUpdate, HasName, IsAddressable, TimePeriod
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
 use super::{
-    service_category::ServiceCategoryRef, service_specification::ServiceSpecificationRef, MOD_PATH,
+    service_category::ServiceCategoryRef, service_specification::ServiceSpecificationRef,
 };
+
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 /// Path to this class
 pub const CLASS_PATH: &str = "serviceCandidate";

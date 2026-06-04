@@ -4,7 +4,9 @@ use crate::{DateTime, HasId, HasLastUpdate, HasName, HasValidity, IsAddressable,
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 /// Path for Agreement Specification class
 pub const CLASS_PATH: &str = "specification";
 

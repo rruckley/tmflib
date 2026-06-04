@@ -2,12 +2,17 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+const CLASS_PATH: &str = "productOfferingQualification";
+
 use crate::common::tmf_error::TMFError;
 use crate::{HasId, HasRelatedParty, IsAddressable};
 use tmflib_derive::{HasId, HasRelatedParty};
 
 use super::product_offering_qualification_item::ProductOfferingQualificationItem;
-use super::MOD_PATH;
+
 use crate::common::related_party::RelatedParty;
 use crate::tmf620::category::CategoryRef;
 #[cfg(all(feature = "tmf620", feature = "build-V4"))]
@@ -15,7 +20,7 @@ use crate::tmf620::product_offering::ProductOfferingRef;
 #[cfg(all(feature = "tmf620", feature = "build-V5"))]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
-const CLASS_PATH: &str = "productOfferingQualification";
+
 
 /// Qualification Item Status
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]

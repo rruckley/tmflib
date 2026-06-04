@@ -8,7 +8,9 @@ use tmflib_derive::{HasAttachment, HasId, HasName};
 
 use super::shipment_specification::ShipmentSpecificationRefOrValue;
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 /// Path to module
 pub const CLASS_PATH: &str = "shipment";
 

@@ -2,7 +2,6 @@
 
 use super::characteristic::Characteristic;
 use super::expression::IntentExpression;
-use super::MOD_PATH;
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;
@@ -13,6 +12,9 @@ use crate::{
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasAttachment, HasDescription, HasId, HasName, HasRelatedParty};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 const CLASS_PATH: &str = "intent";
 
 /// Represents an Intent with various attributes such as id, href, name, description, version, status, and `valid_for` period.

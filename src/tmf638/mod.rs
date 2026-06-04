@@ -14,6 +14,6 @@
 
 //! TMF638 Service Inventory Management
 
-const MOD_PATH: &str = "serviceInventory/v4";
+const TMF_MODULE: &str = "serviceInventory";
 
 pub mod service;

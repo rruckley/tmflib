@@ -25,7 +25,10 @@ use crate::common::event::{Event, EventPayload};
 use crate::tmf651::agreement::AgreementRef;
 use tmflib_derive::{HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
-use super::{MODULE,MOD_PATH};
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 const PO_VERS_INIT: &str = "1.0";
 /// Path to this class
 pub const CLASS_PATH: &str = "productOffering";

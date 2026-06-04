@@ -8,11 +8,13 @@ use crate::{
     HasRelatedParty, IsAddressable, TMFError, Uri,
 };
 
-use super::MOD_PATH;
 use tmflib_derive::{
     HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasNote, HasRelatedParty,
 };
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 /// Path to module
 pub const CLASS_PATH: &str = "ProjectedCost";
 

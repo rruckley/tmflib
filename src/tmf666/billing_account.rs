@@ -2,13 +2,17 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
 use crate::{DateTime, HasDescription, HasId, HasLastUpdate, HasName, IsAddressable};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
 use super::{
     financial_account::FinancialAccountRef, AccountBalance, AccountRef, AccountTaxExemption,
-    PaymentMethodRef, PaymentPlan, MOD_PATH,
+    PaymentMethodRef, PaymentPlan,
 };
 
 /// Path to Billing Account class

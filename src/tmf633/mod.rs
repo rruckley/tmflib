@@ -14,7 +14,7 @@
 
 //! TMF633 Service Catalogue Management
 
-const MOD_PATH: &str = "serviceCatalogManagement/v4";
+const TMF_MODULE: &str = "serviceCatalogManagement";
 
 pub mod characteristic_specification;
 pub mod service_candidate;

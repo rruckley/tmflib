@@ -11,7 +11,9 @@ use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::external_identifier::ExternalIdentifier;
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 /// Path component for Resource Specification
 pub const CLASS_PATH: &str = "resourceSpecification";

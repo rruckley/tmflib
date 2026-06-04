@@ -5,7 +5,10 @@ use serde::{Deserialize, Serialize};
 use crate::{HasDescription, HasId, HasLastUpdate, HasName, IsAddressable, TimePeriod, Uri};
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 /// Path to `ServiceTestSpecification` class
 pub const CLASS_PATH: &str = "specification";
 

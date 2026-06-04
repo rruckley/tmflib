@@ -2,6 +2,11 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+const CLASS_PATH: &str = "partyRole";
+
 use crate::common::tmf_error::TMFError;
 use crate::{
     common::{contact::ContactMedium, related_party::RelatedParty},
@@ -11,10 +16,6 @@ use crate::{
     DateTime, HasId, HasName, HasRelatedParty, HasValidity, IsAddressable, TimePeriod, Uri,
 };
 use tmflib_derive::{HasId, HasName, HasRelatedParty, HasValidity};
-
-use super::MOD_PATH;
-
-const CLASS_PATH: &str = "partyRole";
 
 /// Party Role - Credit Profile
 #[derive(Clone, Debug, Default, Deserialize, HasValidity, Serialize)]

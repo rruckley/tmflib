@@ -12,7 +12,8 @@ use crate::{DateTime, HasId, HasLastUpdate, HasNote, HasRelatedParty, IsAddressa
 use tmflib_derive::{HasId, HasNote, HasRelatedParty};
 
 // URL Path components
-use super::MOD_PATH;
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 use super::milestone::Milestone;
 use super::product_order_item::ProductOrderItem;

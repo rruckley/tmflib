@@ -14,12 +14,12 @@
 
 //! TMF672 User Roles and Permissions Management
 
-const MOD_PATH: &str = "tmf672";
+const TMF_MODULE: &str = "userRoleManagement";
 
 pub mod permission;
 pub mod user_role;
 
-/// Return objects available fir this API under `MOD_PATH`
+/// Return objects available fir this API under `TMF_MODULE`
 pub fn get_objects() -> Vec<&'static str> {
     vec![permission::CLASS_PATH, user_role::CLASS_PATH]
 }

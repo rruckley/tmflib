@@ -2,6 +2,10 @@
 //!
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use crate::tmf620::product_specification::ProductSpecificationRef;
 use crate::tmf651::agreement::AgreementRef;
 // use crate::tmf651::agreement_item::AgreementItemRef;
@@ -17,7 +21,7 @@ use crate::tmf666::billing_account::BillingAccountRef;
 use crate::{DateTime, HasId, HasName, HasDescription,HasValidity, TimePeriod};
 use tmflib_derive::{HasId, HasName,HasDescription, HasValidity};
 
-use super::MOD_PATH;
+
 
 const CLASS_PATH: &str = "product";
 

@@ -8,7 +8,7 @@ use tmflib_derive::{HasId, HasName, HasValidity};
 /// Path to module
 pub const CLASS_PATH: &str = "opportunity";
 use super::sales_opportunity_item_v5::SalesOpportunityItem;
-use super::MOD_PATH;
+use super::TMF_MODULE;
 
 /// Sales Opportunity Status
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

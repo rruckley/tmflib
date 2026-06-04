@@ -3,9 +3,13 @@ use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+const CLASS_PATH: &str = "quote";
+
 use super::quote_item::QuoteItem;
 use super::quote_price::QuotePrice;
-use super::MOD_PATH;
 use crate::common::event::{Event, EventPayload};
 use crate::common::note::Note;
 use crate::common::related_party::RelatedParty;
@@ -17,7 +21,7 @@ use crate::{
 };
 use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty, HasValidity};
 
-const CLASS_PATH: &str = "quote";
+
 const QUOTE_VERS: &str = "1.0";
 
 /// Status of the quote object

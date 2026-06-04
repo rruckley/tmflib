@@ -9,8 +9,9 @@ use serde::{Deserialize, Serialize};
 
 use tmflib_derive::{HasDescription, HasId};
 
-use super::MOD_PATH;
-
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 const CLASS_PATH: &str = "service";
 
 ///Service is a base class for defining the Service hierarchy. All Services are characterized as either being possibly visible and usable by a Customer or not. This gives rise to the two subclasses of Service: `CustomerFacingService` and `ResourceFacingService`.

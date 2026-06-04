@@ -18,8 +18,9 @@ use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName};
 use super::{ChannelRef, MarketSegmentRef, PlaceRef, SLARef};
 use crate::tmf651::agreement::AgreementRef;
 
-use super::MOD_PATH;
-use crate::LIB_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 const PO_VERS_INIT: &str = "1.0";
 const CLASS_PATH: &str = "productOffering";

@@ -1,13 +1,15 @@
 //! Permission Module
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+/// Path to Permission module in TMF API
+pub const CLASS_PATH: &str = "permission";
+
 use crate::common::related_party::RelatedParty;
 use crate::{DateTime, HasId, IsAddressable, TimePeriod, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
-
-/// Path to Permission module in TMF API
-pub const CLASS_PATH: &str = "permission";
 
 /// User Permissions Struct
 #[derive(Clone, Debug, Default, Deserialize, HasId, Serialize)]

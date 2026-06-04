@@ -90,4 +90,5 @@ mod threshold_ref_mvo;
 mod un_ack_alarm;
 mod un_group_alarm;
 
-const MOD_PATH: &str = "alarmManagement/v5";
+const TMF_MODULE: &str = "alarmManagement";
+

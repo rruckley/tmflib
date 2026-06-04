@@ -2,6 +2,11 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+const CLASS_PATH: &str = "shoppingCart";
+
 use crate::common::contact::ContactMedium;
 use crate::common::price::Price;
 use crate::common::related_party::RelatedParty;
@@ -10,9 +15,7 @@ use crate::{HasId, HasRelatedParty, HasValidity, IsAddressable, TimePeriod};
 use tmflib_derive::{HasId, HasRelatedParty, HasValidity};
 
 use super::cart_item::CartItem;
-use super::MOD_PATH;
 
-const CLASS_PATH: &str = "shoppingCart";
 const CART_DEFAULT_VALID: u8 = 7;
 
 /// Cart pricing

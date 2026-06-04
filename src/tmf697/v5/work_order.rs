@@ -1,7 +1,7 @@
 //! Work Order Module V5
 
 use super::work_order_item::WorkOrderItem;
-use super::MOD_PATH;
+use super::TMF_MODULE;
 use crate::common::{note::Note, related_party::RelatedParty};
 use crate::tmf646::appointment::AppointmentRef;
 use crate::{HasId, IsAddressable, Uri};

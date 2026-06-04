@@ -3,6 +3,10 @@
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use crate::common::event::{Event, EventPayload};
 use crate::{
     vec_insert, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, IsAddressable,
@@ -10,7 +14,7 @@ use crate::{
 };
 use tmflib_derive::{HasDescription, HasId, HasLastUpdate, HasName, HasValidity};
 
-use super::{service_candidate::ServiceCandidateRef, MOD_PATH};
+use super::{service_candidate::ServiceCandidateRef};
 /// Path to this class
 pub const CLASS_PATH: &str = "serviceCategory";
 const CAT_STATUS_NEW: &str = "new";

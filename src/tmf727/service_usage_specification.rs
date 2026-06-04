@@ -1,4 +1,6 @@
-use super::MOD_PATH;
+//! Service Usage Specification Module
+//! This module defines the Service Usage Specification entity, which represents a usage of a service specification,
+//! which may be part of a bundle and may have relationships to other service usage specifications and resource usage specifications. It is used to define the usage of a service specification in a specific context, e.g. for a specific customer or in a specific environment.
 use super::{
     EntitySpecification, ResourceUsageSpecificationRef, ServiceSpecificationRef,
     ServiceUsageSpecRelationship, ServiceUsageSpecificationRef,
@@ -7,6 +9,9 @@ use crate::{HasId, IsAddressable};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 /// Path to module
 pub const CLASS_PATH: &str = "serviceUsageSpecification";
 

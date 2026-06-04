@@ -2,7 +2,11 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+const CLASS_PATH: &str = "geographicSite";
+
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
 use crate::tmf673::geographic_address::GeographicAddress;
@@ -10,7 +14,7 @@ use crate::{gen_code, HasId, HasName, IsAddressable, TMFEventm};
 use chrono::Utc;
 use tmflib_derive::{HasId, HasName};
 use uuid::Uuid;
-const CLASS_PATH: &str = "geographicSite";
+
 const DEFAULT_TZ: &str = "AEST";
 const CODE_PREFIX: &str = "S-";
 
