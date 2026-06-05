@@ -23,9 +23,11 @@ use crate::HasId;
 use crate::IsAddressable;
 use serde::{Deserialize, Serialize};
 
-use super::MOD_PATH;
 use tmflib_derive::HasId;
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 /// Path to module
 pub const CLASS_PATH: &str = "serviceUsage";
 

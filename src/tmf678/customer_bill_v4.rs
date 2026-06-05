@@ -1,8 +1,12 @@
 //! Customer Bill Management V4
 //!
 
-use super::MOD_PATH;
 use serde::{Deserialize, Serialize};
+
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+const CLASS_PATH: &str = "customer_bill";
 
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::money::Money;
@@ -11,8 +15,6 @@ use crate::common::tax_item::TaxItem;
 use crate::tmf666::billing_account::BillingAccountRef;
 use crate::{DateTime, HasAttachment, HasId, HasLastUpdate, IsAddressable, TimePeriod, Uri};
 use tmflib_derive::{HasId, HasLastUpdate};
-
-const CLASS_PATH: &str = "customer_bill";
 
 /// Customer Bill Run Type
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]

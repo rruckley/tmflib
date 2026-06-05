@@ -19,10 +19,7 @@
 use crate::common::related_place::PlaceRef;
 use serde::{Deserialize, Serialize};
 
-#[cfg(all(feature = "tmf620", feature = "build-V4"))]
-const MOD_PATH: &str = "productCatalogManagement/v4";
-#[cfg(all(feature = "tmf620", feature = "build-V5"))]
-const MOD_PATH: &str = "productCatalogManagement/v5";
+const TMF_MODULE: &str = "productCatalogManagement";
 
 pub mod bundled_product_offering;
 pub mod catalog;

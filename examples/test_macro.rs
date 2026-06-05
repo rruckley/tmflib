@@ -3,9 +3,12 @@
 use tmflib::{get_lib_path, HasId};
 use tmflib_derive::HasId;
 
+// URL Path components
+// use super::TMF_MODULE;
+const TMF_MODULE: &str = "testModule";
+use tmflib::TMF_VERSION;
 // Defined required consts
 const CLASS_PATH: &str = "mytmf";
-const MOD_PATH: &str = "tmf7xx";
 
 #[derive(Default, HasId)]
 struct MyTMF {

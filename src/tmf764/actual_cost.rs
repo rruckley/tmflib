@@ -12,9 +12,11 @@ use tmflib_derive::{
     HasAttachment, HasDescription, HasId, HasLastUpdate, HasName, HasNote, HasRelatedParty,
 };
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 /// Path to moodule
 pub const CLASS_PATH: &str = "ActualCost";
-use super::MOD_PATH;
 
 /// Actual Cost Item State Type
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]

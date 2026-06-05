@@ -2,13 +2,14 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+/// Path to this class
+pub const CLASS_PATH: &str = "geographicAddress";
 
 use crate::{HasId, HasName, IsAddressable, Uri};
 use tmflib_derive::{HasId, HasName};
-
-/// Path to this class
-pub const CLASS_PATH: &str = "geographicAddress";
 
 /// Geographic Sub Address
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasName, Serialize)]

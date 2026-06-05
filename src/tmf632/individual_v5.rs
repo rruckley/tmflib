@@ -6,7 +6,11 @@ use uuid::Uuid;
 
 use serde::{Deserialize, Serialize};
 
-use super::{Characteristic, MOD_PATH};
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
+use super::Characteristic;
 use crate::common::contact::ContactMedium;
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;

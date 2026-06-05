@@ -1,6 +1,6 @@
 //! Product Inventory V5
 //!
 
-const MOD_PATH: &str = "productInventoryManagement/v5";
+const TMF_MODULE: &str = "productInventoryManagement";
 
 pub mod product;

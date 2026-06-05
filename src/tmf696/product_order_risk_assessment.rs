@@ -1,7 +1,11 @@
 //! Product Order Risk Assessment Mobule
 
-// This should just be relatedplace, not orvalue.
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+/// Path for the class
+pub const CLASS_PATH: &str = "productOrderRiskAssessment";
+
 use super::{characteristic::Characteristic, risk_assessment_result::RiskAssessmentResult};
 use crate::common::related_place::RelatedPlaceRefOrValue;
 #[cfg(all(feature = "tmf622", feature = "build-V4"))]
@@ -11,9 +15,6 @@ use crate::tmf622::product_order_v5::ProductOrderRef;
 use crate::{HasId, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
-
-/// Class path for Product Order RA
-pub const CLASS_PATH: &str = "productOrderRiskAssessment";
 
 /// Product Order Risk Assessment
 #[derive(Clone, Default, Debug, Deserialize, HasId, Serialize)]
@@ -56,13 +57,9 @@ impl ProductOrderRiskAssessment {
         characteristic: Characteristic,
     ) -> Option<Characteristic> {
         if let Some(v) = &self.characteristic {
-            match v.iter().find(|c| c.name == characteristic.name) {
-                Some(i) => {
-                    let out = i.clone();
-                    Some(out)
-                }
-                None => None,
-            }
+            v.iter().find(|c| c.name == characteristic.name).map_or(None, |i| {
+                Some(i.clone())
+            })
         } else {
             self.characteristic = Some(vec![characteristic]);
             None

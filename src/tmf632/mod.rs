@@ -18,15 +18,7 @@
 
 use serde::{Deserialize, Serialize};
 
-#[cfg(all(feature = "tmf632", feature = "build-V4"))]
-const MOD_PATH: &str = "partyManagement/v4";
-#[cfg(all(feature = "tmf632", feature = "build-V5"))]
-const MOD_PATH: &str = "partyManagement/v5";
-
-#[cfg(feature = "build-V4")]
-const MOD_VERSION: &str = "v4";
-#[cfg(feature = "build-V5")]
-const MOD_VERSION: &str = "v5";
+const TMF_MODULE: &str = "partyManagement";
 
 #[cfg(all(feature = "tmf632", feature = "build-V4"))]
 pub mod individual_v4;
@@ -49,10 +41,6 @@ pub struct Characteristic {
     schema_location: Option<String>,
     #[serde(rename = "@type")]
     r#type: Option<String>,
-}
-
-const fn get_version() -> &'static str {
-    MOD_VERSION
 }
 
 fn get_objects() -> Vec<&'static str> {

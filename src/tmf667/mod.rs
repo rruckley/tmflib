@@ -20,4 +20,4 @@
 
 pub mod document;
 
-const MOD_PATH: &str = "tmf667";
+const TMF_MODULE: &str = "documentManagement";

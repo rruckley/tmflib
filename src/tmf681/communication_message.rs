@@ -10,7 +10,9 @@ use crate::{DateTime, HasAttachment, HasId, HasName, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasAttachment, HasId};
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 const CLASS_PATH: &str = "message";
 
 /// Recipient of this communication message

@@ -8,7 +8,8 @@ use tmflib_derive::{HasDescription, HasId, HasName, HasValidity};
 
 use crate::TimePeriod;
 
-use super::MOD_PATH;
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 const CLASS_PATH: &str = "attachment";
 

@@ -3,9 +3,12 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::MOD_PATH;
 use crate::{HasId, IsAddressable};
 use tmflib_derive::HasId;
+
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 const CLASS_PATH: &str = "CheckProductConfiguration";
 
 /// Configuration Check Status

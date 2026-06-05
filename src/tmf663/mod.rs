@@ -18,7 +18,7 @@
 //! # Versions
 //! - v4 supported
 
-const MOD_PATH: &str = "shoppingCart/v4";
+const TMF_MODULE: &str = "shoppingCart";
 
 pub mod cart_item;
 pub mod shopping_cart;

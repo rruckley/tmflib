@@ -6,7 +6,9 @@ use crate::{HasId, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 /// Path to module
 pub const CLASS_PATH: &str = "shippingOrderItem";
 const NEW_STATUS: &str = "New";

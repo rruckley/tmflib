@@ -14,7 +14,7 @@ use super::{sales_lead_v5::SalesLeadRef, sales_opportunity_v5::SalesOpportunityP
 
 /// Path to module
 pub const CLASS_PATH: &str = "salesOpportunityItem";
-use super::MOD_PATH;
+use super::TMF_MODULE;
 /// Sales Opportunity Item
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasRelatedParty, Serialize)]
 #[serde(rename_all = "camelCase")]

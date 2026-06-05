@@ -5,7 +5,11 @@ use serde::{Deserialize, Serialize};
 use std::convert::From;
 use uuid::Uuid;
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+const CLASS_PATH: &str = "geographicSite";
+
 use crate::common::event::{Event, EventPayload};
 use crate::common::related_party::RelatedParty;
 use crate::tmf673::geographic_address::GeographicAddress;
@@ -13,7 +17,7 @@ use crate::{
     gen_code, HasDescription, HasId, HasName, HasValidity, IsAddressable, TMFEvent, TimePeriod,
 };
 use tmflib_derive::{HasDescription, HasId, HasName, HasValidity};
-const CLASS_PATH: &str = "geographicSite";
+
 const DEFAULT_TZ: &str = "AEST";
 const CODE_PREFIX: &str = "S-";
 const CALENDAR_WEEKDAYS: &str = "weekdays";

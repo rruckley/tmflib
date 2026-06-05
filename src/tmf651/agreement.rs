@@ -7,7 +7,10 @@ use crate::{DateTime, HasDescription, HasId, HasName, HasRelatedParty, IsAddress
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasName};
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 /// Path for Agreement class
 pub const CLASS_PATH: &str = "agreement";
 

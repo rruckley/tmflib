@@ -2,6 +2,10 @@
 //!
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use crate::tmf620::product_specification::ProductSpecificationRef;
 use crate::tmf651::agreement::AgreementRef;
 // use crate::tmf651::agreement_item::AgreementItemRef;
@@ -14,15 +18,13 @@ use crate::tmf620::product_offering_price::ProductOfferingPriceRef;
 #[cfg(all(feature = "tmf620", feature = "build-V5"))]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf666::billing_account::BillingAccountRef;
-use crate::{DateTime, HasId, HasName, HasDescription,HasValidity, TimePeriod};
-use tmflib_derive::{HasId, HasName,HasDescription, HasValidity};
-
-use super::MOD_PATH;
+use crate::{DateTime, HasDescription, HasId, HasName, HasValidity, TimePeriod};
+use tmflib_derive::{HasDescription, HasId, HasName, HasValidity};
 
 const CLASS_PATH: &str = "product";
 
 /// Product Price information for recurring charges
-#[derive(Debug, Default, Deserialize, Serialize,HasDescription)]
+#[derive(Debug, Default, Deserialize, Serialize, HasDescription)]
 #[serde(rename_all = "camelCase")]
 pub struct ProductPrice {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -57,7 +59,7 @@ pub struct PriceAlteration {
 }
 
 /// Product record from the Product Inventory
-#[derive(Debug, Default, Deserialize, HasId, HasName,HasDescription, Serialize)]
+#[derive(Debug, Default, Deserialize, HasId, HasName, HasDescription, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Product {
     #[serde(skip_serializing_if = "Option::is_none")]

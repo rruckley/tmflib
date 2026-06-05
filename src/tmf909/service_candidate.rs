@@ -1,8 +1,11 @@
-use super::{ServiceCategoryRef, ServiceSpecificationRef, MOD_PATH};
+use super::{ServiceCategoryRef, ServiceSpecificationRef};
 use crate::{HasDescription, HasId, IsAddressable, TimePeriod};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 /// Path to module
 pub const CLASS_PATH: &str = "serviceCandidate";
 

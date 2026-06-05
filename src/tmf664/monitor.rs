@@ -2,10 +2,12 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use crate::{HasId, IsAddressable, Uri};
 use tmflib_derive::HasId;
-
-use super::MOD_PATH;
 
 /// Path to Monitor class
 pub const CLASS_PATH: &str = "monitor";

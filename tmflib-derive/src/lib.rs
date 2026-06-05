@@ -69,10 +69,10 @@ pub fn hasentity_derive(input: TokenStream) -> TokenStream {
                 CLASS_PATH.to_string()
             }
             fn get_class_href() -> String {
-                format!("/{}/{}/{}",crate::get_lib_path(),MOD_PATH,#name::get_class())
+                format!("/{}/{}/{}/{}",crate::get_lib_path(),TMF_MODULE,TMF_VERSION,#name::get_class())
             }
             fn get_mod_path() -> String {
-                format!("/{}/{}",crate::get_lib_path(),MOD_PATH)
+                format!("/{}/{}/{}",crate::get_lib_path(),TMF_MODULE,TMF_VERSION)
             }
             fn set_id(&mut self, id : impl Into<String>) {
                 self.id = Some(id.into());
@@ -144,10 +144,13 @@ pub fn hasid_derive(input: TokenStream) -> TokenStream {
                 CLASS_PATH.to_string()
             }
             fn get_class_href() -> String {
-                format!("/{}/{}/{}",crate::get_lib_path(),MOD_PATH,#name::get_class())
+                format!("/{}/{}/{}/{}",crate::get_lib_path(),TMF_VERSION,TMF_MODULE,#name::get_class())
+            }
+            fn get_module() -> String {
+                TMF_MODULE.to_string()
             }
             fn get_mod_path() -> String {
-                format!("/{}/{}",crate::get_lib_path(),MOD_PATH)
+                format!("/{}/{}/{}",crate::get_lib_path(),TMF_VERSION,TMF_MODULE)
             }
             fn set_id(&mut self, id : impl Into<String>) {
                 self.id = Some(id.into());

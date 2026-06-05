@@ -1,12 +1,14 @@
 //! Incident Module
 //!
 
-use super::MOD_PATH;
 use crate::common::external_identifier::ExternalIdentifier;
 use crate::{DateTime, HasId, HasName, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasName};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 /// Path to module
 pub const CLASS_PATH: &str = "incident";
 

@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-const MOD_PATH: &str = "resourceFunctionActivation/v4";
+const TMF_MODULE: &str = "resourceFunctionActivation";
 
 pub mod heal;
 pub mod migrate;

@@ -14,7 +14,7 @@
 
 //! TMF764 Cost Management API
 
-const MOD_PATH: &str = "costManagement/v5";
+const TMF_MODULE: &str = "costManagement";
 
 use serde::{Deserialize, Serialize};
 

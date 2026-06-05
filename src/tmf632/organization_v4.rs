@@ -13,7 +13,11 @@ use crate::common::{
     related_party::RelatedParty,
 };
 
-use super::{Characteristic, MOD_PATH};
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
+use super::Characteristic;
 
 /// Path to this class
 pub const CLASS_PATH: &str = "organization";
@@ -168,9 +172,6 @@ impl Organization {
 impl IsAddressable for Organization {
     fn get_objects() -> Vec<&'static str> {
         super::get_objects()
-    }
-    fn get_version() -> &'static str {
-        super::get_version()
     }
 }
 

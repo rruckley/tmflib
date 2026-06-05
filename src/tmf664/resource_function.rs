@@ -11,7 +11,9 @@ use crate::{
 };
 use tmflib_derive::{HasDescription, HasId, HasName, HasNote, HasRelatedParty, HasValidity};
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 /// Path to Resource Function class
 pub const CLASS_PATH: &str = "resourceFunction";

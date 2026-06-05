@@ -4,11 +4,15 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use crate::{HasId, HasName, IsAddressable, Uri};
 use tmflib_derive::{HasId, HasName};
 
 use super::resource_function::ResourceFunctionRef;
-use super::{TaskStateType, MOD_PATH};
+use super::TaskStateType;
 
 /// Path to Scale class
 pub const CLASS_PATH: &str = "scale";

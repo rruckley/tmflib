@@ -484,7 +484,7 @@ mod usage_volume_balance;
 mod usage_volume_product;
 mod usage_volume_product_ref;
 
-const MOD_PATH: &str = "tmf909/v5";
+const TMF_MODULE: &str = "tmf909";
 
 /// Modules available in this API `MOD_PATH`
 pub fn get_objects() -> Vec<&'static str> {

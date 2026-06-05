@@ -5,7 +5,9 @@ use serde::{Deserialize, Serialize};
 /// Path component for Catalog
 pub const CLASS_PATH: &str = "catalog";
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 use crate::{
     DateTime, HasDescription, HasId, HasLastUpdate, HasName, HasValidity, IsAddressable,

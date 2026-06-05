@@ -12,10 +12,12 @@ use crate::tmf620::product_offering_price::ProductOfferingPriceRef;
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf651::agreement::AgreementRef;
 use crate::tmf666::billing_account::BillingAccountRef;
-use crate::{DateTime, HasId, HasName, HasValidity, HasDescription, TimePeriod};
-use tmflib_derive::{HasId, HasName, HasDescription, HasValidity};
+use crate::{DateTime, HasDescription, HasId, HasName, HasValidity, TimePeriod};
+use tmflib_derive::{HasDescription, HasId, HasName, HasValidity};
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 const CLASS_PATH: &str = "product";
 
@@ -55,7 +57,7 @@ pub struct PriceAlteration {
 }
 
 /// Product record from the Product Inventory
-#[derive(Debug, Default, Deserialize, HasId, HasName,HasDescription, Serialize)]
+#[derive(Debug, Default, Deserialize, HasId, HasName, HasDescription, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Product {
     #[serde(skip_serializing_if = "Option::is_none")]

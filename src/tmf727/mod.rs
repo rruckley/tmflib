@@ -156,7 +156,7 @@ mod target_entity_schema;
 mod target_entity_schema_mvo;
 // mod time_period;
 
-const MOD_PATH: &str = "serviceUsageManagement";
+const TMF_MODULE: &str = "serviceUsageManagement";
 
 fn get_objects() -> Vec<&'static str> {
     vec![

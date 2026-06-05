@@ -11,7 +11,9 @@ use crate::{
     HasValidity, IsAddressable, TimePeriod, Uri,
 };
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 /// Path to module
 pub const CLASS_PATH: &str = "shippingSpecification";
 

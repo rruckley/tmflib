@@ -4,10 +4,14 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use crate::{DateTime, HasId, HasName, IsAddressable, Uri};
 use tmflib_derive::{HasId, HasName};
 
-use super::{TaskStateType, MOD_PATH};
+use super::TaskStateType;
 
 /// Path to Heal class
 pub const CLASS_PATH: &str = "heal";

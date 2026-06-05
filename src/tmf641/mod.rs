@@ -16,7 +16,7 @@
 //! # Description
 //! Provides schema related to management of [`service_order::ServiceOrder`]s and [`service_order_item::ServiceOrderItem`]s.
 
-const MOD_PATH: &str = "serviceOrder/v4";
+const TMF_MODULE: &str = "serviceOrderManagement";
 
 /// Service Order
 pub mod service_order;

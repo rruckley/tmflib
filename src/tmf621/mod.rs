@@ -14,10 +14,7 @@
 
 //! TMF621 Trouble Ticket Management Schema
 
-#[cfg(feature = "build-V4")]
-const MOD_PATH: &str = "troubleTicket/v4";
-#[cfg(feature = "build-V5")]
-const MOD_PATH: &str = "troubleTicket/v5";
+const TMF_MODULE: &str = "troubleTicket";
 
 fn get_objects() -> Vec<&'static str> {
     vec![trouble_ticket::CLASS_PATH]

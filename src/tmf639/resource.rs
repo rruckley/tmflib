@@ -2,8 +2,11 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use super::characteristic::Characteristic;
-use super::MOD_PATH;
 use crate::common::attachment::AttachmentRefOrValue;
 use crate::common::related_party::RelatedParty;
 use crate::common::tmf_error::TMFError;

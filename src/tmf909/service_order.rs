@@ -1,13 +1,16 @@
 use super::{
     ExternalReference, RelatedParty, ServiceOrderErrorMessage, ServiceOrderItem,
     ServiceOrderJeopardyAlert, ServiceOrderMilestone, ServiceOrderRelationship,
-    ServiceOrderStateType, MOD_PATH,
+    ServiceOrderStateType,
 };
 use crate::common::note::Note;
 use crate::{HasDescription, HasId};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 const CLASS_PATH: &str = "serviceOrder";
 
 ///A service order is a request from a customer or a system that initiates activities

@@ -1,15 +1,17 @@
 //! Work Module
 //! This module defines a unit of work to be done.
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+/// Path to module
+pub const CLASS_PATH: &str = "work";
+
 use crate::tmf646::appointment::AppointmentRef;
 use crate::tmf651::agreement::AgreementRef;
 use crate::{HasDescription, HasId, HasName, IsAddressable, TimePeriod, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasDescription, HasId, HasName};
-
-/// Path to module
-pub const CLASS_PATH: &str = "work";
 
 /// Reference to a work object
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

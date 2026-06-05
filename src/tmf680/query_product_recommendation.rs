@@ -16,6 +16,11 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+const CLASS_PATH: &str = "queryProductRecommendation";
+
 use crate::common::tmf_error::TMFError;
 use crate::{
     HasDescription, HasId, HasName, HasRelatedParty, HasValidity, IsAddressable, TimePeriod, Uri,
@@ -35,11 +40,7 @@ use crate::tmf622::product_order_v4::ProductOrderRef;
 #[cfg(feature = "build-V5")]
 use crate::tmf622::product_order_v5::ProductOrderRef;
 
-use super::MOD_PATH;
-
 use tmflib_derive::{HasDescription, HasId, HasName, HasRelatedParty, HasValidity};
-
-const CLASS_PATH: &str = "queryProductRecommendation";
 
 /// Recommendation Item
 #[derive(Clone, Default, Debug, Serialize, Deserialize)]

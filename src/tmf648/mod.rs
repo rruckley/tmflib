@@ -16,7 +16,7 @@
 //! # Description
 //! Provides schema for management of product [`quote::Quote`]s.
 
-const MOD_PATH: &str = "quoteManagement/v4";
+const TMF_MODULE: &str = "quoteManagement";
 
 pub mod quote;
 pub mod quote_item;

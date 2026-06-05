@@ -13,7 +13,10 @@
 // limitations under the License.
 //! Performance Measurement object model for TMF628 Performance Management
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use super::{MeasurementCollectionJobRef, PerformanceMeasurementRelationship};
 use crate::{common::entity::Entity, HasDescription, HasId, IsAddressable, TimePeriod};
 use serde::{Deserialize, Serialize};

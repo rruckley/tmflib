@@ -1,7 +1,7 @@
 //! V4 Modules
 //!
 
-const MOD_PATH: &str = "tmf697/v4";
+const TMF_MODULE: &str = "workOrderManagement";
 
 pub mod work;
 pub mod work_order;

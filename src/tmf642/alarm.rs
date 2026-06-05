@@ -13,9 +13,13 @@
 // limitations under the License.
 //! Alarm defines an alarm for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use super::{
     AlarmRef, AlarmType, AlarmedObjectRef, Comment, CrossedThresholdInformation, PerceivedSeverity,
-    RelatedPlace, ServiceRef, MOD_PATH,
+    RelatedPlace, ServiceRef,
 };
 use crate::{common::entity::Entity, DateTime, HasId, Uri};
 use serde::{Deserialize, Serialize};

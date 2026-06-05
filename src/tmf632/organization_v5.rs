@@ -4,6 +4,10 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
 use crate::{gen_code, HasId, HasName, HasReference, TMFEvent, TimePeriod};
 use tmflib_derive::{HasId, HasName};
 
@@ -13,7 +17,7 @@ use crate::common::{
     related_party::RelatedParty,
 };
 
-use super::{Characteristic, MOD_PATH};
+use super::Characteristic;
 
 const CLASS_PATH: &str = "organization";
 const CODE_PREFIX: &str = "O-";

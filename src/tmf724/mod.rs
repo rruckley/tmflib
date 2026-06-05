@@ -16,4 +16,4 @@
 
 pub mod incident;
 
-const MOD_PATH: &str = "tmf724";
+const TMF_MODULE: &str = "incidentManagement";

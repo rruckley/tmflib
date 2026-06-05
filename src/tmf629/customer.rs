@@ -18,7 +18,9 @@ use crate::{
 use tmflib_derive::{HasId, HasName, HasValidity};
 use uuid::Uuid;
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 const CLASS_PATH: &str = "customer";
 const CUST_ID_SIZE: usize = 5;

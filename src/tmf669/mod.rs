@@ -19,6 +19,6 @@
 //! The role defines a specialisation of how the party object is used and thus a reference to a party (via [`crate::tmf632`]) is required.
 //! This is achieved via the [`common/related_party`] object.
 
-const MOD_PATH: &str = "partyRoleManagement/v4";
+const TMF_MODULE: &str = "partyRoleManagement";
 
 pub mod party_role;

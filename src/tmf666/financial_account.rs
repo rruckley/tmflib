@@ -2,14 +2,17 @@
 
 use serde::{Deserialize, Serialize};
 
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+/// Path to Financial Account class
+pub const CLASS_PATH: &str = "financialAccount";
+
 use crate::{DateTime, HasId, HasLastUpdate, HasName, IsAddressable};
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
-use super::{AccountBalance, AccountRelationship, AccountTaxExemption, MOD_PATH};
+use super::{AccountBalance, AccountRelationship, AccountTaxExemption};
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
-
-/// Path to Financial Account class
-pub const CLASS_PATH: &str = "financialAccount";
 
 /// Financial Account Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]

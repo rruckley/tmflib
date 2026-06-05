@@ -17,7 +17,8 @@ use crate::{
 };
 
 // URL Path components
-use super::MOD_PATH;
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 /// Path to this class
 pub const CLASS_PATH: &str = "troubleTicket";

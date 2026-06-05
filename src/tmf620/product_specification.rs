@@ -6,7 +6,9 @@ use regex::Regex;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use super::MOD_PATH;
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
 
 use crate::common::event::{Event, EventPayload};
 use crate::common::tmf_error::TMFError;
