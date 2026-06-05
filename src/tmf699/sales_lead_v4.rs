@@ -14,7 +14,6 @@ use crate::tmf620::product_offering_v5::ProductOfferingRef;
 use crate::tmf620::product_specification::ProductSpecificationRef;
 use crate::tmf620::{ChannelRef, MarketSegmentRef};
 
-
 use crate::{DateTime, HasId, HasNote, HasValidity, IsAddressable, TimePeriod};
 use tmflib_derive::{HasId, HasNote, HasValidity};
 

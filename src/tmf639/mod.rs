@@ -14,7 +14,6 @@
 
 //! TMF639 Resource Inventory Management
 
-
 const TMF_MODULE: &str = "resourceInventoryManagement";
 
 pub mod characteristic;

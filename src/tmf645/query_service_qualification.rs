@@ -12,7 +12,6 @@ use crate::{HasDescription, HasId, IsAddressable, Uri};
 
 use tmflib_derive::{HasDescription, HasId};
 
-
 use super::TaskStateType;
 
 /// Query Service Qualification

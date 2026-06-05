@@ -14,7 +14,7 @@
 
 //! Common Modules
 
-const TMF_MODULE : &str = "common";
+const TMF_MODULE: &str = "common";
 
 pub mod addressable;
 pub mod attachment;

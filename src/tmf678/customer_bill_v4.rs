@@ -16,8 +16,6 @@ use crate::tmf666::billing_account::BillingAccountRef;
 use crate::{DateTime, HasAttachment, HasId, HasLastUpdate, IsAddressable, TimePeriod, Uri};
 use tmflib_derive::{HasId, HasLastUpdate};
 
-
-
 /// Customer Bill Run Type
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum CustomerBillRunType {

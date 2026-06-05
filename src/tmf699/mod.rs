@@ -16,7 +16,7 @@
 //! # Versions
 //! - V4 Supported
 //! - V5 Supported
-//! 
+//!
 
 const TMF_MODULE: &str = "salesManagement";
 

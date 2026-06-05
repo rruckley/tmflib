@@ -19,8 +19,7 @@
 use crate::common::related_place::PlaceRef;
 use serde::{Deserialize, Serialize};
 
-
-const TMF_MODULE : &str = "productCatalogManagement";
+const TMF_MODULE: &str = "productCatalogManagement";
 
 pub mod bundled_product_offering;
 pub mod catalog;

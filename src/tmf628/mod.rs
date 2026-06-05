@@ -300,7 +300,7 @@ mod tracking_record;
 mod tracking_record_fvo;
 mod tracking_record_mvo;
 
-const TMF_MODULE : &str = "performanceManagement";
+const TMF_MODULE: &str = "performanceManagement";
 
 fn get_objects() -> Vec<&'static str> {
     vec![

@@ -16,7 +16,7 @@ use tmflib_derive::{HasDescription, HasId, HasName, HasNote};
 
 const CLASS_PATH: &str = "service";
 
- #[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase")]
 enum ServiceStateType {
     FeasibilityChecked,

@@ -6,9 +6,7 @@ use std::convert::From;
 use crate::{vec_insert, HasId, HasLastUpdate, HasName, IsAddressable, TimePeriod, TimeStamp, Uri};
 use tmflib_derive::{HasId, HasLastUpdate, HasName};
 
-use super::{
-    service_category::ServiceCategoryRef, service_specification::ServiceSpecificationRef,
-};
+use super::{service_category::ServiceCategoryRef, service_specification::ServiceSpecificationRef};
 
 // URL Path components
 use super::TMF_MODULE;

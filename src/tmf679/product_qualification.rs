@@ -20,8 +20,6 @@ use crate::tmf620::product_offering::ProductOfferingRef;
 #[cfg(all(feature = "tmf620", feature = "build-V5"))]
 use crate::tmf620::product_offering_v5::ProductOfferingRef;
 
-
-
 /// Qualification Item Status
 #[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub enum TaskStateType {

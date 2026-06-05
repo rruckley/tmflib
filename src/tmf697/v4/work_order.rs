@@ -1,6 +1,6 @@
 //! Work Order Mobule V4
 
-use super::{work_order_item::WorkOrderItem};
+use super::work_order_item::WorkOrderItem;
 use crate::common::{note::Note, related_party::RelatedParty, tmf_error::TMFError};
 use crate::tmf646::appointment::AppointmentRef;
 use crate::{vec_insert, HasId, HasNote, HasRelatedParty, IsAddressable, Uri};

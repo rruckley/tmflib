@@ -6,7 +6,6 @@ use crate::{DateTime, HasId, HasName, IsAddressable, Uri};
 use serde::{Deserialize, Serialize};
 use tmflib_derive::{HasId, HasName};
 
-
 // URL Path components
 use super::TMF_MODULE;
 use crate::TMF_VERSION;

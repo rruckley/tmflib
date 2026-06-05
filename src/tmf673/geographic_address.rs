@@ -11,8 +11,6 @@ pub const CLASS_PATH: &str = "geographicAddress";
 use crate::{HasId, HasName, IsAddressable, Uri};
 use tmflib_derive::{HasId, HasName};
 
-
-
 /// Geographic Sub Address
 #[derive(Clone, Debug, Default, Deserialize, HasId, HasName, Serialize)]
 #[serde(rename_all = "camelCase")]

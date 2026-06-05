@@ -17,7 +17,6 @@ use super::{
     PaymentMethodRef, PaymentPlan,
 };
 
-
 /// Settlement Account
 #[derive(
     Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasDescription, Serialize,

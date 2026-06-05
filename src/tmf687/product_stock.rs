@@ -20,8 +20,6 @@ use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-
-
 /// Product Stock Relationship
 #[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub struct ProductStockRelationship {

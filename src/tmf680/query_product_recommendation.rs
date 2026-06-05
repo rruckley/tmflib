@@ -42,8 +42,6 @@ use crate::tmf622::product_order_v5::ProductOrderRef;
 
 use tmflib_derive::{HasDescription, HasId, HasName, HasRelatedParty, HasValidity};
 
-
-
 /// Recommendation Item
 #[derive(Clone, Default, Debug, Serialize, Deserialize)]
 pub struct RecommentationItem {

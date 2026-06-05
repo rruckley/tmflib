@@ -21,7 +21,6 @@ use crate::{
 };
 use tmflib_derive::{HasDescription, HasId, HasNote, HasRelatedParty, HasValidity};
 
-
 const QUOTE_VERS: &str = "1.0";
 
 /// Status of the quote object

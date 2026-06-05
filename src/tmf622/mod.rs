@@ -14,7 +14,7 @@
 
 //! TMF622 Product Order Management
 
-const TMF_MODULE : &str = "productOrderingManagement";
+const TMF_MODULE: &str = "productOrderingManagement";
 
 #[cfg(all(feature = "tmf622", feature = "build-V4"))]
 pub mod product_order_v4;

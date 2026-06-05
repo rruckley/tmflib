@@ -14,8 +14,6 @@ use crate::common::related_party::RelatedParty;
 use crate::{DateTime, HasAttachment, HasId, HasLastUpdate, IsAddressable, TimePeriod, Uri};
 use tmflib_derive::{HasId, HasLastUpdate};
 
-
-
 /// Customer Bill Run Type
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub enum CustomerBillRunType {

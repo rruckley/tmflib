@@ -14,8 +14,6 @@ use tmflib_derive::{HasId, HasLastUpdate, HasName};
 use super::{AccountBalance, AccountRelationship, AccountTaxExemption};
 use crate::common::{contact::Contact, money::Money, related_party::RelatedParty};
 
-
-
 /// Financial Account Reference
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct FinancialAccountRef {
