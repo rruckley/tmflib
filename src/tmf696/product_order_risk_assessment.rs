@@ -57,13 +57,9 @@ impl ProductOrderRiskAssessment {
         characteristic: Characteristic,
     ) -> Option<Characteristic> {
         if let Some(v) = &self.characteristic {
-            match v.iter().find(|c| c.name == characteristic.name) {
-                Some(i) => {
-                    let out = i.clone();
-                    Some(out)
-                }
-                None => None,
-            }
+            v.iter().find(|c| c.name == characteristic.name).map_or(None, |i| {
+                Some(i.clone())
+            })
         } else {
             self.characteristic = Some(vec![characteristic]);
             None
