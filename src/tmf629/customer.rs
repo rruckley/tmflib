@@ -1,5 +1,11 @@
 //! Customer Module
 //!
+
+// URL Path components
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+const CLASS_PATH: &str = "customer";
+
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 
@@ -18,11 +24,8 @@ use crate::{
 use tmflib_derive::{HasId, HasName, HasValidity};
 use uuid::Uuid;
 
-// URL Path components
-use super::TMF_MODULE;
-use crate::TMF_VERSION;
 
-const CLASS_PATH: &str = "customer";
+
 const CUST_ID_SIZE: usize = 5;
 /// Default customer status
 pub const CUST_STATUS: &str = "New";
