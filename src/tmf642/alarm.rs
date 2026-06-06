@@ -180,13 +180,20 @@ impl std::ops::DerefMut for Alarm {
     }
 }
 
+/// AlarmEventType defines the type of event for an alarm
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub enum AlarmEventType {
+    ///AlarmCreation indicates that an alarm has been created
     AlarmCreation,
+    ///AlarmStateChange indicates that the state of an alarm has changed (e.g. from raised to cleared)
     AlarmStateChange,
+    ///AlarmCleared indicates that an alarm has been cleared
     AlarmCleared,
+    ///AlarmAcknowledged indicates that an alarm has been acknowledged
     AlarmAcknowledged,
+    ///AlarmUnacknowledged indicates that an alarm has been unacknowledged
     AlarmUnacknowledged,
+    ///AlarmUpdated indicates that an alarm has been updated (e.g. new information has been added to the alarm)
     AlarmUpdated,
 }
 impl std::fmt::Display for AlarmEventType {
@@ -202,8 +209,10 @@ impl std::fmt::Display for AlarmEventType {
     }
 }
 
+/// AlarmEvent defines the event structure for an alarm event
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct AlarmEvent {
+    ///The alarm associated with the event
     pub alarm: Alarm,
 }
 
