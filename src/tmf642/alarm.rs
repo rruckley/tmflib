@@ -16,16 +16,17 @@
 // URL Path components
 use super::TMF_MODULE;
 use crate::TMF_VERSION;
+const CLASS_PATH: &str = "alarm";
 
+use chrono::Utc;
+use uuid::Uuid;
 use super::{
     AlarmRef, AlarmType, AlarmedObjectRef, Comment, CrossedThresholdInformation, PerceivedSeverity,
     RelatedPlace, ServiceRef,
 };
-use crate::{common::entity::Entity, DateTime, HasId, Uri};
+use crate::{common::entity::Entity, DateTime, HasId, Uri, TMFEvent};
+use crate::common::event::{Event, EventPayload};
 use serde::{Deserialize, Serialize};
-
-const CLASS_PATH: &str = "alarm";
-
 use tmflib_derive::HasId;
 
 ///Alarm defines an alarm for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
@@ -176,5 +177,71 @@ impl std::ops::Deref for Alarm {
 impl std::ops::DerefMut for Alarm {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.entity
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub enum AlarmEventType {
+    AlarmCreation,
+    AlarmStateChange,
+    AlarmCleared,
+    AlarmAcknowledged,
+    AlarmUnacknowledged,
+    AlarmUpdated,
+}
+impl std::fmt::Display for AlarmEventType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", match self {
+            AlarmEventType::AlarmCreation => "AlarmCreation",
+            AlarmEventType::AlarmStateChange => "AlarmStateChange",
+            AlarmEventType::AlarmCleared => "AlarmCleared",
+            AlarmEventType::AlarmAcknowledged => "AlarmAcknowledged",
+            AlarmEventType::AlarmUnacknowledged => "AlarmUnacknowledged",
+            AlarmEventType::AlarmUpdated => "AlarmUpdated",
+        })
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct AlarmEvent {
+    pub alarm: Alarm,
+}
+
+impl TMFEvent<AlarmEvent> for Alarm {
+    fn event(&self) -> AlarmEvent {
+        AlarmEvent {
+            alarm: self.clone(),
+        }
+    }
+}
+
+impl EventPayload<AlarmEvent> for Alarm {
+    type Subject = Self;
+    type EventType = AlarmEventType;
+    fn to_event(&self, event_type: Self::EventType) -> Event<AlarmEvent, Self::EventType> {
+        let now = Utc::now();
+        let desc = format!(
+            "{:?} for {} [{}]",
+            event_type,
+            self.alarm_details.clone().unwrap_or_default(),
+            self.get_id()
+        );
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
+
+        Event {
+            correlation_id: Some(self.external_alarm_id.clone().unwrap_or_default().to_string()),
+            description: Some(desc),
+            domain: Some(Self::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: Some(self.get_href()),
+            id: Some(self.get_id()),
+            title: Some(self.alarm_details.clone().unwrap_or_default()),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: Some(event_time.to_string()),
+            event_type,
+            event: self.event(),
+        }
     }
 }
