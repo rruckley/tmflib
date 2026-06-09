@@ -181,7 +181,7 @@ impl std::ops::DerefMut for Alarm {
 }
 
 /// AlarmEventType defines the type of event for an alarm
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub enum AlarmEventType {
     ///AlarmCreation indicates that an alarm has been created
     AlarmCreation,
@@ -254,3 +254,49 @@ impl EventPayload<AlarmEvent> for Alarm {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn test_alarm_event() {
+        let alarm = Alarm {
+            id: Some("alarm1".to_string()),
+            alarm_details: Some("Test Alarm".to_string()),
+            external_alarm_id: Some("ext-alarm1".to_string()),
+            ..Default::default()
+        };
+        let event = alarm.to_event(AlarmEventType::AlarmCreation);
+        assert_eq!(event.event_type, AlarmEventType::AlarmCreation);
+        assert_eq!(event.event.alarm.id, Some("alarm1".to_string()));
+        assert_eq!(event.event.alarm.alarm_details, Some("Test Alarm".to_string()));
+        assert_eq!(event.event.alarm.external_alarm_id, Some("ext-alarm1".to_string()));
+    }
+
+    #[test]
+    fn test_alarm_display() {
+        let alarm = Alarm {
+            id: Some("alarm1".to_string()),
+            alarm_details: Some("Test Alarm".to_string()),
+            external_alarm_id: Some("ext-alarm1".to_string()),
+            ..Default::default()
+        };
+        let alarm_str = format!("{}", alarm);
+        assert!(alarm_str.contains("\"id\":\"alarm1\""));
+        assert!(alarm_str.contains("\"alarmDetails\":\"Test Alarm\""));
+        assert!(alarm_str.contains("\"externalAlarmId\":\"ext-alarm1\""));
+    }
+
+    #[test]
+    fn test_alarm_new() {
+        let alarm = Alarm {
+            id: Some("alarm1".to_string()),
+            alarm_details: Some("Test Alarm".to_string()),
+            external_alarm_id: Some("ext-alarm1".to_string()),
+            ..Default::default()
+        };
+        assert_eq!(alarm.id, Some("alarm1".to_string()));
+        assert_eq!(alarm.alarm_details, Some("Test Alarm".to_string()));
+        assert_eq!(alarm.external_alarm_id, Some("ext-alarm1".to_string()));
+    }   
+}   
