@@ -16,16 +16,17 @@
 // URL Path components
 use super::TMF_MODULE;
 use crate::TMF_VERSION;
+const CLASS_PATH: &str = "alarm";
 
+use chrono::Utc;
+use uuid::Uuid;
 use super::{
     AlarmRef, AlarmType, AlarmedObjectRef, Comment, CrossedThresholdInformation, PerceivedSeverity,
     RelatedPlace, ServiceRef,
 };
-use crate::{common::entity::Entity, DateTime, HasId, Uri};
+use crate::{common::entity::Entity, DateTime, HasId, Uri, TMFEvent};
+use crate::common::event::{Event, EventPayload};
 use serde::{Deserialize, Serialize};
-
-const CLASS_PATH: &str = "alarm";
-
 use tmflib_derive::HasId;
 
 ///Alarm defines an alarm for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
@@ -178,3 +179,124 @@ impl std::ops::DerefMut for Alarm {
         &mut self.entity
     }
 }
+
+/// AlarmEventType defines the type of event for an alarm
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
+pub enum AlarmEventType {
+    ///AlarmCreation indicates that an alarm has been created
+    AlarmCreation,
+    ///AlarmStateChange indicates that the state of an alarm has changed (e.g. from raised to cleared)
+    AlarmStateChange,
+    ///AlarmCleared indicates that an alarm has been cleared
+    AlarmCleared,
+    ///AlarmAcknowledged indicates that an alarm has been acknowledged
+    AlarmAcknowledged,
+    ///AlarmUnacknowledged indicates that an alarm has been unacknowledged
+    AlarmUnacknowledged,
+    ///AlarmUpdated indicates that an alarm has been updated (e.g. new information has been added to the alarm)
+    AlarmUpdated,
+}
+impl std::fmt::Display for AlarmEventType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "{}", match self {
+            AlarmEventType::AlarmCreation => "AlarmCreation",
+            AlarmEventType::AlarmStateChange => "AlarmStateChange",
+            AlarmEventType::AlarmCleared => "AlarmCleared",
+            AlarmEventType::AlarmAcknowledged => "AlarmAcknowledged",
+            AlarmEventType::AlarmUnacknowledged => "AlarmUnacknowledged",
+            AlarmEventType::AlarmUpdated => "AlarmUpdated",
+        })
+    }
+}
+
+/// AlarmEvent defines the event structure for an alarm event
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct AlarmEvent {
+    ///The alarm associated with the event
+    pub alarm: Alarm,
+}
+
+impl TMFEvent<AlarmEvent> for Alarm {
+    fn event(&self) -> AlarmEvent {
+        AlarmEvent {
+            alarm: self.clone(),
+        }
+    }
+}
+
+impl EventPayload<AlarmEvent> for Alarm {
+    type Subject = Self;
+    type EventType = AlarmEventType;
+    fn to_event(&self, event_type: Self::EventType) -> Event<AlarmEvent, Self::EventType> {
+        let now = Utc::now();
+        let desc = format!(
+            "{:?} for {} [{}]",
+            event_type,
+            self.alarm_details.clone().unwrap_or_default(),
+            self.get_id()
+        );
+        let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
+
+        Event {
+            correlation_id: Some(self.external_alarm_id.clone().unwrap_or_default().to_string()),
+            description: Some(desc),
+            domain: Some(Self::get_class()),
+            event_id: Uuid::new_v4().to_string(),
+            field_path: None,
+            href: Some(self.get_href()),
+            id: Some(self.get_id()),
+            title: Some(self.alarm_details.clone().unwrap_or_default()),
+            event_time: event_time.to_string(),
+            priority: None,
+            time_occurred: Some(event_time.to_string()),
+            event_type,
+            event: self.event(),
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn test_alarm_event() {
+        let alarm = Alarm {
+            id: Some("alarm1".to_string()),
+            alarm_details: Some("Test Alarm".to_string()),
+            external_alarm_id: Some("ext-alarm1".to_string()),
+            ..Default::default()
+        };
+        let event = alarm.to_event(AlarmEventType::AlarmCreation);
+        assert_eq!(event.event_type, AlarmEventType::AlarmCreation);
+        assert_eq!(event.event.alarm.id, Some("alarm1".to_string()));
+        assert_eq!(event.event.alarm.alarm_details, Some("Test Alarm".to_string()));
+        assert_eq!(event.event.alarm.external_alarm_id, Some("ext-alarm1".to_string()));
+    }
+
+    #[test]
+    fn test_alarm_display() {
+        let alarm = Alarm {
+            id: Some("alarm1".to_string()),
+            alarm_details: Some("Test Alarm".to_string()),
+            external_alarm_id: Some("ext-alarm1".to_string()),
+            ..Default::default()
+        };
+        let alarm_str = format!("{}", alarm);
+        assert!(alarm_str.contains("\"id\":\"alarm1\""));
+        assert!(alarm_str.contains("\"alarmDetails\":\"Test Alarm\""));
+        assert!(alarm_str.contains("\"externalAlarmId\":\"ext-alarm1\""));
+    }
+
+    #[test]
+    fn test_alarm_new() {
+        let alarm = Alarm {
+            id: Some("alarm1".to_string()),
+            alarm_details: Some("Test Alarm".to_string()),
+            external_alarm_id: Some("ext-alarm1".to_string()),
+            ..Default::default()
+        };
+        assert_eq!(alarm.id, Some("alarm1".to_string()));
+        assert_eq!(alarm.alarm_details, Some("Test Alarm".to_string()));
+        assert_eq!(alarm.external_alarm_id, Some("ext-alarm1".to_string()));
+    }   
+}   
