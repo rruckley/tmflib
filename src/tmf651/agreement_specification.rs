@@ -1,8 +1,8 @@
 //! Agreement Specification Module
 
-use crate::{DateTime, HasId, HasLastUpdate, HasName, HasValidity, IsAddressable, TimePeriod};
+use crate::{DateTime, HasId, HasLastUpdate, HasName, HasDescription, HasValidity, IsAddressable, TimePeriod};
 use serde::{Deserialize, Serialize};
-use tmflib_derive::{HasId, HasLastUpdate, HasName, HasValidity};
+use tmflib_derive::{HasId, HasLastUpdate, HasName,HasDescription, HasValidity};
 
 // URL Path components
 use super::TMF_MODULE;
@@ -12,7 +12,7 @@ pub const CLASS_PATH: &str = "specification";
 
 /// Agreement Specification
 #[derive(
-    Clone, Debug, Default, Deserialize, HasId, HasName, HasLastUpdate, HasValidity, Serialize,
+    Clone, Debug, Default, Deserialize, HasId, HasName, HasDescription, HasLastUpdate, HasValidity, Serialize,
 )]
 pub struct AgreementSpecification {
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -53,7 +53,7 @@ pub struct AgreementSpecificationRef {
 impl From<AgreementSpecification> for AgreementSpecificationRef {
     fn from(value: AgreementSpecification) -> Self {
         Self {
-            description: value.description.as_ref().unwrap().clone(),
+            description: value.get_description(),
             id: value.get_id(),
             href: value.get_href(),
             name: value.get_name(),

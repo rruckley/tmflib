@@ -37,7 +37,7 @@ impl From<ResourceFunction> for ResourceFunctionRef {
             href: value.get_href(),
             id: value.get_id(),
             name: value.get_name(),
-            version: value.resource_version.unwrap_or("1.0".to_string()),
+            version: value.resource_version.unwrap_or_else(|| "1.0".to_string()),
         }
     }
 }

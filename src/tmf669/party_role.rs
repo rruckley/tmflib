@@ -104,10 +104,7 @@ impl PartyRole {
     /// Get Profile by index
     #[must_use]
     pub fn get_profile(&self, idx: usize) -> Option<&CreditProfile> {
-        match self.credit_profile.as_ref() {
-            Some(cp) => cp.get(idx),
-            None => None,
-        }
+        self.credit_profile.as_ref().and_then(|cp| cp.get(idx))
     }
 
     /// Add new payment method to this Party Role

@@ -9,8 +9,9 @@ use crate::TMF_VERSION;
 /// Path to module
 pub const CLASS_PATH: &str = "serviceCandidate";
 
-/// `ServiceCandidate` is an entity that makes a service specification available to a catalog
-/// . 
+/// `ServiceCandidate` service specification in a catalog
+/// 
+/// A `ServiceCandidate` represents a service specification that is offered to customers. It describes the characteristics of a service that can be offered as part of a product offering. It may also include information about the service's lifecycle status, valid time period, and other attributes. A `ServiceCandidate` is associated with a `ServiceSpecification`, which provides more detailed information about the service's features and requirements.
 /// A `ServiceCandidate` and its associated service specification may be published - made visible - in any number of service catalogs, or in none. One service specification can be composed of other service specifications.*/
 #[derive(Debug, Clone, Serialize, HasId, HasDescription, Deserialize, Default)]
 pub struct ServiceCandidate {
