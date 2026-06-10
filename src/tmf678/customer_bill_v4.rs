@@ -136,8 +136,7 @@ impl HasAttachment for CustomerBill {
     }
     fn get(&self, position: usize) -> Option<AttachmentRefOrValue> {
         self.bill_document
-            .as_ref()
-            .map_or(None, |v| v.get(position).cloned())
+            .as_ref().and_then(|v| v.get(position).cloned())
     }
     fn remove(&mut self, position: usize) -> Option<AttachmentRefOrValue> {
         self.bill_document.as_mut().map(|v| v.remove(position))

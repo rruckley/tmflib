@@ -29,7 +29,7 @@ enum ServiceStateType {
 }
 
 /// Service Features
-#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Feature {
     id: String,

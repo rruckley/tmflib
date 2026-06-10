@@ -199,12 +199,12 @@ pub enum AlarmEventType {
 impl std::fmt::Display for AlarmEventType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", match self {
-            AlarmEventType::AlarmCreation => "AlarmCreation",
-            AlarmEventType::AlarmStateChange => "AlarmStateChange",
-            AlarmEventType::AlarmCleared => "AlarmCleared",
-            AlarmEventType::AlarmAcknowledged => "AlarmAcknowledged",
-            AlarmEventType::AlarmUnacknowledged => "AlarmUnacknowledged",
-            AlarmEventType::AlarmUpdated => "AlarmUpdated",
+            Self::AlarmCreation => "AlarmCreation",
+            Self::AlarmStateChange => "AlarmStateChange",
+            Self::AlarmCleared => "AlarmCleared",
+            Self::AlarmAcknowledged => "AlarmAcknowledged",
+            Self::AlarmUnacknowledged => "AlarmUnacknowledged",
+            Self::AlarmUpdated => "AlarmUpdated",
         })
     }
 }
@@ -238,7 +238,7 @@ impl EventPayload<AlarmEvent> for Alarm {
         let event_time = chrono::DateTime::from_timestamp(now.timestamp(), 0).unwrap();
 
         Event {
-            correlation_id: Some(self.external_alarm_id.clone().unwrap_or_default().to_string()),
+            correlation_id: Some(self.external_alarm_id.clone().unwrap_or_default()),
             description: Some(desc),
             domain: Some(Self::get_class()),
             event_id: Uuid::new_v4().to_string(),
