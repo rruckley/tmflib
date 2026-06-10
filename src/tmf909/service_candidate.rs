@@ -9,8 +9,9 @@ use crate::TMF_VERSION;
 /// Path to module
 pub const CLASS_PATH: &str = "serviceCandidate";
 
-/// `ServiceCandidate` is an entity that makes a service specification available to a catalog. A
-/// `ServiceCandidate` and its associated service specification may be published - made visible - in any number of service catalogs, or in none. One service specification can be composed of other service specifications.*/
+/// `ServiceCandidate` is an entity that makes a service specification available to a catalog
+/// . 
+/// A `ServiceCandidate` and its associated service specification may be published - made visible - in any number of service catalogs, or in none. One service specification can be composed of other service specifications.*/
 #[derive(Debug, Clone, Serialize, HasId, HasDescription, Deserialize, Default)]
 pub struct ServiceCandidate {
     ///When sub-classing, this defines the super-class
