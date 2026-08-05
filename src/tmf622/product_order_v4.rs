@@ -130,7 +130,7 @@ impl EventPayload<ProductOrderEvent> for ProductOrder {
 }
 
 /// Product Order State Type
-#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize,PartialEq, Serialize)]
 pub enum ProductOrderStateType {
     /// Order is in draft state
     #[default]
