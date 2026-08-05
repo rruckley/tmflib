@@ -129,6 +129,32 @@ impl EventPayload<ProductOrderEvent> for ProductOrder {
     }
 }
 
+/// Product Order State Type
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
+pub enum ProductOrderStateType {
+    /// Order is in draft state
+    #[default]
+    Draft, // Non-spec
+    /// Order has been acknowledged
+    Acknowledged,
+    /// Order is in progress
+    Rejected,
+    /// Order is completed
+    InProgress,
+    /// Order is completed
+    Completed,
+    /// Order is cancelled
+    Cancelled,
+    /// Order has failed  
+    Failed,
+    /// Order is partially completed
+    Partial,
+    /// Order is pending cancellation
+    AssessingCancellation,
+    /// Order is pending cancellation
+    PendingCancellation,
+}
+
 /// `ProductOrder`
 #[derive(
     Clone, Debug, Default, Deserialize, HasId, HasDescription, HasNote, HasRelatedParty, Serialize,
@@ -163,6 +189,9 @@ pub struct ProductOrder {
     /// Order Date
     #[serde(skip_serializing_if = "Option::is_none")]
     pub order_date: Option<DateTime>,
+    /// Order Status
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub state : Option<ProductOrderStateType>,
     /// Product Order Items
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_order_item: Option<Vec<ProductOrderItem>>,
