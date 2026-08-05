@@ -1,6 +1,8 @@
 //! TMF622 Wrapper to implement TypeState pattern
 
 use std::marker::PhantomData;
+use crate::HasLastUpdate;
+
 use super::product_order_v4::ProductOrder;
 
 type OrderState = super::product_order_v4::ProductOrderStateType;
@@ -31,28 +33,26 @@ impl StateMarker for Cancelled {
     const VALUE : OrderState = OrderState::Cancelled;
 }       
 
-pub struct OrderData {
-    data : ProductOrder,
-}
-
 pub struct Order<S> {
-    data: OrderData,
+    data: ProductOrder,
     _state: PhantomData<S>,
 }
 
 impl Order<Draft> {
+    /// Create a new order in the Draft state.
     pub fn new() -> Self {
-        Order {
-            data: OrderData {
-                data: ProductOrder::new(),
-            },
+        let mut data = ProductOrder::create_with_time();
+        data.state = Some(OrderState::Draft);
+        Order {        
+            data,
             _state: PhantomData,
         }
     }
 
+    /// Acknowledge the order and transition to the Acknowledged state.
     pub fn acknowledge(self) -> Order<Acknowledged> {
         let mut data = self.data;
-        data.data.state = Some(OrderState::Acknowledged);
+        data.state = Some(OrderState::Acknowledged);
         Order {
             data,
             _state: PhantomData,
@@ -63,7 +63,7 @@ impl Order<Draft> {
 impl Order<Acknowledged> {
     pub fn start(self) -> Order<InProgress> {
         let mut data = self.data;
-        data.data.state = Some(OrderState::InProgress);
+        data.state = Some(OrderState::InProgress);
         Order {
             data,
             _state: PhantomData,
@@ -72,9 +72,10 @@ impl Order<Acknowledged> {
 }   
 
 impl Order<InProgress> {
+    /// Complete the order and transition to the Completed state.
     pub fn complete(self) -> Order<Completed> {
         let mut data = self.data;
-        data.data.state = Some(OrderState::Completed);
+        data.state = Some(OrderState::Completed);
         Order {
             data,
             _state: PhantomData,
@@ -83,10 +84,20 @@ impl Order<InProgress> {
 
     pub fn cancel(self) -> Order<Cancelled> {
         let mut data = self.data;
-        data.data.state = Some(OrderState::Cancelled);
+        data.state = Some(OrderState::Cancelled);
         Order {
             data,
             _state: PhantomData,
         }
+    }
+}
+#[cfg(test)]
+mod test {
+
+    #[test]
+    fn create_draft() {
+        let order = super::Order::<super::Draft>::new();
+
+        assert_eq!(order.data.state, Some(super::OrderState::Draft));
     }
 }
