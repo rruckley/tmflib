@@ -100,4 +100,18 @@ mod test {
 
         assert_eq!(order.data.state, Some(super::OrderState::Draft));
     }
+
+    #[test]
+    fn failed_transition() {
+        let order = super::Order::<super::Draft>::new();
+
+        let order = order.acknowledge();
+// This should fail to compile because complete() is not defined for Order<Draft>
+        let order = order.start();
+
+        let order = order.complete();
+
+        // This should fail to compile because cancel() is not defined for Order<Completed>
+        // let order = order.cancel();
+    }
 }
