@@ -98,20 +98,17 @@ mod test {
     fn create_draft() {
         let order = super::Order::<super::Draft>::new();
 
-        assert_eq!(order.data.state, Some(super::OrderState::Draft));
+        assert_eq!(order.data.state, Some(product_order_typestate::OrderState::Draft));
     }
 
     #[test]
-    fn failed_transition() {
-        let order = super::Order::<super::Draft>::new();
+    fn state_transitions() {
+        let draft_order = super::Order::<super::Draft>::new();
 
-        let order = order.acknowledge();
-// This should fail to compile because complete() is not defined for Order<Draft>
-        let order = order.start();
+        assert_eq!(draft_order.data.state, Some(product_order_typestate::OrderState::Draft));
 
-        let order = order.complete();
+        let completed_order = draft_order.acknowledge().start().complete();
 
-        // This should fail to compile because cancel() is not defined for Order<Completed>
-        // let order = order.cancel();
+        assert_eq!(completed_order.data.state, Some(product_order_typestate::OrderState::Completed));
     }
 }
