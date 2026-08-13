@@ -25,6 +25,8 @@ pub mod product_order_v5;
 pub mod milestone;
 pub mod product_order_item;
 
+pub mod product_order_typestate;
+
 fn get_objects() -> Vec<&'static str> {
     vec![
         #[cfg(feature = "build-V4")]
