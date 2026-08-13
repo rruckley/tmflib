@@ -1,15 +1,19 @@
 use serde::{Serialize, Deserialize};
+
+use crate::DateTime;
+
+
 ///A period of time, either as a deadline (endDateTime only) a startDateTime only, or both
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct TimePeriod {
     ///End of the time period, using IETC-RFC-3339 format
     #[serde(rename = "endDateTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub end_date_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub end_date_time: Option<DateTime>,
     ///Start of the time period, using IETC-RFC-3339 format
     #[serde(rename = "startDateTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub start_date_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub start_date_time: Option<DateTime>,
 }
 impl std::fmt::Display for TimePeriod {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {

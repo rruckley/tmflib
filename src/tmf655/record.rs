@@ -1,4 +1,8 @@
 use serde::{Serialize, Deserialize};
+
+use crate::DateTime;
+
+
 ///A record in a worklog.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Record {
@@ -17,7 +21,7 @@ pub struct Record {
     ///The date time that a record is generated.
     #[serde(rename = "dateTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub date_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub date_time: Option<DateTime>,
     ///The detail description in a record.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,

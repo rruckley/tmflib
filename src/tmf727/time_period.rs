@@ -5,11 +5,11 @@ pub struct TimePeriodXX {
     ///End of the time period, using IETC-RFC-3339 format
     #[serde(rename = "endDateTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub end_date_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub end_date_time: Option<DateTime>,
     ///Start of the time period, using IETC-RFC-3339 format
     #[serde(rename = "startDateTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub start_date_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub start_date_time: Option<DateTime>,
 }
 impl std::fmt::Display for TimePeriodXX {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {

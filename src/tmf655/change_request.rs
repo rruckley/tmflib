@@ -5,6 +5,7 @@ use super::{
     RelatedEntity, RelatedParty, RelatedPlaceRefOrValue, Resolution, ServiceProblemRef,
     SlaRef, TroubleTicketRef, WorkLog,
 };
+use crate::DateTime;
 /**Change Request is a type of request which can be used for the management and control of Change Management process
  -within a service provider organisation or
  -between a customer and a service provider or
@@ -26,11 +27,11 @@ pub struct ChangeRequest {
     ///Date and time when the change implementation actually finished
     #[serde(rename = "actualEndTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub actual_end_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub actual_end_time: Option<DateTime>,
     ///Date and time when the change implementation actually started
     #[serde(rename = "actualStartTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub actual_start_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub actual_start_time: Option<DateTime>,
     ///The attachments of the communication message (when it is email type)
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub attachment: Option<Vec<AttachmentRefOrValue>>,
@@ -49,7 +50,7 @@ pub struct ChangeRequest {
     ///Date and time when the change request is confirmed to be completed
     #[serde(rename = "completionDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub completion_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub completion_date: Option<DateTime>,
     ///Description of the change request
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -71,7 +72,7 @@ pub struct ChangeRequest {
     ///Date and time when the change request was updated
     #[serde(rename = "lastUpdateDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub last_update_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub last_update_date: Option<DateTime>,
     ///Related Entity reference. A related place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the RelatedPlaceRefOrValue class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub location: Option<RelatedPlaceRefOrValue>,
@@ -80,11 +81,11 @@ pub struct ChangeRequest {
     ///Date and time when the change implementation is planned to be finished
     #[serde(rename = "plannedEndTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub planned_end_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub planned_end_time: Option<DateTime>,
     ///Date and time when the change implementation is planned to be started
     #[serde(rename = "plannedStartTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub planned_start_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub planned_start_time: Option<DateTime>,
     ///Used by consumers to prioritize a change request in Change Management system
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub priority: Option<String>,
@@ -98,7 +99,7 @@ pub struct ChangeRequest {
     ///Date and time when the change request is raised
     #[serde(rename = "requestDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub request_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub request_date: Option<DateTime>,
     ///Indicates the type of the change request
     #[serde(rename = "requestType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -120,7 +121,7 @@ pub struct ChangeRequest {
     ///Date and time that the schedule is made
     #[serde(rename = "scheduledDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub scheduled_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub scheduled_date: Option<DateTime>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sla: Option<Vec<SlaRef>>,
     ///reference to an EntitySpecification object
@@ -132,7 +133,7 @@ pub struct ChangeRequest {
     ///Date and time when the change request status was changed
     #[serde(rename = "statusChangeDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub status_change_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub status_change_date: Option<DateTime>,
     ///Reason of the status change
     #[serde(rename = "statusChangeReason")]
     #[serde(default, skip_serializing_if = "Option::is_none")]

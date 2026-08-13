@@ -5,6 +5,9 @@ use super::{
     RelatedParty, RelatedPlaceRefOrValue, Resolution, ServiceProblemRef, SlaRef,
     TroubleTicketRef, WorkLog,
 };
+
+use crate::DateTime;
+
 /**Change Request is a type of request which can be used for the management and control of Change Management process
  -within a service provider organisation or
  -between a customer and a service provider or
@@ -30,9 +33,11 @@ pub struct ChangeRequestCreate {
     ///A base / value business entity used to represent money
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub budget: Option<Money>,
+    ///reference to an EntitySpecification object
     #[serde(rename = "changeRelationship")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub change_relationship: Option<Vec<ChangeRequestRelationship>>,
+    ///A base / value business entity used to represent money
     #[serde(rename = "changeRequestCharacteristic")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub change_request_characteristic: Option<Vec<Characteristic>>,
@@ -58,10 +63,10 @@ pub struct ChangeRequestCreate {
     pub note: Option<Vec<Note>>,
     ///Date and time when the change implementation is planned to be finished
     #[serde(rename = "plannedEndTime")]
-    pub planned_end_time: chrono::DateTime<chrono::Utc>,
+    pub planned_end_time: DateTime,
     ///Date and time when the change implementation is planned to be started
     #[serde(rename = "plannedStartTime")]
-    pub planned_start_time: chrono::DateTime<chrono::Utc>,
+    pub planned_start_time: DateTime,
     ///Used by consumers to prioritize a change request in Change Management system
     pub priority: String,
     #[serde(rename = "problemTicket")]
@@ -74,7 +79,7 @@ pub struct ChangeRequestCreate {
     ///Date and time when the change request is raised
     #[serde(rename = "requestDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub request_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub request_date: Option<DateTime>,
     ///Indicates the type of the change request
     #[serde(rename = "requestType")]
     pub request_type: String,
@@ -95,7 +100,7 @@ pub struct ChangeRequestCreate {
     ///Date and time that the schedule is made
     #[serde(rename = "scheduledDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub scheduled_date: Option<chrono::DateTime<chrono::Utc>>,
+    pub scheduled_date: Option<DateTime>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sla: Option<Vec<SlaRef>>,
     ///reference to an EntitySpecification object

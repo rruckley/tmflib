@@ -1,5 +1,9 @@
 use serde::{Serialize, Deserialize};
 use super::Record;
+
+use crate::DateTime;
+
+
 ///A record of the work performed on the change request during the investigation and resolution process.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct WorkLog {
@@ -18,7 +22,7 @@ pub struct WorkLog {
     ///Date and time of worklog generated.
     #[serde(rename = "createDateTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub create_date_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub create_date_time: Option<DateTime>,
     ///The description of the worklog.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,

@@ -1,4 +1,6 @@
 use serde::{Serialize, Deserialize};
+
+///The notification data structure
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Any {}
 impl std::fmt::Display for Any {

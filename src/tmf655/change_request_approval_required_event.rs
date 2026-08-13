@@ -1,3 +1,19 @@
+// Copyright [2026] [Ryan Ruckley]
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+use crate::DateTime;
+
 use serde::{Serialize, Deserialize};
 use super::ChangeRequestApprovalRequiredEventPayload;
 ///The notification data structure
@@ -23,7 +39,7 @@ pub struct ChangeRequestApprovalRequiredEvent {
     ///Time of the event occurrence.
     #[serde(rename = "eventTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub event_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub event_time: Option<DateTime>,
     ///The type of the notification.
     #[serde(rename = "eventType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -34,7 +50,7 @@ pub struct ChangeRequestApprovalRequiredEvent {
     ///The time the event occured.
     #[serde(rename = "timeOcurred")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub time_ocurred: Option<chrono::DateTime<chrono::Utc>>,
+    pub time_ocurred: Option<DateTime>,
     ///The title of the event.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,

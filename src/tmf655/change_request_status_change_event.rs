@@ -1,5 +1,8 @@
 use serde::{Serialize, Deserialize};
 use super::ChangeRequestStatusChangeEventPayload;
+
+use crate::DateTime;
+
 ///The notification data structure
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ChangeRequestStatusChangeEvent {
@@ -23,7 +26,7 @@ pub struct ChangeRequestStatusChangeEvent {
     ///Time of the event occurrence.
     #[serde(rename = "eventTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub event_time: Option<chrono::DateTime<chrono::Utc>>,
+    pub event_time: Option<DateTime>,
     ///The type of the notification.
     #[serde(rename = "eventType")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -34,7 +37,7 @@ pub struct ChangeRequestStatusChangeEvent {
     ///The time the event occured.
     #[serde(rename = "timeOcurred")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub time_ocurred: Option<chrono::DateTime<chrono::Utc>>,
+    pub time_ocurred: Option<DateTime>,
     ///The title of the event.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,

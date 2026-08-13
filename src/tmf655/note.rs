@@ -1,4 +1,7 @@
 use serde::{Serialize, Deserialize};
+
+use crate::DateTime;
+
 ///Extra information about a given entity
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Note {
@@ -19,7 +22,7 @@ pub struct Note {
     pub author: Option<String>,
     ///Date of the note
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub date: Option<chrono::DateTime<chrono::Utc>>,
+    pub date: Option<DateTime>,
     ///Identifier of the note within its containing entity
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
