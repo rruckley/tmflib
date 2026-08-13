@@ -25,7 +25,7 @@ pub mod product_order_v5;
 pub mod milestone;
 pub mod product_order_item;
 
-mod product_order_typestate;
+pub mod product_order_typestate;
 
 fn get_objects() -> Vec<&'static str> {
     vec![
