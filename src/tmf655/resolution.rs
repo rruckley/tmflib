@@ -30,6 +30,7 @@ pub struct Resolution {
     ///The name of the resolution
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    /// Set of tasks for this change
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub task: Option<Vec<Task>>,
 }

@@ -47,18 +47,21 @@ pub struct ChangeRequestCreate {
     ///Description of the change request
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+    ///Indicates the impact of this change
     #[serde(rename = "externalReference")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub external_reference: Option<Vec<ExternalReference>>,
     ///Indicates the impact of this change
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub impact: Option<String>,
+    ///Indicates the impact of this change
     #[serde(rename = "impactEntity")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub impact_entity: Option<Vec<ImpactEntity>>,
     ///Related Entity reference. A related place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the RelatedPlaceRefOrValue class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub location: Option<RelatedPlaceRefOrValue>,
+    ///The parties involved in the change request
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub note: Option<Vec<Note>>,
     ///Date and time when the change implementation is planned to be finished
@@ -69,6 +72,7 @@ pub struct ChangeRequestCreate {
     pub planned_start_time: DateTime,
     ///Used by consumers to prioritize a change request in Change Management system
     pub priority: String,
+    ///The way one or more change request has been implementation through a direct remedy or task
     #[serde(rename = "problemTicket")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub problem_ticket: Option<Vec<ServiceProblemRef>>,

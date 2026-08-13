@@ -41,9 +41,11 @@ pub struct ChangeRequestRefOrValue {
     ///A base / value business entity used to represent money
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub budget: Option<Money>,
+    ///A relationship between two change requests. The polymorphic attributes @type, @schemaLocation & @referredType are related to the ChangeRequest entity and not the ChangeRequestRelationship class itself
     #[serde(rename = "changeRelationship")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub change_relationship: Option<Vec<ChangeRequestRelationship>>,
+    ///A base / value business entity used to represent money
     #[serde(rename = "changeRequestCharacteristic")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub change_request_characteristic: Option<Vec<Characteristic>>,
@@ -57,6 +59,7 @@ pub struct ChangeRequestRefOrValue {
     ///Description of the change request
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+    ///Indicates the impact of this change
     #[serde(rename = "externalReference")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub external_reference: Option<Vec<ExternalReference>>,

@@ -6,11 +6,19 @@ use super::{
     SlaRef, TroubleTicketRef, WorkLog,
 };
 use crate::DateTime;
-/**Change Request is a type of request which can be used for the management and control of Change Management process
- -within a service provider organisation or
- -between a customer and a service provider or
- -between a service provider and a partner and vice versa.*/
-#[derive(Debug, Clone, Serialize, Deserialize)]
+use crate::{HasId,IsAddressable};
+use tmflib_derive::HasId;
+
+use super::TMF_MODULE;
+use crate::TMF_VERSION;
+
+const CLASS_PATH : &str = "changeRequest";
+
+///Change Request is a type of request which can be used for the management and control of Change Management process
+/// -within a service provider organisation or
+/// -between a customer and a service provider or
+/// -between a service provider and a partner and vice versa.*/
+#[derive(Debug,Default, Clone, Serialize, Deserialize, HasId)]
 pub struct ChangeRequest {
     ///When sub-classing, this defines the super-class
     #[serde(rename = "@baseType")]
@@ -38,9 +46,11 @@ pub struct ChangeRequest {
     ///A base / value business entity used to represent money
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub budget: Option<Money>,
+    ///A relationship between two change requests. The polymorphic attributes @type, @schemaLocation & @referredType are related to the ChangeRequest entity and not the ChangeRequestRelationship class itself
     #[serde(rename = "changeRelationship")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub change_relationship: Option<Vec<ChangeRequestRelationship>>,
+    ///A base / value business entity used to represent money
     #[serde(rename = "changeRequestCharacteristic")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub change_request_characteristic: Option<Vec<Characteristic>>,
@@ -54,6 +64,7 @@ pub struct ChangeRequest {
     ///Description of the change request
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+    ///Indicates the impact of this change
     #[serde(rename = "externalReference")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub external_reference: Option<Vec<ExternalReference>>,
@@ -66,6 +77,7 @@ pub struct ChangeRequest {
     ///Indicates the impact of this change
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub impact: Option<String>,
+    ///Entities affected by the change
     #[serde(rename = "impactEntity")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub impact_entity: Option<Vec<ImpactEntity>>,
@@ -76,6 +88,7 @@ pub struct ChangeRequest {
     ///Related Entity reference. A related place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the RelatedPlaceRefOrValue class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub location: Option<RelatedPlaceRefOrValue>,
+    ///A note related to the change request
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub note: Option<Vec<Note>>,
     ///Date and time when the change implementation is planned to be finished
@@ -122,6 +135,7 @@ pub struct ChangeRequest {
     #[serde(rename = "scheduledDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub scheduled_date: Option<DateTime>,
+    ///The service level agreements of the change request
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sla: Option<Vec<SlaRef>>,
     ///reference to an EntitySpecification object
@@ -138,12 +152,15 @@ pub struct ChangeRequest {
     #[serde(rename = "statusChangeReason")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status_change_reason: Option<String>,
+    ///Entities affected by the change
     #[serde(rename = "targetEntity")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub target_entity: Vec<RelatedEntity>,
+    ///The trouble ticket of the change request
     #[serde(rename = "troubleTicket")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub trouble_ticket: Option<Vec<TroubleTicketRef>>,
+    ///The work log of the change request
     #[serde(rename = "workLog")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub work_log: Option<Vec<WorkLog>>,
@@ -151,5 +168,11 @@ pub struct ChangeRequest {
 impl std::fmt::Display for ChangeRequest {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
         write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
+}
+
+impl IsAddressable for ChangeRequest {
+    fn address(&self) -> String {
+        format!("/{}/{}/{}", TMF_MODULE, TMF_VERSION, CLASS_PATH)
     }
 }
