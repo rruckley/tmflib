@@ -8,15 +8,22 @@ use super::product_order_v4::ProductOrder;
 
 type OrderState = super::product_order_v4::ProductOrderStateType;
 
+/// Not yet created order, can be acknowledged to move to Acknowledged state.
 pub struct Draft;
+/// Acknowledged order, can be started to move to InProgress state.
 pub struct Acknowledged;
+/// In progress order, can be completed to move to Completed state or cancelled to move to Cancelled state.
 pub struct InProgress;
+/// Completed order, cannot be transitioned to any other state.
 pub struct Completed;
 
+/// Cancelled order, cannot be transitioned to any other state.
 #[derive(Debug)]
 pub struct Cancelled;
 
+/// Marker trait to associate a state type with its corresponding OrderState value.
 pub trait StateMarker {
+    /// Associated constant to get the corresponding OrderState value for the state type.
     const VALUE : OrderState;
 }
 
@@ -36,6 +43,7 @@ impl StateMarker for Cancelled {
     const VALUE : OrderState = OrderState::Cancelled;
 }       
 
+/// Generic Order struct that holds the ProductOrder data and a PhantomData for the state type.
 #[derive(Debug)]
 pub struct Order<S> {
     data: ProductOrder,
@@ -67,6 +75,7 @@ impl Order<Draft> {
 }
 
 impl Order<Acknowledged> {
+    /// Start the order and transition to the InProgress state.
     pub fn start(self) -> Order<InProgress> {
         let mut data = self.data;
         data.state = Some(OrderState::InProgress);
@@ -90,6 +99,7 @@ impl Order<InProgress> {
         }
     }
 
+    /// Cancel the order and transition to the Cancelled state.
     pub fn cancel(self,reason : impl Into<String>) -> Order<Cancelled> {
         let mut data = self.data;
         data.state = Some(OrderState::Cancelled);
