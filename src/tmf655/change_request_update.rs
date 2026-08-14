@@ -1,10 +1,11 @@
 use super::{
     AttachmentRefOrValue, ChangeRequestRelationship, ChangeRequestStatusType, Characteristic,
-    EntitySpecificationRef, ExternalReference, ImpactEntity, Money, Note, RelatedEntity,
+    EntitySpecificationRef, ExternalReference, ImpactEntity, Money, RelatedEntity,
     RelatedParty, RelatedPlaceRefOrValue, Resolution, ServiceProblemRef, SlaRef, TroubleTicketRef,
     WorkLog,
 };
 use crate::DateTime;
+use crate::common::note::Note;
 use serde::{Deserialize, Serialize};
 
 /**Change Request is a type of request which can be used for the management and control of Change Management process

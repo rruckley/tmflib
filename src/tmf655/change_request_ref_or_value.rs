@@ -1,12 +1,13 @@
 use super::{
     AttachmentRefOrValue, ChangeRequestRelationship, ChangeRequestStatusType, Characteristic,
-    EntitySpecificationRef, ExternalReference, ImpactEntity, Money, Note, RelatedEntity,
+    EntitySpecificationRef, ExternalReference, ImpactEntity, Money, RelatedEntity,
     RelatedParty, RelatedPlaceRefOrValue, Resolution, ServiceProblemRef, SlaRef, TroubleTicketRef,
     WorkLog,
 };
 use serde::{Deserialize, Serialize};
 
 use crate::DateTime;
+use crate::common::note::Note;
 
 ///A Service to be created defined by value or existing defined by reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the Service entity and not the RelatedServiceRefOrValue class itself
 #[derive(Debug, Clone, Serialize, Deserialize)]

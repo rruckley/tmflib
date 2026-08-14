@@ -1,13 +1,15 @@
 use super::{
     AttachmentRefOrValue, ChangeRequestRelationship, ChangeRequestStatusType, Characteristic,
-    EntitySpecificationRef, ExternalReference, ImpactEntity, Money, Note, RelatedEntity,
+    EntitySpecificationRef, ExternalReference, ImpactEntity, Money, RelatedEntity,
     RelatedParty, RelatedPlaceRefOrValue, Resolution, ServiceProblemRef, SlaRef, TroubleTicketRef,
     WorkLog,
 };
 use crate::DateTime;
-use crate::{HasId, IsAddressable};
+use crate::{HasId, IsAddressable,HasDescription,HasNote};
+use crate::common::note::Note;
+use crate::common::tmf_error::TMFError;
 use serde::{Deserialize, Serialize};
-use tmflib_derive::HasId;
+use tmflib_derive::{HasId,HasDescription,HasNote};
 
 use super::TMF_MODULE;
 use crate::TMF_VERSION;
@@ -18,7 +20,7 @@ const CLASS_PATH: &str = "changeRequest";
 /// -within a service provider organisation or
 /// -between a customer and a service provider or
 /// -between a service provider and a partner and vice versa.*/
-#[derive(Debug, Default, Clone, Serialize, Deserialize, HasId)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize, HasId, HasDescription,HasNote)]
 pub struct ChangeRequest {
     ///When sub-classing, this defines the super-class
     #[serde(rename = "@baseType")]
