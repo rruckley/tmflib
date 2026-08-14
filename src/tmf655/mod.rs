@@ -1,0 +1,96 @@
+// Copyright [2026] [Ryan Ruckley]
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//! TMF655 Change Management
+
+pub use any::*;
+pub use attachment_ref_or_value::*;
+pub use change_request::*;
+pub use change_request_approval_required_event::*;
+pub use change_request_approval_required_event_payload::*;
+pub use change_request_attribute_value_change_event::*;
+pub use change_request_attribute_value_change_event_payload::*;
+pub use change_request_create::*;
+pub use change_request_create_event::*;
+pub use change_request_create_event_payload::*;
+pub use change_request_delete_event::*;
+pub use change_request_delete_event_payload::*;
+pub use change_request_ref_or_value::*;
+pub use change_request_relationship::*;
+pub use change_request_status_change_event::*;
+pub use change_request_status_change_event_payload::*;
+pub use change_request_status_type::*;
+pub use change_request_update::*;
+pub use characteristic::*;
+pub use characteristic_relationship::*;
+pub use entity_specification_ref::*;
+pub use event_subscription::*;
+pub use event_subscription_input::*;
+pub use external_reference::*;
+pub use impact_entity::*;
+pub use money::*;
+// pub use note::*;
+pub use quantity::*;
+pub use record::*;
+pub use related_entity::*;
+pub use related_party::*;
+pub use related_place_ref_or_value::*;
+pub use resolution::*;
+pub use service_problem_ref::*;
+pub use sla_ref::*;
+pub use task::*;
+// pub use time_period::*; 
+pub use trouble_ticket_ref::*;
+pub use work_log::*;
+mod any;
+mod attachment_ref_or_value;
+mod change_request;
+mod change_request_approval_required_event;
+mod change_request_approval_required_event_payload;
+mod change_request_attribute_value_change_event;
+mod change_request_attribute_value_change_event_payload;
+mod change_request_create;
+mod change_request_create_event;
+mod change_request_create_event_payload;
+mod change_request_delete_event;
+mod change_request_delete_event_payload;
+mod change_request_ref_or_value;
+mod change_request_relationship;
+mod change_request_status_change_event;
+mod change_request_status_change_event_payload;
+mod change_request_status_type;
+mod change_request_update;
+mod characteristic;
+mod characteristic_relationship;
+mod entity_specification_ref;
+mod event_subscription;
+mod event_subscription_input;
+mod external_reference;
+mod impact_entity;
+mod money;
+// mod note;
+mod quantity;
+mod record;
+mod related_entity;
+mod related_party;
+mod related_place_ref_or_value;
+mod resolution;
+mod service_problem_ref;
+mod sla_ref;
+mod task;
+// mod time_period;
+mod trouble_ticket_ref;
+mod work_log;
+
+const TMF_MODULE: &str = "changeManagement";

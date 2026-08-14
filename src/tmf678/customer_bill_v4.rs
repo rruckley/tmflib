@@ -118,20 +118,22 @@ impl HasAttachment for CustomerBill {
     }
     fn position(&self, name: impl Into<String>) -> Option<usize> {
         self.bill_document.as_ref().and_then(|v| {
-                let pattern: String = name.into();
-                v.iter().position(|a| a.name == Some(pattern.clone()))
+            let pattern: String = name.into();
+            v.iter().position(|a| a.name == Some(pattern.clone()))
         })
     }
     fn find(&self, name: impl Into<String>) -> Option<&AttachmentRefOrValue> {
         self.bill_document.as_ref().and_then(|v| {
-            let pattern: String = name.into(); {
-            v.iter().find(|a| a.name == Some(pattern.clone()))
+            let pattern: String = name.into();
+            {
+                v.iter().find(|a| a.name == Some(pattern.clone()))
             }
         })
     }
     fn get(&self, position: usize) -> Option<AttachmentRefOrValue> {
         self.bill_document
-            .as_ref().and_then(|v| v.get(position).cloned())
+            .as_ref()
+            .and_then(|v| v.get(position).cloned())
     }
     fn remove(&mut self, position: usize) -> Option<AttachmentRefOrValue> {
         self.bill_document.as_mut().map(|v| v.remove(position))

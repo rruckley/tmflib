@@ -130,7 +130,7 @@ impl EventPayload<ProductOrderEvent> for ProductOrder {
 }
 
 /// Product Order State Type
-#[derive(Clone, Default, Debug, Deserialize,PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
 pub enum ProductOrderStateType {
     /// Order is in draft state
     #[default]
@@ -191,7 +191,7 @@ pub struct ProductOrder {
     pub order_date: Option<DateTime>,
     /// Order Status
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub state : Option<ProductOrderStateType>,
+    pub state: Option<ProductOrderStateType>,
     /// Product Order Items
     #[serde(skip_serializing_if = "Option::is_none")]
     pub product_order_item: Option<Vec<ProductOrderItem>>,

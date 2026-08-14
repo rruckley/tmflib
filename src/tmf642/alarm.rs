@@ -18,16 +18,16 @@ use super::TMF_MODULE;
 use crate::TMF_VERSION;
 const CLASS_PATH: &str = "alarm";
 
-use chrono::Utc;
-use uuid::Uuid;
 use super::{
     AlarmRef, AlarmType, AlarmedObjectRef, Comment, CrossedThresholdInformation, PerceivedSeverity,
     RelatedPlace, ServiceRef,
 };
-use crate::{common::entity::Entity, DateTime, HasId, Uri, TMFEvent};
 use crate::common::event::{Event, EventPayload};
+use crate::{common::entity::Entity, DateTime, HasId, TMFEvent, Uri};
+use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use tmflib_derive::HasId;
+use uuid::Uuid;
 
 ///Alarm defines an alarm for use in `TMForum` Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
 #[derive(Default, Debug, Clone, Serialize, Deserialize, HasId)]
@@ -198,14 +198,18 @@ pub enum AlarmEventType {
 }
 impl std::fmt::Display for AlarmEventType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(f, "{}", match self {
-            Self::AlarmCreation => "AlarmCreation",
-            Self::AlarmStateChange => "AlarmStateChange",
-            Self::AlarmCleared => "AlarmCleared",
-            Self::AlarmAcknowledged => "AlarmAcknowledged",
-            Self::AlarmUnacknowledged => "AlarmUnacknowledged",
-            Self::AlarmUpdated => "AlarmUpdated",
-        })
+        write!(
+            f,
+            "{}",
+            match self {
+                Self::AlarmCreation => "AlarmCreation",
+                Self::AlarmStateChange => "AlarmStateChange",
+                Self::AlarmCleared => "AlarmCleared",
+                Self::AlarmAcknowledged => "AlarmAcknowledged",
+                Self::AlarmUnacknowledged => "AlarmUnacknowledged",
+                Self::AlarmUpdated => "AlarmUpdated",
+            }
+        )
     }
 }
 
@@ -269,8 +273,14 @@ mod test {
         let event = alarm.to_event(AlarmEventType::AlarmCreation);
         assert_eq!(event.event_type, AlarmEventType::AlarmCreation);
         assert_eq!(event.event.alarm.id, Some("alarm1".to_string()));
-        assert_eq!(event.event.alarm.alarm_details, Some("Test Alarm".to_string()));
-        assert_eq!(event.event.alarm.external_alarm_id, Some("ext-alarm1".to_string()));
+        assert_eq!(
+            event.event.alarm.alarm_details,
+            Some("Test Alarm".to_string())
+        );
+        assert_eq!(
+            event.event.alarm.external_alarm_id,
+            Some("ext-alarm1".to_string())
+        );
     }
 
     #[test]
@@ -298,5 +308,5 @@ mod test {
         assert_eq!(alarm.id, Some("alarm1".to_string()));
         assert_eq!(alarm.alarm_details, Some("Test Alarm".to_string()));
         assert_eq!(alarm.external_alarm_id, Some("ext-alarm1".to_string()));
-    }   
-}   
+    }
+}
