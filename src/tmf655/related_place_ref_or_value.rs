@@ -27,6 +27,7 @@ pub struct RelatedPlaceRefOrValue {
     ///A user-friendly name for the place, such as [Paris Store], [London Store], [Main Home]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    ///Role of the place in relation to the entity
     pub role: String,
 }
 impl std::fmt::Display for RelatedPlaceRefOrValue {

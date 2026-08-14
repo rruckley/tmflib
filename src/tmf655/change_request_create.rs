@@ -105,16 +105,20 @@ pub struct ChangeRequestCreate {
     #[serde(rename = "scheduledDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub scheduled_date: Option<DateTime>,
+    ///A base / value business entity used to represent money
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sla: Option<Vec<SlaRef>>,
     ///reference to an EntitySpecification object
     pub specification: EntitySpecificationRef,
+    /// Reference to RelatedEntity object
     #[serde(rename = "targetEntity")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub target_entity: Vec<RelatedEntity>,
+    ///Reference to TroubleTickers
     #[serde(rename = "troubleTicket")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub trouble_ticket: Option<Vec<TroubleTicketRef>>,
+    ///A record of the work performed on the change request during the investigation and resolution process.
     #[serde(rename = "workLog")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub work_log: Option<Vec<WorkLog>>,

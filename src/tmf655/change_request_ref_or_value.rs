@@ -72,6 +72,7 @@ pub struct ChangeRequestRefOrValue {
     ///Indicates the impact of this change
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub impact: Option<String>,
+    ///  Impact Entity
     #[serde(rename = "impactEntity")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub impact_entity: Option<Vec<ImpactEntity>>,
@@ -81,7 +82,9 @@ pub struct ChangeRequestRefOrValue {
     pub last_update_date: Option<DateTime>,
     ///Related Entity reference. A related place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the RelatedPlaceRefOrValue class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    /// Location of the change request
     pub location: Option<RelatedPlaceRefOrValue>,
+    /// Notes
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub note: Option<Vec<Note>>,
     ///Date and time when the change implementation is planned to be finished
@@ -95,6 +98,7 @@ pub struct ChangeRequestRefOrValue {
     ///Used by consumers to prioritize a change request in Change Management system
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub priority: Option<String>,
+    /// Problem Ticket
     #[serde(rename = "problemTicket")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub problem_ticket: Option<Vec<ServiceProblemRef>>,
@@ -128,6 +132,7 @@ pub struct ChangeRequestRefOrValue {
     #[serde(rename = "scheduledDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub scheduled_date: Option<DateTime>,
+    /// SLA Reference
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sla: Option<Vec<SlaRef>>,
     ///reference to an EntitySpecification object
@@ -144,12 +149,15 @@ pub struct ChangeRequestRefOrValue {
     #[serde(rename = "statusChangeReason")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status_change_reason: Option<String>,
+    /// Related Entities
     #[serde(rename = "targetEntity")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub target_entity: Vec<RelatedEntity>,
+    /// Trouble Tickets
     #[serde(rename = "troubleTicket")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub trouble_ticket: Option<Vec<TroubleTicketRef>>,
+    /// Work Log
     #[serde(rename = "workLog")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub work_log: Option<Vec<WorkLog>>,

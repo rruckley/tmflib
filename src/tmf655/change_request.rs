@@ -102,6 +102,7 @@ pub struct ChangeRequest {
     ///Used by consumers to prioritize a change request in Change Management system
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub priority: Option<String>,
+    ///The way one or more change request has been implementation through a direct remedy or task
     #[serde(rename = "problemTicket")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub problem_ticket: Option<Vec<ServiceProblemRef>>,
@@ -172,7 +173,7 @@ impl std::fmt::Display for ChangeRequest {
 }
 
 impl IsAddressable for ChangeRequest {
-    fn address(&self) -> String {
-        format!("/{}/{}/{}", TMF_MODULE, TMF_VERSION, CLASS_PATH)
+    fn get_objects() -> Vec<&'static str> {
+        vec![CLASS_PATH]
     }
 }

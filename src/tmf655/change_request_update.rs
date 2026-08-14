@@ -28,9 +28,11 @@ pub struct ChangeRequestUpdate {
     ///A base / value business entity used to represent money
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub budget: Option<Money>,
+    ///A relationship between two change requests. The polymorphic attributes @type, @schemaLocation & @referredType are related to the ChangeRequest entity and not the ChangeRequestRelationship class itself
     #[serde(rename = "changeRelationship")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub change_relationship: Option<Vec<ChangeRequestRelationship>>,
+    ///A base / value business entity used to represent money
     #[serde(rename = "changeRequestCharacteristic")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub change_request_characteristic: Option<Vec<Characteristic>>,
@@ -44,12 +46,14 @@ pub struct ChangeRequestUpdate {
     ///Description of the change request
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+    /// External Reference
     #[serde(rename = "externalReference")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub external_reference: Option<Vec<ExternalReference>>,
     ///Indicates the impact of this change
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub impact: Option<String>,
+    /// impact Entity
     #[serde(rename = "impactEntity")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub impact_entity: Option<Vec<ImpactEntity>>,
@@ -60,6 +64,7 @@ pub struct ChangeRequestUpdate {
     ///Related Entity reference. A related place defines a place described by reference or by value linked to a specific entity. The polymorphic attributes @type, @schemaLocation & @referredType are related to the place entity and not the RelatedPlaceRefOrValue class itself
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub location: Option<RelatedPlaceRefOrValue>,
+    /// Notes
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub note: Option<Vec<Note>>,
     ///Date and time when the change implementation is planned to be finished
@@ -73,6 +78,7 @@ pub struct ChangeRequestUpdate {
     ///Used by consumers to prioritize a change request in Change Management system
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub priority: Option<String>,
+    /// Problem Ticket
     #[serde(rename = "problemTicket")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub problem_ticket: Option<Vec<ServiceProblemRef>>,
@@ -106,6 +112,7 @@ pub struct ChangeRequestUpdate {
     #[serde(rename = "scheduledDate")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub scheduled_date: Option<DateTime>,
+    ///A base / value business entity used to represent money
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sla: Option<Vec<SlaRef>>,
     ///reference to an EntitySpecification object
@@ -122,12 +129,15 @@ pub struct ChangeRequestUpdate {
     #[serde(rename = "statusChangeReason")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status_change_reason: Option<String>,
+    ///The entity that is the target of the change request
     #[serde(rename = "targetEntity")]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub target_entity: Vec<RelatedEntity>,
+    ///Reference to TroubleTickers
     #[serde(rename = "troubleTicket")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub trouble_ticket: Option<Vec<TroubleTicketRef>>,
+    ///A record of the work performed on the change request during the investigation and resolution process.
     #[serde(rename = "workLog")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub work_log: Option<Vec<WorkLog>>,

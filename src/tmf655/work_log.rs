@@ -36,6 +36,7 @@ pub struct WorkLog {
     #[serde(rename = "lastUpdateDateTime")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub last_update_date_time: Option<String>,
+    ///The user who created the worklog.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub record: Option<Vec<Record>>,
 }

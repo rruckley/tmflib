@@ -1,4 +1,6 @@
 use serde::{Serialize, Deserialize};
+
+/// A reference to a ServiceProblem object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ServiceProblemRef {
     ///When sub-classing, this defines the super-class
