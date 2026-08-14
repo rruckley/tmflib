@@ -2,8 +2,8 @@ use super::{ServiceCategoryRef, ServiceSpecificationRef};
 use crate::TimePeriod;
 use serde::{Deserialize, Serialize};
 
-/// `ServiceCandidate` is an entity that makes a service specification available to a catalog. 
-/// 
+/// `ServiceCandidate` is an entity that makes a service specification available to a catalog.
+///
 /// A `ServiceCandidate` and its associated service specification may be published - made visible - in any number of service catalogs, or in none. One service specification can be composed of other service specifications.
 /// Skipped properties: id,href,lastUpdate
 

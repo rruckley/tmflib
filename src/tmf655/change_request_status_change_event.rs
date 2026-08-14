@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ChangeRequestStatusChangeEventPayload;
+use serde::{Deserialize, Serialize};
 
 use crate::DateTime;
 

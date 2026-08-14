@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::ChangeRequestCreateEventPayload;
+use serde::{Deserialize, Serialize};
 
 use crate::DateTime;
 ///The notification data structure

@@ -1,10 +1,9 @@
-use serde::{Serialize, Deserialize};
 use super::{
-    AttachmentRefOrValue, ChangeRequestRelationship, Characteristic,
-    EntitySpecificationRef, ExternalReference, ImpactEntity, Money, Note, RelatedEntity,
-    RelatedParty, RelatedPlaceRefOrValue, Resolution, ServiceProblemRef, SlaRef,
-    TroubleTicketRef, WorkLog,
+    AttachmentRefOrValue, ChangeRequestRelationship, Characteristic, EntitySpecificationRef,
+    ExternalReference, ImpactEntity, Money, Note, RelatedEntity, RelatedParty,
+    RelatedPlaceRefOrValue, Resolution, ServiceProblemRef, SlaRef, TroubleTicketRef, WorkLog,
 };
+use serde::{Deserialize, Serialize};
 
 use crate::DateTime;
 

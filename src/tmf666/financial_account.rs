@@ -62,13 +62,19 @@ impl FinancialAccount {
     /// Get summed balance accross all `AccountBalance` records
     #[must_use]
     pub fn get_balance(&self) -> AccountBalance {
-        let total = self.account_balance.as_ref().map_or_else(Money::default, |v| {
-            let mut out = Money::from(0.0);
-            for ab in v {
-                out += ab.amount.as_ref().map_or_else(Money::default, |m| m.clone())
-            }
-            out
-        });
+        let total = self
+            .account_balance
+            .as_ref()
+            .map_or_else(Money::default, |v| {
+                let mut out = Money::from(0.0);
+                for ab in v {
+                    out += ab
+                        .amount
+                        .as_ref()
+                        .map_or_else(Money::default, |m| m.clone())
+                }
+                out
+            });
         AccountBalance {
             amount: Some(total),
             balance_type: String::from("total"),

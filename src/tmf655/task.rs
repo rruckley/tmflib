@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///A step or task along in the process of implementation a Change Request.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Task {

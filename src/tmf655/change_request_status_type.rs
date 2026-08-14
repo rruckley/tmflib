@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Possible values for the state of the change request
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum ChangeRequestStatusType {

@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{ChangeRequestRefOrValue, Characteristic};
+use serde::{Deserialize, Serialize};
 
 ///A relationship between two change requests. The polymorphic attributes @type, @schemaLocation & @referredType are related to the ChangeRequest entity and not the ChangeRequestRelationship class itself
 #[derive(Debug, Clone, Serialize, Deserialize)]

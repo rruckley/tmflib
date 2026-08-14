@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::Task;
+use serde::{Deserialize, Serialize};
 ///The way one or more change request has been implementation through a direct remedy or task
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Resolution {

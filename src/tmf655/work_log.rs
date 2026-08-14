@@ -1,8 +1,7 @@
-use serde::{Serialize, Deserialize};
 use super::Record;
+use serde::{Deserialize, Serialize};
 
 use crate::DateTime;
-
 
 ///A record of the work performed on the change request during the investigation and resolution process.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

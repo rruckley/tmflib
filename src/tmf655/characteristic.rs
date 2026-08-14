@@ -1,5 +1,5 @@
-use serde::{Serialize, Deserialize};
 use super::{Any, CharacteristicRelationship};
+use serde::{Deserialize, Serialize};
 ///Describes a given characteristic of an object or entity through a name/value pair.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct Characteristic {

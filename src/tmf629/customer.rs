@@ -24,8 +24,6 @@ use crate::{
 use tmflib_derive::{HasId, HasName, HasValidity};
 use uuid::Uuid;
 
-
-
 const CUST_ID_SIZE: usize = 5;
 /// Default customer status
 pub const CUST_STATUS: &str = "New";

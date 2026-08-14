@@ -1,7 +1,6 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use crate::DateTime;
-
 
 ///A record in a worklog.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

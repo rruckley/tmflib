@@ -1,8 +1,8 @@
 //! TMF622 Wrapper to implement TypeState pattern
 
-use std::marker::PhantomData;
-use crate::{HasLastUpdate, HasNote};
 use crate::common::note::Note;
+use crate::{HasLastUpdate, HasNote};
+use std::marker::PhantomData;
 
 use super::product_order_v4::ProductOrder;
 
@@ -24,24 +24,24 @@ pub struct Cancelled;
 /// Marker trait to associate a state type with its corresponding OrderState value.
 pub trait StateMarker {
     /// Associated constant to get the corresponding OrderState value for the state type.
-    const VALUE : OrderState;
+    const VALUE: OrderState;
 }
 
 impl StateMarker for Draft {
-    const VALUE : OrderState = OrderState::Draft;
+    const VALUE: OrderState = OrderState::Draft;
 }
 impl StateMarker for Acknowledged {
-    const VALUE : OrderState = OrderState::Acknowledged;
+    const VALUE: OrderState = OrderState::Acknowledged;
 }
 impl StateMarker for InProgress {
-    const VALUE : OrderState = OrderState::InProgress;
+    const VALUE: OrderState = OrderState::InProgress;
 }
 impl StateMarker for Completed {
-    const VALUE : OrderState = OrderState::Completed;
+    const VALUE: OrderState = OrderState::Completed;
 }
 impl StateMarker for Cancelled {
-    const VALUE : OrderState = OrderState::Cancelled;
-}       
+    const VALUE: OrderState = OrderState::Cancelled;
+}
 
 /// Generic Order struct that holds the ProductOrder data and a PhantomData for the state type.
 #[derive(Debug)]
@@ -56,7 +56,7 @@ impl Order<Draft> {
         let mut data = ProductOrder::create_with_time();
         data.state = Some(OrderState::Draft);
         data.add_note(Note::from("Draft order created"));
-        Order {        
+        Order {
             data,
             _state: PhantomData,
         }
@@ -85,7 +85,7 @@ impl Order<Acknowledged> {
             _state: PhantomData,
         }
     }
-}   
+}
 
 impl Order<InProgress> {
     /// Complete the order and transition to the Completed state.
@@ -100,10 +100,12 @@ impl Order<InProgress> {
     }
 
     /// Cancel the order and transition to the Cancelled state.
-    pub fn cancel(self,reason : impl Into<String>) -> Order<Cancelled> {
+    pub fn cancel(self, reason: impl Into<String>) -> Order<Cancelled> {
         let mut data = self.data;
         data.state = Some(OrderState::Cancelled);
-        data.add_note(Note::from(format!("Order Cancelled: {}", reason.into()).as_str()));
+        data.add_note(Note::from(
+            format!("Order Cancelled: {}", reason.into()).as_str(),
+        ));
         Order {
             data,
             _state: PhantomData,
@@ -138,10 +140,13 @@ mod test {
 
         assert_eq!(draft_order.data.state, Some(OrderState::Draft));
 
-        let cancelled_order = draft_order.acknowledge().start().cancel("Customer requested cancellation");
+        let cancelled_order = draft_order
+            .acknowledge()
+            .start()
+            .cancel("Customer requested cancellation");
 
         assert_eq!(cancelled_order.data.state, Some(OrderState::Cancelled));
         // assert_eq!(cancelled_order.data.note.len(), 1);
         // assert_eq!(cancelled_order.data.note[0].text, "Order Cancelled: Customer requested cancellation");
-    }   
+    }
 }

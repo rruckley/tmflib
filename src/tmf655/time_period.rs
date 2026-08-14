@@ -1,7 +1,6 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use crate::DateTime;
-
 
 ///A period of time, either as a deadline (endDateTime only) a startDateTime only, or both
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

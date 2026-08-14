@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 /// A reference to a ServiceProblem object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]

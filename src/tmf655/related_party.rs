@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///Related Entity reference. A related party defines party or party role linked to a specific entity.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct RelatedParty {

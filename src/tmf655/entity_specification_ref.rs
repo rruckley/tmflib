@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 ///reference to an EntitySpecification object
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct EntitySpecificationRef {
