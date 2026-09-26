@@ -4,7 +4,9 @@ version = "0.1.0"
 edition = "2021"
 authors = ["Ryan Ruckley <rruckley@gmail.com>"]
 description = "A tool to generate Rust code compatible with tmflib"
-publish = false
+publish = true
+repository = "https://github.com/rruckley/tmflib"
+license = "Apache-2.0"
 
 [dependencies]
 clap = { version = "4.5.27", features = ["derive"] }
