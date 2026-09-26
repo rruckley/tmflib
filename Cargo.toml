@@ -288,6 +288,4 @@ thiserror = "2.0.19"
 regex = "1.13.1"
 
 
-[build-dependencies]
-tmf-gen = { path = "tmf-gen", version = "0.1.0" }
 
