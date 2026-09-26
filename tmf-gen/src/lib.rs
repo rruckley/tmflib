@@ -15,7 +15,7 @@
 //!    inject `CLASS_PATH` consts and `HasId`/`HasDescription` derives for
 //!    managed types, and add `Display`/`Deref` impls.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -241,15 +241,27 @@ pub fn default_shared_types() -> Vec<SharedType> {
     ]
 }
 
-/// Load an OpenAPI 3.x spec from a JSON or YAML file (chosen by extension).
-pub fn load_spec(path: &Path) -> Result<OpenAPI, GenError> {
+/// Load a spec from a JSON or YAML file (chosen by extension), detecting
+/// whether it is OpenAPI 3.x or Swagger 2.0 and normalizing to [`Spec`].
+pub fn load_spec(path: &Path) -> Result<Spec, GenError> {
     let contents = fs::read_to_string(path)?;
-    match path.extension().and_then(|e| e.to_str()) {
+    let value: serde_json::Value = match path.extension().and_then(|e| e.to_str()) {
         Some("yaml") | Some("yml") => {
-            serde_yaml::from_str(&contents).map_err(GenError::Yaml)
+            serde_yaml::from_str(&contents).map_err(GenError::Yaml)?
         }
-        _ => serde_json::from_str(&contents).map_err(GenError::Json),
+        _ => serde_json::from_str(&contents).map_err(GenError::Json)?,
+    };
+    if value.get("swagger").and_then(serde_json::Value::as_str) == Some("2.0") {
+        return swagger_definitions(&value);
     }
+    let openapi: OpenAPI = serde_json::from_value(value).map_err(GenError::Json)?;
+    let components = openapi.components.as_ref().ok_or(GenError::NoComponents)?;
+    Ok(Spec {
+        title: openapi.info.title.clone(),
+        version: openapi.info.version.clone(),
+        description: openapi.info.description.clone(),
+        schemas: convert_schemas(&components.schemas)?,
+    })
 }
 
 /// Apache 2.0 license header applied to generated files, matching tmflib.
@@ -284,6 +296,25 @@ fn ref_name(schema: &schemars::schema::Schema) -> Option<String> {
     None
 }
 
+/// Format-normalized view of a spec's schema definitions.
+///
+/// Both OpenAPI 3.x (`components.schemas`) and Swagger 2.0 (`definitions`)
+/// are normalized into this shape so the generation pipeline is
+/// format-agnostic. `$ref` strings keep their original form; typify
+/// resolves them by the final path segment, which matches the schema names
+/// supplied to [`TypeSpace::add_ref_types`] in both formats.
+#[derive(Debug, Clone)]
+pub struct Spec {
+    /// Title from the spec's `info` section.
+    pub title: String,
+    /// Version from the spec's `info` section.
+    pub version: String,
+    /// Description from the spec's `info` section, if present.
+    pub description: Option<String>,
+    /// Named schema definitions.
+    pub schemas: BTreeMap<String, schemars::schema::Schema>,
+}
+
 /// Convert openapiv3 schemas into the schemars JSON Schema types that
 /// typify consumes. The round-trip through `serde_json::Value` preserves
 /// `$ref` strings (`#/components/schemas/Name`), which typify resolves
@@ -301,6 +332,48 @@ fn convert_schemas(
             Ok((name.clone(), schema))
         })
         .collect()
+}
+
+/// Extract the schema definitions from a Swagger 2.0 document.
+///
+/// Only the `definitions` section is needed for model generation; paths,
+/// parameters and responses are ignored. The 2.0 schema object syntax is a
+/// subset of the JSON Schema dialect that `schemars` parses, so the
+/// definitions are converted directly without an intermediate model.
+fn swagger_definitions(value: &serde_json::Value) -> Result<Spec, GenError> {
+    let info = value.get("info").ok_or(GenError::NoComponents)?;
+    let title = info
+        .get("title")
+        .and_then(serde_json::Value::as_str)
+        .unwrap_or("Swagger 2.0 spec")
+        .to_string();
+    let version = info
+        .get("version")
+        .and_then(serde_json::Value::as_str)
+        .unwrap_or("unknown")
+        .to_string();
+    let description = info
+        .get("description")
+        .and_then(serde_json::Value::as_str)
+        .map(str::to_string);
+    let definitions = value
+        .get("definitions")
+        .and_then(serde_json::Value::as_object)
+        .ok_or(GenError::NoComponents)?;
+    let schemas = definitions
+        .iter()
+        .map(|(name, schema)| {
+            let schema = serde_json::from_value::<schemars::schema::Schema>(schema.clone())
+                .map_err(GenError::Conversion)?;
+            Ok((name.clone(), schema))
+        })
+        .collect::<Result<BTreeMap<_, _>, GenError>>()?;
+    Ok(Spec {
+        title,
+        version,
+        description,
+        schemas,
+    })
 }
 
 /// Recursively replace string schemas with `format: "date-time"` (or
@@ -367,6 +440,153 @@ fn rewrite_datetime_refs(schema: &mut schemars::schema::Schema, changed: &mut bo
             }
         }
     }
+}
+
+/// Apply all spec-recovery preprocessing steps to a raw schema map:
+/// synthesize missing `$ref` targets, drop numeric defaults, and rewrite
+/// date-time/date strings onto the synthetic `TimeStamp` schema.
+/// Returns warnings describing what was changed.
+#[doc(hidden)]
+pub fn preprocess_schemas(
+    schemas: &mut BTreeMap<String, schemars::schema::Schema>,
+) -> Vec<String> {
+    let mut warnings = Vec::new();
+    let placeholders = synthesize_missing_schemas(schemas);
+    if !placeholders.is_empty() {
+        warnings.push(format!(
+            "synthesized empty placeholder schemas for missing $ref targets: {}",
+            placeholders.join(", ")
+        ));
+    }
+    let dropped_defaults = strip_all_defaults(schemas);
+    if !dropped_defaults.is_empty() {
+        warnings.push(format!(
+            "dropped schema default values from: {}",
+            dropped_defaults.join(", ")
+        ));
+    }
+    let mut datetime_seen = false;
+    for schema in schemas.values_mut() {
+        rewrite_datetime_refs(schema, &mut datetime_seen);
+    }
+    if datetime_seen {
+        schemas.insert(
+            "TimeStamp".to_string(),
+            serde_json::from_str("{\"type\":\"string\"}").expect("static schema"),
+        );
+    }
+    warnings
+}
+
+/// Test/diagnostic wrapper for [`strip_shared_bases`] using a shared-type
+/// list (as found in [`ModuleConfig::shared_types`]).
+#[doc(hidden)]
+pub fn strip_shared_bases_for_list(
+    schemas: &mut BTreeMap<String, schemars::schema::Schema>,
+    shared: &[SharedType],
+) -> BTreeMap<String, Vec<String>> {
+    let by_name: BTreeMap<String, &SharedType> =
+        shared.iter().map(|s| (s.schema.clone(), s)).collect();
+    strip_shared_bases(schemas, &by_name)
+}
+
+/// Recursively visit every schema object in a schema tree.
+fn visit_schema_objects(
+    schema: &mut schemars::schema::Schema,
+    f: &mut impl FnMut(&mut schemars::schema::SchemaObject),
+) {
+    let schemars::schema::Schema::Object(obj) = schema else {
+        return;
+    };
+    f(obj);
+    if let Some(subschemas) = &mut obj.subschemas {
+        for branch in subschemas
+            .all_of
+            .iter_mut()
+            .flatten()
+            .chain(subschemas.any_of.iter_mut().flatten())
+            .chain(subschemas.one_of.iter_mut().flatten())
+        {
+            visit_schema_objects(branch, f);
+        }
+        if let Some(not) = &mut subschemas.not {
+            visit_schema_objects(not.as_mut(), f);
+        }
+    }
+    if let Some(object) = &mut obj.object {
+        for property in object.properties.values_mut() {
+            visit_schema_objects(property, f);
+        }
+        if let Some(additional) = &mut object.additional_properties {
+            visit_schema_objects(additional.as_mut(), f);
+        }
+    }
+    if let Some(array) = &mut obj.array {
+        if let Some(item_schema) = &mut array.items {
+            match item_schema {
+                schemars::schema::SingleOrVec::Single(s) => {
+                    visit_schema_objects(s.as_mut(), f);
+                }
+                schemars::schema::SingleOrVec::Vec(v) => {
+                    for s in v.iter_mut() {
+                        visit_schema_objects(s, f);
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// Synthesize empty object schemas for `$ref` targets that the spec
+/// references but never defines (a recurring quality issue in TMF specs).
+/// Returns the names of the placeholders that were added.
+fn synthesize_missing_schemas(
+    schemas: &mut BTreeMap<String, schemars::schema::Schema>,
+) -> Vec<String> {
+    let mut referenced: BTreeSet<String> = BTreeSet::new();
+    for schema in schemas.values_mut() {
+        visit_schema_objects(schema, &mut |obj| {
+            if let Some(reference) = &obj.reference {
+                referenced.insert(ref_tail(reference).to_string());
+            }
+        });
+    }
+    let missing: Vec<String> = referenced
+        .iter()
+        .filter(|name| !schemas.contains_key(*name))
+        .cloned()
+        .collect();
+    for name in &missing {
+        let schema: schemars::schema::Schema =
+            serde_json::from_str("{\"type\":\"object\"}").expect("static schema");
+        schemas.insert(name.clone(), schema);
+    }
+    missing
+}
+
+/// Remove all `default` values from schemas. TMF specs contain several
+/// invalid defaults (e.g. string `"false"` on boolean fields, integers
+/// outside format bounds) that typify rejects; tmflib does not use schema
+/// defaults, so they are simply dropped. Returns the affected schema names.
+fn strip_all_defaults(
+    schemas: &mut BTreeMap<String, schemars::schema::Schema>,
+) -> Vec<String> {
+    let mut dropped: Vec<String> = Vec::new();
+    for (name, schema) in schemas.iter_mut() {
+        let mut hit = false;
+        visit_schema_objects(schema, &mut |obj| {
+            if let Some(metadata) = &mut obj.metadata {
+                if metadata.default.is_some() {
+                    metadata.default = None;
+                    hit = true;
+                }
+            }
+        });
+        if hit {
+            dropped.push(name.clone());
+        }
+    }
+    dropped
 }
 
 /// Strip `allOf` branches that reference shared types and record which
@@ -596,32 +816,17 @@ fn impl_refs_shared(item: &syn::Item, shared: &std::collections::BTreeSet<String
 }
 
 /// Generate the model source for a loaded spec.
-pub fn generate(openapi: &OpenAPI, config: &ModuleConfig) -> Result<String, GenError> {
-    let components = openapi.components.as_ref().ok_or(GenError::NoComponents)?;
-
+pub fn generate(spec: &Spec, config: &ModuleConfig) -> Result<String, GenError> {
     let shared_by_name: BTreeMap<String, &SharedType> = config
         .shared_types
         .iter()
         .map(|s| (s.schema.clone(), s))
         .collect();
 
-    let mut schemas = convert_schemas(&components.schemas)?;
+    let mut schemas = spec.schemas.clone();
 
-    // Rewrite inline date-time/date strings onto the synthetic TimeStamp
-    // schema so typify does not emit chrono types.
-    let mut datetime_seen = false;
-    for schema in schemas.values_mut() {
-        rewrite_datetime_refs(schema, &mut datetime_seen);
-    }
-    if datetime_seen {
-        schemas.insert(
-            "TimeStamp".to_string(),
-            serde_json::from_str::<schemars::schema::Schema>(
-                "{\"type\":\"string\"}",
-            )
-            .map_err(GenError::Conversion)?,
-        );
-    }
+    // Recover from known TMF spec-quality issues and record what was done.
+    let warnings = preprocess_schemas(&mut schemas);
 
     let substitutions = strip_shared_bases(&mut schemas, &shared_by_name);
 
@@ -637,9 +842,7 @@ pub fn generate(openapi: &OpenAPI, config: &ModuleConfig) -> Result<String, GenE
         std::iter::empty(),
     );
     let mut type_space = TypeSpace::new(&settings);
-    type_space
-        .add_ref_types(schemas)
-        .map_err(GenError::Typify)?;
+    type_space.add_ref_types(schemas).map_err(GenError::Typify)?;
 
     let stream = type_space.to_stream();
     let mut file = syn::parse2::<syn::File>(stream).map_err(GenError::Syn)?;
@@ -940,16 +1143,19 @@ pub fn generate(openapi: &OpenAPI, config: &ModuleConfig) -> Result<String, GenE
     // NB: inner doc comments (`//!`) cannot be injected via `include!`, so
     // the module header uses plain line comments.
     output.push_str(&format!("// {} - Generated module\n", config.tmf));
-    output.push_str(&format!("// Source: {}\n", openapi.info.title));
-    if let Some(description) = &openapi.info.description {
+    output.push_str(&format!("// Source: {}\n", spec.title));
+    if let Some(description) = &spec.description {
         for line in description.lines() {
             output.push_str(&format!("// {line}\n"));
         }
     }
     output.push_str(&format!(
         "\n// NOTE: Generated by tmf-gen from {} v{}. Do not edit by hand.\n",
-        config.tmf, openapi.info.version
+        config.tmf, spec.version
     ));
+    for warning in &warnings {
+        output.push_str(&format!("// WARNING: {warning}\n"));
+    }
     output.push_str(&body);
 
     Ok(output)
@@ -959,6 +1165,22 @@ pub fn generate(openapi: &OpenAPI, config: &ModuleConfig) -> Result<String, GenE
 pub fn generate_spec_file(spec_path: &Path, config: &ModuleConfig) -> Result<String, GenError> {
     let openapi = load_spec(spec_path)?;
     generate(&openapi, config)
+}
+
+/// Like [`generate`], but also returns diagnostics about spec issues that
+/// the generator had to work around (mirrored as `// WARNING:` comments in
+/// the generated source).
+pub fn generate_with_diagnostics(
+    spec: &Spec,
+    config: &ModuleConfig,
+) -> Result<(String, Vec<String>), GenError> {
+    let code = generate(spec, config)?;
+    let warnings: Vec<String> = code
+        .lines()
+        .filter_map(|line| line.strip_prefix("// WARNING: "))
+        .map(str::to_string)
+        .collect();
+    Ok((code, warnings))
 }
 
 /// Write generated source to `<out_dir>/<tmf>.rs`, returning the file path.
