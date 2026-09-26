@@ -1,0 +1,23 @@
+[package]
+name = "tmf-gen"
+version = "0.1.0"
+edition = "2021"
+authors = ["Ryan Ruckley <rruckley@gmail.com>"]
+description = "A tool to generate Rust code compatible with tmflib"
+publish = false
+
+[dependencies]
+clap = { version = "4.5.27", features = ["derive"] }
+env_logger = "0.11.6"
+indexmap = "2.11.4"
+log = "0.4.25"
+openapiv3 = "2.0.0"
+prettyplease = "0.2.29"
+proc-macro2 = "1.0.105"
+quote = "1.0.43"
+schemars = "0.8.21"
+serde = "1.0.217"
+serde_json = "1.0.137"
+serde_yaml = "0.9.34"
+syn = { version = "2.0.66", features = ["visit-mut"] }
+typify = "0.3.0"

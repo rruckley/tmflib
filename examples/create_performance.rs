@@ -1,7 +1,7 @@
 //! Performance Management Example
 //!
 
-use tmflib::tmf628::performance_measurement::PerformanceMeasurement;
+use tmflib::tmf628::PerformanceMeasurement;
 use tmflib::{HasDescription, HasId};
 
 fn main() {

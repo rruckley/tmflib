@@ -7,6 +7,10 @@ description = "Interface library for processing TMF payloads"
 repository = "https://github.com/rruckley/tmflib"
 license = "Apache-2.0"
 
+[workspace]
+members = ["tmf-gen"]
+resolver = "2"
+
 [features]
 # TMF620 Product Catalogue Module
 tmf620 = ["tmf633","tmf634","tmf651"]
@@ -285,5 +289,5 @@ regex = "1.13.1"
 
 
 [build-dependencies]
-env = "1.0.1"
+tmf-gen = { path = "tmf-gen", version = "0.1.0" }
 

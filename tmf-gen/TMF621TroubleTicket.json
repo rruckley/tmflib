@@ -1,0 +1,108 @@
+{
+  "creationDate": "",
+  "description": "",
+  "expectedResolutionDate": "",
+  "externalId": "",
+  "lastUpdate": "",
+  "name": "",
+  "priority": "",
+  "requestedResolutionDate": "",
+  "resolutionDate": "",
+  "severity": "",
+  "statusChangeDate": "",
+  "statusChangeReason": "",
+  "ticketType": "",
+  "attachment": [
+    {
+      "id": "",
+      "href": "",
+      "attachmentType": "",
+      "content": "",
+      "description": "",
+      "mimeType": "",
+      "name": "",
+      "url": "",
+      "size": {
+        "amount": 1,
+        "units": ""
+      },
+      "validFor": {
+        "endDateTime": "",
+        "startDateTime": ""
+      },
+      "@baseType": "",
+      "@schemaLocation": "",
+      "@type": "",
+      "@referredType": ""
+    }
+  ],
+  "channel": {
+    "id": "",
+    "href": "",
+    "name": "",
+    "@baseType": "",
+    "@schemaLocation": "",
+    "@type": "",
+    "@referredType": ""
+  },
+  "note": [
+    {
+      "id": "",
+      "author": "",
+      "date": "",
+      "text": "",
+      "@baseType": "",
+      "@schemaLocation": "",
+      "@type": ""
+    }
+  ],
+  "relatedEntity": [
+    {
+      "id": "",
+      "href": "",
+      "name": "",
+      "role": "",
+      "@baseType": "",
+      "@schemaLocation": "",
+      "@type": "",
+      "@referredType": ""
+    }
+  ],
+  "relatedParty": [
+    {
+      "id": "",
+      "href": "",
+      "name": "",
+      "role": "",
+      "@baseType": "",
+      "@schemaLocation": "",
+      "@type": "",
+      "@referredType": ""
+    }
+  ],
+  "status": "",
+  "statusChange": [
+    {
+      "changeDate": "",
+      "changeReason": "",
+      "status": "",
+      "@baseType": "",
+      "@schemaLocation": "",
+      "@type": ""
+    }
+  ],
+  "troubleTicketRelationship": [
+    {
+      "id": "",
+      "href": "",
+      "name": "",
+      "relationshipType": "",
+      "@baseType": "",
+      "@schemaLocation": "",
+      "@type": ""
+    }
+  ],
+  "@baseType": "",
+  "@schemaLocation": "",
+  "@type": ""
+}

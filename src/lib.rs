@@ -554,7 +554,16 @@ pub mod tmf621;
 #[cfg(feature = "tmf622")]
 pub mod tmf622;
 #[cfg(feature = "tmf628")]
-pub mod tmf628;
+pub mod tmf628 {
+    //! TMF628 Performance Management
+    //!
+    //! Generated at build time from `open_api/TMF628_Performance-v5.0.0.oas.yaml`
+    //! by `tmf-gen`. Do not edit by hand - edit the spec or generator instead.
+    #![allow(missing_docs)]
+    #![allow(clippy::all)]
+    #![allow(clippy::nursery)]
+    include!(concat!(env!("OUT_DIR"), "/tmf628.rs"));
+}
 #[cfg(feature = "tmf629")]
 pub mod tmf629;
 #[cfg(feature = "tmf632")]
