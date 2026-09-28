@@ -2,7 +2,9 @@ use clap::Parser;
 use log::info;
 use std::path::PathBuf;
 
-use tmf_gen::{config_for_feature, generate_spec_file, write_output, ModuleConfig, SUPPORTED_MODULES};
+use tmf_gen::{
+    config_for_feature, generate_spec_file, write_output, ModuleConfig, SUPPORTED_MODULES,
+};
 
 #[derive(Parser, Debug)]
 #[command(about = "Generate tmflib model code from TMF OAS specifications")]
@@ -68,4 +70,3 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
-

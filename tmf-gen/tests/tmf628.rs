@@ -22,7 +22,8 @@ fn generates_tmf628() {
     assert!(code.contains("crate::TimePeriod"));
 
     // Composed types must flatten the shared base.
-    assert!(code.contains("#[serde(flatten)]\n    pub extensible: crate::common::extensible::Extensible"));
+    assert!(code
+        .contains("#[serde(flatten)]\n    pub extensible: crate::common::extensible::Extensible"));
 
     // Managed type wiring.
     assert!(code.contains("const TMF_MODULE: &str = \"performanceManagement\";"));
@@ -37,7 +38,8 @@ fn generates_tmf628() {
     assert!(code.contains("impl ::std::fmt::Display for Characteristic"));
     assert!(code.contains("impl ::std::ops::Deref for Characteristic"));
 
-    let out_path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("target/tmf628-generated.rs");
+    let out_path =
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("target/tmf628-generated.rs");
     std::fs::create_dir_all(out_path.parent().unwrap()).unwrap();
     std::fs::write(out_path, &code).unwrap();
 }

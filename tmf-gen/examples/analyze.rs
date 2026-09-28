@@ -79,7 +79,10 @@ fn main() {
     for r in &missing {
         println!("  {r}");
     }
-    println!("\n-- refs not under #/components/schemas ({}):", unusual.len());
+    println!(
+        "\n-- refs not under #/components/schemas ({}):",
+        unusual.len()
+    );
     for r in unusual.iter().take(20) {
         println!("  {r}");
     }
