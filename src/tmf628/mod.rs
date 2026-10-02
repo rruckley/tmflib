@@ -27,9 +27,9 @@
 // WARNING: dropped schema default values from: ManagementJob, ManagementJob_FVO, MeasurementCollectionJob, MeasurementCollectionJob_FVO, MeasurementCollectionJob_MVO
 /// TMF module path component used for HREF generation
 const TMF_MODULE: &str = "performanceManagement";
+use crate::IsAddressable;
 use crate::TMF_VERSION;
 use crate::{HasDescription, HasId};
-use crate::IsAddressable;
 /// Classes that are addressable in this module
 fn get_objects() -> Vec<&'static str> {
     vec!["measurement"]
@@ -40,18 +40,12 @@ pub mod error {
     pub struct ConversionError(::std::borrow::Cow<'static, str>);
     impl ::std::error::Error for ConversionError {}
     impl ::std::fmt::Display for ConversionError {
-        fn fmt(
-            &self,
-            f: &mut ::std::fmt::Formatter<'_>,
-        ) -> Result<(), ::std::fmt::Error> {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> Result<(), ::std::fmt::Error> {
             ::std::fmt::Display::fmt(&self.0, f)
         }
     }
     impl ::std::fmt::Debug for ConversionError {
-        fn fmt(
-            &self,
-            f: &mut ::std::fmt::Formatter<'_>,
-        ) -> Result<(), ::std::fmt::Error> {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> Result<(), ::std::fmt::Error> {
             ::std::fmt::Debug::fmt(&self.0, f)
         }
     }
@@ -71,9 +65,7 @@ pub mod error {
 ///
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
 #[serde(transparent)]
-pub struct AddressableFvo(
-    pub ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-);
+pub struct AddressableFvo(pub ::serde_json::Map<::std::string::String, ::serde_json::Value>);
 impl ::std::ops::Deref for AddressableFvo {
     type Target = ::serde_json::Map<::std::string::String, ::serde_json::Value>;
     fn deref(&self) -> &::serde_json::Map<::std::string::String, ::serde_json::Value> {
@@ -81,7 +73,8 @@ impl ::std::ops::Deref for AddressableFvo {
     }
 }
 impl ::std::convert::From<AddressableFvo>
-for ::serde_json::Map<::std::string::String, ::serde_json::Value> {
+    for ::serde_json::Map<::std::string::String, ::serde_json::Value>
+{
     fn from(value: AddressableFvo) -> Self {
         value.0
     }
@@ -92,10 +85,9 @@ impl ::std::convert::From<&AddressableFvo> for AddressableFvo {
     }
 }
 impl ::std::convert::From<::serde_json::Map<::std::string::String, ::serde_json::Value>>
-for AddressableFvo {
-    fn from(
-        value: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-    ) -> Self {
+    for AddressableFvo
+{
+    fn from(value: ::serde_json::Map<::std::string::String, ::serde_json::Value>) -> Self {
         Self(value)
     }
 }
@@ -115,7 +107,9 @@ impl ::std::convert::From<&AddressableMvo> for AddressableMvo {
 }
 impl ::std::default::Default for AddressableMvo {
     fn default() -> Self {
-        Self { id: Default::default() }
+        Self {
+            id: Default::default(),
+        }
     }
 }
 ///This is enumeration for Administrative state
@@ -131,7 +125,7 @@ impl ::std::default::Default for AddressableMvo {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum AdministrativeState {
     #[serde(rename = "locked")]
@@ -154,9 +148,7 @@ impl ::std::fmt::Display for AdministrativeState {
 }
 impl ::std::str::FromStr for AdministrativeState {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "locked" => Ok(Self::Locked),
             "unlocked" => Ok(Self::Unlocked),
@@ -166,9 +158,7 @@ impl ::std::str::FromStr for AdministrativeState {
 }
 impl ::std::convert::TryFrom<&str> for AdministrativeState {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -191,8 +181,7 @@ impl ::std::convert::TryFrom<::std::string::String> for AdministrativeState {
 ///Attachment reference. An attachment complements the description of an element (for instance a product) through video, pictures
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct AttachmentRef {
     #[serde(flatten)]
     pub extensible: crate::common::entity::EntityRef,
@@ -296,8 +285,7 @@ impl ::std::default::Default for AttachmentRefMvo {
 ///Base event with common attributes.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct BaseEvent {
     #[serde(flatten)]
     pub entity: crate::common::entity::Entity,
@@ -358,8 +346,7 @@ impl ::std::convert::From<&BaseEvent> for BaseEvent {
 ///Describes a given characteristic of an object or entity through a name/value pair. This is an abstract base class, the actual value is in one of the strongly-typed subclasses : StringCharacteristic, ObjectCharacteristic, FloatCharacteristic, BooleanCharacteristic, NumberCharacteristic, IntegerCharacteristic, StringArrayCharacteristic, ObjectArrayCharacteristic, BooleanArrayCharacteristic, NumberArrayCharacteristic, IntegerArrayCharacteristic...
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct Characteristic {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -478,8 +465,7 @@ impl ::std::default::Default for CharacteristicMvo {
 ///Another Characteristic that is related to the current Characteristic;
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct CharacteristicRelationship {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -527,8 +513,7 @@ pub struct CharacteristicRelationshipFvo {
     #[serde(rename = "@type")]
     pub type_: ::std::string::String,
 }
-impl ::std::convert::From<&CharacteristicRelationshipFvo>
-for CharacteristicRelationshipFvo {
+impl ::std::convert::From<&CharacteristicRelationshipFvo> for CharacteristicRelationshipFvo {
     fn from(value: &CharacteristicRelationshipFvo) -> Self {
         value.clone()
     }
@@ -549,8 +534,7 @@ pub struct CharacteristicRelationshipMvo {
     )]
     pub relationship_type: ::std::option::Option<::std::string::String>,
 }
-impl ::std::convert::From<&CharacteristicRelationshipMvo>
-for CharacteristicRelationshipMvo {
+impl ::std::convert::From<&CharacteristicRelationshipMvo> for CharacteristicRelationshipMvo {
     fn from(value: &CharacteristicRelationshipMvo) -> Self {
         value.clone()
     }
@@ -576,7 +560,7 @@ impl ::std::default::Default for CharacteristicRelationshipMvo {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum CollectionType {
     #[serde(rename = "cumulative")]
@@ -608,9 +592,7 @@ impl ::std::fmt::Display for CollectionType {
 }
 impl ::std::str::FromStr for CollectionType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "cumulative" => Ok(Self::Cumulative),
             "delta" => Ok(Self::Delta),
@@ -623,9 +605,7 @@ impl ::std::str::FromStr for CollectionType {
 }
 impl ::std::convert::TryFrom<&str> for CollectionType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -658,7 +638,7 @@ impl ::std::convert::TryFrom<::std::string::String> for CollectionType {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum CompressionEnumType {
     #[serde(rename = "no_compression")]
@@ -687,9 +667,7 @@ impl ::std::fmt::Display for CompressionEnumType {
 }
 impl ::std::str::FromStr for CompressionEnumType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "no_compression" => Ok(Self::NoCompression),
             "gzip" => Ok(Self::Gzip),
@@ -701,9 +679,7 @@ impl ::std::str::FromStr for CompressionEnumType {
 }
 impl ::std::convert::TryFrom<&str> for CompressionEnumType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -791,9 +767,8 @@ pub struct DataAccessEndpoint {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub external_identifier: ::std::vec::Vec<
-        crate::common::external_identifier::ExternalIdentifier,
-    >,
+    pub external_identifier:
+        ::std::vec::Vec<crate::common::external_identifier::ExternalIdentifier>,
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub intent: ::std::option::Option<IntentRef>,
     ///the name of the resource
@@ -1330,8 +1305,7 @@ pub struct DataFilterAttributeStringArray {
     )]
     pub value_type: ::std::option::Option<::std::string::String>,
 }
-impl ::std::convert::From<&DataFilterAttributeStringArray>
-for DataFilterAttributeStringArray {
+impl ::std::convert::From<&DataFilterAttributeStringArray> for DataFilterAttributeStringArray {
     fn from(value: &DataFilterAttributeStringArray) -> Self {
         value.clone()
     }
@@ -1347,8 +1321,7 @@ impl ::std::default::Default for DataFilterAttributeStringArray {
 ///entity to Describe a given filter attributes/fields set using a mapping by type/template.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct DataFilterMap {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -1509,8 +1482,7 @@ impl ::std::default::Default for DataFilterMapMvo {
 2) as a way to specify the acceptable value for a field for filtering*/
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct DataFilterTemplate {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -1601,8 +1573,7 @@ impl ::std::default::Default for DataFilterTemplateMvo {
 ///
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct DayOfMonthRecurrence {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -1659,14 +1630,15 @@ impl ::std::convert::From<&DayOfMonthRecurrenceMvo> for DayOfMonthRecurrenceMvo 
 }
 impl ::std::default::Default for DayOfMonthRecurrenceMvo {
     fn default() -> Self {
-        Self { dates: Default::default() }
+        Self {
+            dates: Default::default(),
+        }
     }
 }
 ///
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct DayOfWeekRecurrence {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -1723,7 +1695,9 @@ impl ::std::convert::From<&DayOfWeekRecurrenceMvo> for DayOfWeekRecurrenceMvo {
 }
 impl ::std::default::Default for DayOfWeekRecurrenceMvo {
     fn default() -> Self {
-        Self { dates: Default::default() }
+        Self {
+            dates: Default::default(),
+        }
     }
 }
 ///A time interval in a given unit of time
@@ -1764,7 +1738,8 @@ impl ::std::ops::Deref for EntityMvo {
     }
 }
 impl ::std::convert::From<EntityMvo>
-for ::serde_json::Map<::std::string::String, ::serde_json::Value> {
+    for ::serde_json::Map<::std::string::String, ::serde_json::Value>
+{
     fn from(value: EntityMvo) -> Self {
         value.0
     }
@@ -1775,10 +1750,9 @@ impl ::std::convert::From<&EntityMvo> for EntityMvo {
     }
 }
 impl ::std::convert::From<::serde_json::Map<::std::string::String, ::serde_json::Value>>
-for EntityMvo {
-    fn from(
-        value: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-    ) -> Self {
+    for EntityMvo
+{
+    fn from(value: ::serde_json::Map<::std::string::String, ::serde_json::Value>) -> Self {
         Self(value)
     }
 }
@@ -1856,8 +1830,7 @@ impl ::std::default::Default for EntityRefMvo {
 ///Error
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct Error {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -1887,8 +1860,7 @@ impl ::std::convert::From<&Error> for Error {
 ///event with common attributes.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct Event {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -1987,7 +1959,7 @@ impl ::std::convert::From<&Event> for Event {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum ExecutionStateType {
     #[serde(rename = "acknowledged")]
@@ -2025,9 +1997,7 @@ impl ::std::fmt::Display for ExecutionStateType {
 }
 impl ::std::str::FromStr for ExecutionStateType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "acknowledged" => Ok(Self::Acknowledged),
             "rejected" => Ok(Self::Rejected),
@@ -2042,9 +2012,7 @@ impl ::std::str::FromStr for ExecutionStateType {
 }
 impl ::std::convert::TryFrom<&str> for ExecutionStateType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -2138,8 +2106,7 @@ impl ::std::default::Default for ExternalIdentifierMvo {
 ///Configuration feature.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct Feature {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -2310,8 +2277,7 @@ impl ::std::convert::From<&FeatureMvo> for FeatureMvo {
 ///Configuration feature
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct FeatureRelationship {
     #[serde(flatten)]
     pub extensible: crate::common::entity::EntityRef,
@@ -2397,7 +2363,7 @@ impl ::std::convert::From<&FeatureRelationshipFvo> for FeatureRelationshipFvo {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum FeatureRelationshipFvoRelationshipType {
     #[serde(rename = "excluded")]
@@ -2426,9 +2392,7 @@ impl ::std::fmt::Display for FeatureRelationshipFvoRelationshipType {
 }
 impl ::std::str::FromStr for FeatureRelationshipFvoRelationshipType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "excluded" => Ok(Self::Excluded),
             "includes" => Ok(Self::Includes),
@@ -2440,14 +2404,11 @@ impl ::std::str::FromStr for FeatureRelationshipFvoRelationshipType {
 }
 impl ::std::convert::TryFrom<&str> for FeatureRelationshipFvoRelationshipType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String>
-for FeatureRelationshipFvoRelationshipType {
+impl ::std::convert::TryFrom<&::std::string::String> for FeatureRelationshipFvoRelationshipType {
     type Error = self::error::ConversionError;
     fn try_from(
         value: &::std::string::String,
@@ -2455,8 +2416,7 @@ for FeatureRelationshipFvoRelationshipType {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<::std::string::String>
-for FeatureRelationshipFvoRelationshipType {
+impl ::std::convert::TryFrom<::std::string::String> for FeatureRelationshipFvoRelationshipType {
     type Error = self::error::ConversionError;
     fn try_from(
         value: ::std::string::String,
@@ -2508,7 +2468,7 @@ impl ::std::convert::From<&FeatureRelationshipMvo> for FeatureRelationshipMvo {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum FeatureRelationshipMvoRelationshipType {
     #[serde(rename = "excluded")]
@@ -2537,9 +2497,7 @@ impl ::std::fmt::Display for FeatureRelationshipMvoRelationshipType {
 }
 impl ::std::str::FromStr for FeatureRelationshipMvoRelationshipType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "excluded" => Ok(Self::Excluded),
             "includes" => Ok(Self::Includes),
@@ -2551,14 +2509,11 @@ impl ::std::str::FromStr for FeatureRelationshipMvoRelationshipType {
 }
 impl ::std::convert::TryFrom<&str> for FeatureRelationshipMvoRelationshipType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String>
-for FeatureRelationshipMvoRelationshipType {
+impl ::std::convert::TryFrom<&::std::string::String> for FeatureRelationshipMvoRelationshipType {
     type Error = self::error::ConversionError;
     fn try_from(
         value: &::std::string::String,
@@ -2566,8 +2521,7 @@ for FeatureRelationshipMvoRelationshipType {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<::std::string::String>
-for FeatureRelationshipMvoRelationshipType {
+impl ::std::convert::TryFrom<::std::string::String> for FeatureRelationshipMvoRelationshipType {
     type Error = self::error::ConversionError;
     fn try_from(
         value: ::std::string::String,
@@ -2588,7 +2542,7 @@ for FeatureRelationshipMvoRelationshipType {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum FeatureRelationshipRelationshipType {
     #[serde(rename = "excluded")]
@@ -2617,9 +2571,7 @@ impl ::std::fmt::Display for FeatureRelationshipRelationshipType {
 }
 impl ::std::str::FromStr for FeatureRelationshipRelationshipType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "excluded" => Ok(Self::Excluded),
             "includes" => Ok(Self::Includes),
@@ -2631,14 +2583,11 @@ impl ::std::str::FromStr for FeatureRelationshipRelationshipType {
 }
 impl ::std::convert::TryFrom<&str> for FeatureRelationshipRelationshipType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String>
-for FeatureRelationshipRelationshipType {
+impl ::std::convert::TryFrom<&::std::string::String> for FeatureRelationshipRelationshipType {
     type Error = self::error::ConversionError;
     fn try_from(
         value: &::std::string::String,
@@ -2646,8 +2595,7 @@ for FeatureRelationshipRelationshipType {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<::std::string::String>
-for FeatureRelationshipRelationshipType {
+impl ::std::convert::TryFrom<::std::string::String> for FeatureRelationshipRelationshipType {
     type Error = self::error::ConversionError;
     fn try_from(
         value: ::std::string::String,
@@ -2658,8 +2606,7 @@ for FeatureRelationshipRelationshipType {
 ///FileTransferData
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct FileTransferData {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -2841,7 +2788,7 @@ impl ::std::default::Default for FileTransferDataMvo {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum Granularity {
     #[serde(rename = "g_1mn")]
@@ -2885,9 +2832,7 @@ impl ::std::fmt::Display for Granularity {
 }
 impl ::std::str::FromStr for Granularity {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "g_1mn" => Ok(Self::G1mn),
             "g_5mn" => Ok(Self::G5mn),
@@ -2904,9 +2849,7 @@ impl ::std::str::FromStr for Granularity {
 }
 impl ::std::convert::TryFrom<&str> for Granularity {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -2929,8 +2872,7 @@ impl ::std::convert::TryFrom<::std::string::String> for Granularity {
 ///Hub
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct Hub {
     #[serde(flatten)]
     pub entity: crate::common::entity::Entity,
@@ -2977,7 +2919,7 @@ impl ::std::convert::From<&HubFvo> for HubFvo {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum IndicatorType {
     #[serde(rename = "string")]
@@ -3006,9 +2948,7 @@ impl ::std::fmt::Display for IndicatorType {
 }
 impl ::std::str::FromStr for IndicatorType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "string" => Ok(Self::String),
             "int" => Ok(Self::Int),
@@ -3020,9 +2960,7 @@ impl ::std::str::FromStr for IndicatorType {
 }
 impl ::std::convert::TryFrom<&str> for IndicatorType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -3056,7 +2994,8 @@ impl ::std::ops::Deref for IntentRef {
     }
 }
 impl ::std::convert::From<IntentRef>
-for ::serde_json::Map<::std::string::String, ::serde_json::Value> {
+    for ::serde_json::Map<::std::string::String, ::serde_json::Value>
+{
     fn from(value: IntentRef) -> Self {
         value.0
     }
@@ -3067,10 +3006,9 @@ impl ::std::convert::From<&IntentRef> for IntentRef {
     }
 }
 impl ::std::convert::From<::serde_json::Map<::std::string::String, ::serde_json::Value>>
-for IntentRef {
-    fn from(
-        value: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-    ) -> Self {
+    for IntentRef
+{
+    fn from(value: ::serde_json::Map<::std::string::String, ::serde_json::Value>) -> Self {
         Self(value)
     }
 }
@@ -3162,7 +3100,7 @@ impl ::std::convert::From<&JsonPatch> for JsonPatch {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum JsonPatchOp {
     #[serde(rename = "add")]
@@ -3197,9 +3135,7 @@ impl ::std::fmt::Display for JsonPatchOp {
 }
 impl ::std::str::FromStr for JsonPatchOp {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "add" => Ok(Self::Add),
             "remove" => Ok(Self::Remove),
@@ -3213,9 +3149,7 @@ impl ::std::str::FromStr for JsonPatchOp {
 }
 impl ::std::convert::TryFrom<&str> for JsonPatchOp {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -3300,9 +3234,8 @@ pub struct LogicalResource {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub external_identifier: ::std::vec::Vec<
-        crate::common::external_identifier::ExternalIdentifier,
-    >,
+    pub external_identifier:
+        ::std::vec::Vec<crate::common::external_identifier::ExternalIdentifier>,
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub intent: ::std::option::Option<IntentRef>,
     ///the name of the resource
@@ -3753,8 +3686,7 @@ impl ::std::default::Default for LogicalResourceMvo {
 ///
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct ManagementJob {
     #[serde(flatten)]
     pub entity: crate::common::entity::Entity,
@@ -4040,17 +3972,15 @@ pub struct MeasurementCollectionJob {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_group_specification: ::std::vec::Vec<
-        PerformanceIndicatorGroupSpecification,
-    >,
+    pub performance_indicator_group_specification:
+        ::std::vec::Vec<PerformanceIndicatorGroupSpecification>,
     #[serde(
         rename = "performanceIndicatorSpecification",
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_specification: ::std::vec::Vec<
-        PerformanceIndicatorSpecificationRefOrValue,
-    >,
+    pub performance_indicator_specification:
+        ::std::vec::Vec<PerformanceIndicatorSpecificationRefOrValue>,
     ///The identifier of the application that produces performance indicators.
     #[serde(
         rename = "producingApplicationId",
@@ -4142,9 +4072,7 @@ pub struct MeasurementCollectionJobAttributeValueChangeEvent {
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub domain: ::std::option::Option<::std::string::String>,
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-    pub event: ::std::option::Option<
-        MeasurementCollectionJobAttributeValueChangeEventPayload,
-    >,
+    pub event: ::std::option::Option<MeasurementCollectionJobAttributeValueChangeEventPayload>,
     ///The identifier of the notification.
     #[serde(
         rename = "eventId",
@@ -4200,7 +4128,8 @@ pub struct MeasurementCollectionJobAttributeValueChangeEvent {
     pub title: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&MeasurementCollectionJobAttributeValueChangeEvent>
-for MeasurementCollectionJobAttributeValueChangeEvent {
+    for MeasurementCollectionJobAttributeValueChangeEvent
+{
     fn from(value: &MeasurementCollectionJobAttributeValueChangeEvent) -> Self {
         value.clone()
     }
@@ -4240,13 +4169,13 @@ pub struct MeasurementCollectionJobAttributeValueChangeEventPayload {
     pub measurement_collection_job: ::std::option::Option<MeasurementCollectionJob>,
 }
 impl ::std::convert::From<&MeasurementCollectionJobAttributeValueChangeEventPayload>
-for MeasurementCollectionJobAttributeValueChangeEventPayload {
+    for MeasurementCollectionJobAttributeValueChangeEventPayload
+{
     fn from(value: &MeasurementCollectionJobAttributeValueChangeEventPayload) -> Self {
         value.clone()
     }
 }
-impl ::std::default::Default
-for MeasurementCollectionJobAttributeValueChangeEventPayload {
+impl ::std::default::Default for MeasurementCollectionJobAttributeValueChangeEventPayload {
     fn default() -> Self {
         Self {
             measurement_collection_job: Default::default(),
@@ -4335,7 +4264,8 @@ pub struct MeasurementCollectionJobCreateEvent {
     pub title: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&MeasurementCollectionJobCreateEvent>
-for MeasurementCollectionJobCreateEvent {
+    for MeasurementCollectionJobCreateEvent
+{
     fn from(value: &MeasurementCollectionJobCreateEvent) -> Self {
         value.clone()
     }
@@ -4375,7 +4305,8 @@ pub struct MeasurementCollectionJobCreateEventPayload {
     pub measurement_collection_job: ::std::option::Option<MeasurementCollectionJobRef>,
 }
 impl ::std::convert::From<&MeasurementCollectionJobCreateEventPayload>
-for MeasurementCollectionJobCreateEventPayload {
+    for MeasurementCollectionJobCreateEventPayload
+{
     fn from(value: &MeasurementCollectionJobCreateEventPayload) -> Self {
         value.clone()
     }
@@ -4469,7 +4400,8 @@ pub struct MeasurementCollectionJobDeleteEvent {
     pub title: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&MeasurementCollectionJobDeleteEvent>
-for MeasurementCollectionJobDeleteEvent {
+    for MeasurementCollectionJobDeleteEvent
+{
     fn from(value: &MeasurementCollectionJobDeleteEvent) -> Self {
         value.clone()
     }
@@ -4509,7 +4441,8 @@ pub struct MeasurementCollectionJobDeleteEventPayload {
     pub measurement_collection_job: ::std::option::Option<MeasurementCollectionJob>,
 }
 impl ::std::convert::From<&MeasurementCollectionJobDeleteEventPayload>
-for MeasurementCollectionJobDeleteEventPayload {
+    for MeasurementCollectionJobDeleteEventPayload
+{
     fn from(value: &MeasurementCollectionJobDeleteEventPayload) -> Self {
         value.clone()
     }
@@ -4547,9 +4480,7 @@ pub struct MeasurementCollectionJobExecutionStateChangeEvent {
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub domain: ::std::option::Option<::std::string::String>,
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-    pub event: ::std::option::Option<
-        MeasurementCollectionJobExecutionStateChangeEventPayload,
-    >,
+    pub event: ::std::option::Option<MeasurementCollectionJobExecutionStateChangeEventPayload>,
     ///The identifier of the notification.
     #[serde(
         rename = "eventId",
@@ -4605,7 +4536,8 @@ pub struct MeasurementCollectionJobExecutionStateChangeEvent {
     pub title: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&MeasurementCollectionJobExecutionStateChangeEvent>
-for MeasurementCollectionJobExecutionStateChangeEvent {
+    for MeasurementCollectionJobExecutionStateChangeEvent
+{
     fn from(value: &MeasurementCollectionJobExecutionStateChangeEvent) -> Self {
         value.clone()
     }
@@ -4645,13 +4577,13 @@ pub struct MeasurementCollectionJobExecutionStateChangeEventPayload {
     pub measurement_collection_job: ::std::option::Option<MeasurementCollectionJob>,
 }
 impl ::std::convert::From<&MeasurementCollectionJobExecutionStateChangeEventPayload>
-for MeasurementCollectionJobExecutionStateChangeEventPayload {
+    for MeasurementCollectionJobExecutionStateChangeEventPayload
+{
     fn from(value: &MeasurementCollectionJobExecutionStateChangeEventPayload) -> Self {
         value.clone()
     }
 }
-impl ::std::default::Default
-for MeasurementCollectionJobExecutionStateChangeEventPayload {
+impl ::std::default::Default for MeasurementCollectionJobExecutionStateChangeEventPayload {
     fn default() -> Self {
         Self {
             measurement_collection_job: Default::default(),
@@ -4684,9 +4616,7 @@ pub struct MeasurementCollectionJobFilesPreparationErrorEvent {
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub domain: ::std::option::Option<::std::string::String>,
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-    pub event: ::std::option::Option<
-        MeasurementCollectionJobFilesPreparationErrorEventPayload,
-    >,
+    pub event: ::std::option::Option<MeasurementCollectionJobFilesPreparationErrorEventPayload>,
     ///The identifier of the notification.
     #[serde(
         rename = "eventId",
@@ -4742,7 +4672,8 @@ pub struct MeasurementCollectionJobFilesPreparationErrorEvent {
     pub title: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&MeasurementCollectionJobFilesPreparationErrorEvent>
-for MeasurementCollectionJobFilesPreparationErrorEvent {
+    for MeasurementCollectionJobFilesPreparationErrorEvent
+{
     fn from(value: &MeasurementCollectionJobFilesPreparationErrorEvent) -> Self {
         value.clone()
     }
@@ -4782,13 +4713,13 @@ pub struct MeasurementCollectionJobFilesPreparationErrorEventPayload {
     pub measurement_collection_job: ::std::option::Option<MeasurementCollectionJob>,
 }
 impl ::std::convert::From<&MeasurementCollectionJobFilesPreparationErrorEventPayload>
-for MeasurementCollectionJobFilesPreparationErrorEventPayload {
+    for MeasurementCollectionJobFilesPreparationErrorEventPayload
+{
     fn from(value: &MeasurementCollectionJobFilesPreparationErrorEventPayload) -> Self {
         value.clone()
     }
 }
-impl ::std::default::Default
-for MeasurementCollectionJobFilesPreparationErrorEventPayload {
+impl ::std::default::Default for MeasurementCollectionJobFilesPreparationErrorEventPayload {
     fn default() -> Self {
         Self {
             measurement_collection_job: Default::default(),
@@ -4877,7 +4808,8 @@ pub struct MeasurementCollectionJobFilesReadyEvent {
     pub title: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&MeasurementCollectionJobFilesReadyEvent>
-for MeasurementCollectionJobFilesReadyEvent {
+    for MeasurementCollectionJobFilesReadyEvent
+{
     fn from(value: &MeasurementCollectionJobFilesReadyEvent) -> Self {
         value.clone()
     }
@@ -4917,7 +4849,8 @@ pub struct MeasurementCollectionJobFilesReadyEventPayload {
     pub measurement_collection_job: ::std::option::Option<MeasurementCollectionJob>,
 }
 impl ::std::convert::From<&MeasurementCollectionJobFilesReadyEventPayload>
-for MeasurementCollectionJobFilesReadyEventPayload {
+    for MeasurementCollectionJobFilesReadyEventPayload
+{
     fn from(value: &MeasurementCollectionJobFilesReadyEventPayload) -> Self {
         value.clone()
     }
@@ -5013,9 +4946,7 @@ pub struct MeasurementCollectionJobFvo {
         default,
         skip_serializing_if = "::std::option::Option::is_none"
     )]
-    pub monitored_instances_criteria: ::std::option::Option<
-        MonitoredInstancesCriteriaFvo,
-    >,
+    pub monitored_instances_criteria: ::std::option::Option<MonitoredInstancesCriteriaFvo>,
     #[serde(
         rename = "outputFormat",
         default,
@@ -5027,13 +4958,11 @@ pub struct MeasurementCollectionJobFvo {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_group_specification: ::std::vec::Vec<
-        PerformanceIndicatorGroupSpecificationFvo,
-    >,
+    pub performance_indicator_group_specification:
+        ::std::vec::Vec<PerformanceIndicatorGroupSpecificationFvo>,
     #[serde(rename = "performanceIndicatorSpecification")]
-    pub performance_indicator_specification: ::std::vec::Vec<
-        PerformanceIndicatorSpecificationRefOrValueFvo,
-    >,
+    pub performance_indicator_specification:
+        ::std::vec::Vec<PerformanceIndicatorSpecificationRefOrValueFvo>,
     ///The identifier of the application that produces performance indicators.
     #[serde(rename = "producingApplicationId")]
     pub producing_application_id: ::std::string::String,
@@ -5117,17 +5046,15 @@ pub struct MeasurementCollectionJobMvo {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_group_specification: ::std::vec::Vec<
-        PerformanceIndicatorGroupSpecificationMvo,
-    >,
+    pub performance_indicator_group_specification:
+        ::std::vec::Vec<PerformanceIndicatorGroupSpecificationMvo>,
     #[serde(
         rename = "performanceIndicatorSpecification",
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_specification: ::std::vec::Vec<
-        PerformanceIndicatorSpecificationRefOrValueMvo,
-    >,
+    pub performance_indicator_specification:
+        ::std::vec::Vec<PerformanceIndicatorSpecificationRefOrValueMvo>,
     ///The identifier of the application that produces performance indicators.
     #[serde(
         rename = "producingApplicationId",
@@ -5201,7 +5128,8 @@ impl ::std::ops::Deref for MeasurementCollectionJobRef {
     }
 }
 impl ::std::convert::From<MeasurementCollectionJobRef>
-for ::serde_json::Map<::std::string::String, ::serde_json::Value> {
+    for ::serde_json::Map<::std::string::String, ::serde_json::Value>
+{
     fn from(value: MeasurementCollectionJobRef) -> Self {
         value.0
     }
@@ -5212,10 +5140,9 @@ impl ::std::convert::From<&MeasurementCollectionJobRef> for MeasurementCollectio
     }
 }
 impl ::std::convert::From<::serde_json::Map<::std::string::String, ::serde_json::Value>>
-for MeasurementCollectionJobRef {
-    fn from(
-        value: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-    ) -> Self {
+    for MeasurementCollectionJobRef
+{
+    fn from(value: ::serde_json::Map<::std::string::String, ::serde_json::Value>) -> Self {
         Self(value)
     }
 }
@@ -5300,17 +5227,15 @@ pub struct MeasurementJob {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_group_specification: ::std::vec::Vec<
-        PerformanceIndicatorGroupSpecification,
-    >,
+    pub performance_indicator_group_specification:
+        ::std::vec::Vec<PerformanceIndicatorGroupSpecification>,
     #[serde(
         rename = "performanceIndicatorSpecification",
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_specification: ::std::vec::Vec<
-        PerformanceIndicatorSpecificationRefOrValue,
-    >,
+    pub performance_indicator_specification:
+        ::std::vec::Vec<PerformanceIndicatorSpecificationRefOrValue>,
     ///The identifier of the application that produces performance indicators.
     #[serde(
         rename = "producingApplicationId",
@@ -5430,21 +5355,17 @@ pub struct MeasurementJobFvo {
         default,
         skip_serializing_if = "::std::option::Option::is_none"
     )]
-    pub monitored_instances_criteria: ::std::option::Option<
-        MonitoredInstancesCriteriaFvo,
-    >,
+    pub monitored_instances_criteria: ::std::option::Option<MonitoredInstancesCriteriaFvo>,
     #[serde(
         rename = "performanceIndicatorGroupSpecification",
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_group_specification: ::std::vec::Vec<
-        PerformanceIndicatorGroupSpecificationFvo,
-    >,
+    pub performance_indicator_group_specification:
+        ::std::vec::Vec<PerformanceIndicatorGroupSpecificationFvo>,
     #[serde(rename = "performanceIndicatorSpecification")]
-    pub performance_indicator_specification: ::std::vec::Vec<
-        PerformanceIndicatorSpecificationRefOrValueFvo,
-    >,
+    pub performance_indicator_specification:
+        ::std::vec::Vec<PerformanceIndicatorSpecificationRefOrValueFvo>,
     ///The identifier of the application that produces performance indicators.
     #[serde(rename = "producingApplicationId")]
     pub producing_application_id: ::std::string::String,
@@ -5497,17 +5418,15 @@ pub struct MeasurementJobMvo {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_group_specification: ::std::vec::Vec<
-        PerformanceIndicatorGroupSpecificationMvo,
-    >,
+    pub performance_indicator_group_specification:
+        ::std::vec::Vec<PerformanceIndicatorGroupSpecificationMvo>,
     #[serde(
         rename = "performanceIndicatorSpecification",
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_specification: ::std::vec::Vec<
-        PerformanceIndicatorSpecificationRefOrValueMvo,
-    >,
+    pub performance_indicator_specification:
+        ::std::vec::Vec<PerformanceIndicatorSpecificationRefOrValueMvo>,
     ///The identifier of the application that produces performance indicators.
     #[serde(
         rename = "producingApplicationId",
@@ -5551,8 +5470,7 @@ impl ::std::default::Default for MeasurementJobMvo {
 ///Specifies a monitored object class (a string) in conjunction with a filter object.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct MonitoredClassCriteria {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -5621,8 +5539,7 @@ impl ::std::convert::From<&MonitoredClassCriteriaFvo> for MonitoredClassCriteria
 ///List of monitored instances
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct MonitoredInstancesCriteria {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -5667,8 +5584,7 @@ pub struct MonitoredInstancesCriteriaFvo {
     #[serde(rename = "@type")]
     pub type_: ::std::string::String,
 }
-impl ::std::convert::From<&MonitoredInstancesCriteriaFvo>
-for MonitoredInstancesCriteriaFvo {
+impl ::std::convert::From<&MonitoredInstancesCriteriaFvo> for MonitoredInstancesCriteriaFvo {
     fn from(value: &MonitoredInstancesCriteriaFvo) -> Self {
         value.clone()
     }
@@ -5676,8 +5592,7 @@ for MonitoredInstancesCriteriaFvo {
 ///MonthlyScheduleDayOfWeekDefinition
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct MonthlyScheduleDayOfWeekDefinition {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -5695,7 +5610,8 @@ pub struct MonthlyScheduleDayOfWeekDefinition {
     pub recurring_day_sequence: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&MonthlyScheduleDayOfWeekDefinition>
-for MonthlyScheduleDayOfWeekDefinition {
+    for MonthlyScheduleDayOfWeekDefinition
+{
     fn from(value: &MonthlyScheduleDayOfWeekDefinition) -> Self {
         value.clone()
     }
@@ -5736,7 +5652,8 @@ pub struct MonthlyScheduleDayOfWeekDefinitionFvo {
     pub type_: ::std::string::String,
 }
 impl ::std::convert::From<&MonthlyScheduleDayOfWeekDefinitionFvo>
-for MonthlyScheduleDayOfWeekDefinitionFvo {
+    for MonthlyScheduleDayOfWeekDefinitionFvo
+{
     fn from(value: &MonthlyScheduleDayOfWeekDefinitionFvo) -> Self {
         value.clone()
     }
@@ -5760,7 +5677,8 @@ pub struct MonthlyScheduleDayOfWeekDefinitionMvo {
     pub recurring_day_sequence: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&MonthlyScheduleDayOfWeekDefinitionMvo>
-for MonthlyScheduleDayOfWeekDefinitionMvo {
+    for MonthlyScheduleDayOfWeekDefinitionMvo
+{
     fn from(value: &MonthlyScheduleDayOfWeekDefinitionMvo) -> Self {
         value.clone()
     }
@@ -5854,7 +5772,7 @@ impl ::std::default::Default for NoteMvo {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum OrderItemActionType {
     #[serde(rename = "add")]
@@ -5883,9 +5801,7 @@ impl ::std::fmt::Display for OrderItemActionType {
 }
 impl ::std::str::FromStr for OrderItemActionType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "add" => Ok(Self::Add),
             "modify" => Ok(Self::Modify),
@@ -5897,9 +5813,7 @@ impl ::std::str::FromStr for OrderItemActionType {
 }
 impl ::std::convert::TryFrom<&str> for OrderItemActionType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -5932,7 +5846,7 @@ impl ::std::convert::TryFrom<::std::string::String> for OrderItemActionType {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum PackingEnumType {
     #[serde(rename = "NO_PACKING")]
@@ -5964,9 +5878,7 @@ impl ::std::fmt::Display for PackingEnumType {
 }
 impl ::std::str::FromStr for PackingEnumType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "NO_PACKING" => Ok(Self::NoPacking),
             "GZIP" => Ok(Self::Gzip),
@@ -5979,9 +5891,7 @@ impl ::std::str::FromStr for PackingEnumType {
 }
 impl ::std::convert::TryFrom<&str> for PackingEnumType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -6039,7 +5949,8 @@ impl ::std::ops::Deref for PartyRef {
     }
 }
 impl ::std::convert::From<PartyRef>
-for ::serde_json::Map<::std::string::String, ::serde_json::Value> {
+    for ::serde_json::Map<::std::string::String, ::serde_json::Value>
+{
     fn from(value: PartyRef) -> Self {
         value.0
     }
@@ -6050,10 +5961,9 @@ impl ::std::convert::From<&PartyRef> for PartyRef {
     }
 }
 impl ::std::convert::From<::serde_json::Map<::std::string::String, ::serde_json::Value>>
-for PartyRef {
-    fn from(
-        value: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-    ) -> Self {
+    for PartyRef
+{
+    fn from(value: ::serde_json::Map<::std::string::String, ::serde_json::Value>) -> Self {
         Self(value)
     }
 }
@@ -6186,8 +6096,7 @@ impl ::std::convert::From<PartyRoleRefMvo> for PartyRefOrPartyRoleRefMvo {
 ///Party role reference. A party role represents the part played by a party in a given context.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct PartyRoleRef {
     #[serde(flatten)]
     pub extensible: crate::common::entity::EntityRef,
@@ -6315,8 +6224,7 @@ impl ::std::default::Default for PartyRoleRefMvo {
 ///
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct PerformanceIndicatorGroupSpecification {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -6337,12 +6245,12 @@ pub struct PerformanceIndicatorGroupSpecification {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_specification: ::std::vec::Vec<
-        PerformanceIndicatorSpecificationRefOrValue,
-    >,
+    pub performance_indicator_specification:
+        ::std::vec::Vec<PerformanceIndicatorSpecificationRefOrValue>,
 }
 impl ::std::convert::From<&PerformanceIndicatorGroupSpecification>
-for PerformanceIndicatorGroupSpecification {
+    for PerformanceIndicatorGroupSpecification
+{
     fn from(value: &PerformanceIndicatorGroupSpecification) -> Self {
         value.clone()
     }
@@ -6369,9 +6277,8 @@ pub struct PerformanceIndicatorGroupSpecificationFvo {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_specification: ::std::vec::Vec<
-        PerformanceIndicatorSpecificationRefOrValueFvo,
-    >,
+    pub performance_indicator_specification:
+        ::std::vec::Vec<PerformanceIndicatorSpecificationRefOrValueFvo>,
     ///A URI to a JSON-Schema file that defines additional attributes and relationships
     #[serde(
         rename = "@schemaLocation",
@@ -6384,7 +6291,8 @@ pub struct PerformanceIndicatorGroupSpecificationFvo {
     pub type_: ::std::string::String,
 }
 impl ::std::convert::From<&PerformanceIndicatorGroupSpecificationFvo>
-for PerformanceIndicatorGroupSpecificationFvo {
+    for PerformanceIndicatorGroupSpecificationFvo
+{
     fn from(value: &PerformanceIndicatorGroupSpecificationFvo) -> Self {
         value.clone()
     }
@@ -6412,12 +6320,12 @@ pub struct PerformanceIndicatorGroupSpecificationMvo {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_specification: ::std::vec::Vec<
-        PerformanceIndicatorSpecificationRefOrValueMvo,
-    >,
+    pub performance_indicator_specification:
+        ::std::vec::Vec<PerformanceIndicatorSpecificationRefOrValueMvo>,
 }
 impl ::std::convert::From<&PerformanceIndicatorGroupSpecificationMvo>
-for PerformanceIndicatorGroupSpecificationMvo {
+    for PerformanceIndicatorGroupSpecificationMvo
+{
     fn from(value: &PerformanceIndicatorGroupSpecificationMvo) -> Self {
         value.clone()
     }
@@ -6435,8 +6343,7 @@ impl ::std::default::Default for PerformanceIndicatorGroupSpecificationMvo {
 ///PerformanceIndicatorGroupSpecification reference: A PerformanceIndicatorGroupSpecification is a group of detailed description of a tangible or intangible object made available externally in the form of a PerformanceIndicatorGroupSpecification to customers or other parties playing a party role.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct PerformanceIndicatorGroupSpecificationRef {
     #[serde(flatten)]
     pub extensible: crate::common::entity::EntityRef,
@@ -6445,7 +6352,8 @@ pub struct PerformanceIndicatorGroupSpecificationRef {
     pub version: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&PerformanceIndicatorGroupSpecificationRef>
-for PerformanceIndicatorGroupSpecificationRef {
+    for PerformanceIndicatorGroupSpecificationRef
+{
     fn from(value: &PerformanceIndicatorGroupSpecificationRef) -> Self {
         value.clone()
     }
@@ -6465,13 +6373,15 @@ impl ::std::convert::From<&Self> for PerformanceIndicatorGroupSpecificationRefOr
     }
 }
 impl ::std::convert::From<PerformanceIndicatorGroupSpecificationRef>
-for PerformanceIndicatorGroupSpecificationRefOrValue {
+    for PerformanceIndicatorGroupSpecificationRefOrValue
+{
     fn from(value: PerformanceIndicatorGroupSpecificationRef) -> Self {
         Self::Variant0(value)
     }
 }
 impl ::std::convert::From<PerformanceIndicatorGroupSpecification>
-for PerformanceIndicatorGroupSpecificationRefOrValue {
+    for PerformanceIndicatorGroupSpecificationRefOrValue
+{
     fn from(value: PerformanceIndicatorGroupSpecification) -> Self {
         Self::Variant1(value)
     }
@@ -6493,15 +6403,13 @@ pub struct PerformanceIndicatorGroupValue {
         default,
         skip_serializing_if = "::std::option::Option::is_none"
     )]
-    pub performance_indicator_group_specification: ::std::option::Option<
-        PerformanceIndicatorGroupSpecificationRefOrValue,
-    >,
+    pub performance_indicator_group_specification:
+        ::std::option::Option<PerformanceIndicatorGroupSpecificationRefOrValue>,
     ///The optional tag object attached to this observed group value
     #[serde(default, skip_serializing_if = "::serde_json::Map::is_empty")]
     pub tag: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
 }
-impl ::std::convert::From<&PerformanceIndicatorGroupValue>
-for PerformanceIndicatorGroupValue {
+impl ::std::convert::From<&PerformanceIndicatorGroupValue> for PerformanceIndicatorGroupValue {
     fn from(value: &PerformanceIndicatorGroupValue) -> Self {
         value.clone()
     }
@@ -6518,8 +6426,7 @@ impl ::std::default::Default for PerformanceIndicatorGroupValue {
 ///Type of relationship such as aggregation, migration, substitution, dependency, exclusivity
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct PerformanceIndicatorSpecRelationship {
     #[serde(flatten)]
     pub entity: crate::common::entity::Entity,
@@ -6541,7 +6448,8 @@ pub struct PerformanceIndicatorSpecRelationship {
     pub valid_for: ::std::option::Option<crate::TimePeriod>,
 }
 impl ::std::convert::From<&PerformanceIndicatorSpecRelationship>
-for PerformanceIndicatorSpecRelationship {
+    for PerformanceIndicatorSpecRelationship
+{
     fn from(value: &PerformanceIndicatorSpecRelationship) -> Self {
         value.clone()
     }
@@ -6561,7 +6469,8 @@ pub struct PerformanceIndicatorSpecRelationshipFvo {
     pub valid_for: crate::TimePeriod,
 }
 impl ::std::convert::From<&PerformanceIndicatorSpecRelationshipFvo>
-for PerformanceIndicatorSpecRelationshipFvo {
+    for PerformanceIndicatorSpecRelationshipFvo
+{
     fn from(value: &PerformanceIndicatorSpecRelationshipFvo) -> Self {
         value.clone()
     }
@@ -6589,7 +6498,8 @@ pub struct PerformanceIndicatorSpecRelationshipMvo {
     pub valid_for: ::std::option::Option<crate::TimePeriod>,
 }
 impl ::std::convert::From<&PerformanceIndicatorSpecRelationshipMvo>
-for PerformanceIndicatorSpecRelationshipMvo {
+    for PerformanceIndicatorSpecRelationshipMvo
+{
     fn from(value: &PerformanceIndicatorSpecRelationshipMvo) -> Self {
         value.clone()
     }
@@ -6606,8 +6516,7 @@ impl ::std::default::Default for PerformanceIndicatorSpecRelationshipMvo {
 ///Holds the definition of the requested Performance indicator including: its name, value type, collection type, description and units.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct PerformanceIndicatorSpecification {
     #[serde(flatten)]
     pub entity: crate::common::entity::Entity,
@@ -6662,9 +6571,8 @@ pub struct PerformanceIndicatorSpecification {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_spec_relationship: ::std::vec::Vec<
-        PerformanceIndicatorSpecRelationship,
-    >,
+    pub performance_indicator_spec_relationship:
+        ::std::vec::Vec<PerformanceIndicatorSpecRelationship>,
     ///The point of view for the PerformanceIndicatorSpecification, such as a single user instance or aggregation.
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub perspective: ::std::option::Option<::std::string::String>,
@@ -6676,7 +6584,8 @@ pub struct PerformanceIndicatorSpecification {
     pub valid_for: ::std::option::Option<crate::TimePeriod>,
 }
 impl ::std::convert::From<&PerformanceIndicatorSpecification>
-for PerformanceIndicatorSpecification {
+    for PerformanceIndicatorSpecification
+{
     fn from(value: &PerformanceIndicatorSpecification) -> Self {
         value.clone()
     }
@@ -6720,9 +6629,8 @@ pub struct PerformanceIndicatorSpecificationFvo {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_spec_relationship: ::std::vec::Vec<
-        PerformanceIndicatorSpecRelationshipFvo,
-    >,
+    pub performance_indicator_spec_relationship:
+        ::std::vec::Vec<PerformanceIndicatorSpecRelationshipFvo>,
     ///The point of view for the PerformanceIndicatorSpecification, such as a single user instance or aggregation.
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub perspective: ::std::option::Option<::std::string::String>,
@@ -6734,7 +6642,8 @@ pub struct PerformanceIndicatorSpecificationFvo {
     pub valid_for: ::std::option::Option<crate::TimePeriod>,
 }
 impl ::std::convert::From<&PerformanceIndicatorSpecificationFvo>
-for PerformanceIndicatorSpecificationFvo {
+    for PerformanceIndicatorSpecificationFvo
+{
     fn from(value: &PerformanceIndicatorSpecificationFvo) -> Self {
         value.clone()
     }
@@ -6795,9 +6704,8 @@ pub struct PerformanceIndicatorSpecificationMvo {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_spec_relationship: ::std::vec::Vec<
-        PerformanceIndicatorSpecRelationshipMvo,
-    >,
+    pub performance_indicator_spec_relationship:
+        ::std::vec::Vec<PerformanceIndicatorSpecRelationshipMvo>,
     ///The point of view for the PerformanceIndicatorSpecification, such as a single user instance or aggregation.
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub perspective: ::std::option::Option<::std::string::String>,
@@ -6809,7 +6717,8 @@ pub struct PerformanceIndicatorSpecificationMvo {
     pub valid_for: ::std::option::Option<crate::TimePeriod>,
 }
 impl ::std::convert::From<&PerformanceIndicatorSpecificationMvo>
-for PerformanceIndicatorSpecificationMvo {
+    for PerformanceIndicatorSpecificationMvo
+{
     fn from(value: &PerformanceIndicatorSpecificationMvo) -> Self {
         value.clone()
     }
@@ -6834,8 +6743,7 @@ impl ::std::default::Default for PerformanceIndicatorSpecificationMvo {
 ///PerformanceIndicatorSpecification reference: A PerformanceIndicatorSpecification is a detailed description of a tangible or intangible object made available externally in the form of a PerformanceIndicatorSpecification to customers or other parties playing a party role.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct PerformanceIndicatorSpecificationRef {
     #[serde(flatten)]
     pub extensible: crate::common::entity::EntityRef,
@@ -6844,7 +6752,8 @@ pub struct PerformanceIndicatorSpecificationRef {
     pub version: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&PerformanceIndicatorSpecificationRef>
-for PerformanceIndicatorSpecificationRef {
+    for PerformanceIndicatorSpecificationRef
+{
     fn from(value: &PerformanceIndicatorSpecificationRef) -> Self {
         value.clone()
     }
@@ -6886,7 +6795,8 @@ pub struct PerformanceIndicatorSpecificationRefFvo {
     pub version: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&PerformanceIndicatorSpecificationRefFvo>
-for PerformanceIndicatorSpecificationRefFvo {
+    for PerformanceIndicatorSpecificationRefFvo
+{
     fn from(value: &PerformanceIndicatorSpecificationRefFvo) -> Self {
         value.clone()
     }
@@ -6914,7 +6824,8 @@ pub struct PerformanceIndicatorSpecificationRefMvo {
     pub version: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&PerformanceIndicatorSpecificationRefMvo>
-for PerformanceIndicatorSpecificationRefMvo {
+    for PerformanceIndicatorSpecificationRefMvo
+{
     fn from(value: &PerformanceIndicatorSpecificationRefMvo) -> Self {
         value.clone()
     }
@@ -6944,13 +6855,15 @@ impl ::std::convert::From<&Self> for PerformanceIndicatorSpecificationRefOrValue
     }
 }
 impl ::std::convert::From<PerformanceIndicatorSpecificationRef>
-for PerformanceIndicatorSpecificationRefOrValue {
+    for PerformanceIndicatorSpecificationRefOrValue
+{
     fn from(value: PerformanceIndicatorSpecificationRef) -> Self {
         Self::Variant0(value)
     }
 }
 impl ::std::convert::From<PerformanceIndicatorSpecification>
-for PerformanceIndicatorSpecificationRefOrValue {
+    for PerformanceIndicatorSpecificationRefOrValue
+{
     fn from(value: PerformanceIndicatorSpecification) -> Self {
         Self::Variant1(value)
     }
@@ -6970,13 +6883,15 @@ impl ::std::convert::From<&Self> for PerformanceIndicatorSpecificationRefOrValue
     }
 }
 impl ::std::convert::From<PerformanceIndicatorSpecificationRefFvo>
-for PerformanceIndicatorSpecificationRefOrValueFvo {
+    for PerformanceIndicatorSpecificationRefOrValueFvo
+{
     fn from(value: PerformanceIndicatorSpecificationRefFvo) -> Self {
         Self::RefFvo(value)
     }
 }
 impl ::std::convert::From<PerformanceIndicatorSpecificationFvo>
-for PerformanceIndicatorSpecificationRefOrValueFvo {
+    for PerformanceIndicatorSpecificationRefOrValueFvo
+{
     fn from(value: PerformanceIndicatorSpecificationFvo) -> Self {
         Self::Fvo(value)
     }
@@ -6996,13 +6911,15 @@ impl ::std::convert::From<&Self> for PerformanceIndicatorSpecificationRefOrValue
     }
 }
 impl ::std::convert::From<PerformanceIndicatorSpecificationRefMvo>
-for PerformanceIndicatorSpecificationRefOrValueMvo {
+    for PerformanceIndicatorSpecificationRefOrValueMvo
+{
     fn from(value: PerformanceIndicatorSpecificationRefMvo) -> Self {
         Self::RefMvo(value)
     }
 }
 impl ::std::convert::From<PerformanceIndicatorSpecificationMvo>
-for PerformanceIndicatorSpecificationRefOrValueMvo {
+    for PerformanceIndicatorSpecificationRefOrValueMvo
+{
     fn from(value: PerformanceIndicatorSpecificationMvo) -> Self {
         Self::Mvo(value)
     }
@@ -7024,9 +6941,8 @@ pub struct PerformanceIndicatorValue {
         default,
         skip_serializing_if = "::std::option::Option::is_none"
     )]
-    pub performance_indicator_specification: ::std::option::Option<
-        PerformanceIndicatorSpecificationRefOrValue,
-    >,
+    pub performance_indicator_specification:
+        ::std::option::Option<PerformanceIndicatorSpecificationRefOrValue>,
     ///The optional tag object attached to this observed value
     #[serde(default, skip_serializing_if = "::serde_json::Map::is_empty")]
     pub tag: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
@@ -7050,10 +6966,15 @@ pub const CLASS_PATH: &str = "measurement";
 ///A measurement of a performance indicator or performance group indicator.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(tmflib_derive::HasId)]
-#[derive(tmflib_derive::HasDescription)]
-#[derive(Default)]
+#[derive(
+    ::serde::Deserialize,
+    ::serde::Serialize,
+    Clone,
+    Debug,
+    tmflib_derive::HasId,
+    tmflib_derive::HasDescription,
+    Default,
+)]
 pub struct PerformanceMeasurement {
     #[serde(flatten)]
     pub entity: crate::common::entity::Entity,
@@ -7129,8 +7050,7 @@ pub struct PerformanceMeasurementAtomic {
     )]
     pub valid_for: ::std::option::Option<crate::TimePeriod>,
 }
-impl ::std::convert::From<&PerformanceMeasurementAtomic>
-for PerformanceMeasurementAtomic {
+impl ::std::convert::From<&PerformanceMeasurementAtomic> for PerformanceMeasurementAtomic {
     fn from(value: &PerformanceMeasurementAtomic) -> Self {
         value.clone()
     }
@@ -7229,7 +7149,8 @@ pub struct PerformanceMeasurementCollectionReadyEvent {
     pub title: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&PerformanceMeasurementCollectionReadyEvent>
-for PerformanceMeasurementCollectionReadyEvent {
+    for PerformanceMeasurementCollectionReadyEvent
+{
     fn from(value: &PerformanceMeasurementCollectionReadyEvent) -> Self {
         value.clone()
     }
@@ -7269,7 +7190,8 @@ pub struct PerformanceMeasurementCollectionReadyEventPayload {
     pub performance_measurement: ::std::option::Option<PerformanceMeasurement>,
 }
 impl ::std::convert::From<&PerformanceMeasurementCollectionReadyEventPayload>
-for PerformanceMeasurementCollectionReadyEventPayload {
+    for PerformanceMeasurementCollectionReadyEventPayload
+{
     fn from(value: &PerformanceMeasurementCollectionReadyEventPayload) -> Self {
         value.clone()
     }
@@ -7363,7 +7285,8 @@ pub struct PerformanceMeasurementCreateEvent {
     pub title: ::std::option::Option<::std::string::String>,
 }
 impl ::std::convert::From<&PerformanceMeasurementCreateEvent>
-for PerformanceMeasurementCreateEvent {
+    for PerformanceMeasurementCreateEvent
+{
     fn from(value: &PerformanceMeasurementCreateEvent) -> Self {
         value.clone()
     }
@@ -7403,7 +7326,8 @@ pub struct PerformanceMeasurementCreateEventPayload {
     pub performance_measurement: ::std::option::Option<PerformanceMeasurement>,
 }
 impl ::std::convert::From<&PerformanceMeasurementCreateEventPayload>
-for PerformanceMeasurementCreateEventPayload {
+    for PerformanceMeasurementCreateEventPayload
+{
     fn from(value: &PerformanceMeasurementCreateEventPayload) -> Self {
         value.clone()
     }
@@ -7434,9 +7358,7 @@ pub struct PerformanceMeasurementGroup {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub performance_indicator_group_value: ::std::vec::Vec<
-        PerformanceIndicatorGroupValue,
-    >,
+    pub performance_indicator_group_value: ::std::vec::Vec<PerformanceIndicatorGroupValue>,
     ///related Performance measurements array
     #[serde(
         rename = "relatedMeasurement",
@@ -7474,8 +7396,7 @@ impl ::std::default::Default for PerformanceMeasurementGroup {
 ///PerformanceMeasurement reference: A PerformanceMeasurement is the observed value(s) of some PerformanceIndicatorSpecification.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct PerformanceMeasurementRef {
     #[serde(flatten)]
     pub extensible: crate::common::entity::EntityRef,
@@ -7502,8 +7423,7 @@ impl ::std::convert::From<&Self> for PerformanceMeasurementRefOrValue {
         value.clone()
     }
 }
-impl ::std::convert::From<PerformanceMeasurementRef>
-for PerformanceMeasurementRefOrValue {
+impl ::std::convert::From<PerformanceMeasurementRef> for PerformanceMeasurementRefOrValue {
     fn from(value: PerformanceMeasurementRef) -> Self {
         Self::Variant0(value)
     }
@@ -7516,8 +7436,7 @@ impl ::std::convert::From<PerformanceMeasurement> for PerformanceMeasurementRefO
 ///Type of relationship such as aggregation, migration, substitution, dependency, exclusivity
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct PerformanceMeasurementRelationship {
     #[serde(flatten)]
     pub entity: crate::common::entity::Entity,
@@ -7545,7 +7464,8 @@ pub struct PerformanceMeasurementRelationship {
     pub valid_for: ::std::option::Option<crate::TimePeriod>,
 }
 impl ::std::convert::From<&PerformanceMeasurementRelationship>
-for PerformanceMeasurementRelationship {
+    for PerformanceMeasurementRelationship
+{
     fn from(value: &PerformanceMeasurementRelationship) -> Self {
         value.clone()
     }
@@ -7618,8 +7538,7 @@ impl ::std::convert::From<EntityRefMvo> for PlaceRefMvo {
 ///Reference to managed Policy object
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct PolicyRef {
     #[serde(flatten)]
     pub extensible: crate::common::entity::EntityRef,
@@ -7832,8 +7751,7 @@ impl ::std::default::Default for ProtocolTransferDataMvo {
 ///RelatedParty reference. A related party defines party or party role or its reference, linked to a specific entity
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct RelatedPartyRefOrPartyRoleRef {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -7847,8 +7765,7 @@ pub struct RelatedPartyRefOrPartyRoleRef {
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub role: ::std::option::Option<::std::string::String>,
 }
-impl ::std::convert::From<&RelatedPartyRefOrPartyRoleRef>
-for RelatedPartyRefOrPartyRoleRef {
+impl ::std::convert::From<&RelatedPartyRefOrPartyRoleRef> for RelatedPartyRefOrPartyRoleRef {
     fn from(value: &RelatedPartyRefOrPartyRoleRef) -> Self {
         value.clone()
     }
@@ -7884,8 +7801,7 @@ pub struct RelatedPartyRefOrPartyRoleRefFvo {
     #[serde(rename = "@type")]
     pub type_: ::std::string::String,
 }
-impl ::std::convert::From<&RelatedPartyRefOrPartyRoleRefFvo>
-for RelatedPartyRefOrPartyRoleRefFvo {
+impl ::std::convert::From<&RelatedPartyRefOrPartyRoleRefFvo> for RelatedPartyRefOrPartyRoleRefFvo {
     fn from(value: &RelatedPartyRefOrPartyRoleRefFvo) -> Self {
         value.clone()
     }
@@ -7904,8 +7820,7 @@ pub struct RelatedPartyRefOrPartyRoleRefMvo {
     ///Role played by the related party or party role in the context of the specific entity it is linked to. Such as 'initiator', 'customer',  'salesAgent', 'user'
     pub role: ::std::string::String,
 }
-impl ::std::convert::From<&RelatedPartyRefOrPartyRoleRefMvo>
-for RelatedPartyRefOrPartyRoleRefMvo {
+impl ::std::convert::From<&RelatedPartyRefOrPartyRoleRefMvo> for RelatedPartyRefOrPartyRoleRefMvo {
     fn from(value: &RelatedPartyRefOrPartyRoleRefMvo) -> Self {
         value.clone()
     }
@@ -7913,8 +7828,7 @@ for RelatedPartyRefOrPartyRoleRefMvo {
 ///Entity reference. The polymorphic attributes @type, @schemaLocation & @referredType are related to the RelatedPlace entity and not the RelatedPlaceRef class itself
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct RelatedPlaceRef {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -7974,8 +7888,7 @@ impl ::std::convert::From<&RelatedPlaceRefMvo> for RelatedPlaceRefMvo {
 ///RelatedResourceOrderItem (a ResourceOrder item) .The resource order item which triggered resource creation/change/termination.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct RelatedResourceOrderItem {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -8160,7 +8073,7 @@ impl ::std::default::Default for RelatedResourceOrderItemMvo {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum ReportingPeriod {
     #[serde(rename = "r_1mn")]
@@ -8198,9 +8111,7 @@ impl ::std::fmt::Display for ReportingPeriod {
 }
 impl ::std::str::FromStr for ReportingPeriod {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "r_1mn" => Ok(Self::R1mn),
             "r_5mn" => Ok(Self::R5mn),
@@ -8215,9 +8126,7 @@ impl ::std::str::FromStr for ReportingPeriod {
 }
 impl ::std::convert::TryFrom<&str> for ReportingPeriod {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -8240,8 +8149,7 @@ impl ::std::convert::TryFrom<::std::string::String> for ReportingPeriod {
 ///Resource is an abstract entity that describes the common set of attributes shared by all concrete resources (e.g. TPE, EQUIPMENT) in the inventory.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct Resource {
     #[serde(flatten)]
     pub entity: crate::common::entity::Entity,
@@ -8278,9 +8186,8 @@ pub struct Resource {
         default,
         skip_serializing_if = "::std::vec::Vec::is_empty"
     )]
-    pub external_identifier: ::std::vec::Vec<
-        crate::common::external_identifier::ExternalIdentifier,
-    >,
+    pub external_identifier:
+        ::std::vec::Vec<crate::common::external_identifier::ExternalIdentifier>,
     #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
     pub intent: ::std::option::Option<IntentRef>,
     ///the name of the resource
@@ -8384,7 +8291,7 @@ impl ::std::convert::From<&Resource> for Resource {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum ResourceAdministrativeStateType {
     #[serde(rename = "locked")]
@@ -8410,9 +8317,7 @@ impl ::std::fmt::Display for ResourceAdministrativeStateType {
 }
 impl ::std::str::FromStr for ResourceAdministrativeStateType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "locked" => Ok(Self::Locked),
             "unlocked" => Ok(Self::Unlocked),
@@ -8423,14 +8328,11 @@ impl ::std::str::FromStr for ResourceAdministrativeStateType {
 }
 impl ::std::convert::TryFrom<&str> for ResourceAdministrativeStateType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
-impl ::std::convert::TryFrom<&::std::string::String>
-for ResourceAdministrativeStateType {
+impl ::std::convert::TryFrom<&::std::string::String> for ResourceAdministrativeStateType {
     type Error = self::error::ConversionError;
     fn try_from(
         value: &::std::string::String,
@@ -8775,7 +8677,7 @@ impl ::std::default::Default for ResourceMvo {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum ResourceOperationalStateType {
     #[serde(rename = "enable")]
@@ -8798,9 +8700,7 @@ impl ::std::fmt::Display for ResourceOperationalStateType {
 }
 impl ::std::str::FromStr for ResourceOperationalStateType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "enable" => Ok(Self::Enable),
             "disable" => Ok(Self::Disable),
@@ -8810,9 +8710,7 @@ impl ::std::str::FromStr for ResourceOperationalStateType {
 }
 impl ::std::convert::TryFrom<&str> for ResourceOperationalStateType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -8838,9 +8736,7 @@ impl ::std::convert::TryFrom<::std::string::String> for ResourceOperationalState
 #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
 #[serde(transparent)]
 #[derive(Default)]
-pub struct ResourceRef(
-    pub ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-);
+pub struct ResourceRef(pub ::serde_json::Map<::std::string::String, ::serde_json::Value>);
 impl ::std::ops::Deref for ResourceRef {
     type Target = ::serde_json::Map<::std::string::String, ::serde_json::Value>;
     fn deref(&self) -> &::serde_json::Map<::std::string::String, ::serde_json::Value> {
@@ -8848,7 +8744,8 @@ impl ::std::ops::Deref for ResourceRef {
     }
 }
 impl ::std::convert::From<ResourceRef>
-for ::serde_json::Map<::std::string::String, ::serde_json::Value> {
+    for ::serde_json::Map<::std::string::String, ::serde_json::Value>
+{
     fn from(value: ResourceRef) -> Self {
         value.0
     }
@@ -8859,10 +8756,9 @@ impl ::std::convert::From<&ResourceRef> for ResourceRef {
     }
 }
 impl ::std::convert::From<::serde_json::Map<::std::string::String, ::serde_json::Value>>
-for ResourceRef {
-    fn from(
-        value: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-    ) -> Self {
+    for ResourceRef
+{
+    fn from(value: ::serde_json::Map<::std::string::String, ::serde_json::Value>) -> Self {
         Self(value)
     }
 }
@@ -8995,8 +8891,7 @@ impl ::std::convert::From<ResourceRefMvo> for ResourceRefOrValueMvo {
 ///Linked resources to the one instantiate, such as [bundled] if the resource is a bundle and you want to describe the bundled resources inside this bundle; [reliesOn] if the resource needs another already owned resource to rely on (e.g. an option on an already owned mobile access resource) [targets] or [isTargeted] (depending on the way of expressing the link) for any other kind of links that may be useful
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct ResourceRelationship {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -9084,8 +8979,7 @@ impl ::std::convert::From<&ResourceRelationshipMvo> for ResourceRelationshipMvo 
 A ResourceSpecification is an abstract base class for representing a generic means for implementing a particular type of Resource. In essence, a ResourceSpecification defines the common attributes and relationships of a set of related Resources, while Resource defines a specific instance that is based on a particular ResourceSpecification.*/
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct ResourceSpecificationRef {
     #[serde(flatten)]
     pub extensible: crate::common::entity::EntityRef,
@@ -9189,7 +9083,7 @@ impl ::std::default::Default for ResourceSpecificationRefMvo {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum ResourceStatusType {
     #[serde(rename = "alarm")]
@@ -9236,9 +9130,7 @@ impl ::std::fmt::Display for ResourceStatusType {
 }
 impl ::std::str::FromStr for ResourceStatusType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "alarm" => Ok(Self::Alarm),
             "available" => Ok(Self::Available),
@@ -9256,9 +9148,7 @@ impl ::std::str::FromStr for ResourceStatusType {
 }
 impl ::std::convert::TryFrom<&str> for ResourceStatusType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -9291,7 +9181,7 @@ impl ::std::convert::TryFrom<::std::string::String> for ResourceStatusType {
     Hash,
     Ord,
     PartialEq,
-    PartialOrd
+    PartialOrd,
 )]
 pub enum ResourceUsageStateType {
     #[serde(rename = "idle")]
@@ -9317,9 +9207,7 @@ impl ::std::fmt::Display for ResourceUsageStateType {
 }
 impl ::std::str::FromStr for ResourceUsageStateType {
     type Err = self::error::ConversionError;
-    fn from_str(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn from_str(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         match value {
             "idle" => Ok(Self::Idle),
             "active" => Ok(Self::Active),
@@ -9330,9 +9218,7 @@ impl ::std::str::FromStr for ResourceUsageStateType {
 }
 impl ::std::convert::TryFrom<&str> for ResourceUsageStateType {
     type Error = self::error::ConversionError;
-    fn try_from(
-        value: &str,
-    ) -> ::std::result::Result<Self, self::error::ConversionError> {
+    fn try_from(value: &str) -> ::std::result::Result<Self, self::error::ConversionError> {
         value.parse()
     }
 }
@@ -9355,8 +9241,7 @@ impl ::std::convert::TryFrom<::std::string::String> for ResourceUsageStateType {
 ///The schedule definition for running jobs.
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct ScheduleDefinition {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,
@@ -9389,9 +9274,8 @@ pub struct ScheduleDefinition {
         default,
         skip_serializing_if = "::std::option::Option::is_none"
     )]
-    pub monthly_schedule_day_of_week_definition: ::std::option::Option<
-        MonthlyScheduleDayOfWeekDefinition,
-    >,
+    pub monthly_schedule_day_of_week_definition:
+        ::std::option::Option<MonthlyScheduleDayOfWeekDefinition>,
     ///A recurring frequency to run a job within day that is included in schedule definition, for example: every 5 minutes, 15 minute, 30 minutes, 1 hour
     #[serde(
         rename = "recurringFrequency",
@@ -9469,9 +9353,8 @@ pub struct ScheduleDefinitionFvo {
         default,
         skip_serializing_if = "::std::option::Option::is_none"
     )]
-    pub monthly_schedule_day_of_week_definition: ::std::option::Option<
-        MonthlyScheduleDayOfWeekDefinitionFvo,
-    >,
+    pub monthly_schedule_day_of_week_definition:
+        ::std::option::Option<MonthlyScheduleDayOfWeekDefinitionFvo>,
     ///A recurring frequency to run a job within day that is included in schedule definition, for example: every 5 minutes, 15 minute, 30 minutes, 1 hour
     #[serde(
         rename = "recurringFrequency",
@@ -9555,9 +9438,8 @@ pub struct ScheduleDefinitionMvo {
         default,
         skip_serializing_if = "::std::option::Option::is_none"
     )]
-    pub monthly_schedule_day_of_week_definition: ::std::option::Option<
-        MonthlyScheduleDayOfWeekDefinitionMvo,
-    >,
+    pub monthly_schedule_day_of_week_definition:
+        ::std::option::Option<MonthlyScheduleDayOfWeekDefinitionMvo>,
     ///A recurring frequency to run a job within day that is included in schedule definition, for example: every 5 minutes, 15 minute, 30 minutes, 1 hour
     #[serde(
         rename = "recurringFrequency",
@@ -9616,8 +9498,7 @@ impl ::std::default::Default for ScheduleDefinitionMvo {
 ///Tracking records allow the tracking of modifications on the problem. The tracking records should not be embedded in the problem to allow retrieving the problem without the tracking records
 ///
 ///
-#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-#[derive(Default)]
+#[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
 pub struct TrackingRecord {
     #[serde(flatten)]
     pub extensible: crate::common::extensible::Extensible,

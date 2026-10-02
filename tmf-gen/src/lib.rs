@@ -220,7 +220,11 @@ pub fn default_shared_types() -> Vec<SharedType> {
             "schema_location",
             "type_",
         ]),
-        SharedType::new("EntityRef", "crate::common::entity::EntityRef", "extensible"),
+        SharedType::new(
+            "EntityRef",
+            "crate::common::entity::EntityRef",
+            "extensible",
+        ),
         SharedType::new(
             "Addressable",
             "crate::common::addressable::Addressable",
@@ -228,7 +232,11 @@ pub fn default_shared_types() -> Vec<SharedType> {
         )
         .with_dropped(&["base_type", "schema_location", "type_"]),
         SharedType::new("Note", "crate::common::note::Note", "note"),
-        SharedType::new("PlaceRef", "crate::common::related_place::PlaceRef", "place"),
+        SharedType::new(
+            "PlaceRef",
+            "crate::common::related_place::PlaceRef",
+            "place",
+        ),
         SharedType::new(
             "ExternalIdentifier",
             "crate::common::external_identifier::ExternalIdentifier",
@@ -246,9 +254,7 @@ pub fn default_shared_types() -> Vec<SharedType> {
 pub fn load_spec(path: &Path) -> Result<Spec, GenError> {
     let contents = fs::read_to_string(path)?;
     let value: serde_json::Value = match path.extension().and_then(|e| e.to_str()) {
-        Some("yaml") | Some("yml") => {
-            serde_yaml::from_str(&contents).map_err(GenError::Yaml)?
-        }
+        Some("yaml") | Some("yml") => serde_yaml::from_str(&contents).map_err(GenError::Yaml)?,
         _ => serde_json::from_str(&contents).map_err(GenError::Json)?,
     };
     if value.get("swagger").and_then(serde_json::Value::as_str) == Some("2.0") {
@@ -326,9 +332,8 @@ fn convert_schemas(
         .iter()
         .map(|(name, reference_or)| {
             let value = serde_json::to_value(reference_or).map_err(GenError::Conversion)?;
-            let schema =
-                serde_json::from_value::<schemars::schema::Schema>(value)
-                    .map_err(GenError::Conversion)?;
+            let schema = serde_json::from_value::<schemars::schema::Schema>(value)
+                .map_err(GenError::Conversion)?;
             Ok((name.clone(), schema))
         })
         .collect()
@@ -447,9 +452,7 @@ fn rewrite_datetime_refs(schema: &mut schemars::schema::Schema, changed: &mut bo
 /// date-time/date strings onto the synthetic `TimeStamp` schema.
 /// Returns warnings describing what was changed.
 #[doc(hidden)]
-pub fn preprocess_schemas(
-    schemas: &mut BTreeMap<String, schemars::schema::Schema>,
-) -> Vec<String> {
+pub fn preprocess_schemas(schemas: &mut BTreeMap<String, schemars::schema::Schema>) -> Vec<String> {
     let mut warnings = Vec::new();
     let placeholders = synthesize_missing_schemas(schemas);
     if !placeholders.is_empty() {
@@ -568,9 +571,7 @@ fn synthesize_missing_schemas(
 /// invalid defaults (e.g. string `"false"` on boolean fields, integers
 /// outside format bounds) that typify rejects; tmflib does not use schema
 /// defaults, so they are simply dropped. Returns the affected schema names.
-fn strip_all_defaults(
-    schemas: &mut BTreeMap<String, schemars::schema::Schema>,
-) -> Vec<String> {
+fn strip_all_defaults(schemas: &mut BTreeMap<String, schemars::schema::Schema>) -> Vec<String> {
     let mut dropped: Vec<String> = Vec::new();
     for (name, schema) in schemas.iter_mut() {
         let mut hit = false;
@@ -683,7 +684,9 @@ fn strip_schema_docs(attrs: &mut Vec<syn::Attribute>) {
             if let syn::Expr::Lit(lit) = &mut nv.value {
                 if let syn::Lit::Str(s) = &mut lit.lit {
                     let value = s.value();
-                    let trimmed = value[..value.find("<details").unwrap()].trim_end().to_string();
+                    let trimmed = value[..value.find("<details").unwrap()]
+                        .trim_end()
+                        .to_string();
                     *s = syn::LitStr::new(&trimmed, s.span());
                 }
             }
@@ -842,7 +845,9 @@ pub fn generate(spec: &Spec, config: &ModuleConfig) -> Result<String, GenError> 
         std::iter::empty(),
     );
     let mut type_space = TypeSpace::new(&settings);
-    type_space.add_ref_types(schemas).map_err(GenError::Typify)?;
+    type_space
+        .add_ref_types(schemas)
+        .map_err(GenError::Typify)?;
 
     let stream = type_space.to_stream();
     let mut file = syn::parse2::<syn::File>(stream).map_err(GenError::Syn)?;
@@ -859,8 +864,11 @@ pub fn generate(spec: &Spec, config: &ModuleConfig) -> Result<String, GenError> 
     SharedPathRewriter { map: &path_map }.visit_file_mut(&mut file);
 
     // 3. Remove the shared type definitions (structs, enums and impls).
-    let shared_names: std::collections::BTreeSet<String> =
-        config.shared_types.iter().map(|s| s.schema.clone()).collect();
+    let shared_names: std::collections::BTreeSet<String> = config
+        .shared_types
+        .iter()
+        .map(|s| s.schema.clone())
+        .collect();
     file.items.retain(|item| {
         let defines = defined_ident(item)
             .map(|ident| shared_names.contains(&ident))
@@ -896,8 +904,7 @@ pub fn generate(spec: &Spec, config: &ModuleConfig) -> Result<String, GenError> 
                 continue;
             };
             let path: syn::Type = syn::parse_str(&shared.path).map_err(GenError::Syn)?;
-            let field_ident =
-                syn::Ident::new(&shared.field, proc_macro2::Span::call_site());
+            let field_ident = syn::Ident::new(&shared.field, proc_macro2::Span::call_site());
             let field: syn::Field = syn::parse_quote! {
                 #[serde(flatten)]
                 pub #field_ident: #path
@@ -991,9 +998,7 @@ pub fn generate(spec: &Spec, config: &ModuleConfig) -> Result<String, GenError> 
             .iter()
             .filter_map(|f| f.ident.as_ref().map(|i| i.to_string()))
             .collect();
-        if field_names.contains(&"id".to_string())
-            && field_names.contains(&"href".to_string())
-        {
+        if field_names.contains(&"id".to_string()) && field_names.contains(&"href".to_string()) {
             new_struct
                 .attrs
                 .push(syn::parse_quote!(#[derive(tmflib_derive::HasId)]));
@@ -1071,10 +1076,10 @@ pub fn generate(spec: &Spec, config: &ModuleConfig) -> Result<String, GenError> 
         });
         if let syn::Fields::Named(fields) = &s.fields {
             if let Some(first) = fields.named.first() {
-                let is_flatten = first
-                    .attrs
-                    .iter()
-                    .any(|a| a.path().is_ident("serde") && a.to_token_stream().to_string().contains("flatten"));
+                let is_flatten = first.attrs.iter().any(|a| {
+                    a.path().is_ident("serde")
+                        && a.to_token_stream().to_string().contains("flatten")
+                });
                 if is_flatten {
                     if let (Some(field_ident), ty) = (&first.ident, &first.ty) {
                         extra_impls.push(syn::parse_quote! {
@@ -1102,7 +1107,10 @@ pub fn generate(spec: &Spec, config: &ModuleConfig) -> Result<String, GenError> 
     // 7. Module prelude : TMF_MODULE const and required use statements.
     let mut prelude: Vec<syn::Item> = Vec::new();
     if has_managed {
-        let tmf_module = config.tmf_module.clone().unwrap_or_else(|| config.tmf.clone());
+        let tmf_module = config
+            .tmf_module
+            .clone()
+            .unwrap_or_else(|| config.tmf.clone());
         prelude.push(syn::parse_quote! {
             /// TMF module path component used for HREF generation
             const TMF_MODULE: &str = #tmf_module;
@@ -1220,7 +1228,5 @@ pub fn tmf628_config() -> ModuleConfig {
     ModuleConfig::new("tmf628")
         .with_spec_file("TMF628_Performance-v5.0.0.oas.yaml")
         .with_tmf_module("performanceManagement")
-        .with_managed(
-            ManagedType::new("PerformanceMeasurement", "measurement").addressable(),
-        )
+        .with_managed(ManagedType::new("PerformanceMeasurement", "measurement").addressable())
 }
